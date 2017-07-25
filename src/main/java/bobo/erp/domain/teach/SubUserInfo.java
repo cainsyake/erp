@@ -1,5 +1,8 @@
 package bobo.erp.domain.teach;
 
+import bobo.erp.domain.state.RunningState;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 /**
@@ -19,6 +22,10 @@ public class SubUserInfo {
 
     @ManyToOne
     private TeachClassInfo teachClassInfo;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "running_state_id")
+    private RunningState runningState;
 
     public Integer getSubUserId() {
         return subUserId;
@@ -50,5 +57,15 @@ public class SubUserInfo {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    @JsonBackReference
+    public RunningState getRunningState() {
+        return runningState;
+    }
+
+    @JsonBackReference
+    public void setRunningState(RunningState runningState) {
+        this.runningState = runningState;
     }
 }
