@@ -54,7 +54,7 @@ public class TeachClassInit {
                 User tempUser = userRepository.save(user);
 
                 SubUserInfo subUserInfo = new SubUserInfo();    //设置SubUserInfo
-                subUserInfo.setSubUserName(teachClassInfo.getTeachClassName()+(1+i)+"组");
+                subUserInfo.setSubUserName(nowUserName+(1+i));
                 subUserInfo.setUserId(tempUser.getId()); //绑定子用户的账号id
                 subUserInfoList.add(subUserInfoRepository.save(subUserInfo));
             }

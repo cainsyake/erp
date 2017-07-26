@@ -21,7 +21,11 @@ public class RunningState {
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "finance_state_id")
-    private FinanceState financeState;
+    private FinanceState financeState;  //财务状态
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "stock_state_id")
+    private StockState stockState;      //库存及采购状态
 
     public Integer getId() {
         return id;
@@ -45,5 +49,13 @@ public class RunningState {
 
     public void setFinanceState(FinanceState financeState) {
         this.financeState = financeState;
+    }
+
+    public StockState getStockState() {
+        return stockState;
+    }
+
+    public void setStockState(StockState stockState) {
+        this.stockState = stockState;
     }
 }

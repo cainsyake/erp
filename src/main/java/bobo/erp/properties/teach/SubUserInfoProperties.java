@@ -1,5 +1,6 @@
 package bobo.erp.properties.teach;
 
+import bobo.erp.domain.state.RunningState;
 import bobo.erp.domain.teach.TeachClassInfo;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -21,6 +22,7 @@ public class SubUserInfoProperties {
     private Integer userId;
     private String subUserName;
     private TeachClassInfo teachClassInfo;
+    private RunningState runningState;
 
     public Integer getUserId() {
         return userId;
@@ -46,4 +48,11 @@ public class SubUserInfoProperties {
         this.teachClassInfo = teachClassInfo;
     }
 
+    public RunningState getRunningState() {
+        return runningState;
+    }
+
+    public void setRunningState(RunningState runningState) {
+        this.runningState = runningState;
+    }
 }
