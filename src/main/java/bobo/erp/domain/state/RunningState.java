@@ -28,7 +28,7 @@ public class RunningState {
     private StockState stockState;      //库存及采购状态
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "stock_state_id")
+    @JoinColumn(name = "factory_state_id")
     private FactoryState factoryState;  //厂房状态
 
     public Integer getId() {
