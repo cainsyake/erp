@@ -39,7 +39,9 @@ public class RunningState {
     @JoinColumn(name = "dev_state_id")
     private DevState devState;  //研发状态
 
-
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "marketing_state_id")
+    private MarketingState marketingState;  //营销状态
 
     public Integer getId() {
         return id;
@@ -95,5 +97,13 @@ public class RunningState {
 
     public void setDevState(DevState devState) {
         this.devState = devState;
+    }
+
+    public MarketingState getMarketingState() {
+        return marketingState;
+    }
+
+    public void setMarketingState(MarketingState marketingState) {
+        this.marketingState = marketingState;
     }
 }
