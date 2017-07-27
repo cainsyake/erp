@@ -18,10 +18,10 @@ public class MarketSeries {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer marketSeriesId;
 
-    private String marketSeriesName;
-    private Integer marketSeriesUseCount;
-    private Date marketSeriesAlterTime;
-    private String marketSeriesUploader;
+    private String marketSeriesName;    //市场系列名称
+    private Integer marketSeriesUseCount;   //市场系列调用次数
+    private Date marketSeriesAlterTime;     //市场系列更改时间
+    private String marketSeriesUploader;    //市场系列上传者
 
     public Integer getMarketSeriesId() {
         return marketSeriesId;
