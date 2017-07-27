@@ -3,6 +3,7 @@ package bobo.erp.domain.state;
 import bobo.erp.domain.state.factory.LineState;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by 59814 on 2017/7/26.
@@ -27,7 +28,7 @@ public class FactoryState {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "line_state_id")
-    private LineState lineState;
+    private List<LineState> lineStateList;
 
     public Integer getId() {
         return id;
@@ -85,11 +86,11 @@ public class FactoryState {
         this.runningState = runningState;
     }
 
-    public LineState getLineState() {
-        return lineState;
+    public List<LineState> getLineStateList() {
+        return lineStateList;
     }
 
-    public void setLineState(LineState lineState) {
-        this.lineState = lineState;
+    public void setLineStateList(List<LineState> lineStateList) {
+        this.lineStateList = lineStateList;
     }
 }

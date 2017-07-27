@@ -5,6 +5,7 @@ import bobo.erp.domain.state.dev.ProductDevState;
 import bobo.erp.domain.state.dev.QualificationDevState;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by 59814 on 2017/7/27.
@@ -23,15 +24,15 @@ public class DevState {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "market_dev_state_id")
-    private MarketDevState marketDevState;
+    private List<MarketDevState> marketDevStateList;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_dev_state_id")
-    private ProductDevState productDevState;
+    private List<ProductDevState> productDevStateList;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "qualification_dev_state_id")
-    private QualificationDevState qualificationDevState;
+    private List<QualificationDevState> qualificationDevStateList;
 
     public Integer getId() {
         return id;
@@ -49,27 +50,27 @@ public class DevState {
         this.runningState = runningState;
     }
 
-    public MarketDevState getMarketDevState() {
-        return marketDevState;
+    public List<MarketDevState> getMarketDevStateList() {
+        return marketDevStateList;
     }
 
-    public void setMarketDevState(MarketDevState marketDevState) {
-        this.marketDevState = marketDevState;
+    public void setMarketDevStateList(List<MarketDevState> marketDevStateList) {
+        this.marketDevStateList = marketDevStateList;
     }
 
-    public ProductDevState getProductDevState() {
-        return productDevState;
+    public List<ProductDevState> getProductDevStateList() {
+        return productDevStateList;
     }
 
-    public void setProductDevState(ProductDevState productDevState) {
-        this.productDevState = productDevState;
+    public void setProductDevStateList(List<ProductDevState> productDevStateList) {
+        this.productDevStateList = productDevStateList;
     }
 
-    public QualificationDevState getQualificationDevState() {
-        return qualificationDevState;
+    public List<QualificationDevState> getQualificationDevStateList() {
+        return qualificationDevStateList;
     }
 
-    public void setQualificationDevState(QualificationDevState qualificationDevState) {
-        this.qualificationDevState = qualificationDevState;
+    public void setQualificationDevStateList(List<QualificationDevState> qualificationDevStateList) {
+        this.qualificationDevStateList = qualificationDevStateList;
     }
 }

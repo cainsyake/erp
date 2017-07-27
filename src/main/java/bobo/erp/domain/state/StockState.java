@@ -5,6 +5,7 @@ import bobo.erp.domain.state.stock.ProductState;
 import bobo.erp.domain.state.stock.PurchaseState;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by 59814 on 2017/7/26.
@@ -22,15 +23,15 @@ public class StockState {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "material_state_id")
-    private MaterialState materialState;
+    private List<MaterialState> materialStateList;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_state_id")
-    private ProductState productState;
+    private List<ProductState> productStates;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "purchase_state_id")
-    private PurchaseState purchaseState;
+    private List<PurchaseState> purchaseStates;
 
     public Integer getId() {
         return id;
@@ -48,27 +49,27 @@ public class StockState {
         this.runningState = runningState;
     }
 
-    public MaterialState getMaterialState() {
-        return materialState;
+    public List<MaterialState> getMaterialStateList() {
+        return materialStateList;
     }
 
-    public void setMaterialState(MaterialState materialState) {
-        this.materialState = materialState;
+    public void setMaterialStateList(List<MaterialState> materialStateList) {
+        this.materialStateList = materialStateList;
     }
 
-    public ProductState getProductState() {
-        return productState;
+    public List<ProductState> getProductStates() {
+        return productStates;
     }
 
-    public void setProductState(ProductState productState) {
-        this.productState = productState;
+    public void setProductStates(List<ProductState> productStates) {
+        this.productStates = productStates;
     }
 
-    public PurchaseState getPurchaseState() {
-        return purchaseState;
+    public List<PurchaseState> getPurchaseStates() {
+        return purchaseStates;
     }
 
-    public void setPurchaseState(PurchaseState purchaseState) {
-        this.purchaseState = purchaseState;
+    public void setPurchaseStates(List<PurchaseState> purchaseStates) {
+        this.purchaseStates = purchaseStates;
     }
 }
