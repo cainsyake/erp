@@ -35,6 +35,10 @@ public class RunningState {
     @JoinColumn(name = "factory_state_id")
     private FactoryState factoryState;  //厂房状态
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "dev_state_id")
+    private DevState devState;  //研发状态
+
 
 
     public Integer getId() {
@@ -75,5 +79,21 @@ public class RunningState {
 
     public void setFactoryState(FactoryState factoryState) {
         this.factoryState = factoryState;
+    }
+
+    public BaseState getBaseState() {
+        return baseState;
+    }
+
+    public void setBaseState(BaseState baseState) {
+        this.baseState = baseState;
+    }
+
+    public DevState getDevState() {
+        return devState;
+    }
+
+    public void setDevState(DevState devState) {
+        this.devState = devState;
     }
 }
