@@ -20,6 +20,10 @@ public class RunningState {
     private SubUserInfo subUserInfo;
 
     @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "base_state_id")
+    private BaseState baseState;    //基础状态
+
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "finance_state_id")
     private FinanceState financeState;  //财务状态
 
@@ -30,6 +34,8 @@ public class RunningState {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "factory_state_id")
     private FactoryState factoryState;  //厂房状态
+
+
 
     public Integer getId() {
         return id;
