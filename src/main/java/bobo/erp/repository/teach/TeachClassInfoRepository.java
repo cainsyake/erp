@@ -11,5 +11,6 @@ import java.util.List;
 public interface TeachClassInfoRepository extends JpaRepository<TeachClassInfo, Integer> {
     public List<TeachClassInfo>  findByUserId(Integer userId);
 
-//    public  TeachClassInfo findByS
+
+    public  TeachClassInfo findByTeachClassName(String name);
 }
