@@ -20,12 +20,12 @@ public class RuleIso {
     private Rule rule;
 
     private String iso1Name;        //ISO名
-    private Double iso1UnitInvest;  //单位周期开发投资
+    private Integer iso1UnitInvest;  //单位周期开发投资
     private Integer iso1DevTime;    //开发周期
     private Integer iso1Score;      //潜力分数
 
     private String iso2Name;
-    private Double iso2UnitInvest;
+    private Integer iso2UnitInvest;
     private Integer iso2DevTime;
     private Integer iso2Score;
 
@@ -55,11 +55,11 @@ public class RuleIso {
         this.iso1Name = iso1Name;
     }
 
-    public Double getIso1UnitInvest() {
+    public Integer getIso1UnitInvest() {
         return iso1UnitInvest;
     }
 
-    public void setIso1UnitInvest(Double iso1UnitInvest) {
+    public void setIso1UnitInvest(Integer iso1UnitInvest) {
         this.iso1UnitInvest = iso1UnitInvest;
     }
 
@@ -87,11 +87,11 @@ public class RuleIso {
         this.iso2Name = iso2Name;
     }
 
-    public Double getIso2UnitInvest() {
+    public Integer getIso2UnitInvest() {
         return iso2UnitInvest;
     }
 
-    public void setIso2UnitInvest(Double iso2UnitInvest) {
+    public void setIso2UnitInvest(Integer iso2UnitInvest) {
         this.iso2UnitInvest = iso2UnitInvest;
     }
 

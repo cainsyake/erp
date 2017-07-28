@@ -27,12 +27,12 @@ public class RuleParam {
     private Double paramShortTermLoanRates;     //短贷利率
     private Double paramShortTermDiscountRates; //1、2期贴现利率
     private Double paramLongTermDiscountRates;  //3、4期贴现利率
-    private Double paramInitialCash;            //初始现金
-    private Double paramManagementCost;         //管理费
-    private Double paramInfomationCost;         //信息费
+    private Integer paramInitialCash;            //初始现金
+    private Integer paramManagementCost;         //管理费
+    private Integer paramInfomationCost;         //信息费
     private Double paramTaxRate;                //所得税率
     private Integer paramLongTermLoanTimeLimit;  //最大长贷年份
-    private Double paramAdvertisingMinFee;      //最小广告额
+    private Integer paramAdvertisingMinFee;      //最小广告额
     private Double paramProductBuyRation;       //产品紧急采购溢价率
     private Double paramMaterailBuyRation;      //原料紧急采购溢价率
     private Integer paramSelectOrderTime;        //选单时间
@@ -128,27 +128,27 @@ public class RuleParam {
         this.paramLongTermDiscountRates = paramLongTermDiscountRates;
     }
 
-    public Double getParamInitialCash() {
+    public Integer getParamInitialCash() {
         return paramInitialCash;
     }
 
-    public void setParamInitialCash(Double paramInitialCash) {
+    public void setParamInitialCash(Integer paramInitialCash) {
         this.paramInitialCash = paramInitialCash;
     }
 
-    public Double getParamManagementCost() {
+    public Integer getParamManagementCost() {
         return paramManagementCost;
     }
 
-    public void setParamManagementCost(Double paramManagementCost) {
+    public void setParamManagementCost(Integer paramManagementCost) {
         this.paramManagementCost = paramManagementCost;
     }
 
-    public Double getParamInfomationCost() {
+    public Integer getParamInfomationCost() {
         return paramInfomationCost;
     }
 
-    public void setParamInfomationCost(Double paramInfomationCost) {
+    public void setParamInfomationCost(Integer paramInfomationCost) {
         this.paramInfomationCost = paramInfomationCost;
     }
 
@@ -168,11 +168,11 @@ public class RuleParam {
         this.paramLongTermLoanTimeLimit = paramLongTermLoanTimeLimit;
     }
 
-    public Double getParamAdvertisingMinFee() {
+    public Integer getParamAdvertisingMinFee() {
         return paramAdvertisingMinFee;
     }
 
-    public void setParamAdvertisingMinFee(Double paramAdvertisingMinFee) {
+    public void setParamAdvertisingMinFee(Integer paramAdvertisingMinFee) {
         this.paramAdvertisingMinFee = paramAdvertisingMinFee;
     }
 

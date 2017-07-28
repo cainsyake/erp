@@ -20,27 +20,27 @@ public class RuleMarket {
     private Rule rule;
 
     private String market1Name;         //市场名
-    private Double market1UnitInvest;   //单位开发投资
+    private Integer market1UnitInvest;   //单位开发投资
     private Integer market1DevTime;     //开发周期
     private Integer market1Score;       //潜力分数
 
     private String market2Name;
-    private Double market2UnitInvest;
+    private Integer market2UnitInvest;
     private Integer market2DevTime;
     private Integer market2Score;
 
     private String market3Name;
-    private Double market3UnitInvest;
+    private Integer market3UnitInvest;
     private Integer market3DevTime;
     private Integer market3Score;
 
     private String market4Name;
-    private Double market4UnitInvest;
+    private Integer market4UnitInvest;
     private Integer market4DevTime;
     private Integer market4Score;
 
     private String market5Name;
-    private Double market5UnitInvest;
+    private Integer market5UnitInvest;
     private Integer market5DevTime;
     private Integer market5Score;
 
@@ -70,11 +70,11 @@ public class RuleMarket {
         this.market1Name = market1Name;
     }
 
-    public Double getMarket1UnitInvest() {
+    public Integer getMarket1UnitInvest() {
         return market1UnitInvest;
     }
 
-    public void setMarket1UnitInvest(Double market1UnitInvest) {
+    public void setMarket1UnitInvest(Integer market1UnitInvest) {
         this.market1UnitInvest = market1UnitInvest;
     }
 
@@ -102,11 +102,11 @@ public class RuleMarket {
         this.market2Name = market2Name;
     }
 
-    public Double getMarket2UnitInvest() {
+    public Integer getMarket2UnitInvest() {
         return market2UnitInvest;
     }
 
-    public void setMarket2UnitInvest(Double market2UnitInvest) {
+    public void setMarket2UnitInvest(Integer market2UnitInvest) {
         this.market2UnitInvest = market2UnitInvest;
     }
 
@@ -134,11 +134,11 @@ public class RuleMarket {
         this.market3Name = market3Name;
     }
 
-    public Double getMarket3UnitInvest() {
+    public Integer getMarket3UnitInvest() {
         return market3UnitInvest;
     }
 
-    public void setMarket3UnitInvest(Double market3UnitInvest) {
+    public void setMarket3UnitInvest(Integer market3UnitInvest) {
         this.market3UnitInvest = market3UnitInvest;
     }
 
@@ -166,11 +166,11 @@ public class RuleMarket {
         this.market4Name = market4Name;
     }
 
-    public Double getMarket4UnitInvest() {
+    public Integer getMarket4UnitInvest() {
         return market4UnitInvest;
     }
 
-    public void setMarket4UnitInvest(Double market4UnitInvest) {
+    public void setMarket4UnitInvest(Integer market4UnitInvest) {
         this.market4UnitInvest = market4UnitInvest;
     }
 
@@ -198,11 +198,11 @@ public class RuleMarket {
         this.market5Name = market5Name;
     }
 
-    public Double getMarket5UnitInvest() {
+    public Integer getMarket5UnitInvest() {
         return market5UnitInvest;
     }
 
-    public void setMarket5UnitInvest(Double market5UnitInvest) {
+    public void setMarket5UnitInvest(Integer market5UnitInvest) {
         this.market5UnitInvest = market5UnitInvest;
     }
 

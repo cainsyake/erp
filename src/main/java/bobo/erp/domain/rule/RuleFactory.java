@@ -21,41 +21,41 @@ public class RuleFactory {
     private Rule rule;
 
     private String factory1Name;
-    private Double factory1BuyPrice;
-    private Double factory1RentPrice;
-    private Double factory1SalePrice;
+    private Integer factory1BuyPrice;
+    private Integer factory1RentPrice;
+    private Integer factory1SalePrice;
     private Integer factory1Volume;
     private Integer factory1Limit;
     private Integer factory1Score;
 
     private String factory2Name;
-    private Double factory2BuyPrice;
-    private Double factory2RentPrice;
-    private Double factory2SalePrice;
+    private Integer factory2BuyPrice;
+    private Integer factory2RentPrice;
+    private Integer factory2SalePrice;
     private Integer factory2Volume;
     private Integer factory2Limit;
     private Integer factory2Score;
 
     private String factory3Name;
-    private Double factory3BuyPrice;
-    private Double factory3RentPrice;
-    private Double factory3SalePrice;
+    private Integer factory3BuyPrice;
+    private Integer factory3RentPrice;
+    private Integer factory3SalePrice;
     private Integer factory3Volume;
     private Integer factory3Limit;
     private Integer factory3Score;
 
     private String factory4Name;
-    private Double factory4BuyPrice;
-    private Double factory4RentPrice;
-    private Double factory4SalePrice;
+    private Integer factory4BuyPrice;
+    private Integer factory4RentPrice;
+    private Integer factory4SalePrice;
     private Integer factory4Volume;
     private Integer factory4Limit;
     private Integer factory4Score;
 
     private String factory5Name;
-    private Double factory5BuyPrice;
-    private Double factory5RentPrice;
-    private Double factory5SalePrice;
+    private Integer factory5BuyPrice;
+    private Integer factory5RentPrice;
+    private Integer factory5SalePrice;
     private Integer factory5Volume;
     private Integer factory5Limit;
     private Integer factory5Score;
@@ -86,27 +86,27 @@ public class RuleFactory {
         this.factory1Name = factory1Name;
     }
 
-    public Double getFactory1BuyPrice() {
+    public Integer getFactory1BuyPrice() {
         return factory1BuyPrice;
     }
 
-    public void setFactory1BuyPrice(Double factory1BuyPrice) {
+    public void setFactory1BuyPrice(Integer factory1BuyPrice) {
         this.factory1BuyPrice = factory1BuyPrice;
     }
 
-    public Double getFactory1RentPrice() {
+    public Integer getFactory1RentPrice() {
         return factory1RentPrice;
     }
 
-    public void setFactory1RentPrice(Double factory1RentPrice) {
+    public void setFactory1RentPrice(Integer factory1RentPrice) {
         this.factory1RentPrice = factory1RentPrice;
     }
 
-    public Double getFactory1SalePrice() {
+    public Integer getFactory1SalePrice() {
         return factory1SalePrice;
     }
 
-    public void setFactory1SalePrice(Double factory1SalePrice) {
+    public void setFactory1SalePrice(Integer factory1SalePrice) {
         this.factory1SalePrice = factory1SalePrice;
     }
 
@@ -142,27 +142,27 @@ public class RuleFactory {
         this.factory2Name = factory2Name;
     }
 
-    public Double getFactory2BuyPrice() {
+    public Integer getFactory2BuyPrice() {
         return factory2BuyPrice;
     }
 
-    public void setFactory2BuyPrice(Double factory2BuyPrice) {
+    public void setFactory2BuyPrice(Integer factory2BuyPrice) {
         this.factory2BuyPrice = factory2BuyPrice;
     }
 
-    public Double getFactory2RentPrice() {
+    public Integer getFactory2RentPrice() {
         return factory2RentPrice;
     }
 
-    public void setFactory2RentPrice(Double factory2RentPrice) {
+    public void setFactory2RentPrice(Integer factory2RentPrice) {
         this.factory2RentPrice = factory2RentPrice;
     }
 
-    public Double getFactory2SalePrice() {
+    public Integer getFactory2SalePrice() {
         return factory2SalePrice;
     }
 
-    public void setFactory2SalePrice(Double factory2SalePrice) {
+    public void setFactory2SalePrice(Integer factory2SalePrice) {
         this.factory2SalePrice = factory2SalePrice;
     }
 
@@ -198,27 +198,27 @@ public class RuleFactory {
         this.factory3Name = factory3Name;
     }
 
-    public Double getFactory3BuyPrice() {
+    public Integer getFactory3BuyPrice() {
         return factory3BuyPrice;
     }
 
-    public void setFactory3BuyPrice(Double factory3BuyPrice) {
+    public void setFactory3BuyPrice(Integer factory3BuyPrice) {
         this.factory3BuyPrice = factory3BuyPrice;
     }
 
-    public Double getFactory3RentPrice() {
+    public Integer getFactory3RentPrice() {
         return factory3RentPrice;
     }
 
-    public void setFactory3RentPrice(Double factory3RentPrice) {
+    public void setFactory3RentPrice(Integer factory3RentPrice) {
         this.factory3RentPrice = factory3RentPrice;
     }
 
-    public Double getFactory3SalePrice() {
+    public Integer getFactory3SalePrice() {
         return factory3SalePrice;
     }
 
-    public void setFactory3SalePrice(Double factory3SalePrice) {
+    public void setFactory3SalePrice(Integer factory3SalePrice) {
         this.factory3SalePrice = factory3SalePrice;
     }
 
@@ -254,27 +254,27 @@ public class RuleFactory {
         this.factory4Name = factory4Name;
     }
 
-    public Double getFactory4BuyPrice() {
+    public Integer getFactory4BuyPrice() {
         return factory4BuyPrice;
     }
 
-    public void setFactory4BuyPrice(Double factory4BuyPrice) {
+    public void setFactory4BuyPrice(Integer factory4BuyPrice) {
         this.factory4BuyPrice = factory4BuyPrice;
     }
 
-    public Double getFactory4RentPrice() {
+    public Integer getFactory4RentPrice() {
         return factory4RentPrice;
     }
 
-    public void setFactory4RentPrice(Double factory4RentPrice) {
+    public void setFactory4RentPrice(Integer factory4RentPrice) {
         this.factory4RentPrice = factory4RentPrice;
     }
 
-    public Double getFactory4SalePrice() {
+    public Integer getFactory4SalePrice() {
         return factory4SalePrice;
     }
 
-    public void setFactory4SalePrice(Double factory4SalePrice) {
+    public void setFactory4SalePrice(Integer factory4SalePrice) {
         this.factory4SalePrice = factory4SalePrice;
     }
 
@@ -310,27 +310,27 @@ public class RuleFactory {
         this.factory5Name = factory5Name;
     }
 
-    public Double getFactory5BuyPrice() {
+    public Integer getFactory5BuyPrice() {
         return factory5BuyPrice;
     }
 
-    public void setFactory5BuyPrice(Double factory5BuyPrice) {
+    public void setFactory5BuyPrice(Integer factory5BuyPrice) {
         this.factory5BuyPrice = factory5BuyPrice;
     }
 
-    public Double getFactory5RentPrice() {
+    public Integer getFactory5RentPrice() {
         return factory5RentPrice;
     }
 
-    public void setFactory5RentPrice(Double factory5RentPrice) {
+    public void setFactory5RentPrice(Integer factory5RentPrice) {
         this.factory5RentPrice = factory5RentPrice;
     }
 
-    public Double getFactory5SalePrice() {
+    public Integer getFactory5SalePrice() {
         return factory5SalePrice;
     }
 
-    public void setFactory5SalePrice(Double factory5SalePrice) {
+    public void setFactory5SalePrice(Integer factory5SalePrice) {
         this.factory5SalePrice = factory5SalePrice;
     }
 

@@ -20,23 +20,23 @@ public class RuleMaterial {
     private Rule rule;
 
     private String material1Name;   //原料名
-    private Double material1Price;  //原料价格
+    private Integer material1Price;  //原料价格
     private Integer material1Time;  //采购提前期
 
     private String material2Name;
-    private Double material2Price;
+    private Integer material2Price;
     private Integer material2Time;
 
     private String material3Name;
-    private Double material3Price;
+    private Integer material3Price;
     private Integer material3Time;
 
     private String material4Name;
-    private Double material4Price;
+    private Integer material4Price;
     private Integer material4Time;
 
     private String material5Name;
-    private Double material5Price;
+    private Integer material5Price;
     private Integer material5Time;
 
     public Integer getRuleMaterialId() {
@@ -65,11 +65,11 @@ public class RuleMaterial {
         this.material1Name = material1Name;
     }
 
-    public Double getMaterial1Price() {
+    public Integer getMaterial1Price() {
         return material1Price;
     }
 
-    public void setMaterial1Price(Double material1Price) {
+    public void setMaterial1Price(Integer material1Price) {
         this.material1Price = material1Price;
     }
 
@@ -89,11 +89,11 @@ public class RuleMaterial {
         this.material2Name = material2Name;
     }
 
-    public Double getMaterial2Price() {
+    public Integer getMaterial2Price() {
         return material2Price;
     }
 
-    public void setMaterial2Price(Double material2Price) {
+    public void setMaterial2Price(Integer material2Price) {
         this.material2Price = material2Price;
     }
 
@@ -113,11 +113,11 @@ public class RuleMaterial {
         this.material3Name = material3Name;
     }
 
-    public Double getMaterial3Price() {
+    public Integer getMaterial3Price() {
         return material3Price;
     }
 
-    public void setMaterial3Price(Double material3Price) {
+    public void setMaterial3Price(Integer material3Price) {
         this.material3Price = material3Price;
     }
 
@@ -137,11 +137,11 @@ public class RuleMaterial {
         this.material4Name = material4Name;
     }
 
-    public Double getMaterial4Price() {
+    public Integer getMaterial4Price() {
         return material4Price;
     }
 
-    public void setMaterial4Price(Double material4Price) {
+    public void setMaterial4Price(Integer material4Price) {
         this.material4Price = material4Price;
     }
 
@@ -161,11 +161,11 @@ public class RuleMaterial {
         this.material5Name = material5Name;
     }
 
-    public Double getMaterial5Price() {
+    public Integer getMaterial5Price() {
         return material5Price;
     }
 
-    public void setMaterial5Price(Double material5Price) {
+    public void setMaterial5Price(Integer material5Price) {
         this.material5Price = material5Price;
     }
 
