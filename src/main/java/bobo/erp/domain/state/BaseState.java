@@ -1,5 +1,7 @@
 package bobo.erp.domain.state;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 
 /**
@@ -53,10 +55,12 @@ public class BaseState {
         this.timeQuarter = timeQuarter;
     }
 
+    @JsonBackReference
     public RunningState getRunningState() {
         return runningState;
     }
 
+    @JsonBackReference
     public void setRunningState(RunningState runningState) {
         this.runningState = runningState;
     }

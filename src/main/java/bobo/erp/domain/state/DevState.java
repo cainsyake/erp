@@ -3,6 +3,7 @@ package bobo.erp.domain.state;
 import bobo.erp.domain.state.dev.MarketDevState;
 import bobo.erp.domain.state.dev.ProductDevState;
 import bobo.erp.domain.state.dev.QualificationDevState;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.util.List;
@@ -42,10 +43,12 @@ public class DevState {
         this.id = id;
     }
 
+    @JsonBackReference
     public RunningState getRunningState() {
         return runningState;
     }
 
+    @JsonBackReference
     public void setRunningState(RunningState runningState) {
         this.runningState = runningState;
     }

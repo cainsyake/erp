@@ -23,7 +23,8 @@ public class FactoryState {
     private Integer finalPaymentTime;   //最后付租/购买时间
     private Integer value;              //厂房价值
 
-    @OneToOne(mappedBy = "factoryState")
+//    @OneToOne(mappedBy = "factoryState")
+    @ManyToOne
     private RunningState runningState;
 
     @OneToMany(cascade = CascadeType.ALL)

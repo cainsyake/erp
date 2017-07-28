@@ -3,6 +3,7 @@ package bobo.erp.domain.state;
 import bobo.erp.domain.teach.SubUserInfo;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by 59814 on 2017/7/25.
@@ -31,9 +32,10 @@ public class RunningState {
     @JoinColumn(name = "stock_state_id")
     private StockState stockState;      //库存及采购状态
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "factory_state_id")
-    private FactoryState factoryState;  //厂房状态
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "running_state_id")
+    private List<FactoryState> factoryStateList;
+//    private FactoryState factoryState;  //厂房状态
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "dev_state_id")
@@ -75,12 +77,12 @@ public class RunningState {
         this.stockState = stockState;
     }
 
-    public FactoryState getFactoryState() {
-        return factoryState;
+    public List<FactoryState> getFactoryStateList() {
+        return factoryStateList;
     }
 
-    public void setFactoryState(FactoryState factoryState) {
-        this.factoryState = factoryState;
+    public void setFactoryStateList(List<FactoryState> factoryStateList) {
+        this.factoryStateList = factoryStateList;
     }
 
     public BaseState getBaseState() {

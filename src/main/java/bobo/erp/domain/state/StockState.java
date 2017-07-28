@@ -3,6 +3,7 @@ package bobo.erp.domain.state;
 import bobo.erp.domain.state.stock.MaterialState;
 import bobo.erp.domain.state.stock.ProductState;
 import bobo.erp.domain.state.stock.PurchaseState;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.util.List;
@@ -41,10 +42,12 @@ public class StockState {
         this.id = id;
     }
 
+    @JsonBackReference
     public RunningState getRunningState() {
         return runningState;
     }
 
+    @JsonBackReference
     public void setRunningState(RunningState runningState) {
         this.runningState = runningState;
     }
