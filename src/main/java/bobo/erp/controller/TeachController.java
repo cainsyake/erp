@@ -60,13 +60,4 @@ public class TeachController {
         return msg;
     }
 
-    @GetMapping(value = "test")
-    @ResponseBody
-    public String test(){
-        SubUserInfo subUserInfo = subUserInfoRepository.findOne(35);
-        System.out.println(subUserInfo.getSubUserName());
-        System.out.println(subUserInfo.getTeachClassInfo().getTeachClassId());
-
-        return "TEST";
-    }
 }
