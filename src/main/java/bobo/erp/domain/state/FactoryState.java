@@ -27,7 +27,7 @@ public class FactoryState {
     private RunningState runningState;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "line_state_id")
+    @JoinColumn(name = "factory_state_id")
     private List<LineState> lineStateList;
 
     public Integer getId() {

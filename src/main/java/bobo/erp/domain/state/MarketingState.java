@@ -22,11 +22,11 @@ public class MarketingState {
     private RunningState runningState;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "advertising_state_id")
+    @JoinColumn(name = "marketing_state_id")
     private List<AdvertisingState> advertisingStateList;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "order_state_id")
+    @JoinColumn(name = "marketing_state_id")
     private List<OrderState> orderStateList;
 
     public Integer getId() {

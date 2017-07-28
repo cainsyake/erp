@@ -22,15 +22,15 @@ public class StockState {
     private RunningState runningState;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "material_state_id")
+    @JoinColumn(name = "stock_state_id")
     private List<MaterialState> materialStateList;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_state_id")
+    @JoinColumn(name = "stock_state_id")
     private List<ProductState> productStates;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "purchase_state_id")
+    @JoinColumn(name = "stock_state_id")
     private List<PurchaseState> purchaseStates;
 
     public Integer getId() {

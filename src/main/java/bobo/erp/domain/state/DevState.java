@@ -23,15 +23,15 @@ public class DevState {
     private RunningState runningState;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "market_dev_state_id")
+    @JoinColumn(name = "dev_state_id")
     private List<MarketDevState> marketDevStateList;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "product_dev_state_id")
+    @JoinColumn(name = "dev_state_id")
     private List<ProductDevState> productDevStateList;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "qualification_dev_state_id")
+    @JoinColumn(name = "dev_state_id")
     private List<QualificationDevState> qualificationDevStateList;
 
     public Integer getId() {
