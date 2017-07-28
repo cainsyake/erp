@@ -33,6 +33,9 @@ public class GetSubBaseStateService {
     public BaseState getSubBaseState(String nowUserName){
         SubUserInfo subUserInfo = subUserInfoRepository.findBySubUserName(nowUserName);
         TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(nowUserName);
+        if(subUserInfo.getRunningState() == null){
+            return null;
+        }
         return subUserInfo.getRunningState().getBaseState();
     }
 }

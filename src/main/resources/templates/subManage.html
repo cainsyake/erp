@@ -71,7 +71,7 @@
       <div class="row">
         <div class="col-md-8">
           <div class="row">
-            <button class="btn btn-success " data-toggle="modal" href="#modalThClassInit" type="button">运营初始化</button>
+            <button class="btn btn-success " type="button" onclick="" id="btnInit" style="display: none">运营初始化</button>
             <button class="btn btn-info " data-toggle="modal" href="#modalUpdatePassword" type="button">投放广告</button>
             <button class="btn btn-danger " data-toggle="modal" href="#modalUpdatePassword" type="button">开始本年</button>
 
@@ -305,16 +305,27 @@
         var nowUserName = $("#nowUserName").val();
         $.ajax({
             type:"GET",
-            url:"/teachClassReturnOriginal",
+            url:"/getSubBaseState/" + nowUserName,
             cache:false,
             dataType:"json",
-            success:function (json) {
+            success:function (obj) {
                 console.log("success");
-                console.log(json.responseText);
-                document.getElementById("ajaxDiv1").innerHTML = getTime() + json.responseText;
+                if(obj == null){
+                    document.getElementById("ajaxDiv1").innerHTML = getTime() + " 该用户尚未初始化";
+                    $("#btnInit").show();
+                }
+                if(obj.state == 0){
+                    document.getElementById("ajaxDiv1").innerHTML = getTime() + " 该用户尚未初始化";
+                    $("#btnInit").show();
+                }else {
+                    document.getElementById("ajaxDiv1").innerHTML = getTime() + " 该用户已经初始化";
+                    $("#btnInit").hide();
+
+                }
+
             },
             error:function (json) {
-                document.getElementById("ajaxDiv1").innerHTML = getTime() + json.responseText;
+//                document.getElementById("ajaxDiv1").innerHTML = getTime() + json.responseText;
                 console.log(json.responseText);
             }
         });
