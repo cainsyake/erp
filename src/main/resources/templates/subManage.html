@@ -71,34 +71,36 @@
       <div class="row">
         <div class="col-md-8">
           <div class="row">
-              <button class="btn btn-success btn-lg" type="button" onclick="startRunning()" style="display: none;" id="btnInit">开始运营</button>
-              <button class="btn btn-info btn-lg" data-toggle="modal" href="#modal" type="button" style="display: none;" id="btnAdvertising">投放广告</button>
-              <button class="btn btn-success btn-lg" type="button" onclick="" style="display: none;" id="btnStartYear">开始本年</button>
+            <div id="divTimeAxis">
+              <!--<button class="btn btn-success btn-lg" type="button" onclick="startRunning()" style="display: none;" id="btnInit">开始运营</button>-->
+              <!--<button class="btn btn-info btn-lg" data-toggle="modal" href="#modal" type="button" style="display: none;" id="btnAdvertising">投放广告</button>-->
+              <!--<button class="btn btn-success btn-lg" type="button" onclick="" style="display: none;" id="btnStartYear">开始本年</button>-->
 
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnOrderMeeting">订货会</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnBidMeeting">竞单会</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnApplyLongLoan">申请长贷</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnStartQuarter">开始本季</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnApplyShortLoan">申请短贷</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnUpdatePurchase">更新原料订单</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnAddPurchase">下原料订单</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnAddFactory">购租厂房</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnAddLine">新建生产线</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnBuildLine">在建生产线</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnChangeLine">生产线转产</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnContinueChange">继续转产</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnSaleLine">出售生产线</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnBeginProduction">开始生产</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnUpdateReceivable">应收款更新</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnDelivery">按订单交货</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnFactoryTreatment">厂房处理</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnProductDev">产品研发</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnQualificationDev">资质研发</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnMarketDev">市场开拓</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnEndQuarter">当季结束</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnEndYear">当年结束</button>
-              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnReport">填写报表</button>
-              <hr/>
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnOrderMeeting">订货会</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnBidMeeting">竞单会</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnApplyLongLoan">申请长贷</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnStartQuarter">开始本季</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnApplyShortLoan">申请短贷</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnUpdatePurchase">更新原料订单</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnAddPurchase">下原料订单</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnAddFactory">购租厂房</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnAddLine">新建生产线</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnBuildLine">在建生产线</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnChangeLine">生产线转产</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnContinueChange">继续转产</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnSaleLine">出售生产线</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnBeginProduction">开始生产</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnUpdateReceivable">应收款更新</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnDelivery">按订单交货</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnFactoryTreatment">厂房处理</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnProductDev">产品研发</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnQualificationDev">资质研发</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnMarketDev">市场开拓</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnEndQuarter">当季结束</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnEndYear">当年结束</button>-->
+              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnReport">填写报表</button>-->
+            </div>
+            <hr>
           </div>
           <div class="row">
             <button class="btn btn-primary" onclick="addRule()" type="button">贴现</button>
@@ -130,13 +132,23 @@
         <div class="col-md-8" >
           <section class="panel">
             <header class="panel-heading no-border">
-              厂房1
+              设备区域
               <span class="tools pull-right">
                 <a href="javascript:;" class="fa fa-chevron-down"></a>
                 <!--<a href="javascript:;" class="fa fa-times"></a>-->
               </span>
             </header>
             <div class="panel-body">
+              <table class="table table-bordered">
+                <thead>
+                <tr>
+                  <th>厂房ID：666</th>
+                  <th>厂房类型：大厂房</th>
+                  <th>厂房状态：已购买</th>
+                  <th>厂房价值：400</th>
+                </tr>
+                </thead>
+              </table>
               <table class="table table-bordered">
                 <thead>
                 <tr>
@@ -172,7 +184,116 @@
 
         </div>
         <div class="col-md-4" >
-          企业运营信息
+          <section class="panel">
+            <header class="panel-heading no-border">
+              财务信息
+              <span class="tools pull-right">
+                <a href="javascript:;" class="fa fa-chevron-down"></a>
+                <!--<a href="javascript:;" class="fa fa-times"></a>-->
+              </span>
+            </header>
+            <div class="panel-body">
+              <table class="table table-bordered">
+                <thead>
+                <tr>
+                  <th>现金</th>
+                  <th id="valueCash">0W</th>
+                </tr>
+                </thead>
+              </table>
+              <br>
+              <table class="table table-bordered">
+                <thead>
+                <tr>
+                  <th>应收款</th>
+                  <th>1</th>
+                  <th>2</th>
+                  <th>3</th>
+                  <th>4</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <th>金额</th>
+                  <td id="valueReceivable1"></td>
+                  <td id="valueReceivable2"></td>
+                  <td id="valueReceivable3"></td>
+                  <td id="valueReceivable4"></td>
+                </tr>
+                </tbody>
+              </table>
+              <br>
+              <table class="table table-bordered">
+                <thead>
+                <tr>
+                  <th>短贷</th>
+                  <th>1</th>
+                  <th>2</th>
+                  <th>3</th>
+                  <th>4</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <th>金额</th>
+                  <td id="valueShortDebt1"></td>
+                  <td id="valueShortDebt2"></td>
+                  <td id="valueShortDebt3"></td>
+                  <td id="valueShortDebt4"></td>
+                </tr>
+                </tbody>
+              </table>
+              <br>
+              <table class="table table-bordered">
+                <thead>
+                <tr>
+                  <th>长贷</th>
+                  <th>1</th>
+                  <th>2</th>
+                  <th>3</th>
+                  <th>4</th>
+                  <th>5</th>
+                  <th>6</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <th>金额</th>
+                  <td id="valueLongDebt1"></td>
+                  <td id="valueLongDebt2"></td>
+                  <td id="valueLongDebt3"></td>
+                  <td id="valueLongDebt4"></td>
+                  <td id="valueLongDebt5"></td>
+                  <td id="valueLongDebt6"></td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+          <section class="panel">
+            <header class="panel-heading no-border">
+              库存信息
+              <span class="tools pull-right">
+                <a href="javascript:;" class="fa fa-chevron-down"></a>
+                <!--<a href="javascript:;" class="fa fa-times"></a>-->
+              </span>
+            </header>
+            <div class="panel-body">
+
+            </div>
+          </section>
+          <section class="panel">
+            <header class="panel-heading no-border">
+              研发信息
+              <span class="tools pull-right">
+                <a href="javascript:;" class="fa fa-chevron-down"></a>
+                <!--<a href="javascript:;" class="fa fa-times"></a>-->
+              </span>
+            </header>
+            <div class="panel-body">
+
+            </div>
+          </section>
         </div>
 
       </div>
@@ -333,241 +454,174 @@
             cache:false,
             dataType:"json",
             success:function (obj) {
-//                btnController(obj);
-                if(obj.baseState.state == 0){
-                    console.log("用户尚未开始运营");
-                    document.getElementById("ajaxDiv1").innerHTML = getTime() + " 请点击开始运营";
-                    $("#btnInit").show();
-                }else if(obj.baseState.state < 0 ){
-                    console.log("用户已破产");
-                    document.getElementById("ajaxDiv1").innerHTML = getTime() + " 该用户已经破产";
-                    $("#btnInit").hide();
-                }else{
-                    console.log("测试 开始判断时间");
-                    if(obj.baseState.timeQuarter == 0){
-                        if(obj.baseState.operateState.report == 0){
-                            $("#btnReport").show();
-                        }
-                        if(obj.baseState.operateState.ad == 0){
-                            $("#btnAdvertising").show();
-                        }
-                        if(obj.baseState.operateState.orderMeeting == 0){
-                            $("#btnOrderMeeting").show();
-                        }
-                        if(obj.baseState.operateState.bidMeeting == 0){
-                            $("#btnBidMeeting").show();
-                        }
-                        $("#btnApplyLongLoan").show();
-                        $("#btnStartYear").show();
-                    }else if(obj.baseState.timeQuarter < 4){
-                        if(obj.baseState.state == 10){
-                            $("#btnStartQuarter").show();
-                        }
-                        if(obj.baseState.state == 11){
-                            if(obj.baseState.operateState.shortLoan == 0){
-                                $("#btnApplyShortLoan").show();
-                            }
-                            $("#btnUpdatePurchase").show();
-                        }
-                        if(obj.baseState.state == 12){
-                            if(obj.baseState.operateState.addPurchase == 0){
-                                $("#btnAddPurchase").show();
-                            }
-                            if(obj.baseState.operateState.buildLine == 0){
-                                $("#btnBuildLine").show();
-                            }
-                            if(obj.baseState.operateState.continueChange == 0){
-                                $("#btnContinueChange").show();
-                            }
-                            if(obj.baseState.operateState.saleLine == 0){
-                                $("#btnSaleLine").show();
-                            }
-                            if(obj.baseState.operateState.beginProduction == 0){
-                                $("#btnBeginProduction").show();
-                            }
-                            $("#btnAddFactory").show();
-                            $("#btnAddLine").show();
-                            $("#btnChangeLine").show();
-                            $("#btnUpdateReceivable").show();
-                        }
-                        if(obj.baseState.state == 13){
-                            if(obj.baseState.operateState.productDev == 0){
-                                $("#btnProductDev").show();
-                            }
-                            $("#btnDelivery").show();
-                            $("#btnFactoryTreatment").show();
-                            $("#btnEndQuarter").show();
-                        }
-
-                    }else if(obj.baseState.timeQuarter == 4){
-                        if(obj.baseState.state == 10){
-                            $("#btnStartQuarter").show();
-                        }
-                        if(obj.baseState.state == 11){
-                            if(obj.baseState.operateState.shortLoan == 0){
-                                $("#btnApplyShortLoan").show();
-                            }
-                            $("#btnUpdatePurchase").show();
-                        }
-                        if(obj.baseState.state == 12){
-                            if(obj.baseState.operateState.addPurchase == 0){
-                                $("#btnAddPurchase").show();
-                            }
-                            if(obj.baseState.operateState.buildLine == 0){
-                                $("#btnBuildLine").show();
-                            }
-                            if(obj.baseState.operateState.continueChange == 0){
-                                $("#btnContinueChange").show();
-                            }
-                            if(obj.baseState.operateState.saleLine == 0){
-                                $("#btnSaleLine").show();
-                            }
-                            if(obj.baseState.operateState.beginProduction == 0){
-                                $("#btnBeginProduction").show();
-                            }
-                            $("#btnAddFactory").show();
-                            $("#btnAddLine").show();
-                            $("#btnChangeLine").show();
-                            $("#btnUpdateReceivable").show();
-                        }
-                        if(obj.baseState.state == 13){
-                            if(obj.baseState.operateState.productDev == 0){
-                                $("#btnProductDev").show();
-                            }
-                            if(obj.baseState.operateState.qualificationDev == 0){
-                                $("#btnQualificationDev").show();
-                            }
-                            if(obj.baseState.operateState.marketDev == 0){
-                                $("#btnMarketDev").show();
-                            }
-                            $("#btnDelivery").show();
-                            $("#btnFactoryTreatment").show();
-                            $("#btnEndYear").show();
-                        }
-                    }
-                }
+                btnController(obj);
+                document.getElementById("valueCash").innerHTML = obj.financeState.cashAmount;
             },
             error:function (json) {
                 console.log(json.responseText);
             }
         });
-//        ajaxDivShow(2);
     }
     
-//    function btnController(obj) {
-//        if(obj.baseState.state == 0){
-//            console.log("用户尚未开始运营");
-//            document.getElementById("ajaxDiv1").innerHTML = getTime() + " 请点击开始运营";
+    function btnController(obj) {
+        var txt="";
+        if(obj.baseState.state == 0){
+            console.log("用户尚未开始运营");
+            document.getElementById("ajaxDiv1").innerHTML = getTime() + " 请点击开始运营";
 //            $("#btnInit").show();
-//        }else if(obj.baseState.state < 0 ){
-//            console.log("用户已破产");
-//            document.getElementById("ajaxDiv1").innerHTML = getTime() + " 该用户已经破产";
-//            $("#btnInit").hide();
-//        }else{
-//            console.log("测试 开始判断时间");
-//            if(obj.baseState.timeQuarter == 0){
-//                if(obj.baseState.operateState.report == 0){
+            txt += "<button class='btn btn-success btn-lg' type='button' onclick='startRunning()' style='' id='btnInit'>开始运营</button>";
+        }else if(obj.baseState.state < 0 ){
+            console.log("用户已破产");
+            document.getElementById("ajaxDiv1").innerHTML = getTime() + " 该用户已经破产";
+        }else{
+            console.log("测试 开始判断时间");
+            if(obj.baseState.timeQuarter == 0){
+                if(obj.baseState.operateState.report == 0){
 //                    $("#btnReport").show();
-//                }
-//                if(obj.baseState.operateState.ad == 0){
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnApplyShortLoan'>填写报表</button>";
+                }
+                if(obj.baseState.operateState.ad == 0){
 //                    $("#btnAdvertising").show();
-//                }
-//                if(obj.baseState.operateState.orderMeeting == 0){
+                    txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#modal' type='button' style='' id='btnAdvertising'>投放广告</button>";
+                }
+                if(obj.baseState.operateState.orderMeeting == 0){
 //                    $("#btnOrderMeeting").show();
-//                }
-//                if(obj.baseState.operateState.bidMeeting == 0){
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnOrderMeeting'>订货会</button>";
+                }
+                if(obj.baseState.operateState.bidMeeting == 0){
 //                    $("#btnBidMeeting").show();
-//                }
-//                $("#btnApplyLongLoan").show();
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBidMeeting'>竞单会</button>";
+                }
+                if(obj.baseState.operateState.longLoan == 0){
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='ApplyLongLoan'>申请长贷</button>";
+                }
+//                $("#btnApplyLongLoan").show();  //长贷需要在投放广告后
 //                $("#btnStartYear").show();
-//            }else if(obj.baseState.timeQuarter < 4){
-//                if(obj.baseState.state == 10){
+                txt += "<button class='btn btn-success btn-lg' type='button' onclick='' style='' id='btnStartYear'>开始本年</button>";
+            }else if(obj.baseState.timeQuarter < 4){
+                if(obj.baseState.state == 10){
 //                    $("#btnStartQuarter").show();
-//                }
-//                if(obj.baseState.state == 11){
-//                    if(obj.baseState.operateState.shortLoan == 0){
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnStartQuarter'>开始本季</button>";
+                }
+                if(obj.baseState.state == 11){
+                    if(obj.baseState.operateState.shortLoan == 0){
 //                        $("#btnApplyShortLoan").show();
-//                    }
+                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnApplyShortLoan'>申请短贷</button>";
+                    }
 //                    $("#btnUpdatePurchase").show();
-//                }
-//                if(obj.baseState.state == 12){
-//                    if(obj.baseState.operateState.addPurchase == 0){
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnUpdatePurchase'>更新原料订单</button>";
+                }
+                if(obj.baseState.state == 12){
+                    if(obj.baseState.operateState.addPurchase == 0){
 //                        $("#btnAddPurchase").show();
-//                    }
-//                    if(obj.baseState.operateState.buildLine == 0){
+                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddPurchase'>下原料订单</button>";
+                    }
+                    if(obj.baseState.operateState.buildLine == 0){
 //                        $("#btnBuildLine").show();
-//                    }
-//                    if(obj.baseState.operateState.continueChange == 0){
+                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBuildLine'>在建生产线</button>";
+                    }
+                    if(obj.baseState.operateState.continueChange == 0){
 //                        $("#btnContinueChange").show();
-//                    }
-//                    if(obj.baseState.operateState.saleLine == 0){
+                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnContinueChange'>继续转产</button>";
+                    }
+                    if(obj.baseState.operateState.saleLine == 0){
 //                        $("#btnSaleLine").show();
-//                    }
-//                    if(obj.baseState.operateState.beginProduction == 0){
+                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnSaleLine'>出售生产线</button>";
+                    }
+                    if(obj.baseState.operateState.beginProduction == 0){
 //                        $("#btnBeginProduction").show();
-//                    }
+                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBeginProduction'>开始生产</button>";
+                    }
 //                    $("#btnAddFactory").show();
-//                    $("#btnaddline").show();
-//                    $("#btnchangeline").show();
-//                    $("#btnupdatereceivable").show();
-//                }
-//                if(obj.baseState.state == 13){
-//                    if(obj.baseState.operateState.productDev == 0){
-//                        $("#btnproductdev").show();
-//                    }
-//                    $("#btndelivery").show();
-//                    $("#btnfactorytreatment").show();
-//                    $("#btnendquarter").show();
-//                }
-//
-//            }else if(obj.baseState.timeQuarter == 4){
-//                if(obj.baseState.state == 10){
+//                    $("#btnAddLine").show();
+//                    $("#btnChangeLine").show();
+//                    $("#btnUpdateReceivable").show();
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddFactory'>购租厂房</button>";
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddLine'>新建生产线</button>";
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnChangeLine'>生产线转产</button>";
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnUpdateReceivable'>应收款更新</button>";
+                }
+                if(obj.baseState.state == 13){
+                    if(obj.baseState.operateState.productDev == 0){
+//                        $("#btnProductDev").show();
+                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnProductDev'>产品研发</button>";
+                    }
+//                    $("#btnDelivery").show();
+//                    $("#btnFactoryTreatment").show();
+//                    $("#btnEndQuarter").show();
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnDelivery'>按订单交货</button>";
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnFactoryTreatment'>厂房处理</button>";
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnEndQuarter'>当季结束</button>";
+                }
+
+            }else if(obj.baseState.timeQuarter == 4){
+                if(obj.baseState.state == 10){
 //                    $("#btnStartQuarter").show();
-//                }
-//                if(obj.baseState.state == 11){
-//                    if(obj.baseState.operateState.shortLoan == 0){
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnStartQuarter'>开始本季</button>";
+                }
+                if(obj.baseState.state == 11){
+                    if(obj.baseState.operateState.shortLoan == 0){
 //                        $("#btnApplyShortLoan").show();
-//                    }
+                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnApplyShortLoan'>申请短贷</button>";
+                    }
 //                    $("#btnUpdatePurchase").show();
-//                }
-//                if(obj.baseState.state == 12){
-//                    if(obj.baseState.operateState.addPurchase == 0){
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnUpdatePurchase'>更新原料订单</button>";
+                }
+                if(obj.baseState.state == 12){
+                    if(obj.baseState.operateState.addPurchase == 0){
 //                        $("#btnAddPurchase").show();
-//                    }
-//                    if(obj.baseState.operateState.buildLine == 0){
+                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddPurchase'>下原料订单</button>";
+                    }
+                    if(obj.baseState.operateState.buildLine == 0){
 //                        $("#btnBuildLine").show();
-//                    }
-//                    if(obj.baseState.operateState.continueChange == 0){
+                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBuildLine'>在建生产线</button>";
+                    }
+                    if(obj.baseState.operateState.continueChange == 0){
 //                        $("#btnContinueChange").show();
-//                    }
-//                    if(obj.baseState.operateState.saleLine == 0){
+                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnContinueChange'>继续转产</button>";
+                    }
+                    if(obj.baseState.operateState.saleLine == 0){
 //                        $("#btnSaleLine").show();
-//                    }
-//                    if(obj.baseState.operateState.beginProduction == 0){
+                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnSaleLine'>出售生产线</button>";
+                    }
+                    if(obj.baseState.operateState.beginProduction == 0){
 //                        $("#btnBeginProduction").show();
-//                    }
+                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBeginProduction'>开始生产</button>";
+                    }
 //                    $("#btnAddFactory").show();
-//                    $("#btnaddline").show();
-//                    $("#btnchangeline").show();
-//                    $("#btnupdatereceivable").show();
-//                }
-//                if(obj.baseState.state == 13){
-//                    if(obj.baseState.operateState.productDev == 0){
-//                        $("#btnproductdev").show();
-//                    }
-//                    if(obj.baseState.operateState.qualificationDev == 0){
-//                        $("#btnqualificationdev").show();
-//                    }
-//                    if(obj.baseState.operateState.marketDev == 0){
-//                        $("#btnmarketdev").show();
-//                    }
-//                    $("#btndelivery").show();
-//                    $("#btnfactorytreatment").show();
-//                    $("#btnendyear").show();
-//                }
-//            }
-//        }
-//    }
+//                    $("#btnAddLine").show();
+//                    $("#btnChangeLine").show();
+//                    $("#btnUpdateReceivable").show();
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddFactory'>购租厂房</button>";
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddLine'>新建生产线</button>";
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnChangeLine'>生产线转产</button>";
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnUpdateReceivable'>应收款更新</button>";
+
+                }
+                if(obj.baseState.state == 13){
+                    if(obj.baseState.operateState.productDev == 0){
+//                        $("#btnProductDev").show();
+                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnProductDev'>产品研发</button>";
+                    }
+                    if(obj.baseState.operateState.qualificationDev == 0){
+//                        $("#btnQualificationDev").show();
+                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnQualificationDev'>资质研发</button>";
+                    }
+                    if(obj.baseState.operateState.marketDev == 0){
+//                        $("#btnMarketDev").show();
+                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnMarketDev'>市场开拓</button>";
+                    }
+//                    $("#btnDelivery").show();
+//                    $("#btnFactoryTreatment").show();
+//                    $("#btnEndYear").show();
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnDelivery'>按订单交货</button>";
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnFactoryTreatment'>厂房处理</button>";
+                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnEndYear'>当年结束</button>";
+                }
+            }
+        }
+        document.getElementById("divTimeAxis").innerHTML = txt;
+    }
 
     function startRunning() {
         var nowUserName = $("#nowUserName").val();
@@ -579,9 +633,10 @@
             success:function (obj) {
                 console.log("用户baseState.state=1");
                 document.getElementById("ajaxDiv1").innerHTML = getTime() + " 请开始运营";
-                $("#btnInit").hide();
-                $("#btnAdvertising").show();
-                $("#btnStartYear").show();
+                btnController(obj);
+//                $("#btnInit").hide();
+//                $("#btnAdvertising").show();
+//                $("#btnStartYear").show();
             },
             error:function (json) {
                 console.log(json.responseText);
