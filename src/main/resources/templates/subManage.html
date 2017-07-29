@@ -71,18 +71,42 @@
       <div class="row">
         <div class="col-md-8">
           <div class="row">
-            <button class="btn btn-success " type="button" onclick="" id="btnInit" style="display: none">运营初始化</button>
-            <button class="btn btn-info " data-toggle="modal" href="#modalUpdatePassword" type="button">投放广告</button>
-            <button class="btn btn-danger " data-toggle="modal" href="#modalUpdatePassword" type="button">开始本年</button>
+              <button class="btn btn-success btn-lg" type="button" onclick="startRunning()" style="display: none;" id="btnInit">开始运营</button>
+              <button class="btn btn-info btn-lg" data-toggle="modal" href="#modal" type="button" style="display: none;" id="btnAdvertising">投放广告</button>
+              <button class="btn btn-success btn-lg" type="button" onclick="" style="display: none;" id="btnStartYear">开始本年</button>
 
-            <hr/>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnOrderMeeting">订货会</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnBidMeeting">竞单会</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnApplyLongLoan">申请长贷</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnStartQuarter">开始本季</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnApplyShortLoan">申请短贷</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnUpdatePurchase">更新原料订单</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnAddPurchase">下原料订单</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnAddFactory">购租厂房</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnAddLine">新建生产线</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnBuildLine">在建生产线</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnChangeLine">生产线转产</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnContinueChange">继续转产</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnSaleLine">出售生产线</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnBeginProduction">开始生产</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnUpdateReceivable">应收款更新</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnDelivery">按订单交货</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnFactoryTreatment">厂房处理</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnProductDev">产品研发</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnQualificationDev">资质研发</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnMarketDev">市场开拓</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnEndQuarter">当季结束</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnEndYear">当年结束</button>
+              <button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnReport">填写报表</button>
+              <hr/>
           </div>
           <div class="row">
-            <button class="btn btn-primary btn-lg" onclick="addRule()" type="button">贴现</button>
-            <button class="btn btn-success btn-lg" onclick="findRuleAll()" type="button">商业情报</button>
-            <button class="btn btn-danger btn-lg" data-toggle="modal" href="#modalAddMarket" type="button">紧急采购</button>
-            <button class="btn btn-success btn-lg" onclick="findMarketAll()" type="button">紧急出售</button>
-            <button class="btn btn-default btn-lg" data-toggle="modal" href="#modalAddAdmin" type="button">厂房贴现</button>
+            <button class="btn btn-primary" onclick="addRule()" type="button">贴现</button>
+            <button class="btn btn-success" onclick="findRuleAll()" type="button">商业情报</button>
+            <button class="btn btn-danger" data-toggle="modal" href="#modalAddMarket" type="button">紧急采购</button>
+            <button class="btn btn-success" onclick="findMarketAll()" type="button">紧急出售</button>
+            <button class="btn btn-info" data-toggle="modal" href="#modalAddAdmin" type="button">厂房贴现</button>
+            <button class="btn btn-default " data-toggle="modal" href="#modalUpdatePassword" type="button" >修改密码</button>
           </div>
         </div>
         <div class="col-md-4">
@@ -304,33 +328,267 @@
     function subOnLoad() {
         var nowUserName = $("#nowUserName").val();
         $.ajax({
-            type:"GET",
-            url:"/getSubBaseState/" + nowUserName,
+            type:"POST",
+            url:"/getSubRunningState/" + nowUserName,
             cache:false,
             dataType:"json",
             success:function (obj) {
-                console.log("success");
-                if(obj == null){
-                    document.getElementById("ajaxDiv1").innerHTML = getTime() + " 该用户尚未初始化";
+//                btnController(obj);
+                if(obj.baseState.state == 0){
+                    console.log("用户尚未开始运营");
+                    document.getElementById("ajaxDiv1").innerHTML = getTime() + " 请点击开始运营";
                     $("#btnInit").show();
-                }
-                if(obj.state == 0){
-                    document.getElementById("ajaxDiv1").innerHTML = getTime() + " 该用户尚未初始化";
-                    $("#btnInit").show();
-                }else {
-                    document.getElementById("ajaxDiv1").innerHTML = getTime() + " 该用户已经初始化";
+                }else if(obj.baseState.state < 0 ){
+                    console.log("用户已破产");
+                    document.getElementById("ajaxDiv1").innerHTML = getTime() + " 该用户已经破产";
                     $("#btnInit").hide();
+                }else{
+                    console.log("测试 开始判断时间");
+                    if(obj.baseState.timeQuarter == 0){
+                        if(obj.baseState.operateState.report == 0){
+                            $("#btnReport").show();
+                        }
+                        if(obj.baseState.operateState.ad == 0){
+                            $("#btnAdvertising").show();
+                        }
+                        if(obj.baseState.operateState.orderMeeting == 0){
+                            $("#btnOrderMeeting").show();
+                        }
+                        if(obj.baseState.operateState.bidMeeting == 0){
+                            $("#btnBidMeeting").show();
+                        }
+                        $("#btnApplyLongLoan").show();
+                        $("#btnStartYear").show();
+                    }else if(obj.baseState.timeQuarter < 4){
+                        if(obj.baseState.state == 10){
+                            $("#btnStartQuarter").show();
+                        }
+                        if(obj.baseState.state == 11){
+                            if(obj.baseState.operateState.shortLoan == 0){
+                                $("#btnApplyShortLoan").show();
+                            }
+                            $("#btnUpdatePurchase").show();
+                        }
+                        if(obj.baseState.state == 12){
+                            if(obj.baseState.operateState.addPurchase == 0){
+                                $("#btnAddPurchase").show();
+                            }
+                            if(obj.baseState.operateState.buildLine == 0){
+                                $("#btnBuildLine").show();
+                            }
+                            if(obj.baseState.operateState.continueChange == 0){
+                                $("#btnContinueChange").show();
+                            }
+                            if(obj.baseState.operateState.saleLine == 0){
+                                $("#btnSaleLine").show();
+                            }
+                            if(obj.baseState.operateState.beginProduction == 0){
+                                $("#btnBeginProduction").show();
+                            }
+                            $("#btnAddFactory").show();
+                            $("#btnAddLine").show();
+                            $("#btnChangeLine").show();
+                            $("#btnUpdateReceivable").show();
+                        }
+                        if(obj.baseState.state == 13){
+                            if(obj.baseState.operateState.productDev == 0){
+                                $("#btnProductDev").show();
+                            }
+                            $("#btnDelivery").show();
+                            $("#btnFactoryTreatment").show();
+                            $("#btnEndQuarter").show();
+                        }
 
+                    }else if(obj.baseState.timeQuarter == 4){
+                        if(obj.baseState.state == 10){
+                            $("#btnStartQuarter").show();
+                        }
+                        if(obj.baseState.state == 11){
+                            if(obj.baseState.operateState.shortLoan == 0){
+                                $("#btnApplyShortLoan").show();
+                            }
+                            $("#btnUpdatePurchase").show();
+                        }
+                        if(obj.baseState.state == 12){
+                            if(obj.baseState.operateState.addPurchase == 0){
+                                $("#btnAddPurchase").show();
+                            }
+                            if(obj.baseState.operateState.buildLine == 0){
+                                $("#btnBuildLine").show();
+                            }
+                            if(obj.baseState.operateState.continueChange == 0){
+                                $("#btnContinueChange").show();
+                            }
+                            if(obj.baseState.operateState.saleLine == 0){
+                                $("#btnSaleLine").show();
+                            }
+                            if(obj.baseState.operateState.beginProduction == 0){
+                                $("#btnBeginProduction").show();
+                            }
+                            $("#btnAddFactory").show();
+                            $("#btnAddLine").show();
+                            $("#btnChangeLine").show();
+                            $("#btnUpdateReceivable").show();
+                        }
+                        if(obj.baseState.state == 13){
+                            if(obj.baseState.operateState.productDev == 0){
+                                $("#btnProductDev").show();
+                            }
+                            if(obj.baseState.operateState.qualificationDev == 0){
+                                $("#btnQualificationDev").show();
+                            }
+                            if(obj.baseState.operateState.marketDev == 0){
+                                $("#btnMarketDev").show();
+                            }
+                            $("#btnDelivery").show();
+                            $("#btnFactoryTreatment").show();
+                            $("#btnEndYear").show();
+                        }
+                    }
                 }
-
             },
             error:function (json) {
-//                document.getElementById("ajaxDiv1").innerHTML = getTime() + json.responseText;
                 console.log(json.responseText);
             }
         });
-        ajaxDivShow(2);
+//        ajaxDivShow(2);
     }
+    
+//    function btnController(obj) {
+//        if(obj.baseState.state == 0){
+//            console.log("用户尚未开始运营");
+//            document.getElementById("ajaxDiv1").innerHTML = getTime() + " 请点击开始运营";
+//            $("#btnInit").show();
+//        }else if(obj.baseState.state < 0 ){
+//            console.log("用户已破产");
+//            document.getElementById("ajaxDiv1").innerHTML = getTime() + " 该用户已经破产";
+//            $("#btnInit").hide();
+//        }else{
+//            console.log("测试 开始判断时间");
+//            if(obj.baseState.timeQuarter == 0){
+//                if(obj.baseState.operateState.report == 0){
+//                    $("#btnReport").show();
+//                }
+//                if(obj.baseState.operateState.ad == 0){
+//                    $("#btnAdvertising").show();
+//                }
+//                if(obj.baseState.operateState.orderMeeting == 0){
+//                    $("#btnOrderMeeting").show();
+//                }
+//                if(obj.baseState.operateState.bidMeeting == 0){
+//                    $("#btnBidMeeting").show();
+//                }
+//                $("#btnApplyLongLoan").show();
+//                $("#btnStartYear").show();
+//            }else if(obj.baseState.timeQuarter < 4){
+//                if(obj.baseState.state == 10){
+//                    $("#btnStartQuarter").show();
+//                }
+//                if(obj.baseState.state == 11){
+//                    if(obj.baseState.operateState.shortLoan == 0){
+//                        $("#btnApplyShortLoan").show();
+//                    }
+//                    $("#btnUpdatePurchase").show();
+//                }
+//                if(obj.baseState.state == 12){
+//                    if(obj.baseState.operateState.addPurchase == 0){
+//                        $("#btnAddPurchase").show();
+//                    }
+//                    if(obj.baseState.operateState.buildLine == 0){
+//                        $("#btnBuildLine").show();
+//                    }
+//                    if(obj.baseState.operateState.continueChange == 0){
+//                        $("#btnContinueChange").show();
+//                    }
+//                    if(obj.baseState.operateState.saleLine == 0){
+//                        $("#btnSaleLine").show();
+//                    }
+//                    if(obj.baseState.operateState.beginProduction == 0){
+//                        $("#btnBeginProduction").show();
+//                    }
+//                    $("#btnAddFactory").show();
+//                    $("#btnaddline").show();
+//                    $("#btnchangeline").show();
+//                    $("#btnupdatereceivable").show();
+//                }
+//                if(obj.baseState.state == 13){
+//                    if(obj.baseState.operateState.productDev == 0){
+//                        $("#btnproductdev").show();
+//                    }
+//                    $("#btndelivery").show();
+//                    $("#btnfactorytreatment").show();
+//                    $("#btnendquarter").show();
+//                }
+//
+//            }else if(obj.baseState.timeQuarter == 4){
+//                if(obj.baseState.state == 10){
+//                    $("#btnStartQuarter").show();
+//                }
+//                if(obj.baseState.state == 11){
+//                    if(obj.baseState.operateState.shortLoan == 0){
+//                        $("#btnApplyShortLoan").show();
+//                    }
+//                    $("#btnUpdatePurchase").show();
+//                }
+//                if(obj.baseState.state == 12){
+//                    if(obj.baseState.operateState.addPurchase == 0){
+//                        $("#btnAddPurchase").show();
+//                    }
+//                    if(obj.baseState.operateState.buildLine == 0){
+//                        $("#btnBuildLine").show();
+//                    }
+//                    if(obj.baseState.operateState.continueChange == 0){
+//                        $("#btnContinueChange").show();
+//                    }
+//                    if(obj.baseState.operateState.saleLine == 0){
+//                        $("#btnSaleLine").show();
+//                    }
+//                    if(obj.baseState.operateState.beginProduction == 0){
+//                        $("#btnBeginProduction").show();
+//                    }
+//                    $("#btnAddFactory").show();
+//                    $("#btnaddline").show();
+//                    $("#btnchangeline").show();
+//                    $("#btnupdatereceivable").show();
+//                }
+//                if(obj.baseState.state == 13){
+//                    if(obj.baseState.operateState.productDev == 0){
+//                        $("#btnproductdev").show();
+//                    }
+//                    if(obj.baseState.operateState.qualificationDev == 0){
+//                        $("#btnqualificationdev").show();
+//                    }
+//                    if(obj.baseState.operateState.marketDev == 0){
+//                        $("#btnmarketdev").show();
+//                    }
+//                    $("#btndelivery").show();
+//                    $("#btnfactorytreatment").show();
+//                    $("#btnendyear").show();
+//                }
+//            }
+//        }
+//    }
+
+    function startRunning() {
+        var nowUserName = $("#nowUserName").val();
+        $.ajax({
+            type:"POST",
+            url:"/subStartRunning/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            success:function (obj) {
+                console.log("用户baseState.state=1");
+                document.getElementById("ajaxDiv1").innerHTML = getTime() + " 请开始运营";
+                $("#btnInit").hide();
+                $("#btnAdvertising").show();
+                $("#btnStartYear").show();
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+    }
+
     function teachClassReturnOriginal() {
         if (confirm("确认要执行还原操作吗?") == false) {
             return;
