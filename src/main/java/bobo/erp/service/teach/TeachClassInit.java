@@ -82,7 +82,7 @@ public class TeachClassInit {
                 BaseState baseState = new BaseState();
                 baseState.setState(0);
                 baseState.setTimeYear(1);
-                baseState.setTimeQuarter(1);
+                baseState.setTimeQuarter(0);
                 runningState.setBaseState(baseState);   //存入BaseState
 
                 FinanceState financeState = new FinanceState();
