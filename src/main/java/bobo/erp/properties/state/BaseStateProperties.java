@@ -1,10 +1,12 @@
 package bobo.erp.properties.state;
 
 import bobo.erp.domain.state.RunningState;
+import bobo.erp.domain.state.base.OperateState;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.OneToOne;
+import java.util.List;
 
 /**
  * Created by 59814 on 2017/7/28.
@@ -19,6 +21,8 @@ public class BaseStateProperties {
     private Integer timeYear;       //运营年份
     private Integer timeQuarter;    //运营季度
     private RunningState runningState;
+
+    private List<OperateState> operateStateList;
 
     public Integer getState() {
         return state;
@@ -50,5 +54,13 @@ public class BaseStateProperties {
 
     public void setRunningState(RunningState runningState) {
         this.runningState = runningState;
+    }
+
+    public List<OperateState> getOperateStateList() {
+        return operateStateList;
+    }
+
+    public void setOperateStateList(List<OperateState> operateStateList) {
+        this.operateStateList = operateStateList;
     }
 }

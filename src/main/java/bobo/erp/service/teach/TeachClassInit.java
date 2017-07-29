@@ -4,6 +4,7 @@ import bobo.erp.controller.MarketController;
 import bobo.erp.domain.User;
 import bobo.erp.domain.rule.Rule;
 import bobo.erp.domain.state.*;
+import bobo.erp.domain.state.base.OperateState;
 import bobo.erp.domain.state.dev.MarketDevState;
 import bobo.erp.domain.state.dev.ProductDevState;
 import bobo.erp.domain.state.dev.QualificationDevState;
@@ -83,6 +84,8 @@ public class TeachClassInit {
                 baseState.setState(0);
                 baseState.setTimeYear(1);
                 baseState.setTimeQuarter(0);
+                List<OperateState> operateStateList = new ArrayList<OperateState>();
+                baseState.setOperateStateList(operateStateList);
                 runningState.setBaseState(baseState);   //存入BaseState
 
                 FinanceState financeState = new FinanceState();

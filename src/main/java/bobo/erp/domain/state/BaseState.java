@@ -1,8 +1,10 @@
 package bobo.erp.domain.state;
 
+import bobo.erp.domain.state.base.OperateState;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.util.List;
 
 /**
  * Created by 59814 on 2017/7/27.
@@ -19,6 +21,10 @@ public class BaseState {
     private Integer state;          //运营状态
     private Integer timeYear;       //运营年份
     private Integer timeQuarter;    //运营季度
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "base_state_id")
+    private List<OperateState> operateStateList;
 
     @OneToOne(mappedBy = "baseState")
     private RunningState runningState;
@@ -63,5 +69,13 @@ public class BaseState {
     @JsonBackReference
     public void setRunningState(RunningState runningState) {
         this.runningState = runningState;
+    }
+
+    public List<OperateState> getOperateStateList() {
+        return operateStateList;
+    }
+
+    public void setOperateStateList(List<OperateState> operateStateList) {
+        this.operateStateList = operateStateList;
     }
 }
