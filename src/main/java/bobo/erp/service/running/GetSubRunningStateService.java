@@ -1,6 +1,7 @@
 package bobo.erp.service.running;
 
 import bobo.erp.domain.state.BaseState;
+import bobo.erp.domain.state.RunningState;
 import bobo.erp.domain.teach.SubUserInfo;
 import bobo.erp.domain.teach.TeachClassInfo;
 import bobo.erp.repository.UserRepository;
@@ -15,8 +16,8 @@ import org.springframework.stereotype.Service;
  * Created by 59814 on 2017/7/28.
  */
 @Service
-public class GetSubBaseStateService {
-    private Logger logger = LoggerFactory.getLogger(GetSubBaseStateService.class);
+public class GetSubRunningStateService {
+    private Logger logger = LoggerFactory.getLogger(GetSubRunningStateService.class);
 
     @Autowired
     private GetTeachClassInfoService getTeachClassInfoService;
@@ -30,12 +31,10 @@ public class GetSubBaseStateService {
 
 
 
-    public BaseState getSubBaseState(String nowUserName){
-        SubUserInfo subUserInfo = subUserInfoRepository.findBySubUserName(nowUserName);
-        TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(nowUserName);
-        if(subUserInfo.getRunningState() == null){
-            return null;
-        }
-        return subUserInfo.getRunningState().getBaseState();
+    public RunningState getSubRunningState(String username){
+        SubUserInfo subUserInfo = subUserInfoRepository.findBySubUserName(username);
+//        TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(nowUserName);
+        logger.info("获取用户：{}的RunningState", username);
+        return subUserInfo.getRunningState();
     }
 }
