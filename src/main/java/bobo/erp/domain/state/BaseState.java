@@ -19,11 +19,23 @@ public class BaseState {
     private Integer id;
 
     private Integer state;          //运营状态
+    /**
+     * state的值与对应的状态
+     * -2	资不抵债
+     * -1	现金不足
+     * 0    未开始运营
+     * 1    开始运营
+     * 10   未开始当季
+     * 11   季初运营
+     * 12	季中运营
+     * 13	季末运营
+     */
+
     private Integer timeYear;       //运营年份
     private Integer timeQuarter;    //运营季度
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "base_state_id")
+    @JoinColumn(name = "operat_state_id")
     private OperateState operateState;
 
     @OneToOne(mappedBy = "baseState")

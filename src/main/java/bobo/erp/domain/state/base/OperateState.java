@@ -33,6 +33,7 @@ public class OperateState {
     private Integer productDev; //产品研发
     private Integer qualificationDev;   //资质认证研发
     private Integer marketDev;  //市场研发
+    private Integer longLoan;   //申请长贷
 
     @OneToOne(mappedBy = "operateState")
     private BaseState baseState;
@@ -163,6 +164,14 @@ public class OperateState {
 
     public void setMarketDev(Integer marketDev) {
         this.marketDev = marketDev;
+    }
+
+    public Integer getLongLoan() {
+        return longLoan;
+    }
+
+    public void setLongLoan(Integer longLoan) {
+        this.longLoan = longLoan;
     }
 
     @JsonBackReference
