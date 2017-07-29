@@ -84,8 +84,8 @@ public class TeachClassInit {
                 baseState.setState(0);
                 baseState.setTimeYear(1);
                 baseState.setTimeQuarter(0);
-                List<OperateState> operateStateList = new ArrayList<OperateState>();
-                baseState.setOperateStateList(operateStateList);
+                OperateState operateState = new OperateState();
+                baseState.setOperateState(operateState);
                 runningState.setBaseState(baseState);   //存入BaseState
 
                 FinanceState financeState = new FinanceState();

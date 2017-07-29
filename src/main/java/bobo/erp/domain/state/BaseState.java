@@ -22,9 +22,9 @@ public class BaseState {
     private Integer timeYear;       //运营年份
     private Integer timeQuarter;    //运营季度
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "base_state_id")
-    private List<OperateState> operateStateList;
+    private OperateState operateState;
 
     @OneToOne(mappedBy = "baseState")
     private RunningState runningState;
@@ -71,11 +71,11 @@ public class BaseState {
         this.runningState = runningState;
     }
 
-    public List<OperateState> getOperateStateList() {
-        return operateStateList;
+    public OperateState getOperateState() {
+        return operateState;
     }
 
-    public void setOperateStateList(List<OperateState> operateStateList) {
-        this.operateStateList = operateStateList;
+    public void setOperateState(OperateState operateState) {
+        this.operateState = operateState;
     }
 }

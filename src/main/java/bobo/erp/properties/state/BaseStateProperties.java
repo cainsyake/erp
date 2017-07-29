@@ -21,8 +21,7 @@ public class BaseStateProperties {
     private Integer timeYear;       //运营年份
     private Integer timeQuarter;    //运营季度
     private RunningState runningState;
-
-    private List<OperateState> operateStateList;
+    private OperateState operateState;
 
     public Integer getState() {
         return state;
@@ -56,11 +55,11 @@ public class BaseStateProperties {
         this.runningState = runningState;
     }
 
-    public List<OperateState> getOperateStateList() {
-        return operateStateList;
+    public OperateState getOperateState() {
+        return operateState;
     }
 
-    public void setOperateStateList(List<OperateState> operateStateList) {
-        this.operateStateList = operateStateList;
+    public void setOperateState(OperateState operateState) {
+        this.operateState = operateState;
     }
 }

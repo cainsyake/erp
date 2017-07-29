@@ -1,6 +1,7 @@
 package bobo.erp.domain.state.base;
 
 import bobo.erp.domain.state.BaseState;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 
@@ -33,7 +34,7 @@ public class OperateState {
     private Integer qualificationDev;   //资质认证研发
     private Integer marketDev;  //市场研发
 
-    @ManyToOne
+    @OneToOne(mappedBy = "operateState")
     private BaseState baseState;
 
     public Integer getId() {
@@ -164,10 +165,12 @@ public class OperateState {
         this.marketDev = marketDev;
     }
 
+    @JsonBackReference
     public BaseState getBaseState() {
         return baseState;
     }
 
+    @JsonBackReference
     public void setBaseState(BaseState baseState) {
         this.baseState = baseState;
     }
