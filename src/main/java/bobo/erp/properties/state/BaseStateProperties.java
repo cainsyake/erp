@@ -22,6 +22,7 @@ public class BaseStateProperties {
     private Integer timeQuarter;    //运营季度
     private RunningState runningState;
     private OperateState operateState;
+    private String msg;
 
     public Integer getState() {
         return state;
@@ -61,5 +62,13 @@ public class BaseStateProperties {
 
     public void setOperateState(OperateState operateState) {
         this.operateState = operateState;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

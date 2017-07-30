@@ -33,6 +33,7 @@ public class BaseState {
 
     private Integer timeYear;       //运营年份
     private Integer timeQuarter;    //运营季度
+    private String msg; //后台返回信息，提示
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "operat_state_id")
@@ -89,5 +90,13 @@ public class BaseState {
 
     public void setOperateState(OperateState operateState) {
         this.operateState = operateState;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
     }
 }

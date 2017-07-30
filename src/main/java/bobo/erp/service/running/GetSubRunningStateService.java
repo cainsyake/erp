@@ -20,20 +20,10 @@ public class GetSubRunningStateService {
     private Logger logger = LoggerFactory.getLogger(GetSubRunningStateService.class);
 
     @Autowired
-    private GetTeachClassInfoService getTeachClassInfoService;
-
-    @Autowired
-    private TeachClassInfoRepository teachClassInfoRepository;
-    @Autowired
     private SubUserInfoRepository subUserInfoRepository;
-    @Autowired
-    private UserRepository userRepository;
-
-
 
     public RunningState getSubRunningState(String username){
         SubUserInfo subUserInfo = subUserInfoRepository.findBySubUserName(username);
-//        TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(nowUserName);
         logger.info("获取用户：{}的RunningState", username);
         return subUserInfo.getRunningState();
     }

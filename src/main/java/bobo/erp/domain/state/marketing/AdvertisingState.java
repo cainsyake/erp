@@ -2,6 +2,7 @@ package bobo.erp.domain.state.marketing;
 
 import bobo.erp.domain.state.MarketingState;
 import bobo.erp.domain.state.dev.MarketDevState;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 
@@ -333,10 +334,12 @@ public class AdvertisingState {
         this.ad30 = ad30;
     }
 
+    @JsonBackReference
     public MarketingState getMarketingState() {
         return marketingState;
     }
 
+    @JsonBackReference
     public void setMarketingState(MarketingState marketingState) {
         this.marketingState = marketingState;
     }

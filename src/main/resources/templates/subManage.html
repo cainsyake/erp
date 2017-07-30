@@ -645,7 +645,7 @@
             console.log("用户已破产");
             document.getElementById("ajaxDiv1").innerHTML = getTime() + " 该用户已经破产";
         }else{
-            console.log("测试 开始判断时间");
+
             if(obj.baseState.timeQuarter == 0){
                 if(obj.baseState.operateState.report == 0){
 //                    $("#btnReport").show();
@@ -795,12 +795,16 @@
     }
 
     function oprateAdvertising(form) {
-        console.log(form);
-        for(var i =1; i < 25; i++){
+        var nowUserName = $("#nowUserName").val();
+        for(var i =1; i < 26; i++){
             eval("var ad =form.ad"+ i + ".value;");
+
             if(ad < 0){
                 alert("广告额不能为负数");
                 return false;
+            }
+            if(ad == ""){
+                eval("form.ad"+ i + ".value = 0;");
             }
         }
         $.ajax({
