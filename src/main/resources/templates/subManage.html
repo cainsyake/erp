@@ -128,7 +128,7 @@
 
 
       </div>
-      <div class="row" id="ajaxDiv2">
+      <div class="row">
         <div class="col-md-8" >
           <section class="panel">
             <header class="panel-heading no-border">
@@ -244,30 +244,7 @@
                 </tbody>
               </table>
               <br>
-              <table class="table table-bordered">
-                <thead>
-                <tr>
-                  <th>长贷</th>
-                  <th>1</th>
-                  <th>2</th>
-                  <th>3</th>
-                  <th>4</th>
-                  <th>5</th>
-                  <th>6</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <th>金额</th>
-                  <td id="valueLongDebt1"></td>
-                  <td id="valueLongDebt2"></td>
-                  <td id="valueLongDebt3"></td>
-                  <td id="valueLongDebt4"></td>
-                  <td id="valueLongDebt5"></td>
-                  <td id="valueLongDebt6"></td>
-                </tr>
-                </tbody>
-              </table>
+              <div id="divLongDebtInfo"></div>
             </div>
           </section>
           <section class="panel">
@@ -279,7 +256,9 @@
               </span>
             </header>
             <div class="panel-body">
-
+                <div id="divMaterialStock">原料库存表</div><br>
+                <div id="divProductStock"></div><br>
+                <div id="divMaterialPurchase"></div><br>
             </div>
           </section>
           <section class="panel">
@@ -295,13 +274,14 @@
             </div>
           </section>
         </div>
-
+      </div>
+      <div class="row" id="ajaxDiv2">
       </div>
 
 
 
       <!--Modal-->
-      <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalThClassInit" class="modal fade">
+      <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalAdvertising" class="modal fade">
         <div class="modal-dialog">
           <div class="modal-content">
 
@@ -309,23 +289,16 @@
 
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">教 学 班 初 始 化</h4>
+              <h4 class="modal-title">投 放 广 告</h4>
             </div>
             <div class="modal-body">
+              <form action="#" method="post" name="advertisingForm" id="advertisingForm">
 
-              <p>输入教学班的信息</p>
-              <form action="#" method="post" name="thClassInitForm" id="thClassInitForm">
-                <input type="text" autofocus="" placeholder="请输入教学班的名称" class="form-control" name="teachClassName" /><br/>
-                <input type="number" autofocus="" placeholder="请输入子用户的数量" class="form-control" name="teachClassVolume" /><br/>
-                <input type="password" autofocus="" placeholder="请输入子用户的初始密码" class="form-control" name="initPassword" /><br/>
-                <input type="number" autofocus="" placeholder="请输入调用规则的ID" class="form-control" name="ruleId" id="initRuleId"/><br/>
-                <input type="number" autofocus="" placeholder="请输入调用市场的ID" class="form-control" name="marketSeriesId" id="initMarketSeriesId"/><br/>
-                <input type="hidden" name="nowUserName" th:value="${session.nowUserName}"/>
               </form>
             </div>
             <div class="modal-footer">
               <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-              <button class="btn btn-success" type="button" onclick="thClassInit()">提交</button>
+              <button class="btn btn-success" type="button" onclick="oprateAdvertising(document.advertisingForm)">投放</button>
             </div>
 
 
@@ -453,16 +426,214 @@
             url:"/getSubRunningState/" + nowUserName,
             cache:false,
             dataType:"json",
-            success:function (obj) {
-                btnController(obj);
-                document.getElementById("valueCash").innerHTML = obj.financeState.cashAmount;
+            success:function (runningState) {
+                btnController(runningState);
+                infoController(runningState);
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+        $.ajax({
+            type:"POST",
+            url:"/getTeachClassRule/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            success:function (rule) {
+                pageController(rule);
             },
             error:function (json) {
                 console.log(json.responseText);
             }
         });
     }
-    
+
+    function infoController(runningState) {
+        document.getElementById("valueCash").innerHTML = runningState.financeState.cashAmount + " W";
+    }
+
+    function pageController(rule) {
+        var txt1 ="";
+        txt1 += "<table class='table table-bordered'>" +
+            "<thead>" +
+            "<tr>" +
+            "<th></th>";
+        var ruleMarket = rule.ruleMarket;
+        var marketNum = 0;
+        if(ruleMarket.market1Name != ""){
+            txt1 += "<th>" + ruleMarket.market1Name + "</th>";
+            marketNum++;
+        }
+        if(ruleMarket.market2Name != ""){
+            txt1 += "<th>" + ruleMarket.market2Name + "</th>";
+            marketNum++;
+        }
+        if(ruleMarket.market3Name != ""){
+            txt1 += "<th>" + ruleMarket.market3Name + "</th>";
+            marketNum++;
+        }
+        if(ruleMarket.market4Name != ""){
+            txt1 += "<th>" + ruleMarket.market4Name + "</th>";
+            marketNum++;
+        }
+        if(ruleMarket.market5Name != ""){
+            txt1 += "<th>" + ruleMarket.market5Name + "</th>";
+            marketNum++;
+        }
+        txt1 += "</tr>" +
+            "</thead>" +
+            "<tbody>";
+        var ruleProduct = rule.ruleProduct;
+        if(ruleProduct.product1Name != ""){
+            txt1 += "<tr>" +
+                "<th>" + ruleProduct.product1Name + "</th>";
+            for(var i =1; i < marketNum+1; i++){
+                var strName = "ad" + i;
+                txt1 += "<td><input type='number' min='0' style='width:80px' class='form-control' name='" + strName + "'/></td>";
+            }
+            txt1 += "</tr>";
+        }
+        if(ruleProduct.product2Name != ""){
+            txt1 += "<tr>" +
+                "<th>" + ruleProduct.product2Name + "</th>";
+            for(var i =6; i < marketNum+6; i++){
+                var strName = "ad" + i;
+                txt1 += "<td><input type='number' min='0' style='width:80px' class='form-control' name='" + strName + "'/></td>";
+            }
+            txt1 += "</tr>";
+        }
+        if(ruleProduct.product3Name != ""){
+            txt1 += "<tr>" +
+                "<th>" + ruleProduct.product3Name + "</th>";
+            for(var i =11; i < marketNum+11; i++){
+                var strName = "ad" + i;
+                txt1 += "<td><input type='number' min='0' style='width:80px' class='form-control' name='" + strName + "'/></td>";
+            }
+            txt1 += "</tr>";
+        }
+        if(ruleProduct.product4Name != ""){
+            txt1 += "<tr>" +
+                "<th>" + ruleProduct.product4Name + "</th>";
+            for(var i =16; i < marketNum+16; i++){
+                var strName = "ad" + i;
+                txt1 += "<td><input type='number' min='0' style='width:80px' class='form-control' name='" + strName + "'/></td>";
+            }
+            txt1 += "</tr>";
+        }
+        if(ruleProduct.product5Name != ""){
+            txt1 += "<tr>" +
+                "<th>" + ruleProduct.product5Name + "</th>";
+            for(var i =21; i < marketNum+21; i++){
+                var strName = "ad" + i;
+                txt1 += "<td><input type='number' min='0' style='width:80px' class='form-control' name='" + strName + "'/></td>";
+            }
+            txt1 += "</tr>";
+        }
+        txt1 += "</tbody>" +
+            "</table>";
+        document.getElementById("advertisingForm").innerHTML = txt1;
+
+        txt2 = "<table class='table table-bordered'>" +
+        "<thead>" +
+        "<tr>" +
+        "<th>长贷</th>";
+        var ruleParam = rule.ruleParam;
+        for(var i = 1; i < ruleParam.paramLongTermLoanTimeLimit+1; i++){
+            txt2 += "<th>" + i + "</th>";
+        }
+        txt2 += "</tr>" +
+            "</thead>" +
+            "<tbody>" +
+            "<tr>" +
+            "<th>金额</th>";
+        for(var i = 1; i < ruleParam.paramLongTermLoanTimeLimit+1; i++){
+            txt2 += "<td id='valueLongDebt" + i + "'></td>";
+        }
+        txt2 += "</tr>" +
+            "</tbody>" +
+            "</table>";
+        document.getElementById("divLongDebtInfo").innerHTML = txt2;
+
+        txt3 = "<table class='table table-bordered'>" +
+            "<thead>" +
+            "<tr>" +
+            "<th>原料</th>";
+        var ruleMaterial = rule.ruleMaterial;
+        var materialNum = 0;
+        for(var i = 1; i < 6; i++){
+            if(eval("ruleMaterial.material" + i + "Name !== null")){
+                txt3 += "<th>" + eval("ruleMaterial.material" + i + "Name") + "</th>";
+                materialNum++;
+            }
+        }
+        txt3 += "</tr>" +
+            "</thead>" +
+            "<tbody>" +
+            "<tr>" +
+            "<th>数量</th>";
+        for(var i = 1; i < materialNum+1; i++){
+            txt3 += "<td id='valueMaterialStock" + i + "'></td>";
+        }
+        txt3 += "</tr>" +
+            "</tbody>" +
+            "</table>";
+        document.getElementById("divMaterialStock").innerHTML = txt3;
+
+        txt4 = "<table class='table table-bordered'>" +
+            "<thead>" +
+            "<tr>" +
+            "<th>产品</th>";
+        var productNum = 0;
+        for(var i = 1; i < 6; i++){
+            if(eval("ruleProduct.product" + i + "Name !== null")){
+                txt4 += "<th>" + eval("ruleProduct.product" + i + "Name") + "</th>";
+                productNum++;
+            }
+        }
+        txt4 += "</tr>" +
+            "</thead>" +
+            "<tbody>" +
+            "<tr>" +
+            "<th>数量</th>";
+        for(var i = 1; i < productNum+1; i++){
+            txt4 += "<td id='valueProductStock" + i + "'></td>";
+        }
+        txt4 += "</tr>" +
+            "</tbody>" +
+            "</table>";
+        document.getElementById("divProductStock").innerHTML = txt4;
+
+        var maxMaterialTime = 0;
+        for(var i = 1; i < 6; i++){
+            if(eval("ruleMaterial.material" + i + "Time > maxMaterialTime")){
+                maxMaterialTime = eval("ruleMaterial.material" + i + "Time");
+            }
+        }
+        var txt5 = "<table class='table table-bordered'>" +
+            "<thead>" +
+            "<tr>" +
+            "<th>采购单</th>";
+//        var ruleMaterial = rule.ruleMaterial;
+//        var materialNum = 0;
+        for(var i = 1; i < materialNum + 1; i++){
+            txt5 += "<th>" + eval("ruleMaterial.material" + i + "Name") + "</th>";
+        }
+        txt5 += "</tr>" +
+            "</thead>" +
+            "<tbody>";
+        for(var i = 1; i < maxMaterialTime + 1; i++){
+            txt5 += "<tr>" +
+                "<th>到货期" + i + "</th>";
+            for(var j = 1; j < materialNum + 1; j++){
+                txt5 += "<td id='valueMaterialStock" + j + "T" + i + "'></td>";
+            }
+            txt5 += "</tr>";
+        }
+        txt5 += "</tbody>" +
+            "</table>";
+        document.getElementById("divMaterialPurchase").innerHTML = txt5;
+    }
+
     function btnController(obj) {
         var txt="";
         if(obj.baseState.state == 0){
@@ -482,7 +653,7 @@
                 }
                 if(obj.baseState.operateState.ad == 0){
 //                    $("#btnAdvertising").show();
-                    txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#modal' type='button' style='' id='btnAdvertising'>投放广告</button>";
+                    txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#modalAdvertising' type='button' style='' id='btnAdvertising'>投放广告</button>";
                 }
                 if(obj.baseState.operateState.orderMeeting == 0){
 //                    $("#btnOrderMeeting").show();
@@ -621,6 +792,31 @@
             }
         }
         document.getElementById("divTimeAxis").innerHTML = txt;
+    }
+
+    function oprateAdvertising(form) {
+        console.log(form);
+        for(var i =1; i < 25; i++){
+            eval("var ad =form.ad"+ i + ".value;");
+            if(ad < 0){
+                alert("广告额不能为负数");
+                return false;
+            }
+        }
+        $.ajax({
+            type:"POST",
+            url:"/operateAdvertising/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            data:$('#advertisingForm').serialize(),
+            success:function (runningState) {
+                btnController(runningState);
+                document.getElementById("valueCash").innerHTML = runningState.financeState.cashAmount;
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
     }
 
     function startRunning() {
@@ -787,24 +983,7 @@
         });
     }
 
-    function addMarket() {
-        var formData = new FormData($("#marketAddForm")[0]);
-        $.ajax({
-            type: "POST",
-            url:"addMarket",
-            data:formData,
-            async: true,
-            cache: false,
-            contentType: false,
-            processData: false,
-            error: function(request) {
-                alert("上传错误");
-            },
-            success: function(data) {
-                document.getElementById("ajaxDiv1").innerHTML = data;
-            }
-        });
-    }
+
 
     function readRule(ruleId) {
         var txt = "";
@@ -1449,403 +1628,6 @@
             }
         });
 
-    }
-
-    function useRule(ruleId) {
-
-    }
-
-    function deleteRule(ruleId) {
-
-    }
-
-    function addRuleStep(step) {
-        //公共变量
-        var date = new Date();
-        var operatorTime = date.toLocaleDateString() +" " +  date.toLocaleTimeString();
-
-        //根据step选择不同方法提交数据
-        switch (step){
-            case 1:
-                var ruleFactory = {
-                    factory1Name:$("#factory1Name").val(),
-                    factory1BuyPrice:$("#factory1BuyPrice").val(),
-                    factory1RentPrice:$("#factory1RentPrice").val(),
-                    factory1SalePrice:$("#factory1SalePrice").val(),
-                    factory1Volume:$("#factory1Volume").val(),
-                    factory1Limit:$("#factory1Limit").val(),
-                    factory1Score:$("#factory1Score").val(),
-                    factory2Name:$("#factory2Name").val(),
-                    factory2BuyPrice:$("#factory2BuyPrice").val(),
-                    factory2RentPrice:$("#factory2RentPrice").val(),
-                    factory2SalePrice:$("#factory2SalePrice").val(),
-                    factory2Volume:$("#factory2Volume").val(),
-                    factory2Limit:$("#factory2Limit").val(),
-                    factory2Score:$("#factory2Score").val(),
-                    factory3Name:$("#factory3Name").val(),
-                    factory3BuyPrice:$("#factory3BuyPrice").val(),
-                    factory3RentPrice:$("#factory3RentPrice").val(),
-                    factory3SalePrice:$("#factory3SalePrice").val(),
-                    factory3Volume:$("#factory3Volume").val(),
-                    factory3Limit:$("#factory3Limit").val(),
-                    factory3Score:$("#factory3Score").val(),
-                    factory4Name:$("#factory4Name").val(),
-                    factory4BuyPrice:$("#factory4BuyPrice").val(),
-                    factory4RentPrice:$("#factory4RentPrice").val(),
-                    factory4SalePrice:$("#factory4SalePrice").val(),
-                    factory4Volume:$("#factory4Volume").val(),
-                    factory4Limit:$("#factory4Limit").val(),
-                    factory4Score:$("#factory4Score").val(),
-                    factory5Name:$("#factory5Name").val(),
-                    factory5BuyPrice:$("#factory5BuyPrice").val(),
-                    factory5RentPrice:$("#factory5RentPrice").val(),
-                    factory5SalePrice:$("#factory5SalePrice").val(),
-                    factory5Volume:$("#factory5Volume").val(),
-                    factory5Limit:$("#factory5Limit").val(),
-                    factory5Score:$("#factory5Score").val()
-                };
-                $.ajax({
-                    url:'addRuleFactory',
-                    type:'POST',
-                    data:ruleFactory,
-                    dataType:'json',
-                    success:function (json) {
-                        $("#ajaxDiv1").html(operatorTime + " : 上传成功 厂房规则");
-                        $("#addRuleFactoryResult").html("<h4 style='color: blue'>厂房规则上传成功,请继续下一步</h4>");
-                    },
-                    error:function () {
-                        $("#ajaxDiv1").html(operatorTime + " : 上传失败 厂房规则");
-                    }
-                });
-                break;
-            case 2:
-                var ruleIso = {
-                    iso1Name:$("#iso1Name").val(),
-                    iso1UnitInvest:$("#iso1UnitInvest").val(),
-                    iso1DevTime:$("#iso1DevTime").val(),
-                    iso1Score:$("#iso1Score").val(),
-                    iso2Name:$("#iso2Name").val(),
-                    iso2UnitInvest:$("#iso2UnitInvest").val(),
-                    iso2DevTime:$("#iso2DevTime").val(),
-                    iso2Score:$("#iso2Score").val()
-                };
-                $.ajax({
-                    url:'addRuleIso',
-                    type:'POST',
-                    data:ruleIso,
-                    dataType:'json',
-                    success:function (json) {
-                        $("#ajaxDiv1").html(operatorTime + " : 上传成功 资质认证规则");
-                        $("#addRuleIsoResult").html("<h4 style='color: blue'>资质认证规则上传成功,请继续下一步</h4>");
-                    },
-                    error:function () {
-                        $("#ajaxDiv1").html(operatorTime + " : 上传失败 资质认证规则");
-                    }
-                });
-                break;
-            case 3:
-                var ruleLine = {
-                    line1Name:$("#line1Name").val(),
-                    line1UnitInvest:$("#line1UnitInvest").val(),
-                    line1InstallTime:$("#line1InstallTime").val(),
-                    line1ProduceTime:$("#line1ProduceTime").val(),
-                    line1ChangeInvest:$("#line1ChangeInvest").val(),
-                    line1ChangeTime:$("#line1ChangeTime").val(),
-                    line1Upkeep:$("#line1Upkeep").val(),
-                    line1ScrapValue:$("#line1ScrapValue").val(),
-                    line1Depreciation:$("#line1Depreciation").val(),
-                    line1DepreTime:$("#line1DepreTime").val(),
-                    line1Score:$("#line1Score").val(),
-                    line2Name:$("#line2Name").val(),
-                    line2UnitInvest:$("#line2UnitInvest").val(),
-                    line2InstallTime:$("#line2InstallTime").val(),
-                    line2ProduceTime:$("#line2ProduceTime").val(),
-                    line2ChangeInvest:$("#line2ChangeInvest").val(),
-                    line2ChangeTime:$("#line2ChangeTime").val(),
-                    line2Upkeep:$("#line2Upkeep").val(),
-                    line2ScrapValue:$("#line2ScrapValue").val(),
-                    line2Depreciation:$("#line2Depreciation").val(),
-                    line2DepreTime:$("#line2DepreTime").val(),
-                    line2Score:$("#line2Score").val(),
-                    line3Name:$("#line3Name").val(),
-                    line3UnitInvest:$("#line3UnitInvest").val(),
-                    line3InstallTime:$("#line3InstallTime").val(),
-                    line3ProduceTime:$("#line3ProduceTime").val(),
-                    line3ChangeInvest:$("#line3ChangeInvest").val(),
-                    line3ChangeTime:$("#line3ChangeTime").val(),
-                    line3Upkeep:$("#line3Upkeep").val(),
-                    line3ScrapValue:$("#line3ScrapValue").val(),
-                    line3Depreciation:$("#line3Depreciation").val(),
-                    line3DepreTime:$("#line3DepreTime").val(),
-                    line3Score:$("#line3Score").val(),
-                    line4Name:$("#line4Name").val(),
-                    line4UnitInvest:$("#line4UnitInvest").val(),
-                    line4InstallTime:$("#line4InstallTime").val(),
-                    line4ProduceTime:$("#line4ProduceTime").val(),
-                    line4ChangeInvest:$("#line4ChangeInvest").val(),
-                    line4ChangeTime:$("#line4ChangeTime").val(),
-                    line4Upkeep:$("#line4Upkeep").val(),
-                    line4ScrapValue:$("#line4ScrapValue").val(),
-                    line4Depreciation:$("#line4Depreciation").val(),
-                    line4DepreTime:$("#line4DepreTime").val(),
-                    line4Score:$("#line4Score").val(),
-                    line5Name:$("#line5Name").val(),
-                    line5UnitInvest:$("#line5UnitInvest").val(),
-                    line5InstallTime:$("#line5InstallTime").val(),
-                    line5ProduceTime:$("#line5ProduceTime").val(),
-                    line5ChangeInvest:$("#line5ChangeInvest").val(),
-                    line5ChangeTime:$("#line5ChangeTime").val(),
-                    line5Upkeep:$("#line5Upkeep").val(),
-                    line5ScrapValue:$("#line5ScrapValue").val(),
-                    line5Depreciation:$("#line5Depreciation").val(),
-                    line5DepreTime:$("#line5DepreTime").val(),
-                    line5Score:$("#line5Score").val()
-                };
-                $.ajax({
-                    url:'addRuleLine',
-                    type:'POST',
-                    data:ruleLine,
-                    dataType:'json',
-                    success:function (json) {
-                        $("#ajaxDiv1").html(operatorTime + " : 上传成功 生产线规则");
-                        $("#addRuleLineResult").html("<h4 style='color: blue'>生产线规则上传成功,请继续下一步</h4>");
-                    },
-                    error:function () {
-                        $("#ajaxDiv1").html(operatorTime + " : 上传失败 生产线规则");
-                    }
-                });
-                break;
-            case 4:
-                var ruleMarket = {
-                    market1Name:$("#market1Name").val(),
-                    market1UnitInvest:$("#market1UnitInvest").val(),
-                    market1DevTime:$("#market1DevTime").val(),
-                    market1Score:$("#market1Score").val(),
-                    market2Name:$("#market2Name").val(),
-                    market2UnitInvest:$("#market2UnitInvest").val(),
-                    market2DevTime:$("#market2DevTime").val(),
-                    market2Score:$("#market2Score").val(),
-                    market3Name:$("#market3Name").val(),
-                    market3UnitInvest:$("#market3UnitInvest").val(),
-                    market3DevTime:$("#market3DevTime").val(),
-                    market3Score:$("#market3Score").val(),
-                    market4Name:$("#market4Name").val(),
-                    market4UnitInvest:$("#market4UnitInvest").val(),
-                    market4DevTime:$("#market4DevTime").val(),
-                    market4Score:$("#market4Score").val(),
-                    market5Name:$("#market5Name").val(),
-                    market5UnitInvest:$("#market5UnitInvest").val(),
-                    market5DevTime:$("#market5DevTime").val(),
-                    market5Score:$("#market5Score").val()
-                };
-                $.ajax({
-                    url:'addRuleMarket',
-                    type:'POST',
-                    data:ruleMarket,
-                    dataType:'json',
-                    success:function (json) {
-                        $("#ajaxDiv1").html(operatorTime + " : 上传成功 市场开发规则");
-                        $("#addRuleMarketResult").html("<h4 style='color: blue'>市场开发规则上传成功,请继续下一步</h4>");
-                    },
-                    error:function () {
-                        $("#ajaxDiv1").html(operatorTime + " : 上传失败 市场开发规则");
-                    }
-                });
-                break;
-            case 5:
-                var ruleMaterial = {
-                    material1Name:$("#material1Name").val(),
-                    material1Price:$("#material1Price").val(),
-                    material1Time:$("#material1Time").val(),
-                    material2Name:$("#material2Name").val(),
-                    material2Price:$("#material2Price").val(),
-                    material2Time:$("#material2Time").val(),
-                    material3Name:$("#material3Name").val(),
-                    material3Price:$("#material3Price").val(),
-                    material3Time:$("#material3Time").val(),
-                    material4Name:$("#material4Name").val(),
-                    material4Price:$("#material4Price").val(),
-                    material4Time:$("#material4Time").val(),
-                    material5Name:$("#material5Name").val(),
-                    material5Price:$("#material5Price").val(),
-                    material5Time:$("#material5Time").val()
-                };
-                $.ajax({
-                    url:'addRuleMaterial',
-                    type:'POST',
-                    data:ruleMaterial,
-                    dataType:'json',
-                    success:function (json) {
-                        $("#ajaxDiv1").html(operatorTime + " : 上传成功 原料规则");
-                        $("#addRuleMaterialResult").html("<h4 style='color: blue'>原料规则上传成功,请继续下一步</h4>");
-                    },
-                    error:function () {
-                        $("#ajaxDiv1").html(operatorTime + " : 上传失败 原料规则");
-                    }
-                });
-                break;
-            case 6:
-                var ruleProductMix = {
-                    product1MixR1:$("#product1MixR1").val(),
-                    product1MixR2:$("#product1MixR2").val(),
-                    product1MixR3:$("#product1MixR3").val(),
-                    product1MixR4:$("#product1MixR4").val(),
-                    product1MixR5:$("#product1MixR5").val(),
-                    product1MixP1:$("#product1MixP1").val(),
-                    product1MixP2:$("#product1MixP2").val(),
-                    product1MixP3:$("#product1MixP3").val(),
-                    product1MixP4:$("#product1MixP4").val(),
-                    product1MixP5:$("#product1MixP5").val(),
-                    product2MixR1:$("#product2MixR1").val(),
-                    product2MixR2:$("#product2MixR2").val(),
-                    product2MixR3:$("#product2MixR3").val(),
-                    product2MixR4:$("#product2MixR4").val(),
-                    product2MixR5:$("#product2MixR5").val(),
-                    product2MixP1:$("#product2MixP1").val(),
-                    product2MixP2:$("#product2MixP2").val(),
-                    product2MixP3:$("#product2MixP3").val(),
-                    product2MixP4:$("#product2MixP4").val(),
-                    product2MixP5:$("#product2MixP5").val(),
-                    product3MixR1:$("#product3MixR1").val(),
-                    product3MixR2:$("#product3MixR2").val(),
-                    product3MixR3:$("#product3MixR3").val(),
-                    product3MixR4:$("#product3MixR4").val(),
-                    product3MixR5:$("#product3MixR5").val(),
-                    product3MixP1:$("#product3MixP1").val(),
-                    product3MixP2:$("#product3MixP2").val(),
-                    product3MixP3:$("#product3MixP3").val(),
-                    product3MixP4:$("#product3MixP4").val(),
-                    product3MixP5:$("#product3MixP5").val(),
-                    product4MixR1:$("#product4MixR1").val(),
-                    product4MixR2:$("#product4MixR2").val(),
-                    product4MixR3:$("#product4MixR3").val(),
-                    product4MixR4:$("#product4MixR4").val(),
-                    product4MixR5:$("#product4MixR5").val(),
-                    product4MixP1:$("#product4MixP1").val(),
-                    product4MixP2:$("#product4MixP2").val(),
-                    product4MixP3:$("#product4MixP3").val(),
-                    product4MixP4:$("#product4MixP4").val(),
-                    product4MixP5:$("#product4MixP5").val(),
-                    product5MixR1:$("#product5MixR1").val(),
-                    product5MixR2:$("#product5MixR2").val(),
-                    product5MixR3:$("#product5MixR3").val(),
-                    product5MixR4:$("#product5MixR4").val(),
-                    product5MixR5:$("#product5MixR5").val(),
-                    product5MixP1:$("#product5MixP1").val(),
-                    product5MixP2:$("#product5MixP2").val(),
-                    product5MixP3:$("#product5MixP3").val(),
-                    product5MixP4:$("#product5MixP4").val(),
-                    product5MixP5:$("#product5MixP5").val()
-                };
-                $.ajax({
-                    url:'addRuleProductMix',
-                    type:'POST',
-                    data:ruleProductMix,
-                    dataType:'json',
-                    success:function (json) {
-                        $("#ajaxDiv1").html(operatorTime + " : 上传成功 产品构成规则");
-                        $("#addRuleProductMixResult").html("<h4 style='color: blue'>产品构成规则上传成功,请继续下一步</h4>");
-                    },
-                    error:function () {
-                        $("#ajaxDiv1").html(operatorTime + " : 上传失败 产品构成规则");
-                    }
-                });
-                break;
-            case 7:
-                var ruleProduct = {
-                    product1Name:$("#product1Name").val(),
-                    product1ProcCost:$("#product1ProcCost").val(),
-                    product1DevInvest:$("#product1DevInvest").val(),
-                    product1DevTime:$("#product1DevTime").val(),
-                    product1FinalCost:$("#product1FinalCost").val(),
-                    product1Score:$("#product1Score").val(),
-                    product2Name:$("#product2Name").val(),
-                    product2ProcCost:$("#product2ProcCost").val(),
-                    product2DevInvest:$("#product2DevInvest").val(),
-                    product2DevTime:$("#product2DevTime").val(),
-                    product2FinalCost:$("#product2FinalCost").val(),
-                    product2Score:$("#product2Score").val(),
-                    product3Name:$("#product3Name").val(),
-                    product3ProcCost:$("#product3ProcCost").val(),
-                    product3DevInvest:$("#product3DevInvest").val(),
-                    product3DevTime:$("#product3DevTime").val(),
-                    product3FinalCost:$("#product3FinalCost").val(),
-                    product3Score:$("#product3Score").val(),
-                    product4Name:$("#product4Name").val(),
-                    product4ProcCost:$("#product4ProcCost").val(),
-                    product4DevInvest:$("#product4DevInvest").val(),
-                    product4DevTime:$("#product4DevTime").val(),
-                    product4FinalCost:$("#product4FinalCost").val(),
-                    product4Score:$("#product4Score").val(),
-                    product5Name:$("#product5Name").val(),
-                    product5ProcCost:$("#product5ProcCost").val(),
-                    product5DevInvest:$("#product5DevInvest").val(),
-                    product5DevTime:$("#product5DevTime").val(),
-                    product5FinalCost:$("#product5FinalCost").val(),
-                    product5Score:$("#product5Score").val()
-                };
-                $.ajax({
-                    url:'addRuleProduct',
-                    type:'POST',
-                    data:ruleProduct,
-                    dataType:'json',
-                    success:function (json) {
-                        $("#ajaxDiv1").html(operatorTime + " : 上传成功 产品规则");
-                        $("#addRuleProductResult").html("<h4 style='color: blue'>产品规则上传成功,请继续下一步</h4>");
-                    },
-                    error:function () {
-                        $("#ajaxDiv1").html(operatorTime + " : 上传失败 产品规则");
-                    }
-                });
-                break;
-            case 8:
-                var ruleParam = {
-                    paramPenatly:$("#paramPenatly").val(),
-                    paramLoanRatio:$("#paramLoanRatio").val(),
-                    paramProductSaleRatio:$("#paramProductSaleRatio").val(),
-                    paramMaterailSaleRatio:$("#paramMaterailSaleRatio").val(),
-                    paramLongTermLoanRates:$("#paramLongTermLoanRates").val(),
-                    paramShortTermLoanRates:$("#paramShortTermLoanRates").val(),
-                    paramShortTermDiscountRates:$("#paramShortTermDiscountRates").val(),
-                    paramLongTermDiscountRates:$("#paramLongTermDiscountRates").val(),
-                    paramInitialCash:$("#paramInitialCash").val(),
-                    paramManagementCost:$("#paramManagementCost").val(),
-                    paramInfomationCost:$("#paramInfomationCost").val(),
-                    paramTaxRate:$("#paramTaxRate").val(),
-                    paramLongTermLoanTimeLimit:$("#paramLongTermLoanTimeLimit").val(),
-                    paramAdvertisingMinFee:$("#paramAdvertisingMinFee").val(),
-                    paramProductBuyRation:$("#paramProductBuyRation").val(),
-                    paramMaterailBuyRation:$("#paramMaterailBuyRation").val(),
-                    paramSelectOrderTime:$("#paramSelectOrderTime").val(),
-                    paramFirstSelectOrderTime:$("#paramFirstSelectOrderTime").val(),
-                    paramMarketSametimeOpenNum:$("#paramMarketSametimeOpenNum").val(),
-                    paramBidTime:$("#paramBidTime").val(),
-                    paramBidSametimeNum:$("#paramBidSametimeNum").val(),
-                    paramFactoryMaxNum:$("#paramFactoryMaxNum").val(),
-                    paramHaveMarketLeader:$('input:radio[name="paramHaveMarketLeader"]:checked').val(),
-                    paramDiscountMode:$('input:radio[name="paramDiscountMode"]:checked').val(),
-                    paramAllowUserReturnSeason:$('input:radio[name="paramAllowUserReturnSeason"]:checked').val(),
-                    paramAllowUserReturnYear:$('input:radio[name="paramAllowUserReturnYear"]:checked').val(),
-                };
-                $.ajax({
-                    url:'addRuleParam',
-                    type:'POST',
-                    data:ruleParam,
-                    dataType:'json',
-                    success:function (json) {
-                        $("#ajaxDiv1").html(operatorTime + " : 上传成功 规则 系列号：" + json.ruleId);
-                        $("#addRuleParamResult").html("<h4 style='color: blue'>全部规则已上传成功，如需继续上传请刷新页面</h4>");
-                        $("#divAddRule").hide();
-                    },
-                    error:function () {
-                        $("#ajaxDiv1").html(operatorTime + " : 上传失败 运行参数");
-                    }
-                });
-                break;
-            default:
-                $("#ajaxDiv1").html(operatorTime + " : 系统运行错误");
-                break;
-        }
     }
 
     function findRuleAll() {
