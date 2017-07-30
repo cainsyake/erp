@@ -51,14 +51,14 @@ public class UseRule {
     public String ruleDeleteById(Integer ruleId, String operator){
         logger.info("删除ID：{} 规则，操作者：{}", ruleId, operator);
         ruleRepository.delete(ruleId);
-        ruleFactoryRepository.delete(ruleId);
-        ruleIsoRepository.delete(ruleId);
-        ruleLineRepository.delete(ruleId);
-        ruleMarketRepository.delete(ruleId);
-        ruleMaterialRepository.delete(ruleId);
-        ruleProductMixRepository.delete(ruleId);
-        ruleProductRepository.delete(ruleId);
-        ruleParamRepository.delete(ruleId);
+//        ruleFactoryRepository.delete(ruleId);
+//        ruleIsoRepository.delete(ruleId);
+//        ruleLineRepository.delete(ruleId);
+//        ruleMarketRepository.delete(ruleId);
+//        ruleMaterialRepository.delete(ruleId);
+//        ruleProductMixRepository.delete(ruleId);
+//        ruleProductRepository.delete(ruleId);
+//        ruleParamRepository.delete(ruleId);
         return "success";
     }
 }
