@@ -1,6 +1,7 @@
 package bobo.erp.service.running;
 
 import bobo.erp.domain.state.RunningState;
+import bobo.erp.domain.state.finance.FinancialStatement;
 import bobo.erp.domain.state.marketing.AdvertisingState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +36,16 @@ public class RunningOperate {
         }else {
             runningState.getFinanceState().setCashAmount(balance);
             advertisingState.setYear(runningState.getBaseState().getTimeYear());
-            runningState.getMarketingState().getAdvertisingStateList().add(advertisingState);
+            runningState.getMarketingState().getAdvertisingStateList().add(advertisingState);   //保存数据至广告记录
+
+            FinancialStatement financialStatement = new FinancialStatement();
+            financialStatement.setAdvertisingCost(advertisingState.getAd0());
+            runningState.getFinanceState().getFinancialStatementList().add(financialStatement); //保存数据至财务报表
+
+            runningState.getBaseState().getOperateState().setAd(1); //时间轴：关闭广告投放
+            runningState.getBaseState().getOperateState().setOrderMeeting(0);   //时间轴：允许订货会
+            runningState.getBaseState().getOperateState().setLongLoan(0);   //时间轴：允许长贷申请
+
             logger.info("最新余额：{}", runningState.getFinanceState().getCashAmount());
         }
         logger.info("测试广告总额：{}", advertisingState.getAd0());

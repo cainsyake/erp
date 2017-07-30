@@ -49,8 +49,7 @@ public class RunningController {
 
     @PostMapping(value = "operateAdvertising/{nowUserName}")
     @ResponseBody
-    public Rule operateAdvertising(@PathVariable("nowUserName") String nowUserName, AdvertisingState advertisingState){
-        runningOperate.advertising(advertisingState, nowUserName);
-        return getTeachClassRuleService.getTeachClassRule(nowUserName);
+    public RunningState operateAdvertising(@PathVariable("nowUserName") String nowUserName, AdvertisingState advertisingState){
+        return runningOperate.advertising(advertisingState, nowUserName);
     }
 }

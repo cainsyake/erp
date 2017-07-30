@@ -815,7 +815,8 @@
             data:$('#advertisingForm').serialize(),
             success:function (runningState) {
                 btnController(runningState);
-                document.getElementById("valueCash").innerHTML = runningState.financeState.cashAmount;
+                infoController(runningState);
+                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
             },
             error:function (json) {
                 console.log(json.responseText);
@@ -831,9 +832,10 @@
             cache:false,
             dataType:"json",
             success:function (obj) {
-                console.log("用户baseState.state=1");
+                console.log("用户已激活");
                 document.getElementById("ajaxDiv1").innerHTML = getTime() + " 请开始运营";
                 btnController(obj);
+                infoController(obj);
 //                $("#btnInit").hide();
 //                $("#btnAdvertising").show();
 //                $("#btnStartYear").show();
