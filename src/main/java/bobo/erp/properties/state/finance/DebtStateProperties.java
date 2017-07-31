@@ -13,7 +13,7 @@ public class DebtStateProperties {
     public DebtStateProperties() {
     }
 
-    private Integer debtType;           //负债类型
+    private Integer debtType;           //负债类型: 1-长期贷款 2-短期贷款
     private Integer repaymentPeriod;    //还款期
     private Integer amounts;            //金额
     private FinanceState financeState;

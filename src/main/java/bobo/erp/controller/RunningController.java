@@ -3,10 +3,8 @@ package bobo.erp.controller;
 import bobo.erp.domain.rule.Rule;
 import bobo.erp.domain.state.RunningState;
 import bobo.erp.domain.state.marketing.AdvertisingState;
-import bobo.erp.service.running.GetSubRunningStateService;
-import bobo.erp.service.running.GetTeachClassRuleService;
-import bobo.erp.service.running.RunningOperate;
-import bobo.erp.service.running.StartRunningService;
+import bobo.erp.domain.teach.TeachClassInfo;
+import bobo.erp.service.running.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,6 +25,8 @@ public class RunningController {
     private GetTeachClassRuleService getTeachClassRuleService;
     @Autowired
     private RunningOperate runningOperate;
+    @Autowired
+    private GetTeachClassInfoService getTeachClassInfoService;
 
 
     @PostMapping(value = "getSubRunningState/{nowUserName}")
@@ -51,5 +51,11 @@ public class RunningController {
     @ResponseBody
     public RunningState operateAdvertising(@PathVariable("nowUserName") String nowUserName, AdvertisingState advertisingState){
         return runningOperate.advertising(advertisingState, nowUserName);
+    }
+
+    @PostMapping(value = "operateGetTeachClassInfo/{nowUserName}")
+    @ResponseBody
+    public TeachClassInfo operateGetTeachClassInfo(@PathVariable("nowUserName") String nowUserName){
+        return getTeachClassInfoService.getTeachClassInfoByUsername(nowUserName);
     }
 }

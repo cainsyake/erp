@@ -1,6 +1,8 @@
 package bobo.erp.service.running;
 
+import bobo.erp.domain.rule.Rule;
 import bobo.erp.domain.state.RunningState;
+import bobo.erp.domain.state.finance.DebtState;
 import bobo.erp.domain.state.finance.FinancialStatement;
 import bobo.erp.domain.state.marketing.AdvertisingState;
 import org.slf4j.Logger;
@@ -19,9 +21,12 @@ public class RunningOperate {
 
     @Autowired
     private GetSubRunningStateService getSubRunningStateService;
+    @Autowired
+    private GetTeachClassRuleService getTeachClassRuleService;
 
     public RunningState advertising(AdvertisingState advertisingState, String username){
         RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
         advertisingState.setAd26(advertisingState.getAd1()+advertisingState.getAd6()+advertisingState.getAd11()+advertisingState.getAd16()+advertisingState.getAd21());
         advertisingState.setAd27(advertisingState.getAd2()+advertisingState.getAd7()+advertisingState.getAd12()+advertisingState.getAd17()+advertisingState.getAd22());
         advertisingState.setAd28(advertisingState.getAd3()+advertisingState.getAd8()+advertisingState.getAd13()+advertisingState.getAd18()+advertisingState.getAd23());
@@ -29,7 +34,31 @@ public class RunningOperate {
         advertisingState.setAd30(advertisingState.getAd5()+advertisingState.getAd10()+advertisingState.getAd15()+advertisingState.getAd20()+advertisingState.getAd25());
         advertisingState.setAd0(advertisingState.getAd26()+advertisingState.getAd27()+advertisingState.getAd28()+advertisingState.getAd29()+advertisingState.getAd30());
 
-        Integer balance = runningState.getFinanceState().getCashAmount() - advertisingState.getAd0();
+        Integer balance = runningState.getFinanceState().getCashAmount();
+
+        Integer timeYear = runningState.getBaseState().getTimeYear();
+        if(timeYear > 1){
+            List<FinancialStatement> financialStatementList = runningState.getFinanceState().getFinancialStatementList();
+            for(FinancialStatement financialStatement : financialStatementList){
+                if(financialStatement.getYear() == timeYear - 1){
+                    balance -= financialStatement.getIncomeTax();   //扣除应缴税金
+                }
+            }
+
+            List<DebtState> debtStateList = runningState.getFinanceState().getDebtStateList();
+            for (DebtState debtState : debtStateList){
+                if (debtState.getDebtType() == 2){
+                    balance -= (int)Math.round(debtState.getAmounts() * rule.getRuleParam().getParamLongTermLoanRates());   //扣除长贷利息
+                    if(debtState.getRepaymentPeriod() == 1){
+                        balance -= debtState.getAmounts();  //归还到期长贷本金
+                    }else {
+                        debtState.setRepaymentPeriod(debtState.getRepaymentPeriod()-1);
+                    }
+                }
+            }
+        }
+
+        balance -= advertisingState.getAd0() ;
         if (balance < 0){
             runningState.getBaseState().setMsg("现金不足");
             logger.info("现金不足警告");

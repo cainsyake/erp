@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
-  <meta charset="utf-8"/>
-  <meta fileName="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
-  <meta fileName="keywords" content="admin, dashboard, bootstrap, template, flat, modern, theme, responsive, fluid, retina, backend, html5, css, css3"/>
-  <meta fileName="description" content=""/>
-  <meta fileName="author" content="ThemeBucket"/>
-  <link rel="shortcut icon" href="#" type="image/png" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="ThemeBucket">
+  <link rel="shortcut icon" href="#" type="image/png">
 
   <title>MAET ERP</title>
 
@@ -36,1884 +35,357 @@
   <link th:href="@{css/style.css}" rel="stylesheet"/>
   <link th:href="@{css/style-responsive.css}" rel="stylesheet"/>
 
-
-
-
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
   <script th:src="@{js/html5shiv.js}"></script>
   <script th:src="@{js/respond.min.js}"></script>
   <![endif]-->
-
-  <script type="text/javascript">
-
-  </script>
 </head>
 
-<body class="sticky-header">
+<body class="horizontal-menu-page">
 
 <section>
   <input type="hidden" th:value="${session.nowUserName}" id="nowUserName"/>
-
-  <!-- left side start-->
-  <div th:replace="leftside :: copy"></div>
-  <!-- left side end-->
-
-  <!-- main content start-->
-  <div class="main-content" >
-
-    <!-- header section start-->
-    <div th:replace="header :: copy"></div>
-    <!-- header section end-->
-
-    <!--body wrapper start-->
-    <div class="wrapper">
-      <div class="row">
-        <div class="col-md-8">
-          <div class="row">
-            <div id="divTimeAxis">
-              <!--<button class="btn btn-success btn-lg" type="button" onclick="startRunning()" style="display: none;" id="btnInit">开始运营</button>-->
-              <!--<button class="btn btn-info btn-lg" data-toggle="modal" href="#modal" type="button" style="display: none;" id="btnAdvertising">投放广告</button>-->
-              <!--<button class="btn btn-success btn-lg" type="button" onclick="" style="display: none;" id="btnStartYear">开始本年</button>-->
-
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnOrderMeeting">订货会</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnBidMeeting">竞单会</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnApplyLongLoan">申请长贷</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnStartQuarter">开始本季</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnApplyShortLoan">申请短贷</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnUpdatePurchase">更新原料订单</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnAddPurchase">下原料订单</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnAddFactory">购租厂房</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnAddLine">新建生产线</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnBuildLine">在建生产线</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnChangeLine">生产线转产</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnContinueChange">继续转产</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnSaleLine">出售生产线</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnBeginProduction">开始生产</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnUpdateReceivable">应收款更新</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnDelivery">按订单交货</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnFactoryTreatment">厂房处理</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnProductDev">产品研发</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnQualificationDev">资质研发</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnMarketDev">市场开拓</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnEndQuarter">当季结束</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnEndYear">当年结束</button>-->
-              <!--<button class="btn btn-default btn-lg" type="button" onclick="" style="display: none;" id="btnReport">填写报表</button>-->
-            </div>
-            <hr>
-          </div>
-          <div class="row">
-            <button class="btn btn-primary" onclick="addRule()" type="button">贴现</button>
-            <button class="btn btn-success" onclick="findRuleAll()" type="button">商业情报</button>
-            <button class="btn btn-danger" data-toggle="modal" href="#modalAddMarket" type="button">紧急采购</button>
-            <button class="btn btn-success" onclick="findMarketAll()" type="button">紧急出售</button>
-            <button class="btn btn-info" data-toggle="modal" href="#modalAddAdmin" type="button">厂房贴现</button>
-            <button class="btn btn-default " data-toggle="modal" href="#modalUpdatePassword" type="button" >修改密码</button>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="panel panel-info">
-            <div class="panel-heading">
-              <h3 class="panel-title">运营信息记录</h3>
-            </div>
-            <div class="panel-body" id="ajaxDiv1">
-            </div>
-          </div>
-          <button class="btn btn-primary" onclick="ajaxDivShow(2)" type="button">打开查询窗</button>
-          <button class="btn btn-danger" onclick="ajaxDivHide(2)" type="button">关闭查询窗</button>
-          <button class="btn btn-info" onclick="ajaxDivShow(3)" type="button">打开编辑窗</button>
-          <button class="btn btn-warning" onclick="ajaxDivHide(3)" type="button">关闭编辑窗</button>
-        </div>
-        <div class="col-md-12"><hr/></div>
-
-
-      </div>
-      <div class="row">
-        <div class="col-md-8" >
-          <section class="panel">
-            <header class="panel-heading no-border">
-              设备区域
-              <span class="tools pull-right">
-                <a href="javascript:;" class="fa fa-chevron-down"></a>
-                <!--<a href="javascript:;" class="fa fa-times"></a>-->
-              </span>
-            </header>
-            <div class="panel-body">
-              <table class="table table-bordered">
-                <thead>
-                <tr>
-                  <th>厂房ID：666</th>
-                  <th>厂房类型：大厂房</th>
-                  <th>厂房状态：已购买</th>
-                  <th>厂房价值：400</th>
-                </tr>
-                </thead>
-              </table>
-              <table class="table table-bordered">
-                <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>生产线类型</th>
-                  <th>生产线状态</th>
-                  <th>生产类型</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>科技线</td>
-                  <td>空闲</td>
-                  <td>P1</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>科技线</td>
-                  <td>空闲</td>
-                  <td>P1</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>科技线</td>
-                  <td>空闲</td>
-                  <td>P1</td>
-                </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-        </div>
-        <div class="col-md-4" >
-          <section class="panel">
-            <header class="panel-heading no-border">
-              财务信息
-              <span class="tools pull-right">
-                <a href="javascript:;" class="fa fa-chevron-down"></a>
-                <!--<a href="javascript:;" class="fa fa-times"></a>-->
-              </span>
-            </header>
-            <div class="panel-body">
-              <table class="table table-bordered">
-                <thead>
-                <tr>
-                  <th>现金</th>
-                  <th id="valueCash">0W</th>
-                </tr>
-                </thead>
-              </table>
-              <br>
-              <table class="table table-bordered">
-                <thead>
-                <tr>
-                  <th>应收款</th>
-                  <th>1</th>
-                  <th>2</th>
-                  <th>3</th>
-                  <th>4</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <th>金额</th>
-                  <td id="valueReceivable1"></td>
-                  <td id="valueReceivable2"></td>
-                  <td id="valueReceivable3"></td>
-                  <td id="valueReceivable4"></td>
-                </tr>
-                </tbody>
-              </table>
-              <br>
-              <table class="table table-bordered">
-                <thead>
-                <tr>
-                  <th>短贷</th>
-                  <th>1</th>
-                  <th>2</th>
-                  <th>3</th>
-                  <th>4</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                  <th>金额</th>
-                  <td id="valueShortDebt1"></td>
-                  <td id="valueShortDebt2"></td>
-                  <td id="valueShortDebt3"></td>
-                  <td id="valueShortDebt4"></td>
-                </tr>
-                </tbody>
-              </table>
-              <br>
-              <div id="divLongDebtInfo"></div>
-            </div>
-          </section>
-          <section class="panel">
-            <header class="panel-heading no-border">
-              库存信息
-              <span class="tools pull-right">
-                <a href="javascript:;" class="fa fa-chevron-down"></a>
-                <!--<a href="javascript:;" class="fa fa-times"></a>-->
-              </span>
-            </header>
-            <div class="panel-body">
-                <div id="divMaterialStock">原料库存表</div><br>
-                <div id="divProductStock"></div><br>
-                <div id="divMaterialPurchase"></div><br>
-            </div>
-          </section>
-          <section class="panel">
-            <header class="panel-heading no-border">
-              研发信息
-              <span class="tools pull-right">
-                <a href="javascript:;" class="fa fa-chevron-down"></a>
-                <!--<a href="javascript:;" class="fa fa-times"></a>-->
-              </span>
-            </header>
-            <div class="panel-body">
-
-            </div>
-          </section>
-        </div>
-      </div>
-      <div class="row" id="ajaxDiv2">
+  <nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="index.html">
+          <img src="images/logo.png" alt="">
+        </a>
       </div>
 
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li ><a onclick="findRule()">规则参数</a></li>
+          <li ><a onclick="findMarket()">市场预测</a></li>
+          <li ><a href="/">重新登陆</a></li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+          <!--<li>-->
+            <!--<form class="navbar-form navbar-left" role="search">-->
+              <!--<div class="form-group">-->
+                <!--<input type="text" class="form-control" placeholder="Search">-->
+              <!--</div>-->
+            <!--</form>-->
+          <!--</li>-->
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span th:text="${session.nowUserName}">未登录</span><b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">修改信息</a></li>
+              <li><a data-toggle="modal" href="#modalUpdatePassword">修改密码</a></li>
+              <li><a href="/">退出</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
 
 
-      <!--Modal-->
-      <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalAdvertising" class="modal fade">
-        <div class="modal-dialog">
-          <div class="modal-content">
+  <!--body wrapper start-->
+  <div class="wrapper">
+
+    <div class="row">
+      <div class="col-md-8">
+        <div class="row">
+          <div id="divTimeAxis"></div>
+          <hr>
+        </div>
+        <div class="row">
+          <button class="btn btn-default" onclick="" type="button">贴现</button>
+          <button class="btn btn-default" onclick="" type="button">商业情报</button>
+          <button class="btn btn-default" onclick="" type="button">紧急采购</button>
+          <button class="btn btn-default" onclick="" type="button">紧急出售</button>
+          <button class="btn btn-default" onclick="" type="button">厂房贴现</button>
+          <button class="btn btn-primary" data-toggle="modal" href="#modalUpdatePassword" type="button" >修改密码</button>
+          <button class="btn btn-defaule" data-toggle="modal" href="#modalReadRule" type="button" id="btnReadRule" style="display: none">查看规则</button>
+          <button class="btn btn-defaule" data-toggle="modal" href="#modalReadMarket" type="button" id="btnReadMarket" style="display: none">查看市场</button>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">运营信息记录</h3>
+          </div>
+          <div class="panel-body" id="ajaxDiv1">
+          </div>
+        </div>
+        <!--<button class="btn btn-primary" onclick="ajaxDivShow(2)" type="button">打开查询窗</button>-->
+        <!--<button class="btn btn-danger" onclick="ajaxDivHide(2)" type="button">关闭查询窗</button>-->
+        <!--<button class="btn btn-info" onclick="ajaxDivShow(3)" type="button">打开编辑窗</button>-->
+        <!--<button class="btn btn-warning" onclick="ajaxDivHide(3)" type="button">关闭编辑窗</button>-->
+      </div>
+      <div class="col-md-12"><hr/></div>
+
+
+    </div>
+    <div class="row">
+      <div class="col-md-8" >
+        <section class="panel">
+          <header class="panel-heading no-border">
+            设备区域
+            <span class="tools pull-right">
+                <a href="javascript:;" class="fa fa-chevron-down"></a>
+              <!--<a href="javascript:;" class="fa fa-times"></a>-->
+              </span>
+          </header>
+          <div class="panel-body">
+            <table class="table table-bordered">
+              <thead>
+              <tr>
+                <th>厂房ID：666</th>
+                <th>厂房类型：大厂房</th>
+                <th>厂房状态：已购买</th>
+                <th>厂房价值：400</th>
+              </tr>
+              </thead>
+            </table>
+            <table class="table table-bordered">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>生产线类型</th>
+                <th>生产线状态</th>
+                <th>生产类型</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <td>1</td>
+                <td>科技线</td>
+                <td>空闲</td>
+                <td>P1</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>科技线</td>
+                <td>空闲</td>
+                <td>P1</td>
+              </tr>
+              <tr>
+                <td>1</td>
+                <td>科技线</td>
+                <td>空闲</td>
+                <td>P1</td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </div>
+      <div class="col-md-4" >
+        <section class="panel">
+          <header class="panel-heading no-border">
+            财务信息
+            <span class="tools pull-right">
+                <a href="javascript:;" class="fa fa-chevron-down"></a>
+              <!--<a href="javascript:;" class="fa fa-times"></a>-->
+              </span>
+          </header>
+          <div class="panel-body">
+            <table class="table table-bordered">
+              <thead>
+              <tr>
+                <th>现金</th>
+                <th id="valueCash">0W</th>
+              </tr>
+              </thead>
+            </table>
+            <br>
+            <table class="table table-bordered">
+              <thead>
+              <tr>
+                <th>应收款</th>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <th>金额</th>
+                <td id="valueReceivable1"></td>
+                <td id="valueReceivable2"></td>
+                <td id="valueReceivable3"></td>
+                <td id="valueReceivable4"></td>
+              </tr>
+              </tbody>
+            </table>
+            <br>
+            <table class="table table-bordered">
+              <thead>
+              <tr>
+                <th>短贷</th>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                <th>金额</th>
+                <td id="valueShortDebt1"></td>
+                <td id="valueShortDebt2"></td>
+                <td id="valueShortDebt3"></td>
+                <td id="valueShortDebt4"></td>
+              </tr>
+              </tbody>
+            </table>
+            <br>
+            <div id="divLongDebtInfo"></div>
+          </div>
+        </section>
+        <section class="panel">
+          <header class="panel-heading no-border">
+            库存信息
+            <span class="tools pull-right">
+                <a href="javascript:;" class="fa fa-chevron-down"></a>
+              <!--<a href="javascript:;" class="fa fa-times"></a>-->
+              </span>
+          </header>
+          <div class="panel-body">
+            <div id="divMaterialStock">原料库存表</div><br>
+            <div id="divProductStock"></div><br>
+            <div id="divMaterialPurchase"></div><br>
+          </div>
+        </section>
+        <section class="panel">
+          <header class="panel-heading no-border">
+            研发信息
+            <span class="tools pull-right">
+                <a href="javascript:;" class="fa fa-chevron-down"></a>
+              <!--<a href="javascript:;" class="fa fa-times"></a>-->
+              </span>
+          </header>
+          <div class="panel-body">
+
+          </div>
+        </section>
+      </div>
+    </div>
+    <div class="row" id="ajaxDiv2">
+    </div>
 
 
 
+    <!--Modal-->
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalAdvertising" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalAdvertising">&times;</button>
+            <h4 class="modal-title">投 放 广 告</h4>
+          </div>
+          <div class="modal-body">
+            <form action="#" method="post" name="advertisingForm" id="advertisingForm">
+
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button" onclick="oprateAdvertising(document.advertisingForm)">投放</button>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalUpdatePassword" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form method="post" name="userChangePassword" action="#">
             <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">投 放 广 告</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalUpdatePassword">&times;</button>
+              <h4 class="modal-title">修 改 密 码</h4>
             </div>
             <div class="modal-body">
-              <form action="#" method="post" name="advertisingForm" id="advertisingForm">
-
-              </form>
+              <p>输入新的密码后请按提交</p>
+              <input type="password" autofocus="" placeholder="请输入新的密码" class="form-control" name="password" id="newPassword"/>
+              <input type="hidden" name="newUsername" th:value="${session.nowUserName}"id="newUsername"/>
             </div>
             <div class="modal-footer">
               <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-              <button class="btn btn-success" type="button" onclick="oprateAdvertising(document.advertisingForm)">投放</button>
+              <button class="btn btn-primary" type="button" onclick="updatePassword()" >提交</button>
             </div>
+          </form>
 
 
-
-          </div>
         </div>
       </div>
-
-      <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalUpdatePassword" class="modal fade">
-        <div class="modal-dialog">
-          <div class="modal-content">
-
-
-            <form method="post" name="userChangePassword" action="#">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">修 改 密 码</h4>
-              </div>
-              <div class="modal-body">
-                <p>输入新的密码后请按提交</p>
-                <input type="password" autofocus="" placeholder="请输入新的密码" class="form-control" name="password" id="newPassword"/>
-                <input type="hidden" name="newUsername" th:value="${session.nowUserName}"id="newUsername"/>
-              </div>
-              <div class="modal-footer">
-                <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-                <button class="btn btn-primary" type="button" onclick="updatePassword()" >提交</button>
-              </div>
-            </form>
-
-
-          </div>
-        </div>
-      </div>
-
-      <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalReadRule" class="modal fade">
-        <div class="modal-dialog" style="width:900px">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">查 看 规 则</h4>
-            </div>
-            <div class="modal-body" >
-              <div id="divReadRule" style="height:500px;overflow: auto">
-
-              </div>
-
-            </div>
-            <div class="modal-footer">
-              <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
-              <button class="btn btn-primary" type="button" onclick="" >调用</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalAddMarket" class="modal fade">
-        <div class="modal-dialog">
-          <div class="modal-content">
-
-
-            <form action="addMarket" method="post" name="marketAddForm" id="marketAddForm" enctype="multipart/form-data">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">添 加 市 场</h4>
-              </div>
-              <div class="modal-body">
-
-                <p>输入要添加的市场文件</p>
-                <input type="text" autofocus="" placeholder="请输入这套规则的名称" class="form-control" name="marketSeriesName" /><br/>
-                <input type="file" name="filename" class="form-control"/>
-                <input type="hidden" name="marketSeriesUploader" th:value="${session.nowUserName}"/>
-              </div>
-              <div class="modal-footer">
-                <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-                <button class="btn btn-primary" type="button" onclick="addMarket()" >提交</button>
-              </div>
-            </form>
-
-
-          </div>
-        </div>
-      </div>
-
-      <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalReadMarket" class="modal fade">
-        <div class="modal-dialog" style="width:900px">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">查 看 市 场</h4>
-            </div>
-            <div class="modal-body" >
-              <div id="divReadMarket" style="height:500px;overflow: auto">
-
-              </div>
-
-            </div>
-            <div class="modal-footer">
-              <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
-              <button class="btn btn-primary" type="button" onclick="" >调用</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
-    <!--body wrapper end-->
 
-    <!--footer section start-->
-    <footer>
-      2017 &copy; <a href="https://cainsyake.github.io/" target="_blank">Cainsyake </a>
-    </footer>
-    <!--footer section end-->
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalReadRule" class="modal fade">
+      <div class="modal-dialog" style="width:900px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">查 看 规 则</h4>
+          </div>
+          <div class="modal-body" >
+            <div id="divReadRule" style="height:500px;overflow: auto">
 
-  </div >
-  <!-- main content end-->
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+            <button class="btn btn-primary" type="button" onclick="" >调用</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalReadMarket" class="modal fade">
+      <div class="modal-dialog" style="width:900px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">查 看 市 场</h4>
+          </div>
+          <div class="modal-body" >
+            <div id="divReadMarket" style="height:500px;overflow: auto">
+
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+            <button class="btn btn-primary" type="button" onclick="" >调用</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <!--body wrapper end-->
+
+  <!--footer section start-->
+  <footer>
+    2017 &copy; <a href="https://cainsyake.github.io/" target="_blank">Cainsyake </a>
+  </footer>
+  <!--footer section end-->
+
 </section>
-
 <!--平台管理JS-->
-<script language="javascript">
-    window.onload=subOnLoad;
-    function subOnLoad() {
-        var nowUserName = $("#nowUserName").val();
-        $.ajax({
-            type:"POST",
-            url:"/getSubRunningState/" + nowUserName,
-            cache:false,
-            dataType:"json",
-            success:function (runningState) {
-                btnController(runningState);
-                infoController(runningState);
-            },
-            error:function (json) {
-                console.log(json.responseText);
-            }
-        });
-        $.ajax({
-            type:"POST",
-            url:"/getTeachClassRule/" + nowUserName,
-            cache:false,
-            dataType:"json",
-            success:function (rule) {
-                pageController(rule);
-            },
-            error:function (json) {
-                console.log(json.responseText);
-            }
-        });
-    }
-
-    function infoController(runningState) {
-        document.getElementById("valueCash").innerHTML = runningState.financeState.cashAmount + " W";
-    }
-
-    function pageController(rule) {
-        var txt1 ="";
-        txt1 += "<table class='table table-bordered'>" +
-            "<thead>" +
-            "<tr>" +
-            "<th></th>";
-        var ruleMarket = rule.ruleMarket;
-        var marketNum = 0;
-        if(ruleMarket.market1Name != ""){
-            txt1 += "<th>" + ruleMarket.market1Name + "</th>";
-            marketNum++;
-        }
-        if(ruleMarket.market2Name != ""){
-            txt1 += "<th>" + ruleMarket.market2Name + "</th>";
-            marketNum++;
-        }
-        if(ruleMarket.market3Name != ""){
-            txt1 += "<th>" + ruleMarket.market3Name + "</th>";
-            marketNum++;
-        }
-        if(ruleMarket.market4Name != ""){
-            txt1 += "<th>" + ruleMarket.market4Name + "</th>";
-            marketNum++;
-        }
-        if(ruleMarket.market5Name != ""){
-            txt1 += "<th>" + ruleMarket.market5Name + "</th>";
-            marketNum++;
-        }
-        txt1 += "</tr>" +
-            "</thead>" +
-            "<tbody>";
-        var ruleProduct = rule.ruleProduct;
-        if(ruleProduct.product1Name != ""){
-            txt1 += "<tr>" +
-                "<th>" + ruleProduct.product1Name + "</th>";
-            for(var i =1; i < marketNum+1; i++){
-                var strName = "ad" + i;
-                txt1 += "<td><input type='number' min='0' style='width:80px' class='form-control' name='" + strName + "'/></td>";
-            }
-            txt1 += "</tr>";
-        }
-        if(ruleProduct.product2Name != ""){
-            txt1 += "<tr>" +
-                "<th>" + ruleProduct.product2Name + "</th>";
-            for(var i =6; i < marketNum+6; i++){
-                var strName = "ad" + i;
-                txt1 += "<td><input type='number' min='0' style='width:80px' class='form-control' name='" + strName + "'/></td>";
-            }
-            txt1 += "</tr>";
-        }
-        if(ruleProduct.product3Name != ""){
-            txt1 += "<tr>" +
-                "<th>" + ruleProduct.product3Name + "</th>";
-            for(var i =11; i < marketNum+11; i++){
-                var strName = "ad" + i;
-                txt1 += "<td><input type='number' min='0' style='width:80px' class='form-control' name='" + strName + "'/></td>";
-            }
-            txt1 += "</tr>";
-        }
-        if(ruleProduct.product4Name != ""){
-            txt1 += "<tr>" +
-                "<th>" + ruleProduct.product4Name + "</th>";
-            for(var i =16; i < marketNum+16; i++){
-                var strName = "ad" + i;
-                txt1 += "<td><input type='number' min='0' style='width:80px' class='form-control' name='" + strName + "'/></td>";
-            }
-            txt1 += "</tr>";
-        }
-        if(ruleProduct.product5Name != ""){
-            txt1 += "<tr>" +
-                "<th>" + ruleProduct.product5Name + "</th>";
-            for(var i =21; i < marketNum+21; i++){
-                var strName = "ad" + i;
-                txt1 += "<td><input type='number' min='0' style='width:80px' class='form-control' name='" + strName + "'/></td>";
-            }
-            txt1 += "</tr>";
-        }
-        txt1 += "</tbody>" +
-            "</table>";
-        document.getElementById("advertisingForm").innerHTML = txt1;
-
-        txt2 = "<table class='table table-bordered'>" +
-        "<thead>" +
-        "<tr>" +
-        "<th>长贷</th>";
-        var ruleParam = rule.ruleParam;
-        for(var i = 1; i < ruleParam.paramLongTermLoanTimeLimit+1; i++){
-            txt2 += "<th>" + i + "</th>";
-        }
-        txt2 += "</tr>" +
-            "</thead>" +
-            "<tbody>" +
-            "<tr>" +
-            "<th>金额</th>";
-        for(var i = 1; i < ruleParam.paramLongTermLoanTimeLimit+1; i++){
-            txt2 += "<td id='valueLongDebt" + i + "'></td>";
-        }
-        txt2 += "</tr>" +
-            "</tbody>" +
-            "</table>";
-        document.getElementById("divLongDebtInfo").innerHTML = txt2;
-
-        txt3 = "<table class='table table-bordered'>" +
-            "<thead>" +
-            "<tr>" +
-            "<th>原料</th>";
-        var ruleMaterial = rule.ruleMaterial;
-        var materialNum = 0;
-        for(var i = 1; i < 6; i++){
-            if(eval("ruleMaterial.material" + i + "Name !== null")){
-                txt3 += "<th>" + eval("ruleMaterial.material" + i + "Name") + "</th>";
-                materialNum++;
-            }
-        }
-        txt3 += "</tr>" +
-            "</thead>" +
-            "<tbody>" +
-            "<tr>" +
-            "<th>数量</th>";
-        for(var i = 1; i < materialNum+1; i++){
-            txt3 += "<td id='valueMaterialStock" + i + "'></td>";
-        }
-        txt3 += "</tr>" +
-            "</tbody>" +
-            "</table>";
-        document.getElementById("divMaterialStock").innerHTML = txt3;
-
-        txt4 = "<table class='table table-bordered'>" +
-            "<thead>" +
-            "<tr>" +
-            "<th>产品</th>";
-        var productNum = 0;
-        for(var i = 1; i < 6; i++){
-            if(eval("ruleProduct.product" + i + "Name !== null")){
-                txt4 += "<th>" + eval("ruleProduct.product" + i + "Name") + "</th>";
-                productNum++;
-            }
-        }
-        txt4 += "</tr>" +
-            "</thead>" +
-            "<tbody>" +
-            "<tr>" +
-            "<th>数量</th>";
-        for(var i = 1; i < productNum+1; i++){
-            txt4 += "<td id='valueProductStock" + i + "'></td>";
-        }
-        txt4 += "</tr>" +
-            "</tbody>" +
-            "</table>";
-        document.getElementById("divProductStock").innerHTML = txt4;
-
-        var maxMaterialTime = 0;
-        for(var i = 1; i < 6; i++){
-            if(eval("ruleMaterial.material" + i + "Time > maxMaterialTime")){
-                maxMaterialTime = eval("ruleMaterial.material" + i + "Time");
-            }
-        }
-        var txt5 = "<table class='table table-bordered'>" +
-            "<thead>" +
-            "<tr>" +
-            "<th>采购单</th>";
-//        var ruleMaterial = rule.ruleMaterial;
-//        var materialNum = 0;
-        for(var i = 1; i < materialNum + 1; i++){
-            txt5 += "<th>" + eval("ruleMaterial.material" + i + "Name") + "</th>";
-        }
-        txt5 += "</tr>" +
-            "</thead>" +
-            "<tbody>";
-        for(var i = 1; i < maxMaterialTime + 1; i++){
-            txt5 += "<tr>" +
-                "<th>到货期" + i + "</th>";
-            for(var j = 1; j < materialNum + 1; j++){
-                txt5 += "<td id='valueMaterialStock" + j + "T" + i + "'></td>";
-            }
-            txt5 += "</tr>";
-        }
-        txt5 += "</tbody>" +
-            "</table>";
-        document.getElementById("divMaterialPurchase").innerHTML = txt5;
-    }
-
-    function btnController(obj) {
-        var txt="";
-        if(obj.baseState.state == 0){
-            console.log("用户尚未开始运营");
-            document.getElementById("ajaxDiv1").innerHTML = getTime() + " 请点击开始运营";
-//            $("#btnInit").show();
-            txt += "<button class='btn btn-success btn-lg' type='button' onclick='startRunning()' style='' id='btnInit'>开始运营</button>";
-        }else if(obj.baseState.state < 0 ){
-            console.log("用户已破产");
-            document.getElementById("ajaxDiv1").innerHTML = getTime() + " 该用户已经破产";
-        }else{
-
-            if(obj.baseState.timeQuarter == 0){
-                if(obj.baseState.operateState.report == 0){
-//                    $("#btnReport").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnApplyShortLoan'>填写报表</button>";
-                }
-                if(obj.baseState.operateState.ad == 0){
-//                    $("#btnAdvertising").show();
-                    txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#modalAdvertising' type='button' style='' id='btnAdvertising'>投放广告</button>";
-                }
-                if(obj.baseState.operateState.orderMeeting == 0){
-//                    $("#btnOrderMeeting").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnOrderMeeting'>订货会</button>";
-                }
-                if(obj.baseState.operateState.bidMeeting == 0){
-//                    $("#btnBidMeeting").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBidMeeting'>竞单会</button>";
-                }
-                if(obj.baseState.operateState.longLoan == 0){
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='ApplyLongLoan'>申请长贷</button>";
-                }
-//                $("#btnApplyLongLoan").show();  //长贷需要在投放广告后
-//                $("#btnStartYear").show();
-                txt += "<button class='btn btn-success btn-lg' type='button' onclick='' style='' id='btnStartYear'>开始本年</button>";
-            }else if(obj.baseState.timeQuarter < 4){
-                if(obj.baseState.state == 10){
-//                    $("#btnStartQuarter").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnStartQuarter'>开始本季</button>";
-                }
-                if(obj.baseState.state == 11){
-                    if(obj.baseState.operateState.shortLoan == 0){
-//                        $("#btnApplyShortLoan").show();
-                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnApplyShortLoan'>申请短贷</button>";
-                    }
-//                    $("#btnUpdatePurchase").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnUpdatePurchase'>更新原料订单</button>";
-                }
-                if(obj.baseState.state == 12){
-                    if(obj.baseState.operateState.addPurchase == 0){
-//                        $("#btnAddPurchase").show();
-                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddPurchase'>下原料订单</button>";
-                    }
-                    if(obj.baseState.operateState.buildLine == 0){
-//                        $("#btnBuildLine").show();
-                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBuildLine'>在建生产线</button>";
-                    }
-                    if(obj.baseState.operateState.continueChange == 0){
-//                        $("#btnContinueChange").show();
-                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnContinueChange'>继续转产</button>";
-                    }
-                    if(obj.baseState.operateState.saleLine == 0){
-//                        $("#btnSaleLine").show();
-                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnSaleLine'>出售生产线</button>";
-                    }
-                    if(obj.baseState.operateState.beginProduction == 0){
-//                        $("#btnBeginProduction").show();
-                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBeginProduction'>开始生产</button>";
-                    }
-//                    $("#btnAddFactory").show();
-//                    $("#btnAddLine").show();
-//                    $("#btnChangeLine").show();
-//                    $("#btnUpdateReceivable").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddFactory'>购租厂房</button>";
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddLine'>新建生产线</button>";
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnChangeLine'>生产线转产</button>";
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnUpdateReceivable'>应收款更新</button>";
-                }
-                if(obj.baseState.state == 13){
-                    if(obj.baseState.operateState.productDev == 0){
-//                        $("#btnProductDev").show();
-                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnProductDev'>产品研发</button>";
-                    }
-//                    $("#btnDelivery").show();
-//                    $("#btnFactoryTreatment").show();
-//                    $("#btnEndQuarter").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnDelivery'>按订单交货</button>";
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnFactoryTreatment'>厂房处理</button>";
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnEndQuarter'>当季结束</button>";
-                }
-
-            }else if(obj.baseState.timeQuarter == 4){
-                if(obj.baseState.state == 10){
-//                    $("#btnStartQuarter").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnStartQuarter'>开始本季</button>";
-                }
-                if(obj.baseState.state == 11){
-                    if(obj.baseState.operateState.shortLoan == 0){
-//                        $("#btnApplyShortLoan").show();
-                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnApplyShortLoan'>申请短贷</button>";
-                    }
-//                    $("#btnUpdatePurchase").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnUpdatePurchase'>更新原料订单</button>";
-                }
-                if(obj.baseState.state == 12){
-                    if(obj.baseState.operateState.addPurchase == 0){
-//                        $("#btnAddPurchase").show();
-                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddPurchase'>下原料订单</button>";
-                    }
-                    if(obj.baseState.operateState.buildLine == 0){
-//                        $("#btnBuildLine").show();
-                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBuildLine'>在建生产线</button>";
-                    }
-                    if(obj.baseState.operateState.continueChange == 0){
-//                        $("#btnContinueChange").show();
-                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnContinueChange'>继续转产</button>";
-                    }
-                    if(obj.baseState.operateState.saleLine == 0){
-//                        $("#btnSaleLine").show();
-                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnSaleLine'>出售生产线</button>";
-                    }
-                    if(obj.baseState.operateState.beginProduction == 0){
-//                        $("#btnBeginProduction").show();
-                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBeginProduction'>开始生产</button>";
-                    }
-//                    $("#btnAddFactory").show();
-//                    $("#btnAddLine").show();
-//                    $("#btnChangeLine").show();
-//                    $("#btnUpdateReceivable").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddFactory'>购租厂房</button>";
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddLine'>新建生产线</button>";
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnChangeLine'>生产线转产</button>";
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnUpdateReceivable'>应收款更新</button>";
-
-                }
-                if(obj.baseState.state == 13){
-                    if(obj.baseState.operateState.productDev == 0){
-//                        $("#btnProductDev").show();
-                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnProductDev'>产品研发</button>";
-                    }
-                    if(obj.baseState.operateState.qualificationDev == 0){
-//                        $("#btnQualificationDev").show();
-                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnQualificationDev'>资质研发</button>";
-                    }
-                    if(obj.baseState.operateState.marketDev == 0){
-//                        $("#btnMarketDev").show();
-                        txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnMarketDev'>市场开拓</button>";
-                    }
-//                    $("#btnDelivery").show();
-//                    $("#btnFactoryTreatment").show();
-//                    $("#btnEndYear").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnDelivery'>按订单交货</button>";
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnFactoryTreatment'>厂房处理</button>";
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnEndYear'>当年结束</button>";
-                }
-            }
-        }
-        document.getElementById("divTimeAxis").innerHTML = txt;
-    }
-
-    function oprateAdvertising(form) {
-        var nowUserName = $("#nowUserName").val();
-        for(var i =1; i < 26; i++){
-            eval("var ad =form.ad"+ i + ".value;");
-
-            if(ad < 0){
-                alert("广告额不能为负数");
-                return false;
-            }
-            if(ad == ""){
-                eval("form.ad"+ i + ".value = 0;");
-            }
-        }
-        $.ajax({
-            type:"POST",
-            url:"/operateAdvertising/" + nowUserName,
-            cache:false,
-            dataType:"json",
-            data:$('#advertisingForm').serialize(),
-            success:function (runningState) {
-                btnController(runningState);
-                infoController(runningState);
-                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
-            },
-            error:function (json) {
-                console.log(json.responseText);
-            }
-        });
-    }
-
-    function startRunning() {
-        var nowUserName = $("#nowUserName").val();
-        $.ajax({
-            type:"POST",
-            url:"/subStartRunning/" + nowUserName,
-            cache:false,
-            dataType:"json",
-            success:function (obj) {
-                console.log("用户已激活");
-                document.getElementById("ajaxDiv1").innerHTML = getTime() + " 请开始运营";
-                btnController(obj);
-                infoController(obj);
-//                $("#btnInit").hide();
-//                $("#btnAdvertising").show();
-//                $("#btnStartYear").show();
-            },
-            error:function (json) {
-                console.log(json.responseText);
-            }
-        });
-    }
-
-    function teachClassReturnOriginal() {
-        if (confirm("确认要执行还原操作吗?") == false) {
-            return;
-        }
-        $.ajax({
-            type:"GET",
-            url:"/teachClassReturnOriginal",
-            cache:false,
-            dataType:"json",
-            success:function (json) {
-                console.log("success");
-                console.log(json.responseText);
-                document.getElementById("ajaxDiv1").innerHTML = getTime() + json.responseText;
-            },
-            error:function (json) {
-                document.getElementById("ajaxDiv1").innerHTML = getTime() + json.responseText;
-                console.log(json.responseText);
-            }
-        });
-    }
-
-    function readMarket(seriesId) {
-        var txt1 = "<table class='table table-striped table-hover table-bordered' id='editable-sample'>" +
-            "<thead>" +
-            "<tr>" +
-            "<th>订单ID</th>" +
-            "<th>年份</th>" +
-            "<th>区域</th>" +
-            "<th>产品类型</th>" +
-            "<th>数量</th>" +
-            "<th>总价</th>" +
-            "<th>交货期</th>" +
-            "<th>账期</th>" +
-            "<th>资质要求</th>" +
-            "</tr>" +
-            "</thead>" +
-            "<tbody>";
-        $.ajax({
-            type: "GET",
-            url: "/findOrderBySeriesId/" + seriesId,
-            cache: false,
-            async:false,
-            dataType: "json",
-            success: function (json) {
-                for (var i = 0; i < eval(json).length; i++) {
-
-                    txt1 += "<tr>" +
-                        "<td>" + json[i].marketOrderId + "</td>" +
-                        "<td>" + json[i].orderYear + "</td>" +
-                        "<td>" + json[i].orderArea + "</td>" +
-                        "<td>" + json[i].orderProduct + "</td>" +
-                        "<td>" + json[i].orderQuantity + "</td>" +
-                        "<td>" + json[i].orderTotalPrice + "</td>" +
-                        "<td>" + json[i].orderDeliveryTime + "</td>" +
-                        "<td>" + json[i].orderAccountPeriod + "</td>" +
-                        "<td>" + json[i].orderQualificate + "</td>" +
-                        "</tr>";
-                }
-                txt1 += "</tbody></table>";
-
-            }
-        });
-        var txt2 = "<table class='table table-striped table-hover table-bordered' id='editable-sample'>" +
-            "<thead>" +
-            "<tr>" +
-            "<th>竞单ID</th>" +
-            "<th>年份</th>" +
-            "<th>区域</th>" +
-            "<th>产品类型</th>" +
-            "<th>数量</th>" +
-            "<th>资质要求</th>" +
-            "</tr>" +
-            "</thead>" +
-            "<tbody>";
-        $.ajax({
-            type: "GET",
-            url: "/findBidBySeriesId/" + seriesId,
-            cache: false,
-            async:false,
-            dataType: "json",
-            success: function (json) {
-                for (var i = 0; i < eval(json).length; i++) {
-                    txt2 += "<tr>" +
-                        "<td>" + json[i].marketBidId + "</td>" +
-                        "<td>" + json[i].bidYear + "</td>" +
-                        "<td>" + json[i].bidArea + "</td>" +
-                        "<td>" + json[i].bidProduct + "</td>" +
-                        "<td>" + json[i].bidQuantity + "</td>" +
-                        "<td>" + json[i].bidQualificate + "</td>" +
-                        "</tr>";
-                }
-                txt2 += "</tbody></table>";
-            }
-        });
-
-        document.getElementById("divReadMarket").innerHTML = txt1 + txt2 ;
-        document.getElementById("ajaxDiv1").innerHTML = "正在查看市场（SeriesID：" + seriesId + "）详细订单";
-    }
-
-    function findMarketAll() {
-        var txt="";
-
-        $.ajax({
-            type:"GET",
-            url:"/findMarketSeriesAll",
-            cache:false,
-            dataType:"json",
-            success:function (json) {
-                txt="<table class='table table-striped table-hover table-bordered' id='editable-sample'>" +
-                    "<thead>" +
-                    "<tr>" +
-                    "<th>SeriesID</th>" +
-                    "<th>市场名称</th>" +
-                    "<th>上传者</th>" +
-                    "<th>上传日期</th>" +
-                    "<th>调用次数</th>" +
-                    "<th>查看内容</th>" +
-                    "<th>调用规则</th>" +
-                    "<th>删除规则</th>" +
-                    "<th style='display: none'>当前操作用户</th>" +
-                    "</tr>" +
-                    "</thead>" +
-                    "<tbody>";
-                for(var i=0; i<eval(json).length; i++ ){
-                    txt = txt + "<tr>" +
-                        "<td>" + json[i].marketSeriesId + "</td>" +
-                        "<td>" + json[i].marketSeriesName + "</td>" +
-                        "<td>" + json[i].marketSeriesUploader + "</td>" +
-                        "<td>" + timeFormat(json[i].marketSeriesAlterTime) + "</td>" +
-                        "<td>" + json[i].marketSeriesUseCount + "</td>" +
-                        "<td><a class='edit' href='#modalReadMarket' data-toggle='modal' onclick='readMarket(" + json[i].marketSeriesId + ")'>查看详细订单</a></td>" +
-                        "<td><a onclick='useMarket(" + json[i].marketSeriesId + ")'>调用市场</a></td>" +
-                        "<td><a onclick='deleteMarket(" + json[i].marketSeriesId + ")'>删除市场</a></td>" +
-                        "<td style='display: none'>当前操作用户</td>" +
-                        "</tr>";
-                }
-                txt = txt + "</tbody></table>";
-                document.getElementById("ajaxDiv2").innerHTML = txt;
-                document.getElementById("ajaxDiv1").innerHTML = "成功查询市场列表";
-            }
-        });
-    }
-
-
-
-    function readRule(ruleId) {
-        var txt = "";
-        $.ajax({
-            type:"GET",
-            url:"/ruleFindById/" + ruleId,
-            cache:false,
-            dataType:"json",
-            success:function (json) {
-                txt1 = "<div class='panel panel-warning'>" +
-                    "<div class='panel-heading'>" +
-                    "<h3 class='panel-title'>规则ID：" +  json.ruleId + " &nbsp;&nbsp;上传者：" + json.ruleUploader + "</h3>" +
-                    "<h3 class='panel-title'>上传时间：" + timeFormat(json.ruleAlterTime) + " &nbsp;&nbsp;&nbsp;&nbsp;调用次数：" + json.ruleUserCount + "</h3>" +
-                    "</div>" +
-                    "<div class='panel-body'>" +
-                    "</div>" +
-                    "</div>";
-
-                txt2="<table class='table table-striped table-hover table-bordered' id=''>" +
-                    "<thead>" +
-                    "<tr>" +
-                    "<th>厂房名称</th>" +
-                    "<th>厂房买价</th>" +
-                    "<th>厂房租金</th>" +
-                    "<th>厂房售价</th>" +
-                    "<th>厂房容量</th>" +
-                    "<th>数量限制</th>" +
-                    "<th>潜力分数</th>" +
-                    "</tr>" +
-                    "</thead>" +
-                    "<tbody>";
-                txt3 = "";
-                var ruleFactory = json.ruleFactory;
-                if(ruleFactory.factory1Name != ""){
-                    txt3 += "<tr>" +
-                        "<td>" + ruleFactory.factory1Name + "</td>" +
-                        "<td>" + ruleFactory.factory1BuyPrice + "</td>" +
-                        "<td>" + ruleFactory.factory1RentPrice + "</td>" +
-                        "<td>" + ruleFactory.factory1SalePrice + "</td>" +
-                        "<td>" + ruleFactory.factory1Volume + "</td>" +
-                        "<td>" + ruleFactory.factory1Limit + "</td>" +
-                        "<td>" + ruleFactory.factory1Score + "</td>" +
-                        "</tr>"
-                }
-                if(ruleFactory.factory2Name != ""){
-                    txt3 += "<tr>" +
-                        "<td>" + ruleFactory.factory2Name + "</td>" +
-                        "<td>" + ruleFactory.factory2BuyPrice + "</td>" +
-                        "<td>" + ruleFactory.factory2RentPrice + "</td>" +
-                        "<td>" + ruleFactory.factory2SalePrice + "</td>" +
-                        "<td>" + ruleFactory.factory2Volume + "</td>" +
-                        "<td>" + ruleFactory.factory2Limit + "</td>" +
-                        "<td>" + ruleFactory.factory2Score + "</td>" +
-                        "</tr>"
-                }
-                if(ruleFactory.factory3Name != ""){
-                    txt3 += "<tr>" +
-                        "<td>" + ruleFactory.factory3Name + "</td>" +
-                        "<td>" + ruleFactory.factory3BuyPrice + "</td>" +
-                        "<td>" + ruleFactory.factory3RentPrice + "</td>" +
-                        "<td>" + ruleFactory.factory3SalePrice + "</td>" +
-                        "<td>" + ruleFactory.factory3Volume + "</td>" +
-                        "<td>" + ruleFactory.factory3Limit + "</td>" +
-                        "<td>" + ruleFactory.factory3Score + "</td>" +
-                        "</tr>"
-                }
-                if(ruleFactory.factory4Name != ""){
-                    txt3 += "<tr>" +
-                        "<td>" + ruleFactory.factory4Name + "</td>" +
-                        "<td>" + ruleFactory.factory4BuyPrice + "</td>" +
-                        "<td>" + ruleFactory.factory4RentPrice + "</td>" +
-                        "<td>" + ruleFactory.factory4SalePrice + "</td>" +
-                        "<td>" + ruleFactory.factory4Volume + "</td>" +
-                        "<td>" + ruleFactory.factory4Limit + "</td>" +
-                        "<td>" + ruleFactory.factory4Score + "</td>" +
-                        "</tr>"
-                }
-                if(ruleFactory.factory5Name != ""){
-                    txt3 += "<tr>" +
-                        "<td>" + ruleFactory.factory5Name + "</td>" +
-                        "<td>" + ruleFactory.factory5BuyPrice + "</td>" +
-                        "<td>" + ruleFactory.factory5RentPrice + "</td>" +
-                        "<td>" + ruleFactory.factory5SalePrice + "</td>" +
-                        "<td>" + ruleFactory.factory5Volume + "</td>" +
-                        "<td>" + ruleFactory.factory5Limit + "</td>" +
-                        "<td>" + ruleFactory.factory5Score + "</td>" +
-                        "</tr>"
-                }
-                txt3 += "</tbody></table><br/>";
-
-                txt4 = "<table class='table table-striped table-hover table-bordered' id=''>" +
-                    "<thead>" +
-                    "<tr>" +
-                    "<th>生产线名称</th>" +
-                    "<th>每周期投资</th>" +
-                    "<th>投资周期</th>" +
-                    "<th>生产周期</th>" +
-                    "<th>每周期转产费</th>" +
-                    "<th>转产周期</th>" +
-                    "<th>维护费</th>" +
-                    "<th>残值</th>" +
-                    "<th>每周期折旧</th>" +
-                    "<th>折旧周期</th>" +
-                    "<th>潜力分数</th>" +
-                    "</tr>" +
-                    "</thead>" +
-                    "<tbody>";
-                var ruleLine = json.ruleLine;
-                if(ruleLine.line1Name != ""){
-                    txt4 += "<tr>" +
-                        "<td>" + ruleLine.line1Name + "</td>" +
-                        "<td>" + ruleLine.line1UnitInvest + "</td>" +
-                        "<td>" + ruleLine.line1InstallTime + "</td>" +
-                        "<td>" + ruleLine.line1ProduceTime + "</td>" +
-                        "<td>" + ruleLine.line1ChangeInvest + "</td>" +
-                        "<td>" + ruleLine.line1ChangeTime + "</td>" +
-                        "<td>" + ruleLine.line1Upkeep + "</td>" +
-                        "<td>" + ruleLine.line1ScrapValue + "</td>" +
-                        "<td>" + ruleLine.line1Depreciation + "</td>" +
-                        "<td>" + ruleLine.line1DepreTime + "</td>" +
-                        "<td>" + ruleLine.line1Score + "</td>" +
-                        "</tr>"
-                }
-                if(ruleLine.line2Name != ""){
-                    txt4 += "<tr>" +
-                        "<td>" + ruleLine.line2Name + "</td>" +
-                        "<td>" + ruleLine.line2UnitInvest + "</td>" +
-                        "<td>" + ruleLine.line2InstallTime + "</td>" +
-                        "<td>" + ruleLine.line2ProduceTime + "</td>" +
-                        "<td>" + ruleLine.line2ChangeInvest + "</td>" +
-                        "<td>" + ruleLine.line2ChangeTime + "</td>" +
-                        "<td>" + ruleLine.line2Upkeep + "</td>" +
-                        "<td>" + ruleLine.line2ScrapValue + "</td>" +
-                        "<td>" + ruleLine.line2Depreciation + "</td>" +
-                        "<td>" + ruleLine.line2DepreTime + "</td>" +
-                        "<td>" + ruleLine.line2Score + "</td>" +
-                        "</tr>"
-                }
-                if(ruleLine.line3Name != ""){
-                    txt4 += "<tr>" +
-                        "<td>" + ruleLine.line3Name + "</td>" +
-                        "<td>" + ruleLine.line3UnitInvest + "</td>" +
-                        "<td>" + ruleLine.line3InstallTime + "</td>" +
-                        "<td>" + ruleLine.line3ProduceTime + "</td>" +
-                        "<td>" + ruleLine.line3ChangeInvest + "</td>" +
-                        "<td>" + ruleLine.line3ChangeTime + "</td>" +
-                        "<td>" + ruleLine.line3Upkeep + "</td>" +
-                        "<td>" + ruleLine.line3ScrapValue + "</td>" +
-                        "<td>" + ruleLine.line3Depreciation + "</td>" +
-                        "<td>" + ruleLine.line3DepreTime + "</td>" +
-                        "<td>" + ruleLine.line3Score + "</td>" +
-                        "</tr>"
-                }
-                if(ruleLine.line4Name != ""){
-                    txt4 += "<tr>" +
-                        "<td>" + ruleLine.line4Name + "</td>" +
-                        "<td>" + ruleLine.line4UnitInvest + "</td>" +
-                        "<td>" + ruleLine.line4InstallTime + "</td>" +
-                        "<td>" + ruleLine.line4ProduceTime + "</td>" +
-                        "<td>" + ruleLine.line4ChangeInvest + "</td>" +
-                        "<td>" + ruleLine.line4ChangeTime + "</td>" +
-                        "<td>" + ruleLine.line4Upkeep + "</td>" +
-                        "<td>" + ruleLine.line4ScrapValue + "</td>" +
-                        "<td>" + ruleLine.line4Depreciation + "</td>" +
-                        "<td>" + ruleLine.line4DepreTime + "</td>" +
-                        "<td>" + ruleLine.line4Score + "</td>" +
-                        "</tr>"
-                }
-                if(ruleLine.line5Name != ""){
-                    txt4 += "<tr>" +
-                        "<td>" + ruleLine.line5Name + "</td>" +
-                        "<td>" + ruleLine.line5UnitInvest + "</td>" +
-                        "<td>" + ruleLine.line5InstallTime + "</td>" +
-                        "<td>" + ruleLine.line5ProduceTime + "</td>" +
-                        "<td>" + ruleLine.line5ChangeInvest + "</td>" +
-                        "<td>" + ruleLine.line5ChangeTime + "</td>" +
-                        "<td>" + ruleLine.line5Upkeep + "</td>" +
-                        "<td>" + ruleLine.line5ScrapValue + "</td>" +
-                        "<td>" + ruleLine.line5Depreciation + "</td>" +
-                        "<td>" + ruleLine.line5DepreTime + "</td>" +
-                        "<td>" + ruleLine.line5Score + "</td>" +
-                        "</tr>"
-                }
-                txt4 += "</tbody></table><br/>";
-
-                txt5 = "<table class='table table-striped table-hover table-bordered' id=''>" +
-                    "<thead>" +
-                    "<tr>" +
-                    "<th>资质认证名称</th>" +
-                    "<th>每周期投资</th>" +
-                    "<th>投资周期</th>" +
-                    "<th>潜力分数</th>" +
-                    "</tr>" +
-                    "</thead>" +
-                    "<tbody>";
-                var ruleIso = json.ruleIso;
-                if(ruleIso.iso1Name != ""){
-                    txt5 += "<tr>" +
-                        "<td>" + ruleIso.iso1Name + "</td>" +
-                        "<td>" + ruleIso.iso1UnitInvest + "</td>" +
-                        "<td>" + ruleIso.iso1DevTime + "</td>" +
-                        "<td>" + ruleIso.iso1Score + "</td>" +
-                        "</tr>"
-                }
-                if(ruleIso.iso2Name != ""){
-                    txt5 += "<tr>" +
-                        "<td>" + ruleIso.iso2Name + "</td>" +
-                        "<td>" + ruleIso.iso2UnitInvest + "</td>" +
-                        "<td>" + ruleIso.iso2DevTime + "</td>" +
-                        "<td>" + ruleIso.iso2Score + "</td>" +
-                        "</tr>"
-                }
-                txt5 += "</tbody></table><br/>";
-
-                txt6 = "<table class='table table-striped table-hover table-bordered' id=''>" +
-                    "<thead>" +
-                    "<tr>" +
-                    "<th>市场名称</th>" +
-                    "<th>每周期投资</th>" +
-                    "<th>开发周期</th>" +
-                    "<th>潜力分数</th>" +
-                    "</tr>" +
-                    "</thead>" +
-                    "<tbody>";
-                var ruleMarket = json.ruleMarket;
-                if(ruleMarket.market1Name != ""){
-                    txt6 += "<tr>" +
-                        "<td>" + ruleMarket.market1Name + "</td>" +
-                        "<td>" + ruleMarket.market1UnitInvest + "</td>" +
-                        "<td>" + ruleMarket.market1DevTime + "</td>" +
-                        "<td>" + ruleMarket.market1Score + "</td>" +
-                        "</tr>"
-                }
-                if(ruleMarket.market2Name != ""){
-                    txt6 += "<tr>" +
-                        "<td>" + ruleMarket.market2Name + "</td>" +
-                        "<td>" + ruleMarket.market2UnitInvest + "</td>" +
-                        "<td>" + ruleMarket.market2DevTime + "</td>" +
-                        "<td>" + ruleMarket.market2Score + "</td>" +
-                        "</tr>"
-                }
-                if(ruleMarket.market3Name != ""){
-                    txt6 += "<tr>" +
-                        "<td>" + ruleMarket.market3Name + "</td>" +
-                        "<td>" + ruleMarket.market3UnitInvest + "</td>" +
-                        "<td>" + ruleMarket.market3DevTime + "</td>" +
-                        "<td>" + ruleMarket.market3Score + "</td>" +
-                        "</tr>"
-                }
-                if(ruleMarket.market4Name != ""){
-                    txt6 += "<tr>" +
-                        "<td>" + ruleMarket.market4Name + "</td>" +
-                        "<td>" + ruleMarket.market4UnitInvest + "</td>" +
-                        "<td>" + ruleMarket.market4DevTime + "</td>" +
-                        "<td>" + ruleMarket.market4Score + "</td>" +
-                        "</tr>"
-                }
-                if(ruleMarket.market5Name != ""){
-                    txt6 += "<tr>" +
-                        "<td>" + ruleMarket.market5Name + "</td>" +
-                        "<td>" + ruleMarket.market5UnitInvest + "</td>" +
-                        "<td>" + ruleMarket.market5DevTime + "</td>" +
-                        "<td>" + ruleMarket.market5Score + "</td>" +
-                        "</tr>"
-                }
-                txt6 += "</tbody></table><br/>";
-
-                txt7 = "<table class='table table-striped table-hover table-bordered' id=''>" +
-                    "<thead>" +
-                    "<tr>" +
-                    "<th>原料名称</th>" +
-                    "<th>价格</th>" +
-                    "<th>采购提前期</th>" +
-                    "</tr>" +
-                    "</thead>" +
-                    "<tbody>";
-                var ruleMaterial = json.ruleMaterial;
-                if(ruleMaterial.material1Name != ""){
-                    txt7 += "<tr>" +
-                        "<td>" + ruleMaterial.material1Name + "</td>" +
-                        "<td>" + ruleMaterial.material1Price + "</td>" +
-                        "<td>" + ruleMaterial.material1Time + "</td>" +
-                        "</tr>"
-                }
-                if(ruleMaterial.material2Name != ""){
-                    txt7 += "<tr>" +
-                        "<td>" + ruleMaterial.material2Name + "</td>" +
-                        "<td>" + ruleMaterial.material2Price + "</td>" +
-                        "<td>" + ruleMaterial.material2Time + "</td>" +
-                        "</tr>"
-                }
-                if(ruleMaterial.material3Name != ""){
-                    txt7 += "<tr>" +
-                        "<td>" + ruleMaterial.material3Name + "</td>" +
-                        "<td>" + ruleMaterial.material3Price + "</td>" +
-                        "<td>" + ruleMaterial.material3Time + "</td>" +
-                        "</tr>"
-                }
-                if(ruleMaterial.material4Name != ""){
-                    txt7 += "<tr>" +
-                        "<td>" + ruleMaterial.material4Name + "</td>" +
-                        "<td>" + ruleMaterial.material4Price + "</td>" +
-                        "<td>" + ruleMaterial.material4Time + "</td>" +
-                        "</tr>"
-                }
-                if(ruleMaterial.material5Name != ""){
-                    txt7 += "<tr>" +
-                        "<td>" + ruleMaterial.material5Name + "</td>" +
-                        "<td>" + ruleMaterial.material5Price + "</td>" +
-                        "<td>" + ruleMaterial.material5Time + "</td>" +
-                        "</tr>"
-                }
-                txt7 += "</tbody></table><br/>";
-
-                txt8 = "<table class='table table-striped table-hover table-bordered' id=''>" +
-                    "<thead>" +
-                    "<tr>" +
-                    "<th>产品名称</th>" +
-                    "<th>加工费</th>" +
-                    "<th>每周期开发费</th>" +
-                    "<th>开发周期</th>" +
-                    "<th>直接成本</th>" +
-                    "<th>潜力分数</th>" +
-                    "<th>产品组成</th>" +
-                    "</tr>" +
-                    "</thead>" +
-                    "<tbody>";
-                var ruleProduct = json.ruleProduct;
-                var ruleMaterial = json.ruleMaterial;
-                var ruleProductMix = json.ruleProductMix;
-                if(ruleProduct.product1Name != ""){
-                    txt8 += "<tr>" +
-                        "<td>" + ruleProduct.product1Name + "</td>" +
-                        "<td>" + ruleProduct.product1ProcCost + "</td>" +
-                        "<td>" + ruleProduct.product1DevInvest + "</td>" +
-                        "<td>" + ruleProduct.product1DevTime + "</td>" +
-                        "<td>" + ruleProduct.product1FinalCost + "</td>" +
-                        "<td>" + ruleProduct.product1Score + "</td>" +
-                        "<td>";
-                    if((ruleProductMix.product1MixR1 != null) && (ruleProductMix.product1MixR1 != 0)){
-                        txt8 += ruleProductMix.product1MixR1 + "*" + ruleMaterial.material1Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product1MixR2 != null) && (ruleProductMix.product1MixR2 != 0)){
-                        txt8 += ruleProductMix.product1MixR2 + "*" + ruleMaterial.material2Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product1MixR3 != null) && (ruleProductMix.product1MixR3 != 0)){
-                        txt8 += ruleProductMix.product1MixR3 + "*" + ruleMaterial.material3Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product1MixR4 != null) && (ruleProductMix.product1MixR4 != 0)){
-                        txt8 += ruleProductMix.product1MixR4 + "*" + ruleMaterial.material4Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product1MixR5 != null) && (ruleProductMix.product1MixR5 != 0)){
-                        txt8 += ruleProductMix.product1MixR5 + "*" + ruleMaterial.material5Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product1MixP1 != null) && (ruleProductMix.product1MixP1 != 0)){
-                        txt8 += ruleProductMix.product1MixP1 + "*" + ruleProduct.product1Name + "&nbsp;&nbsp;"; //此为MixP1*产品1的名称
-                    }
-                    if((ruleProductMix.product1MixP2 != null) && (ruleProductMix.product1MixP2 != 0)){
-                        txt8 += ruleProductMix.product1MixP2 + "*" + ruleProduct.product2Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product1MixP3 != null) && (ruleProductMix.product1MixP3 != 0)){
-                        txt8 += ruleProductMix.product1MixP3 + "*" + ruleProduct.product3Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product1MixP4 != null) && (ruleProductMix.product1MixP4 != 0)){
-                        txt8 += ruleProductMix.product1MixP4 + "*" + ruleProduct.product4Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product1MixP5 != null) && (ruleProductMix.product1MixP5 != 0)){
-                        txt8 += ruleProductMix.product1MixP5 + "*" + ruleProduct.product5Name + "&nbsp;&nbsp;";
-                    }
-                    txt8 += "</td></tr>";
-                }
-                if(ruleProduct.product2Name != ""){
-                    txt8 += "<tr>" +
-                        "<td>" + ruleProduct.product2Name + "</td>" +
-                        "<td>" + ruleProduct.product2ProcCost + "</td>" +
-                        "<td>" + ruleProduct.product2DevInvest + "</td>" +
-                        "<td>" + ruleProduct.product2DevTime + "</td>" +
-                        "<td>" + ruleProduct.product2FinalCost + "</td>" +
-                        "<td>" + ruleProduct.product2Score + "</td>" +
-                        "<td>";
-                    if((ruleProductMix.product2MixR1 != null) && (ruleProductMix.product2MixR1 != 0)){
-                        txt8 += ruleProductMix.product2MixR1 + "*" + ruleMaterial.material1Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product2MixR2 != null) && (ruleProductMix.product2MixR2 != 0)){
-                        txt8 += ruleProductMix.product2MixR2 + "*" + ruleMaterial.material2Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product2MixR3 != null) && (ruleProductMix.product2MixR3 != 0)){
-                        txt8 += ruleProductMix.product2MixR3 + "*" + ruleMaterial.material3Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product2MixR4 != null) && (ruleProductMix.product2MixR4 != 0)){
-                        txt8 += ruleProductMix.product2MixR4 + "*" + ruleMaterial.material4Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product2MixR5 != null) && (ruleProductMix.product2MixR5 != 0)){
-                        txt8 += ruleProductMix.product2MixR5 + "*" + ruleMaterial.material5Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product2MixP1 != null) && (ruleProductMix.product2MixP1 != 0)){
-                        txt8 += ruleProductMix.product2MixP1 + "*" + ruleProduct.product1Name + "&nbsp;&nbsp;"; //此为MixP1*产品1的名称
-                    }
-                    if((ruleProductMix.product2MixP2 != null) && (ruleProductMix.product2MixP2 != 0)){
-                        txt8 += ruleProductMix.product2MixP2 + "*" + ruleProduct.product2Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product2MixP3 != null) && (ruleProductMix.product2MixP3 != 0)){
-                        txt8 += ruleProductMix.product2MixP3 + "*" + ruleProduct.product3Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product2MixP4 != null) && (ruleProductMix.product2MixP4 != 0)){
-                        txt8 += ruleProductMix.product2MixP4 + "*" + ruleProduct.product4Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product2MixP5 != null) && (ruleProductMix.product2MixP5 != 0)){
-                        txt8 += ruleProductMix.product2MixP5 + "*" + ruleProduct.product5Name + "&nbsp;&nbsp;";
-                    }
-                    txt8 += "</td></tr>";
-                }
-                if(ruleProduct.product3Name != ""){
-                    txt8 += "<tr>" +
-                        "<td>" + ruleProduct.product3Name + "</td>" +
-                        "<td>" + ruleProduct.product3ProcCost + "</td>" +
-                        "<td>" + ruleProduct.product3DevInvest + "</td>" +
-                        "<td>" + ruleProduct.product3DevTime + "</td>" +
-                        "<td>" + ruleProduct.product3FinalCost + "</td>" +
-                        "<td>" + ruleProduct.product3Score + "</td>" +
-                        "<td>";
-                    if((ruleProductMix.product3MixR1 != null) && (ruleProductMix.product3MixR1 != 0)){
-                        txt8 += ruleProductMix.product3MixR1 + "*" + ruleMaterial.material1Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product3MixR2 != null) && (ruleProductMix.product3MixR2 != 0)){
-                        txt8 += ruleProductMix.product3MixR2 + "*" + ruleMaterial.material2Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product3MixR3 != null) && (ruleProductMix.product3MixR3 != 0)){
-                        txt8 += ruleProductMix.product3MixR3 + "*" + ruleMaterial.material3Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product3MixR4 != null) && (ruleProductMix.product3MixR4 != 0)){
-                        txt8 += ruleProductMix.product3MixR4 + "*" + ruleMaterial.material4Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product3MixR5 != null) && (ruleProductMix.product3MixR5 != 0)){
-                        txt8 += ruleProductMix.product3MixR5 + "*" + ruleMaterial.material5Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product3MixP1 != null) && (ruleProductMix.product3MixP1 != 0)){
-                        txt8 += ruleProductMix.product3MixP1 + "*" + ruleProduct.product1Name + "&nbsp;&nbsp;"; //此为MixP1*产品1的名称
-                    }
-                    if((ruleProductMix.product3MixP2 != null) && (ruleProductMix.product3MixP2 != 0)){
-                        txt8 += ruleProductMix.product3MixP2 + "*" + ruleProduct.product2Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product3MixP3 != null) && (ruleProductMix.product3MixP3 != 0)){
-                        txt8 += ruleProductMix.product3MixP3 + "*" + ruleProduct.product3Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product3MixP4 != null) && (ruleProductMix.product3MixP4 != 0)){
-                        txt8 += ruleProductMix.product3MixP4 + "*" + ruleProduct.product4Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product3MixP5 != null) && (ruleProductMix.product3MixP5 != 0)){
-                        txt8 += ruleProductMix.product3MixP5 + "*" + ruleProduct.product5Name + "&nbsp;&nbsp;";
-                    }
-                    txt8 += "</td></tr>";
-                }
-                if(ruleProduct.product4Name != ""){
-                    txt8 += "<tr>" +
-                        "<td>" + ruleProduct.product4Name + "</td>" +
-                        "<td>" + ruleProduct.product4ProcCost + "</td>" +
-                        "<td>" + ruleProduct.product4DevInvest + "</td>" +
-                        "<td>" + ruleProduct.product4DevTime + "</td>" +
-                        "<td>" + ruleProduct.product4FinalCost + "</td>" +
-                        "<td>" + ruleProduct.product4Score + "</td>" +
-                        "<td>";
-                    if((ruleProductMix.product4MixR1 != null) && (ruleProductMix.product4MixR1 != 0)){
-                        txt8 += ruleProductMix.product4MixR1 + "*" + ruleMaterial.material1Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product4MixR2 != null) && (ruleProductMix.product4MixR2 != 0)){
-                        txt8 += ruleProductMix.product4MixR2 + "*" + ruleMaterial.material2Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product4MixR3 != null) && (ruleProductMix.product4MixR3 != 0)){
-                        txt8 += ruleProductMix.product4MixR3 + "*" + ruleMaterial.material3Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product4MixR4 != null) && (ruleProductMix.product4MixR4 != 0)){
-                        txt8 += ruleProductMix.product4MixR4 + "*" + ruleMaterial.material4Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product4MixR5 != null) && (ruleProductMix.product4MixR5 != 0)){
-                        txt8 += ruleProductMix.product4MixR5 + "*" + ruleMaterial.material5Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product4MixP1 != null) && (ruleProductMix.product4MixP1 != 0)){
-                        txt8 += ruleProductMix.product4MixP1 + "*" + ruleProduct.product1Name + "&nbsp;&nbsp;"; //此为MixP1*产品1的名称
-                    }
-                    if((ruleProductMix.product4MixP2 != null) && (ruleProductMix.product4MixP2 != 0)){
-                        txt8 += ruleProductMix.product4MixP2 + "*" + ruleProduct.product2Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product4MixP3 != null) && (ruleProductMix.product4MixP3 != 0)){
-                        txt8 += ruleProductMix.product4MixP3 + "*" + ruleProduct.product3Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product4MixP4 != null) && (ruleProductMix.product4MixP4 != 0)){
-                        txt8 += ruleProductMix.product4MixP4 + "*" + ruleProduct.product4Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product4MixP5 != null) && (ruleProductMix.product4MixP5 != 0)){
-                        txt8 += ruleProductMix.product4MixP5 + "*" + ruleProduct.product5Name + "&nbsp;&nbsp;";
-                    }
-                    txt8 += "</td></tr>";
-                }
-                if(ruleProduct.product5Name != ""){
-                    txt8 += "<tr>" +
-                        "<td>" + ruleProduct.product5Name + "</td>" +
-                        "<td>" + ruleProduct.product5ProcCost + "</td>" +
-                        "<td>" + ruleProduct.product5DevInvest + "</td>" +
-                        "<td>" + ruleProduct.product5DevTime + "</td>" +
-                        "<td>" + ruleProduct.product5FinalCost + "</td>" +
-                        "<td>" + ruleProduct.product5Score + "</td>" +
-                        "<td>";
-                    if((ruleProductMix.product5MixR1 != null) && (ruleProductMix.product5MixR1 != 0)){
-                        txt8 += ruleProductMix.product5MixR1 + "*" + ruleMaterial.material1Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product5MixR2 != null) && (ruleProductMix.product5MixR2 != 0)){
-                        txt8 += ruleProductMix.product5MixR2 + "*" + ruleMaterial.material2Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product5MixR3 != null) && (ruleProductMix.product5MixR3 != 0)){
-                        txt8 += ruleProductMix.product5MixR3 + "*" + ruleMaterial.material3Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product5MixR4 != null) && (ruleProductMix.product5MixR4 != 0)){
-                        txt8 += ruleProductMix.product5MixR4 + "*" + ruleMaterial.material4Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product5MixR5 != null) && (ruleProductMix.product5MixR5 != 0)){
-                        txt8 += ruleProductMix.product5MixR5 + "*" + ruleMaterial.material5Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product5MixP1 != null) && (ruleProductMix.product5MixP1 != 0)){
-                        txt8 += ruleProductMix.product5MixP1 + "*" + ruleProduct.product1Name + "&nbsp;&nbsp;"; //此为MixP1*产品1的名称
-                    }
-                    if((ruleProductMix.product5MixP2 != null) && (ruleProductMix.product5MixP2 != 0)){
-                        txt8 += ruleProductMix.product5MixP2 + "*" + ruleProduct.product2Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product5MixP3 != null) && (ruleProductMix.product5MixP3 != 0)){
-                        txt8 += ruleProductMix.product5MixP3 + "*" + ruleProduct.product3Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product5MixP4 != null) && (ruleProductMix.product5MixP4 != 0)){
-                        txt8 += ruleProductMix.product5MixP4 + "*" + ruleProduct.product4Name + "&nbsp;&nbsp;";
-                    }
-                    if((ruleProductMix.product5MixP5 != null) && (ruleProductMix.product5MixP5 != 0)){
-                        txt8 += ruleProductMix.product5MixP5 + "*" + ruleProduct.product5Name + "&nbsp;&nbsp;";
-                    }
-                    txt8 += "</td></tr>";
-                }
-                txt8 += "</tbody></table><br/>";
-
-                var ruleParam = json.ruleParam;
-                txt9 = "<table class='table table-striped table-hover table-bordered' id=''>" +
-                    "<thead>" +
-                    "<tr>" +
-                    "<th>运行参数</th>" +
-                    "<tbody>" +
-                    "<tr>" +
-                    "<th >违约金</th>" +
-                    "<td>" + ruleParam.paramPenatly + "</td>" +
-                    "<th >贷款额倍数</th>" +
-                    "<td>" + ruleParam.paramLoanRatio + "</td>" +
-                    "</tr>" +
-                    "<tr>" +
-                    "<th >产品紧急出售折价率</th>" +
-                    "<td>" + ruleParam.paramProductSaleRatio + "</td>" +
-                    "<th >原料紧急出售折价率</th>" +
-                    "<td>" + ruleParam.paramMaterailSaleRatio + "</td>" +
-                    "</tr>" +
-                    "<tr>" +
-                    "<th >长贷利率</th>" +
-                    "<td>" + ruleParam.paramLongTermLoanRates + "</td>" +
-                    "<th >短贷利率</th>" +
-                    "<td>" + ruleParam.paramShortTermLoanRates + "</td>" +
-                    "</tr>" +
-                    "<tr>" +
-                    "<th >1、2期贴现利率</th>" +
-                    "<td>" + ruleParam.paramShortTermDiscountRates + "</td>" +
-                    "<th >3、4期贴现利率</th>" +
-                    "<td>" + ruleParam.paramLongTermDiscountRates + "</td>" +
-                    "</tr>" +
-                    "<tr>" +
-                    "<th >初始现金</th>" +
-                    "<td>" + ruleParam.paramInitialCash + "</td>" +
-                    "<th >管理费</th>" +
-                    "<td>" + ruleParam.paramManagementCost + "</td>" +
-                    "</tr>" +
-                    "<tr>" +
-                    "<th >信息费</th>" +
-                    "<td>" + ruleParam.paramInfomationCost + "</td>" +
-                    "<th >所得税率</th>" +
-                    "<td>" + ruleParam.paramTaxRate + "</td>" +
-                    "</tr>" +
-                    "<tr>" +
-                    "<th >最大长贷年份</th>" +
-                    "<td>" + ruleParam.paramLongTermLoanTimeLimit + "</td>" +
-                    "<th >最小广告额</th>" +
-                    "<td>" + ruleParam.paramAdvertisingMinFee + "</td>" +
-                    "</tr>" +
-                    "<tr>" +
-                    "<th >产品紧急采购溢价率</th>" +
-                    "<td>" + ruleParam.paramProductBuyRation + "</td>" +
-                    "<th >原料紧急采购溢价率</th>" +
-                    "<td>" + ruleParam.paramMaterailBuyRation + "</td>" +
-                    "</tr>" +
-                    "<tr>" +
-                    "<th >选单时间</th>" +
-                    "<td>" + ruleParam.paramSelectOrderTime + "</td>" +
-                    "<th >首位选单补时</th>" +
-                    "<td>" + ruleParam.paramFirstSelectOrderTime + "</td>" +
-                    "</tr>" +
-                    "<tr>" +
-                    "<th >市场同开数量</th>" +
-                    "<td>" + ruleParam.paramMarketSametimeOpenNum + "</td>" +
-                    "<th >竞单时间</th>" +
-                    "<td>" + ruleParam.paramBidTime + "</td>" +
-                    "</tr>" +
-                    "<tr>" +
-                    "<th >竞单同竞数</th>" +
-                    "<td>" + ruleParam.paramBidSametimeNum + "</td>" +
-                    "<th >最大厂房数量</th>" +
-                    "<td>" + ruleParam.paramFactoryMaxNum + "</td>" +
-                    "</tr>" +
-                    "<tr>" +
-                    "<th>市场老大</th>";
-                if(ruleParam.paramHaveMarketLeader == 0){
-                    txt9 += "<td> 无 </td>";
-                }else{
-                    txt9 += "<td> 有 </td>";
-                }
-                txt9 += "<th>贴现方式</th>";
-                if(ruleParam.paramDiscountMode == 0){
-                    txt9 += "<td>独立贴现</td>";
-                }else{
-                    txt9 += "<td>联合贴现</td>";
-                }
-                txt9 += "</tr>" +
-                    "<tr>" +
-                    "<th>用户还原本季</th>";
-                if(ruleParam.paramAllowUserReturnSeason == 0){
-                    txt9 += "<td>不允许</td>";
-                }else{
-                    txt9 += "<td>允许</td>";
-                }
-                txt9 += "<th>用户还原本年</th>";
-                if(ruleParam.paramAllowUserReturnYear == 0){
-                    txt9 += "<td>不允许</td>";
-                }else{
-                    txt9 += "<td>允许</td>";
-                }
-                txt9 += "</tr>" +
-                    "</tbody>" +
-                    "</table>";
-                document.getElementById("divReadRule").innerHTML = txt1 + txt2 + txt3 +txt4 + txt5 + txt6 + txt7 + txt8 + txt9;
-                document.getElementById("ajaxDiv1").innerHTML = "正在查看规则（ID：" +  ruleId +"）内容";
-            }
-        });
-
-    }
-
-    function findRuleAll() {
-        var txt="";
-
-        $.ajax({
-            type:"GET",
-            url:"/ruleFindAll",
-            cache:false,
-            dataType:"json",
-            success:function (json) {
-                txt="<table class='table table-striped table-hover table-bordered' id='editable-sample'>" +
-                    "<thead>" +
-                    "<tr>" +
-                    "<th>规则ID</th>" +
-                    "<th>上传者</th>" +
-                    "<th>上传日期</th>" +
-                    "<th>调用次数</th>" +
-                    "<th>查看内容</th>" +
-                    "<th>调用规则</th>" +
-                    "<th>删除规则</th>" +
-                    "<th style='display: none'>当前操作用户</th>" +
-                    "</tr>" +
-                    "</thead>" +
-                    "<tbody>";
-                for(var i=0; i<eval(json).length; i++ ){
-//                    var time = json[i].ruleAlterTime;
-//                    alert(time.substring(10,0));
-                    txt = txt + "<tr>" +
-                        "<td>" + json[i].ruleId + "</td>" +
-                        "<td>" + json[i].ruleUploader + "</td>" +
-                        "<td>" + timeFormat(json[i].ruleAlterTime) + "</td>" +
-                        "<td>" + json[i].ruleUserCount + "</td>" +
-                        "<td><a class='edit' href='#modalReadRule' data-toggle='modal' onclick='readRule(" + json[i].ruleId + ")'>查看内容</a></td>" +
-                        "<td><a onclick='useRule(" + json[i].ruleId + ")'>调用规则</a></td>" +
-                        "<td><a onclick='deleteRule(" + json[i].ruleId + ")'>删除规则</a></td>" +
-                        "<td style='display: none'>当前操作用户</td>" +
-                        "</tr>";
-                }
-                txt = txt + "</tbody></table>";
-                document.getElementById("ajaxDiv2").innerHTML = txt;
-                document.getElementById("ajaxDiv1").innerHTML = "成功查询规则列表";
-            }
-        });
-    }
-
-    function timeFormat(nS) {
-        var date = new Date(parseInt(("/Date("+nS+")/").substr(6, 13))).toLocaleDateString();
-        var time = new Date(parseInt(("/Date("+nS+")/").substr(6, 13))).toLocaleTimeString();
-        return date +" " +  time;
-    };
-
-    function getTime() {
-        var date = new Date();
-        var operatorTime = date.toLocaleDateString() +" " +  date.toLocaleTimeString();
-        return operatorTime;
-    }
-
-    function ajaxDivHide(id) {
-        var date = new Date();
-        var operatorTime = date.toLocaleDateString() +" " +  date.toLocaleTimeString();
-        if(id==2){
-            $("#ajaxDiv2").hide();
-            document.getElementById("ajaxDiv1").innerHTML = operatorTime + " : 关闭 查询窗口";
-        }
-        if(id==3){
-            $("#ajaxDiv3").hide();
-            document.getElementById("ajaxDiv1").innerHTML = operatorTime + " : 关闭 编辑窗口";
-        }
-    }
-    function ajaxDivShow(id) {
-        var date = new Date();
-        var operatorTime = date.toLocaleDateString() +" " +  date.toLocaleTimeString();
-        if(id==2){
-            $("#ajaxDiv2").show();
-            var time = new Date();
-            document.getElementById("ajaxDiv1").innerHTML = operatorTime + " : 打开 查询窗口";
-        }
-        if(id==3){
-            $("#ajaxDiv3").show();
-            document.getElementById("ajaxDiv1").innerHTML = operatorTime + " : 打开 编辑窗口";
-        }
-    }
-
-    function deleteUser(id) {
-        var operatorName;
-        var operatorLevel;
-        if (confirm("确定要删除这个用户吗?") == false) {
-            return;
-        }
-        $.ajax({
-            type:"GET",
-            url:"getUserInfo",
-            cache:false,
-            dataType:"json",
-            success:function (json) {
-                operatorName = json[0].username;
-                operatorLevel = json[0].userLevel;
-                $.ajax({
-                    type:"DELETE",
-                    url:"userDelete/" + id + "/" + operatorName,
-                    cache:false,
-//                        dataType:"json",
-                    success:function () {
-                        document.getElementById("ajaxDiv1").innerHTML = "成功删除ID：" + id + "用户";
-                    }
-//                        error:function () {
-//                            document.getElementById("ajaxDiv1").innerHTML = "未能删除ID：" + id + "用户";
-//                        }
-                });
-            }
-        });
-    }
-
-    function updatePassword() {
-//        var username = document.getElementById("username").value;
-        var newPassword = document.getElementById("newPassword").value;
-        var username;
-        var id;
-        var userLevel;
-        var operatorName;
-        var operatorLevel
-        if (confirm("确定要修改密码吗?") == false) {
-            return;
-        }
-//            alert("要修改密码的用户ID：" + username);
-//            alert("新密码：" + newPassword);
-        $.ajax({
-            type:"GET",
-            url:"getUserInfo",
-            cache:false,
-            dataType:"json",
-            success:function (j1) {
-
-                operatorName = j1[0].username;
-                username = operatorName;
-                operatorLevel = j1[0].userLevel;
-//                    alert("J1:" + operatorName);
-
-                $.ajax({
-                    type:"GET",
-                    url:"getUserInfoByUsername/" + username,
-                    cache:false,
-                    dataType:"json",
-                    success:function (json) {
-                        id = json[0].id;
-                        userLevel = json[0].userLevel;
-//                            alert("修改的用户ID：" + id);
-//                            alert("修改的用户等级：" + userLevel);
-                        var ds = "id=" + id + "&username=" + username + "&password=" + newPassword + "&userLevel=" + userLevel + "&userOperator=" + operatorName;
-//                            alert(ds);
-                        $.ajax({
-                            type:"POST",
-                            url:"userChangePassword",
-                            cache:false,
-//                                dataType:"json",
-                            data:ds,
-                            async: false,
-                            error: function(request) {
-                                alert("修改密码失败");
-                            },
-                            success: function(data) {
-                                document.getElementById("ajaxDiv1").innerHTML = getTime() + "成功修改密码";
-                            }
-                        });
-
-                    }
-                });
-
-            }
-        });
-
-    }
-
-    function findSubUser() {
-        var txt="";
-        var nowUserName = $("#nowUserName").val();
-
-        $.ajax({
-            type:"GET",
-            url:"/userFindByLevel/3",
-            cache:false,
-            dataType:"json",
-            success:function (json) {
-                if(json ==null){
-                    txt = "<h3 style='color: red'>无法查询到子用户信息，请执行初始化操作</h3>";
-                    document.getElementById("ajaxDiv2").innerHTML = txt;
-                    document.getElementById("ajaxDiv1").innerHTML = getTime() + "无法查询到子用户信息，因为教学班已被还原至初始状态";
-                }else {
-                    txt="<table class='table table-striped table-hover table-bordered' id='editable-sample'>" +
-                        "<thead>" +
-                        "<tr>" +
-                        "<th>用户ID</th>" +
-                        "<th>用户名</th>" +
-                        "<th>密码</th>" +
-                        "<th>用户等级</th>" +
-                        "<th>操作者</th>" +
-                        "<th>修改密码</th>" +
-                        "<th>删除用户</th>" +
-                        "<th style='display: none'>当前操作用户</th>" +
-                        "</tr>" +
-                        "</thead>" +
-                        "<tbody>";
-                    for(var i=0; i<eval(json).length; i++ ){
-                        if(json[i].userOperator == nowUserName){
-                            txt = txt + "<tr>" +
-                                "<td>" + json[i].id + "</td>" +
-                                "<td>" + json[i].username + "</td>" +
-                                "<td>" + json[i].password + "</td>" +
-                                "<td>" + json[i].userLevel + "</td>" +
-                                "<td>" + json[i].userOperator + "</td>" +
-                                "<td><a class='edit' href='#modalChangePassword' data-toggle='modal'>修改密码</a></td>" +
-                                "<td><a onclick='deleteUser(" + json[i].id + ")'>删除用户</a></td>" +
-                                "<td style='display: none'>当前操作用户</td>" +
-                                "</tr>";
-                        }
-                    }
-                    txt = txt + "</tbody></table>";
-                    document.getElementById("ajaxDiv2").innerHTML = txt;
-                    document.getElementById("ajaxDiv1").innerHTML = "成功查询用户信息";
-                }
-
-
-
-            }
-        });
-    }
-
-    function addRule() {
-        var date = new Date();
-        var operatorTime = date.toLocaleDateString() +" " +  date.toLocaleTimeString();
-        $("#divAddRule").show();
-        document.getElementById("ajaxDiv1").innerHTML = operatorTime + " : 正在添加规则";
-    }
-
-    function validate(f){
-        if(!(/^\w{4,20}$/.test(f.username.value))){
-            alert("请输入长度为4-20的用户名。") ;
-            f.username.focus() ;
-            return false ;
-        }
-        if(!(/^\w{6,20}$/.test(f.password.value))){
-            alert("请输入长度为6-20的密码。") ;
-            f.password.focus() ;
-            return false ;
-        }
-    }
-
-    function thClassInit() {
-        $.ajax({
-            cache: true,
-            type: "POST",
-            url:"teachClassInit",
-            data:$('#thClassInitForm').serialize(),
-            async: false,
-            success: function(data) {
-                console.log(data);
-                document.getElementById("ajaxDiv1").innerHTML = getTime() + " " + data;
-            }
-        });
-    }
-
-    function addTeacher() {
-        $.ajax({
-            cache: true,
-            type: "POST",
-            url:"userAdd",
-            data:$('#teacherAddForm').serialize(),
-            async: false,
-            error: function(request) {
-                alert("Connection error");
-            },
-            success: function(data) {
-                document.getElementById("ajaxDiv1").innerHTML = "添加教学班老师成功";
-            }
-        });
-    }
-
-</script>
-
+<script src="js/erp-sub.js"></script>
+<!--</script>-->
 
 <!-- Placed js at the end of the document so the pages load faster -->
 <script src="js/jquery-1.10.2.min.js"></script>
@@ -1925,39 +397,9 @@
 <script src="js/jquery.validate.min.js"></script>
 <script src="js/jquery.stepy.js"></script>
 
-
 <!--data table-->
 <script type="text/javascript" src="js/data-tables/jquery.dataTables.js"></script>
 <script type="text/javascript" src="js/data-tables/DT_bootstrap.js"></script>
-
-
-<!--&lt;!&ndash;easy pie chart&ndash;&gt;-->
-<!--<script src="js/easypiechart/jquery.easypiechart.js"></script>-->
-<!--<script src="js/easypiechart/easypiechart-init.js"></script>-->
-
-<!--&lt;!&ndash;Sparkline Chart&ndash;&gt;-->
-<!--<script src="js/sparkline/jquery.sparkline.js"></script>-->
-<!--<script src="js/sparkline/sparkline-init.js"></script>-->
-
-<!--&lt;!&ndash;icheck &ndash;&gt;-->
-<!--<script src="js/iCheck/jquery.icheck.js"></script>-->
-<!--<script src="js/icheck-init.js"></script>-->
-
-<!--&lt;!&ndash; jQuery Flot Chart&ndash;&gt;-->
-<!--<script src="js/flot-chart/jquery.flot.js"></script>-->
-<!--<script src="js/flot-chart/jquery.flot.tooltip.js"></script>-->
-<!--<script src="js/flot-chart/jquery.flot.resize.js"></script>-->
-
-
-<!--&lt;!&ndash;Morris Chart&ndash;&gt;-->
-<!--<script src="js/morris-chart/morris.js"></script>-->
-<!--<script src="js/morris-chart/raphael-min.js"></script>-->
-
-<!--&lt;!&ndash;Calendar&ndash;&gt;-->
-<!--<script src="js/calendar/clndr.js"></script>-->
-<!--<script src="js/calendar/evnt.calendar.init.js"></script>-->
-<!--<script src="js/calendar/moment-2.2.1.js"></script>-->
-<!--<script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>-->
 
 <!--common scripts for all pages-->
 <script src="js/scripts.js"></script>
@@ -1973,50 +415,48 @@
     jQuery(document).ready(function() {
         EditableTable.init();
     });
-</script>
 
-<script>
-  /*=====STEPY WIZARD====*/
-  $(function() {
-      $('#default').stepy({
-          backLabel: 'Previous',
-          block: true,
-          nextLabel: 'Next',
-          titleClick: true,
-          titleTarget: '.stepy-tab'
-      });
-  });
-  /*=====STEPY WIZARD WITH VALIDATION====*/
-  $(function() {
-      $('#stepy_form').stepy({
-          backLabel: '上一步',
-          nextLabel: '下一步',
-          errorImage: true,
-          block: true,
-          description: true,
-          legend: false,
-          titleClick: true,
-          titleTarget: '#top_tabby',
-          validate: true
-      });
-      $('#stepy_form').validate({
-          errorPlacement: function(error, element) {
-              $('#stepy_form div.stepy-error').append(error);
-          },
-          rules: {
-              'name': 'required',
-              'email': 'required'
-          },
-          messages: {
-              'name': {
-                  required: 'Name field is required!'
-              },
-              'email': {
-                  required: 'Email field is requerid!'
-              }
-          }
-      });
-  });
+    /*=====STEPY WIZARD====*/
+    $(function() {
+        $('#default').stepy({
+            backLabel: 'Previous',
+            block: true,
+            nextLabel: 'Next',
+            titleClick: true,
+            titleTarget: '.stepy-tab'
+        });
+    });
+    /*=====STEPY WIZARD WITH VALIDATION====*/
+    $(function() {
+        $('#stepy_form').stepy({
+            backLabel: '上一步',
+            nextLabel: '下一步',
+            errorImage: true,
+            block: true,
+            description: true,
+            legend: false,
+            titleClick: true,
+            titleTarget: '#top_tabby',
+            validate: true
+        });
+        $('#stepy_form').validate({
+            errorPlacement: function(error, element) {
+                $('#stepy_form div.stepy-error').append(error);
+            },
+            rules: {
+                'name': 'required',
+                'email': 'required'
+            },
+            messages: {
+                'name': {
+                    required: 'Name field is required!'
+                },
+                'email': {
+                    required: 'Email field is requerid!'
+                }
+            }
+        });
+    });
 </script>
 
 </body>

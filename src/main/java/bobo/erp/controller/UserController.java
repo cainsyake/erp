@@ -73,7 +73,11 @@ public class UserController {
             user.setId(user.getId());
             user.setPassword(user.getPassword());
             user.setUserLevel(user.getUserLevel());
-            user.setUserOperator(user.getUserOperator());
+            String test = user.getUserOperator();
+            if(user.getUserLevel() == 3){
+//                User tempUser = userRepository.findOne(user.getId());
+                user.setUserOperator(userRepository.findOne(user.getId()).getUserOperator());
+            }
             user.setUsername(user.getUsername());
             userRepository.save(user);
             return "success";
