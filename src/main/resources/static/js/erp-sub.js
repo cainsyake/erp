@@ -212,6 +212,17 @@ function pageController(rule) {
     txt5 += "</tbody>" +
         "</table>";
     document.getElementById("divMaterialPurchase").innerHTML = txt5;
+
+    txt6 = "<select name='longDebtTime'>";
+    for(var i = 1; i < ruleParam.paramLongTermLoanTimeLimit+1; i++){
+        txt6 += "<option value=" + i + ">还款期 " + i + " 年</option>";
+    }
+    txt6 += "</select>" +
+        "<br><br>" +
+        "<input type='number' min='0' placeholder='贷款额' style='width:100px' class='form-control' name='longDebtAmount' >";
+    document.getElementById("longDebtForm").innerHTML = txt6;
+
+
 }
 
 function btnController(obj) {
@@ -244,7 +255,7 @@ function btnController(obj) {
                 txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBidMeeting'>竞单会</button>";
             }
             if(obj.baseState.operateState.longLoan == 0){
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='ApplyLongLoan'>申请长贷</button>";
+                txt += "<button class='btn btn-danger btn-lg' data-toggle='modal' href='#modalApplyLongDebt' type='button' style=' id='ApplyLongLoan'>申请长贷</button>";
             }
 //                $("#btnApplyLongLoan").show();  //长贷需要在投放广告后
 //                $("#btnStartYear").show();
@@ -375,7 +386,7 @@ function btnController(obj) {
 }
 
 function oprateAdvertising(form) {
-    var nowUserName = $("#nowUserName").val();
+    var nowUserName = $("#nowUserName").val();;
     for(var i =1; i < 26; i++){
         eval("var ad =form.ad"+ i + ".value;");
 
@@ -403,6 +414,11 @@ function oprateAdvertising(form) {
             console.log(json.responseText);
         }
     });
+}
+
+function operateApplyLongDebt() {
+    var nowUserName = $("#nowUserName").val();
+    
 }
 
 function startRunning() {

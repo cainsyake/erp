@@ -307,6 +307,26 @@
       </div>
     </div>
 
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalApplyLongDebt" class="modal fade">
+      <div class="modal-dialog" style="width:250px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalApplyLongDebt">&times;</button>
+            <h4 class="modal-title" style="text-align:center">申 请 长 贷</h4>
+          </div>
+          <div class="modal-body">
+            <span>当前贷款额度：</span><span> 0 </span><span>W</span><br><br>
+            <form action="#" method="post" name="longDebtForm" id="longDebtForm">
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button" onclick="operateApplyLongDebt(document.longDebtForm)">申请</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalUpdatePassword" class="modal fade">
       <div class="modal-dialog">
         <div class="modal-content">
