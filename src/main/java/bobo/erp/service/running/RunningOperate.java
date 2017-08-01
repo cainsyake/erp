@@ -5,10 +5,12 @@ import bobo.erp.domain.state.RunningState;
 import bobo.erp.domain.state.finance.DebtState;
 import bobo.erp.domain.state.finance.FinancialStatement;
 import bobo.erp.domain.state.marketing.AdvertisingState;
+import bobo.erp.repository.state.RunningStateRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,6 +26,10 @@ public class RunningOperate {
     @Autowired
     private GetTeachClassRuleService getTeachClassRuleService;
 
+    @Autowired
+    private RunningStateRepository runningStateRepository;
+
+    @Transactional
     public RunningState advertising(AdvertisingState advertisingState, String username){
         RunningState runningState = getSubRunningStateService.getSubRunningState(username);
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
@@ -48,7 +54,13 @@ public class RunningOperate {
             List<DebtState> debtStateList = runningState.getFinanceState().getDebtStateList();
             for (DebtState debtState : debtStateList){
                 if (debtState.getDebtType() == 2){
-                    balance -= (int)Math.round(debtState.getAmounts() * rule.getRuleParam().getParamLongTermLoanRates());   //扣除长贷利息
+                    Integer interest = (int)Math.round(debtState.getAmounts() * rule.getRuleParam().getParamLongTermLoanRates());
+                    balance -= interest;   //扣除长贷利息
+                    for(FinancialStatement financialStatement : financialStatementList){
+                        if(financialStatement.getYear() == timeYear){
+                            financialStatement.setFinancialCost(financialStatement.getFinancialCost() + interest);   //记录利息至财务报表中
+                        }
+                    }
                     if(debtState.getRepaymentPeriod() == 1){
                         balance -= debtState.getAmounts();  //归还到期长贷本金
                     }else {
@@ -79,5 +91,6 @@ public class RunningOperate {
         }
         logger.info("测试广告总额：{}", advertisingState.getAd0());
         return runningState;
+//        return runningStateRepository.save(runningState);
     }
 }
