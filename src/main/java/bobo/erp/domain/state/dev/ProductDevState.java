@@ -1,6 +1,7 @@
 package bobo.erp.domain.state.dev;
 
 import bobo.erp.domain.state.DevState;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 
@@ -46,10 +47,12 @@ public class ProductDevState {
         this.state = state;
     }
 
+    @JsonBackReference
     public DevState getDevState() {
         return devState;
     }
 
+    @JsonBackReference
     public void setDevState(DevState devState) {
         this.devState = devState;
     }

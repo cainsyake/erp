@@ -27,19 +27,19 @@ public class FinanceState {
     private RunningState runningState;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "marketing_state_id")
+    @JoinColumn(name = "finance_state_id")
     private List<DebtState> debtStateList;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "marketing_state_id")
+    @JoinColumn(name = "finance_state_id")
     private List<ReceivableState> receivableStateList;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "marketing_state_id")
+    @JoinColumn(name = "finance_state_id")
     private List<DuesState> duesStateList;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "marketing_state_id")
+    @JoinColumn(name = "finance_state_id")
     private List<FinancialStatement> financialStatementList;
 
 

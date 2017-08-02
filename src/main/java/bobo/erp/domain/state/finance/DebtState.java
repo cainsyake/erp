@@ -1,6 +1,7 @@
 package bobo.erp.domain.state.finance;
 
 import bobo.erp.domain.state.FinanceState;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 
@@ -23,10 +24,12 @@ public class DebtState {
     @ManyToOne
     private FinanceState financeState;
 
+    @JsonBackReference
     public FinanceState getFinanceState() {
         return financeState;
     }
 
+    @JsonBackReference
     public void setFinanceState(FinanceState financeState) {
         this.financeState = financeState;
     }

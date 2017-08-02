@@ -315,13 +315,53 @@
             <h4 class="modal-title" style="text-align:center">申 请 长 贷</h4>
           </div>
           <div class="modal-body">
-            <span>当前贷款额度：</span><span> 0 </span><span>W</span><br><br>
+            <span>当前贷款额度：</span><span id="valueDebtLimit">  </span><span>W</span><br><br>
             <form action="#" method="post" name="longDebtForm" id="longDebtForm">
             </form>
           </div>
           <div class="modal-footer">
             <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
             <button class="btn btn-success" type="button" onclick="operateApplyLongDebt(document.longDebtForm)">申请</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalStartYear" class="modal fade">
+      <div class="modal-dialog" style="width:500px">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalStartYear">&times;</button>
+              <h4 class="modal-title" style="text-align: center">开 始 当 年</h4>
+            </div>
+            <div class="modal-body">
+              <h3 style="text-align: center">准备好了，开始今年4个季度的经营！</h3>
+            </div>
+            <div class="modal-footer">
+              <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+              <button class="btn btn-primary" type="button" onclick="operateStartYear()" >确认</button>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalStartQuarter" class="modal fade">
+      <div class="modal-dialog" style="width:500px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalStartQuarter">&times;</button>
+            <h4 class="modal-title" style="text-align: center">开 始 当 季</h4>
+          </div>
+          <div class="modal-body">
+            <h3 style="text-align: center">准备好开始这个季度的经营！</h3>
+            <h4 style="text-align: center">下面这些是即将进行的自动操作：</h4>
+            <h5 style="text-align: center">1. 更新短期贷款、还本付息</h5>
+            <h5 style="text-align: center">2. 更新生产、完工入库</h5>
+            <h5 style="text-align: center">3. 生产线完工、转产完成</h5>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-primary" type="button" onclick="operateStartQuarter()" >确认</button>
           </div>
         </div>
       </div>

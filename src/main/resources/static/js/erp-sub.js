@@ -3,33 +3,93 @@ function subOnLoad() {
     var nowUserName = $("#nowUserName").val();
     $.ajax({
         type:"POST",
-        url:"/getSubRunningState/" + nowUserName,
-        cache:false,
-        dataType:"json",
-        success:function (runningState) {
-            btnController(runningState);
-            infoController(runningState);
-        },
-        error:function (json) {
-            console.log(json.responseText);
-        }
-    });
-    $.ajax({
-        type:"POST",
         url:"/getTeachClassRule/" + nowUserName,
         cache:false,
         dataType:"json",
         success:function (rule) {
             pageController(rule);
+            $.ajax({
+                type:"POST",
+                url:"/getSubRunningState/" + nowUserName,
+                cache:false,
+                dataType:"json",
+                success:function (runningState) {
+                    btnController(runningState);
+                    infoController(runningState, rule);
+                },
+                error:function (json) {
+                    console.log(json.responseText);
+                }
+            });
         },
         error:function (json) {
             console.log(json.responseText);
         }
     });
+
 }
 
-function infoController(runningState) {
-    document.getElementById("valueCash").innerHTML = runningState.financeState.cashAmount + " W";
+function infoController(runningState, rule) {
+    document.getElementById("valueCash").innerHTML = runningState.financeState.cashAmount + " W";   //输出现金金额
+
+    var debtList = runningState.financeState.debtStateList;
+    var debtTotal = 0;
+    for(var i = 0; i<eval(debtList).length; i++ ){
+        debtTotal += debtList[i].amounts;
+    }
+    var financialStatementList = runningState.financeState.financialStatementList;
+    var debtLimit = 0;
+    if(runningState.baseState.timeYear == 1){
+        debtLimit = rule.ruleParam.paramLoanRatio * rule.ruleParam.paramInitialCash - debtTotal;
+    }else {
+        for (var i = 0; eval(financialStatementList).length; i++ ){
+            if(financialStatementList.get(i).year == runningState.baseState.timeYear - 1){
+                debtLimit = rule.ruleParam.paramLoanRatio * financialStatementList.get(i).ownersEquity - debtTotal;
+                if(debtLimit < 0){
+                    debtLimit = 0;
+                }
+            }
+        }
+    }
+    document.getElementById("valueDebtLimit").innerHTML = debtLimit;    //输出贷款限额
+
+
+    for(var j = 1; j < rule.ruleParam.paramLongTermLoanTimeLimit+1; j++){
+        var tempAmounts = 0;
+        for(var i = 0; i<eval(debtList).length; i++ ){
+            if(debtList[i].debtType == 2  && debtList[i].repaymentPeriod == j){
+                tempAmounts += debtList[i].amounts;
+            }
+        }
+        eval("document.getElementById('valueLongDebt" + j + "').innerHTML = tempAmounts");    //输出长贷信息
+    }
+
+    for(var j = 1; j < 5; j++){
+        var tempAmounts = 0;
+        for(var i = 0; i<eval(debtList).length; i++ ){
+            if(debtList[i].debtType == 1  && debtList[i].repaymentPeriod == j){
+                tempAmounts = debtList[i].amounts;
+                if(tempAmounts == null){
+                    tempAmounts = 0;
+                }
+            }
+        }
+        eval("document.getElementById('valueShortDebt" + j + "').innerHTML = tempAmounts");    //输出短贷信息
+    }
+
+    var receivableList = runningState.financeState.receivableStateList;
+    for(var j = 1; j < 5; j++){
+        var tempAmounts = 0;
+        for(var i = 0; i<eval(receivableList).length; i++ ){
+            if(receivableList[i].accountPeriod == j){
+                tempAmounts += receivableList[i].amounts;
+            }
+        }
+        eval("document.getElementById('valueReceivable" + j + "').innerHTML = tempAmounts");    //输出短贷信息
+    }
+
+
+
 }
 
 function pageController(rule) {
@@ -255,15 +315,15 @@ function btnController(obj) {
                 txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBidMeeting'>竞单会</button>";
             }
             if(obj.baseState.operateState.longLoan == 0){
-                txt += "<button class='btn btn-danger btn-lg' data-toggle='modal' href='#modalApplyLongDebt' type='button' style=' id='ApplyLongLoan'>申请长贷</button>";
+                txt += "<button class='btn btn-danger btn-lg' data-toggle='modal' href='#modalApplyLongDebt' type='button' id='ApplyLongLoan'>申请长贷</button>";
             }
 //                $("#btnApplyLongLoan").show();  //长贷需要在投放广告后
 //                $("#btnStartYear").show();
-            txt += "<button class='btn btn-success btn-lg' type='button' onclick='' style='' id='btnStartYear'>开始本年</button>";
+            txt += "<button class='btn btn-success btn-lg' data-toggle='modal' href='#modalStartYear' type='button'  id='btnStartYear'>开始本年</button>";
         }else if(obj.baseState.timeQuarter < 4){
             if(obj.baseState.state == 10){
 //                    $("#btnStartQuarter").show();
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnStartQuarter'>开始本季</button>";
+                txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#modalStartQuarter' type='button'  id='btnStartQuarter'>开始本季</button>";
             }
             if(obj.baseState.state == 11){
                 if(obj.baseState.operateState.shortLoan == 0){
@@ -319,7 +379,7 @@ function btnController(obj) {
         }else if(obj.baseState.timeQuarter == 4){
             if(obj.baseState.state == 10){
 //                    $("#btnStartQuarter").show();
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnStartQuarter'>开始本季</button>";
+                txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#modalStartQuarter' type='button'  id='btnStartQuarter'>开始本季</button>";
             }
             if(obj.baseState.state == 11){
                 if(obj.baseState.operateState.shortLoan == 0){
@@ -405,8 +465,7 @@ function oprateAdvertising(form) {
         dataType:"json",
         data:$('#advertisingForm').serialize(),
         success:function (runningState) {
-            btnController(runningState);
-            infoController(runningState);
+            subOnLoad();
             document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
             $("#btnCloseModalAdvertising").click();
         },
@@ -416,9 +475,77 @@ function oprateAdvertising(form) {
     });
 }
 
-function operateApplyLongDebt() {
+function operateApplyLongDebt(form) {
     var nowUserName = $("#nowUserName").val();
-    
+    var debtLimit = parseInt($("#valueDebtLimit").html());
+    var longDebtAmount = form.longDebtAmount.value;
+    var longDebtTime = form.longDebtTime.value;
+    if(debtLimit == 0){
+        alert("现在已经没有贷款额度了，无法申请贷款");
+        return false;
+    }
+    if(longDebtAmount > debtLimit){
+        alert("贷款额度不足，申请失败");
+        return false;
+    }else{
+        var debt = {
+            debtType: 2,
+            repaymentPeriod: longDebtTime,
+            amounts: longDebtAmount
+        };
+        $.ajax({
+            type:"POST",
+            url:"/operateApplyDebt/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            data:debt,
+            success:function (runningState) {
+                subOnLoad();
+                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+                $("#btnCloseModalApplyLongDebt").click();
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+    }
+
+}
+
+function operateStartYear() {
+    var nowUserName = $("#nowUserName").val();;
+    $.ajax({
+        type:"POST",
+        url:"/operateStartYear/" + nowUserName,
+        cache:false,
+        dataType:"json",
+        success:function (runningState) {
+            subOnLoad();
+            document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+            $("#btnCloseModalStartYear").click();
+        },
+        error:function (json) {
+            console.log(json.responseText);
+        }
+    });
+}
+
+function operateStartQuarter() {
+    var nowUserName = $("#nowUserName").val();;
+    $.ajax({
+        type:"POST",
+        url:"/operateStartQuarter/" + nowUserName,
+        cache:false,
+        dataType:"json",
+        success:function (runningState) {
+            subOnLoad();
+            document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+            $("#btnCloseModalStartQuarter").click();
+        },
+        error:function (json) {
+            console.log(json.responseText);
+        }
+    });
 }
 
 function startRunning() {
@@ -438,27 +565,6 @@ function startRunning() {
 //                $("#btnStartYear").show();
         },
         error:function (json) {
-            console.log(json.responseText);
-        }
-    });
-}
-
-function teachClassReturnOriginal() {
-    if (confirm("确认要执行还原操作吗?") == false) {
-        return;
-    }
-    $.ajax({
-        type:"GET",
-        url:"/teachClassReturnOriginal",
-        cache:false,
-        dataType:"json",
-        success:function (json) {
-            console.log("success");
-            console.log(json.responseText);
-            document.getElementById("ajaxDiv1").innerHTML = getTime() + json.responseText;
-        },
-        error:function (json) {
-            document.getElementById("ajaxDiv1").innerHTML = getTime() + json.responseText;
             console.log(json.responseText);
         }
     });

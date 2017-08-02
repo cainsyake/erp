@@ -1,6 +1,7 @@
 package bobo.erp.domain.state.factory;
 
 import bobo.erp.domain.state.FactoryState;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 
@@ -73,10 +74,12 @@ public class LineState {
         this.productType = productType;
     }
 
+    @JsonBackReference
     public FactoryState getFactoryState() {
         return factoryState;
     }
 
+    @JsonBackReference
     public void setFactoryState(FactoryState factoryState) {
         this.factoryState = factoryState;
     }

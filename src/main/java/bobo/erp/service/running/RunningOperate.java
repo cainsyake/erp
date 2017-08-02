@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -30,7 +31,7 @@ public class RunningOperate {
     private RunningStateRepository runningStateRepository;
 
     @Transactional
-    public RunningState advertising(AdvertisingState advertisingState, String username){
+    public RunningState advertising(String username, AdvertisingState advertisingState){
         RunningState runningState = getSubRunningStateService.getSubRunningState(username);
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
         advertisingState.setAd26(advertisingState.getAd1()+advertisingState.getAd6()+advertisingState.getAd11()+advertisingState.getAd16()+advertisingState.getAd21());
@@ -52,7 +53,9 @@ public class RunningOperate {
             }
 
             List<DebtState> debtStateList = runningState.getFinanceState().getDebtStateList();
-            for (DebtState debtState : debtStateList){
+            Iterator<DebtState> debtStateIterator = debtStateList.iterator();
+            while (debtStateIterator.hasNext()){
+                DebtState debtState = debtStateIterator.next();
                 if (debtState.getDebtType() == 2){
                     Integer interest = (int)Math.round(debtState.getAmounts() * rule.getRuleParam().getParamLongTermLoanRates());
                     balance -= interest;   //扣除长贷利息
@@ -63,11 +66,29 @@ public class RunningOperate {
                     }
                     if(debtState.getRepaymentPeriod() == 1){
                         balance -= debtState.getAmounts();  //归还到期长贷本金
+                        debtStateIterator.remove();     //删除数据库中的相应记录
                     }else {
                         debtState.setRepaymentPeriod(debtState.getRepaymentPeriod()-1);
                     }
                 }
             }
+//            for (DebtState debtState : debtStateList){
+//                if (debtState.getDebtType() == 2){
+//                    Integer interest = (int)Math.round(debtState.getAmounts() * rule.getRuleParam().getParamLongTermLoanRates());
+//                    balance -= interest;   //扣除长贷利息
+//                    for(FinancialStatement financialStatement : financialStatementList){
+//                        if(financialStatement.getYear() == timeYear){
+//                            financialStatement.setFinancialCost(financialStatement.getFinancialCost() + interest);   //记录利息至财务报表中
+//                        }
+//                    }
+//                    if(debtState.getRepaymentPeriod() == 1){
+//                        balance -= debtState.getAmounts();  //归还到期长贷本金
+//                        //TODO: 此处需要再删去该长贷在数据库中的记录
+//                    }else {
+//                        debtState.setRepaymentPeriod(debtState.getRepaymentPeriod()-1);
+//                    }
+//                }
+//            }
         }
 
         balance -= advertisingState.getAd0() ;
@@ -79,8 +100,9 @@ public class RunningOperate {
             advertisingState.setYear(runningState.getBaseState().getTimeYear());
             runningState.getMarketingState().getAdvertisingStateList().add(advertisingState);   //保存数据至广告记录
 
-            FinancialStatement financialStatement = new FinancialStatement();
+            FinancialStatement financialStatement = new FinancialStatement();   //投广告时新建一个财务报表
             financialStatement.setAdvertisingCost(advertisingState.getAd0());
+            financialStatement.setYear(timeYear);
             runningState.getFinanceState().getFinancialStatementList().add(financialStatement); //保存数据至财务报表
 
             runningState.getBaseState().getOperateState().setAd(1); //时间轴：关闭广告投放
@@ -93,4 +115,75 @@ public class RunningOperate {
         return runningState;
 //        return runningStateRepository.save(runningState);
     }
+
+    @Transactional
+    public RunningState applyDebt(String username, DebtState debtState){
+        //TODO: 此处需要再次验证贷款额度以及申请额
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Integer balance = runningState.getFinanceState().getCashAmount();
+        balance += debtState.getAmounts();
+        runningState.getFinanceState().setCashAmount(balance);  //修改现金余额
+        runningState.getFinanceState().getDebtStateList().add(debtState);   //存入贷款记录表
+        logger.info("用户：{} 申请贷款：{}W 类型：{} 还款期：{}", username, debtState.getAmounts(), debtState.getDebtType(), debtState.getRepaymentPeriod());
+//        List<DebtState> debtStateList = runningState.getFinanceState().getDebtStateList();
+//        debtStateList.add(debtState);
+        return runningState;
+    }
+
+    @Transactional
+    public RunningState startYear(String username){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        runningState.getBaseState().setTimeQuarter(1); //跳转至第一季度
+        runningState.getBaseState().setState(10);   //跳转至季度开始前
+        runningState.getBaseState().getOperateState().setLongLoan(1);   //明年投广告前关闭长贷申请
+        runningState.getBaseState().getOperateState().setOrderMeeting(1);   //明年投广告前关闭订货会
+        runningState.getBaseState().getOperateState().setBidMeeting(1);   //明年投广告前关闭竞单会
+        return runningState;
+    }
+
+    @Transactional
+    public RunningState starQuarter(String username){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+
+        //时间轴变换
+        runningState.getBaseState().setState(11);   //跳转至季初
+        runningState.getBaseState().getOperateState().setShortLoan(0);  //允许申请短贷
+
+        /**
+         * 自动进行的业务操作：
+         * 1.更新短贷
+         * 2.更新生产
+         * 3.更新建设
+         */
+        Integer balance = runningState.getFinanceState().getCashAmount();
+        Integer timeYear = runningState.getBaseState().getTimeYear();
+        if( timeYear > 1){
+            List<DebtState> debtStateList = runningState.getFinanceState().getDebtStateList();
+            List<FinancialStatement> financialStatementList = runningState.getFinanceState().getFinancialStatementList();
+            Iterator<DebtState> debtStateIterator = debtStateList.iterator();
+            while (debtStateIterator.hasNext()){
+                DebtState debtState = debtStateIterator.next();
+                if (debtState.getDebtType() == 1){
+                    Integer interest = (int)Math.round(debtState.getAmounts() * rule.getRuleParam().getParamShortTermLoanRates());
+                    balance -= interest;   //扣除短贷利息
+                    for(FinancialStatement financialStatement : financialStatementList){
+                        if(financialStatement.getYear() == timeYear){
+                            financialStatement.setFinancialCost(financialStatement.getFinancialCost() + interest);   //记录利息至财务报表中
+                        }
+                    }
+                    if(debtState.getRepaymentPeriod() == 1){
+                        balance -= debtState.getAmounts();  //归还到期短贷本金
+                        debtStateIterator.remove(); //从数据库中删除相应的记录
+                    }else {
+                        debtState.setRepaymentPeriod(debtState.getRepaymentPeriod()-1);
+                    }
+                }
+            }
+        }
+
+
+        return runningState;
+    }
+
 }
