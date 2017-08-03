@@ -9,11 +9,12 @@ MAET-ERP沙盘 基于B/S架构的ERP电子沙盘平台
 <br><br>
 平台主体架构<br>
 平台管理 --> 教学班管理 --> 子用户运营
+技术栈：Springboot + Mysql + Hibernate + Bootstrap + Jquery
 <br><br>
 开发状态：<br>
 平台管理：已完成常用模块开发<br>
 教学班管理：已完成部分初始化模块开发<br>
-子用户运营：正在进行初始化模块开发
+子用户运营：正在进行经营模块开发
 <br><br>
 由于现在只有一个人在开发，需要同时进行后端和前端的开发，因此对于这份文档还没有很多时间去完善，请谅解。<br>
 如果对于这个项目有任何疑问或建议欢迎提[ISSUE](https://github.com/cainsyake/erp/issues/new)进行反馈，或发送邮件至开发者的邮箱：**cainsyake@gmail.com**。<br>
