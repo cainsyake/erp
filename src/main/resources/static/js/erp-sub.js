@@ -358,32 +358,32 @@ function btnController(obj) {
             if(obj.baseState.state == 12){
                 if(obj.baseState.operateState.addPurchase == 0){
 //                        $("#btnAddPurchase").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddPurchase'>下原料订单</button>";
+                    txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#modalAddPurchase' type='button' id='btnAddPurchase'>采购原料</button>";
                 }
                 if(obj.baseState.operateState.buildLine == 0){
 //                        $("#btnBuildLine").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBuildLine'>在建生产线</button>";
+                    txt += "<button class='btn btn-warning btn-lg' type='button' onclick='' style='' id='btnBuildLine'>在建生产线</button>";
                 }
                 if(obj.baseState.operateState.continueChange == 0){
 //                        $("#btnContinueChange").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnContinueChange'>继续转产</button>";
+                    txt += "<button class='btn btn-warning btn-lg' type='button' onclick='' style='' id='btnContinueChange'>继续转产</button>";
                 }
                 if(obj.baseState.operateState.saleLine == 0){
 //                        $("#btnSaleLine").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnSaleLine'>出售生产线</button>";
+                    txt += "<button class='btn btn-warning btn-lg' type='button' onclick='' style='' id='btnSaleLine'>出售生产线</button>";
                 }
                 if(obj.baseState.operateState.beginProduction == 0){
 //                        $("#btnBeginProduction").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBeginProduction'>开始生产</button>";
+                    txt += "<button class='btn btn-success btn-lg' type='button' onclick='' style='' id='btnBeginProduction'>开始生产</button>";
                 }
 //                    $("#btnAddFactory").show();
 //                    $("#btnAddLine").show();
 //                    $("#btnChangeLine").show();
 //                    $("#btnUpdateReceivable").show();
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddFactory'>购租厂房</button>";
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddLine'>新建生产线</button>";
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnChangeLine'>生产线转产</button>";
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnUpdateReceivable'>应收款更新</button>";
+                txt += "<button class='btn btn-info btn-lg' type='button' onclick='' style='' id='btnAddFactory'>购租厂房</button>";
+                txt += "<button class='btn btn-info btn-lg' type='button' onclick='' style='' id='btnAddLine'>新建生产线</button>";
+                txt += "<button class='btn btn-primary btn-lg' type='button' onclick='' style='' id='btnChangeLine'>生产线转产</button>";
+                txt += "<button class='btn btn-danger btn-lg' type='button' onclick='' style='' id='btnUpdateReceivable'>应收款更新</button>";
             }
             if(obj.baseState.state == 13){
                 if(obj.baseState.operateState.productDev == 0){
@@ -414,7 +414,7 @@ function btnController(obj) {
             if(obj.baseState.state == 12){
                 if(obj.baseState.operateState.addPurchase == 0){
 //                        $("#btnAddPurchase").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddPurchase'>下原料订单</button>";
+                    txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#modalAddPurchase' type='button' id='btnAddPurchase'>采购原料</button>";
                 }
                 if(obj.baseState.operateState.buildLine == 0){
 //                        $("#btnBuildLine").show();
