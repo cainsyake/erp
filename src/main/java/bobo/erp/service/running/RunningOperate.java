@@ -8,6 +8,7 @@ import bobo.erp.domain.state.finance.DebtState;
 import bobo.erp.domain.state.finance.FinancialStatement;
 import bobo.erp.domain.state.marketing.AdvertisingState;
 import bobo.erp.domain.state.stock.ProductState;
+import bobo.erp.domain.state.stock.PurchaseState;
 import bobo.erp.repository.state.RunningStateRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -110,6 +111,9 @@ public class RunningOperate {
         balance += debtState.getAmounts();
         runningState.getFinanceState().setCashAmount(balance);  //修改现金余额
         runningState.getFinanceState().getDebtStateList().add(debtState);   //存入贷款记录表
+        if(debtState.getDebtType() == 1){
+            runningState.getBaseState().getOperateState().setShortLoan(1);
+        }
         logger.info("用户：{} 申请贷款：{}W 类型：{} 还款期：{}", username, debtState.getAmounts(), debtState.getDebtType(), debtState.getRepaymentPeriod());
 //        List<DebtState> debtStateList = runningState.getFinanceState().getDebtStateList();
 //        debtStateList.add(debtState);
@@ -204,8 +208,64 @@ public class RunningOperate {
             }
         }
 
+        return runningState;
+    }
 
+    @Transactional
+    public RunningState updatePurchase(String username){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+        List<PurchaseState> purchaseStateList = runningState.getStockState().getPurchaseStateList();
+        Iterator<PurchaseState> purchaseStateIterator = purchaseStateList.iterator();
+        Integer balance = runningState.getFinanceState().getCashAmount();
+        Integer purchaseTotalAmounts = 0;
+        while (purchaseStateIterator.hasNext()){
+            PurchaseState purchaseState = purchaseStateIterator.next();
+            Integer tempType = purchaseState.getType();
+            Integer tempQuantity = purchaseState.getQuantity();
+            Integer tempDeliveryTime = purchaseState.getDeliveryTime();
+            if(tempDeliveryTime == 1){
+                if(tempType == 1){
+                    Integer price = rule.getRuleMaterial().getMaterial1Price();
+                    purchaseTotalAmounts += tempQuantity * price;
+                }
+                if(tempType == 2){
+                    Integer price = rule.getRuleMaterial().getMaterial2Price();
+                    purchaseTotalAmounts += tempQuantity * price;
+                }
+                if(tempType == 3){
+                    Integer price = rule.getRuleMaterial().getMaterial3Price();
+                    purchaseTotalAmounts += tempQuantity * price;
+                }
+                if(tempType == 4){
+                    Integer price = rule.getRuleMaterial().getMaterial4Price();
+                    purchaseTotalAmounts += tempQuantity * price;
+                }
+                if(tempType == 5){
+                    Integer price = rule.getRuleMaterial().getMaterial5Price();
+                    purchaseTotalAmounts += tempQuantity * price;
+                }
+                if(purchaseTotalAmounts > balance){
+                    runningState.getBaseState().setMsg("现金不足");
+                    return runningState;
+                }else {
+                    balance -= purchaseTotalAmounts;
+                    purchaseStateIterator.remove();     //从数据库中删除相应采购记录
+                }
 
+            }else {
+                purchaseState.setDeliveryTime(tempDeliveryTime - 1); ;     //更新收货期
+            }
+        }
+
+        //时间轴变换
+        runningState.getBaseState().setState(12);   //跳转至季中
+        runningState.getBaseState().getOperateState().setShortLoan(0);  //允许申请短贷
+        runningState.getBaseState().getOperateState().setAddPurchase(0);
+        runningState.getBaseState().getOperateState().setBuildLine(0);
+        runningState.getBaseState().getOperateState().setContinueChange(0);
+        runningState.getBaseState().getOperateState().setSaleLine(0);
+        runningState.getBaseState().getOperateState().setBeginProduction(0);
         return runningState;
     }
 

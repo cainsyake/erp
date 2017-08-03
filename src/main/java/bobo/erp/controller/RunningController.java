@@ -82,4 +82,10 @@ public class RunningController {
         return runningOperate.starQuarter(nowUserName);
     }
 
+    @PostMapping(value = "operateUpdatePurchase/{nowUserName}")
+    @ResponseBody
+    public RunningState operateUpdatePurchase(@PathVariable("nowUserName") String nowUserName){
+        return runningOperate.updatePurchase(nowUserName);
+    }
+
 }

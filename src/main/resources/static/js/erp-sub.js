@@ -39,7 +39,7 @@ function infoController(runningState, rule) {
         debtTotal += debtList[i].amounts;
     }
     var financialStatementList = runningState.financeState.financialStatementList;
-    var financialStatementListNum = eval(financialStatementList).length;
+    // var financialStatementListNum = eval(financialStatementList).length;
     var debtLimit = 0;
     var tempYear = 1;
     if(runningState.baseState.timeYear == 1){
@@ -57,6 +57,24 @@ function infoController(runningState, rule) {
     }
     document.getElementById("valueDebtLimit").innerHTML = debtLimit;    //输出贷款限额 至长贷框
     document.getElementById("valueDebtLimit2").innerHTML = debtLimit;   //输出贷款限额 至短贷框
+
+    var purchaseStateList = runningState.stockState.purchaseStateList;
+    var purchaseTotalAmounts = 0;
+    $.each(purchaseStateList,function(n,purchaseState) {
+        tempType = purchaseState.type;
+        tempQuantity = purchaseState.quantity;
+        tempDeliveryTime = purchaseState.deliveryTime;
+        if(tempDeliveryTime == 1){
+            for(var j = 1; j < 6; j++){
+                if(tempType == j){
+                    eval("var price = rule.ruleMaterial.material" + j + "Price");
+                    purchaseTotalAmounts += tempQuantity * price;
+                }
+            }
+        }
+    });
+    document.getElementById("valueUpdatePurchaseAmounts").innerHTML = purchaseTotalAmounts;   //输出原料采购总价
+
 
     for(var j = 1; j < rule.ruleParam.paramLongTermLoanTimeLimit+1; j++){
         var tempAmounts = 0;
@@ -89,7 +107,7 @@ function infoController(runningState, rule) {
                 tempAmounts += receivableList[i].amounts;
             }
         }
-        eval("document.getElementById('valueReceivable" + j + "').innerHTML = tempAmounts");    //输出短贷信息
+        eval("document.getElementById('valueReceivable" + j + "').innerHTML = tempAmounts");    //输出应收款信息
     }
 
 
@@ -335,7 +353,7 @@ function btnController(obj) {
                     txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#modalApplyShortDebt' type='button' id='btnApplyShortLoan'>申请短贷</button> ";
                 }
 //                    $("#btnUpdatePurchase").show();
-                txt += "<button class='btn btn-danger btn-lg' type='button' onclick='' style='' id='btnUpdatePurchase'>更新原料订单</button>";
+                txt += "<button class='btn btn-danger btn-lg' data-toggle='modal' href='#modalUpdatePurchase' type='button' id='btnUpdatePurchase'>更新原料订单</button>";
             }
             if(obj.baseState.state == 12){
                 if(obj.baseState.operateState.addPurchase == 0){
@@ -391,7 +409,7 @@ function btnController(obj) {
                     txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#modalApplyShortDebt' type='button' id='btnApplyShortLoan'>申请短贷</button> ";
                 }
 //                    $("#btnUpdatePurchase").show();
-                txt += "<button class='btn btn-danger btn-lg' type='button' onclick='' style='' id='btnUpdatePurchase'>更新原料订单</button>";
+                txt += "<button class='btn btn-danger btn-lg' data-toggle='modal' href='#modalUpdatePurchase' type='button' id='btnUpdatePurchase'>更新原料订单</button>";
             }
             if(obj.baseState.state == 12){
                 if(obj.baseState.operateState.addPurchase == 0){
@@ -543,6 +561,32 @@ function operateApplyShortDebt() {
                 subOnLoad();
                 document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
                 $("#btnCloseModalApplyShortDebt").click();
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+    }
+
+}
+
+function operateUpdatePurchase() {
+    var nowUserName = $("#nowUserName").val();
+    var amounts = $("#valueUpdatePurchaseAmounts").val();
+    var cash = $("#valueCash").val();
+    if(amounts > cash){
+        alert("现金不足");
+        return false;
+    }else{
+        $.ajax({
+            type:"POST",
+            url:"/operateUpdatePurchase/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            success:function (runningState) {
+                subOnLoad();
+                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+                $("#btnCloseModalUpdatePurchase").click();
             },
             error:function (json) {
                 console.log(json.responseText);
