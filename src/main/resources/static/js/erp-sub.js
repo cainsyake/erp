@@ -31,6 +31,7 @@ function subOnLoad() {
 
 function infoController(runningState, rule) {
     document.getElementById("valueCash").innerHTML = runningState.financeState.cashAmount + " W";   //输出现金金额
+    document.getElementById("valueRunningTime").innerHTML = "第 " + runningState.baseState.timeYear + " 年 第 " + runningState.baseState.timeQuarter + " 季";
 
     var debtList = runningState.financeState.debtStateList;
     var debtTotal = 0;
@@ -38,21 +39,24 @@ function infoController(runningState, rule) {
         debtTotal += debtList[i].amounts;
     }
     var financialStatementList = runningState.financeState.financialStatementList;
+    var financialStatementListNum = eval(financialStatementList).length;
     var debtLimit = 0;
+    var tempYear = 1;
     if(runningState.baseState.timeYear == 1){
         debtLimit = rule.ruleParam.paramLoanRatio * rule.ruleParam.paramInitialCash - debtTotal;
     }else {
-        for (var i = 0; eval(financialStatementList).length; i++ ){
-            if(financialStatementList.get(i).year == runningState.baseState.timeYear - 1){
-                debtLimit = rule.ruleParam.paramLoanRatio * financialStatementList.get(i).ownersEquity - debtTotal;
+        $.each(financialStatementList,function(n,financialStatement) {
+            tempYear = financialStatement.year;
+            if(tempYear == runningState.baseState.timeYear - 1){
+                debtLimit = rule.ruleParam.paramLoanRatio * financialStatement.ownersEquity - debtTotal;
                 if(debtLimit < 0){
                     debtLimit = 0;
                 }
             }
-        }
+        });
     }
-    document.getElementById("valueDebtLimit").innerHTML = debtLimit;    //输出贷款限额
-
+    document.getElementById("valueDebtLimit").innerHTML = debtLimit;    //输出贷款限额 至长贷框
+    document.getElementById("valueDebtLimit2").innerHTML = debtLimit;   //输出贷款限额 至短贷框
 
     for(var j = 1; j < rule.ruleParam.paramLongTermLoanTimeLimit+1; j++){
         var tempAmounts = 0;
@@ -328,10 +332,10 @@ function btnController(obj) {
             if(obj.baseState.state == 11){
                 if(obj.baseState.operateState.shortLoan == 0){
 //                        $("#btnApplyShortLoan").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnApplyShortLoan'>申请短贷</button>";
+                    txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#modalApplyShortDebt' type='button' id='btnApplyShortLoan'>申请短贷</button> ";
                 }
 //                    $("#btnUpdatePurchase").show();
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnUpdatePurchase'>更新原料订单</button>";
+                txt += "<button class='btn btn-danger btn-lg' type='button' onclick='' style='' id='btnUpdatePurchase'>更新原料订单</button>";
             }
             if(obj.baseState.state == 12){
                 if(obj.baseState.operateState.addPurchase == 0){
@@ -384,10 +388,10 @@ function btnController(obj) {
             if(obj.baseState.state == 11){
                 if(obj.baseState.operateState.shortLoan == 0){
 //                        $("#btnApplyShortLoan").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnApplyShortLoan'>申请短贷</button>";
+                    txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#modalApplyShortDebt' type='button' id='btnApplyShortLoan'>申请短贷</button> ";
                 }
 //                    $("#btnUpdatePurchase").show();
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnUpdatePurchase'>更新原料订单</button>";
+                txt += "<button class='btn btn-danger btn-lg' type='button' onclick='' style='' id='btnUpdatePurchase'>更新原料订单</button>";
             }
             if(obj.baseState.state == 12){
                 if(obj.baseState.operateState.addPurchase == 0){
@@ -512,6 +516,42 @@ function operateApplyLongDebt(form) {
 
 }
 
+function operateApplyShortDebt() {
+    var nowUserName = $("#nowUserName").val();
+    var debtLimit = parseInt($("#valueDebtLimit2").html());
+    var shortDebtAmount = $("#shortDebtAmount").val();
+    if(debtLimit == 0){
+        alert("现在已经没有贷款额度了，无法申请贷款");
+        return false;
+    }
+    if(shortDebtAmount > debtLimit){
+        alert("贷款额度不足，申请失败");
+        return false;
+    }else{
+        var debt = {
+            debtType: 1,
+            repaymentPeriod: 4,
+            amounts: shortDebtAmount
+        };
+        $.ajax({
+            type:"POST",
+            url:"/operateApplyDebt/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            data:debt,
+            success:function (runningState) {
+                subOnLoad();
+                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+                $("#btnCloseModalApplyShortDebt").click();
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+    }
+
+}
+
 function operateStartYear() {
     var nowUserName = $("#nowUserName").val();;
     $.ajax({
@@ -558,8 +598,9 @@ function startRunning() {
         success:function (obj) {
             console.log("用户已激活");
             document.getElementById("ajaxDiv1").innerHTML = getTime() + " 请开始运营";
-            btnController(obj);
-            infoController(obj);
+            subOnLoad();
+            // btnController(obj);
+            // infoController(obj);
 //                $("#btnInit").hide();
 //                $("#btnAdvertising").show();
 //                $("#btnStartYear").show();

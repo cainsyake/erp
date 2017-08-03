@@ -5,6 +5,7 @@ import bobo.erp.domain.state.RunningState;
 import bobo.erp.domain.state.finance.DebtState;
 import bobo.erp.domain.state.marketing.AdvertisingState;
 import bobo.erp.domain.teach.TeachClassInfo;
+import bobo.erp.repository.rule.RuleRepository;
 import bobo.erp.service.running.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,9 @@ public class RunningController {
     private RunningOperate runningOperate;
     @Autowired
     private GetTeachClassInfoService getTeachClassInfoService;
+
+    @Autowired
+    private RuleRepository ruleRepository;
 
 
     @PostMapping(value = "getSubRunningState/{nowUserName}")
@@ -77,4 +81,5 @@ public class RunningController {
     public RunningState operateStartQuarter(@PathVariable("nowUserName") String nowUserName){
         return runningOperate.starQuarter(nowUserName);
     }
+
 }

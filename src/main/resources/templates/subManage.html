@@ -114,7 +114,7 @@
       <div class="col-md-4">
         <div class="panel panel-info">
           <div class="panel-heading">
-            <h3 class="panel-title">运营信息记录</h3>
+            <h3 class="panel-title" id="valueRunningTime">运营信息记录</h3>
           </div>
           <div class="panel-body" id="ajaxDiv1">
           </div>
@@ -362,6 +362,28 @@
           <div class="modal-footer">
             <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
             <button class="btn btn-primary" type="button" onclick="operateStartQuarter()" >确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalApplyShortDebt" class="modal fade">
+      <div class="modal-dialog" style="width:250px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalApplyShortDebt">&times;</button>
+            <h4 class="modal-title" style="text-align:center">申 请 短 贷</h4>
+          </div>
+          <div class="modal-body">
+            <span>当前贷款额度：</span><span id="valueDebtLimit2">  </span><span>W</span><br><br>
+            <input type='number' min='0' placeholder='贷款额' style='width:100px' class='form-control' name='shortDebtAmount' id='shortDebtAmount'>
+            <!--<form action="#" method="post" name="longDebtForm" id="">-->
+            <!--</form>-->
+
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button" onclick="operateApplyShortDebt()">申请</button>
           </div>
         </div>
       </div>

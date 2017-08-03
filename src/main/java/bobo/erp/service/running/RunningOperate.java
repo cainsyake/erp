@@ -1,10 +1,13 @@
 package bobo.erp.service.running;
 
 import bobo.erp.domain.rule.Rule;
+import bobo.erp.domain.state.FactoryState;
 import bobo.erp.domain.state.RunningState;
+import bobo.erp.domain.state.factory.LineState;
 import bobo.erp.domain.state.finance.DebtState;
 import bobo.erp.domain.state.finance.FinancialStatement;
 import bobo.erp.domain.state.marketing.AdvertisingState;
+import bobo.erp.domain.state.stock.ProductState;
 import bobo.erp.repository.state.RunningStateRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,23 +75,6 @@ public class RunningOperate {
                     }
                 }
             }
-//            for (DebtState debtState : debtStateList){
-//                if (debtState.getDebtType() == 2){
-//                    Integer interest = (int)Math.round(debtState.getAmounts() * rule.getRuleParam().getParamLongTermLoanRates());
-//                    balance -= interest;   //扣除长贷利息
-//                    for(FinancialStatement financialStatement : financialStatementList){
-//                        if(financialStatement.getYear() == timeYear){
-//                            financialStatement.setFinancialCost(financialStatement.getFinancialCost() + interest);   //记录利息至财务报表中
-//                        }
-//                    }
-//                    if(debtState.getRepaymentPeriod() == 1){
-//                        balance -= debtState.getAmounts();  //归还到期长贷本金
-//                        //TODO: 此处需要再删去该长贷在数据库中的记录
-//                    }else {
-//                        debtState.setRepaymentPeriod(debtState.getRepaymentPeriod()-1);
-//                    }
-//                }
-//            }
         }
 
         balance -= advertisingState.getAd0() ;
@@ -165,14 +151,14 @@ public class RunningOperate {
             while (debtStateIterator.hasNext()){
                 DebtState debtState = debtStateIterator.next();
                 if (debtState.getDebtType() == 1){
-                    Integer interest = (int)Math.round(debtState.getAmounts() * rule.getRuleParam().getParamShortTermLoanRates());
-                    balance -= interest;   //扣除短贷利息
-                    for(FinancialStatement financialStatement : financialStatementList){
-                        if(financialStatement.getYear() == timeYear){
-                            financialStatement.setFinancialCost(financialStatement.getFinancialCost() + interest);   //记录利息至财务报表中
-                        }
-                    }
                     if(debtState.getRepaymentPeriod() == 1){
+                        Integer interest = (int)Math.round(debtState.getAmounts() * rule.getRuleParam().getParamShortTermLoanRates());
+                        balance -= interest;   //扣除短贷利息
+                        for(FinancialStatement financialStatement : financialStatementList){
+                            if(financialStatement.getYear() == timeYear){
+                                financialStatement.setFinancialCost(financialStatement.getFinancialCost() + interest);   //记录利息至财务报表中
+                            }
+                        }
                         balance -= debtState.getAmounts();  //归还到期短贷本金
                         debtStateIterator.remove(); //从数据库中删除相应的记录
                     }else {
@@ -181,6 +167,43 @@ public class RunningOperate {
                 }
             }
         }
+
+        List<ProductState> productStateList = runningState.getStockState().getProductStateList();
+        Iterator<ProductState> productStateIterator = productStateList.iterator();
+        List<FactoryState> factoryStateList = runningState.getFactoryStateList();
+        Iterator<FactoryState> factoryStateIterator = factoryStateList.iterator();
+        while (factoryStateIterator.hasNext()){
+            List<LineState> lineStateList = factoryStateIterator.next().getLineStateList();
+            Iterator<LineState> lineStateIterator = lineStateList.iterator();
+            while (lineStateIterator.hasNext()){
+                LineState lineState = lineStateIterator.next();
+
+                //更新生产
+                if(lineState.getProduceState() == 1){
+                    Integer productType = lineState.getProductType();
+                    while (productStateIterator.hasNext()){
+                        ProductState productState = productStateIterator.next();
+                        if (productState.getType() == productType){
+                            productState.setQuantity(productState.getQuantity() + 1);   //增加产品库存
+                        }
+                    }
+                    for(int i = 1; i < 6; i++){
+                    }
+                }
+                if(lineState.getProduceState() > 0){
+                    lineState.setProduceState(lineState.getProduceState() - 1); //更新生产状态
+                }
+
+                //更新生产线建设
+                if(lineState.getOwningState() == 0){
+                    lineState.setOwningState(1);    //安装完成
+                }
+                if (lineState.getProduceState() == -1){
+                    lineState.setProduceState(0);   //转产完成
+                }
+            }
+        }
+
 
 
         return runningState;

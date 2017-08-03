@@ -102,11 +102,55 @@ public class TeachClassInit {
 
                 StockState stockState = new StockState();
                 List<MaterialState> materialStateList = new ArrayList<MaterialState>();
+                Integer materialNum = 0;    //原料数量
+                if(!(rule.getRuleMaterial().getMaterial1Name().isEmpty())){
+                    materialNum++;
+                }
+                if(!(rule.getRuleMaterial().getMaterial2Name().isEmpty())){
+                    materialNum++;
+                }
+                if(!(rule.getRuleMaterial().getMaterial3Name().isEmpty())){
+                    materialNum++;
+                }
+                if(!(rule.getRuleMaterial().getMaterial4Name().isEmpty())){
+                    materialNum++;
+                }
+                if(!(rule.getRuleMaterial().getMaterial5Name().isEmpty())){
+                    materialNum++;
+                }
+                for(int j = 1; j < materialNum+1; j++){
+                    MaterialState materialState = new MaterialState();
+                    materialState.setType(j);
+                    materialState.setQuantity(0);
+                    materialStateList.add(materialState);
+                }
                 List<ProductState> productStateList = new ArrayList<ProductState>();
+                Integer productNum = 0;    //原料数量
+                if(!(rule.getRuleProduct().getProduct1Name().isEmpty())){
+                    productNum++;
+                }
+                if(!(rule.getRuleProduct().getProduct2Name().isEmpty())){
+                    productNum++;
+                }
+                if(!(rule.getRuleProduct().getProduct3Name().isEmpty())){
+                    productNum++;
+                }
+                if(!(rule.getRuleProduct().getProduct4Name().isEmpty())){
+                    productNum++;
+                }
+                if(!(rule.getRuleProduct().getProduct5Name().isEmpty())){
+                    productNum++;
+                }
+                for(int j = 1; j < productNum+1; j++){
+                    ProductState productState = new ProductState();
+                    productState.setType(j);
+                    productState.setQuantity(0);
+                    productStateList.add(productState);
+                }
                 List<PurchaseState> purchaseStateList = new ArrayList<PurchaseState>();
                 stockState.setMaterialStateList(materialStateList);
-                stockState.setProductStates(productStateList);
-                stockState.setPurchaseStates(purchaseStateList);
+                stockState.setProductStateList(productStateList);
+                stockState.setPurchaseStateList(purchaseStateList);
                 runningState.setStockState(stockState); //存入StockState
 
                 //由于一个RunningState中可能含有多个FactoryState,所以仅存入该类型List,三级实体由新增厂房时存入

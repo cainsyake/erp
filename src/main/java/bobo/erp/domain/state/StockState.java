@@ -28,11 +28,11 @@ public class StockState {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "stock_state_id")
-    private List<ProductState> productStates;
+    private List<ProductState> productStateList;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "stock_state_id")
-    private List<PurchaseState> purchaseStates;
+    private List<PurchaseState> purchaseStateList;
 
     public Integer getId() {
         return id;
@@ -60,19 +60,19 @@ public class StockState {
         this.materialStateList = materialStateList;
     }
 
-    public List<ProductState> getProductStates() {
-        return productStates;
+    public List<ProductState> getProductStateList() {
+        return productStateList;
     }
 
-    public void setProductStates(List<ProductState> productStates) {
-        this.productStates = productStates;
+    public void setProductStateList(List<ProductState> productStateList) {
+        this.productStateList = productStateList;
     }
 
-    public List<PurchaseState> getPurchaseStates() {
-        return purchaseStates;
+    public List<PurchaseState> getPurchaseStateList() {
+        return purchaseStateList;
     }
 
-    public void setPurchaseStates(List<PurchaseState> purchaseStates) {
-        this.purchaseStates = purchaseStates;
+    public void setPurchaseStateList(List<PurchaseState> purchaseStateList) {
+        this.purchaseStateList = purchaseStateList;
     }
 }
