@@ -34,8 +34,8 @@ public class RunningState {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "running_state_id")
-    private List<FactoryState> factoryStateList;
-//    private FactoryState factoryState;  //厂房状态
+    private List<FactoryState> factoryStateList;    //厂房状态
+//    private FactoryState factoryState;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "dev_state_id")

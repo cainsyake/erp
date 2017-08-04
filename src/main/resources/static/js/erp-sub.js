@@ -7,7 +7,7 @@ function subOnLoad() {
         cache:false,
         dataType:"json",
         success:function (rule) {
-            pageController(rule);
+
             $.ajax({
                 type:"POST",
                 url:"/getSubRunningState/" + nowUserName,
@@ -15,6 +15,7 @@ function subOnLoad() {
                 dataType:"json",
                 success:function (runningState) {
                     btnController(runningState);
+                    pageController(rule, runningState);
                     infoController(runningState, rule);
                 },
                 error:function (json) {
@@ -30,7 +31,7 @@ function subOnLoad() {
 }
 
 function infoController(runningState, rule) {
-    document.getElementById("valueCash").innerHTML = runningState.financeState.cashAmount + " W";   //输出现金金额
+    document.getElementById("valueCash").innerHTML = runningState.financeState.cashAmount;   //输出现金金额
     document.getElementById("valueRunningTime").innerHTML = "第 " + runningState.baseState.timeYear + " 年 第 " + runningState.baseState.timeQuarter + " 季";
 
     var debtList = runningState.financeState.debtStateList;
@@ -114,7 +115,7 @@ function infoController(runningState, rule) {
 
 }
 
-function pageController(rule) {
+function pageController(rule, runningState) {
     var txt1 ="";
     txt1 += "<table class='table table-bordered'>" +
         "<thead>" +
@@ -304,6 +305,73 @@ function pageController(rule) {
         "<input type='number' min='0' placeholder='贷款额' style='width:100px' class='form-control' name='longDebtAmount' >";
     document.getElementById("longDebtForm").innerHTML = txt6;
 
+    var txt7 = "";
+    for(var i = 1; i <= materialNum; i++){
+        eval("var strName = ruleMaterial.material" + i + "Name");
+        txt7 += "<label>" + strName + " ： </label><input type='number' min='0' placeholder='采购量' style='width:100px' id='material" + i + "AddNum' name=='material" + i + "AddNum'><br>";
+    }
+    document.getElementById("addPurchaseForm").innerHTML = txt7;
+
+    txt8 = "<select name='factoryType'>";
+    var ruleFactory = rule.ruleFactory;
+    var factoryNum = 0;
+    for(var i = 1; i < 6; i++){
+        if(eval("ruleFactory.factory" + i + "Name") != ""){
+            factoryNum++;
+        }
+    }
+    for(var i = 1; i < factoryNum+1; i++){
+        eval("var factoryName = ruleFactory.factory" + i + "Name");
+        eval("var factoryBuyPrice = ruleFactory.factory" + i + "BuyPrice");
+        eval("var factoryRentPrice = ruleFactory.factory" + i + "RentPrice");
+        txt8 += "<option value=" + i + ">" + factoryName + " 购买：" + factoryBuyPrice + "W 租赁：" + factoryRentPrice + "W/年 "+ "</option>";
+    }
+    txt8 += "</select>" +
+        "<br><br>" +
+        "<select name='factoryOwning'>" +
+        "<option value='1'>购买</option>" +
+        "<option value='0'>租赁</option>" +
+        "</select>";
+    document.getElementById("newFactoryForm").innerHTML = txt8;
+
+    var ruleLine = rule.ruleLine;
+    var ruleLineNum = 0;
+    var txt9 = "<label>生产线类型 ： </label><select name='lineType'>";
+    for(var i = 1; i < 6; i++){
+        var lineName = eval("ruleLine.line" + i + "Name");
+        if(lineName != ""){
+            var linePrice = eval("ruleLine.line" + i + "UnitInvest * ruleLine.line" + i + "InstallTime");
+            ruleLineNum++;
+            txt9 += "<option value=" + i + ">" + lineName + "</option>"
+        }
+    }
+    txt9 += "</select><br><br>" +
+        "<label>所属厂房 ： </label><select name='forFactory'>";
+    var factoryStateList = runningState.factoryStateList;
+    $.each(factoryStateList,function(n, factoryState) {
+        var lineStateList = factoryState.lineStateList;
+        var content = factoryState.content;
+        var volume = 0;
+        var factoryName = "";
+        for(var i = 1; i < 6; i++){
+            if(factoryState.type == i){
+                volume = eval("ruleFactory.factory" + i + "Volume");
+                factoryName = eval("ruleFactory.factory" + i + "Name");
+            }
+        }
+        if(content < volume){
+            txt9 += "<option value=" + factoryState.id + ">ID: " + factoryState.id + " " + factoryName + "</option>";
+        }
+    });
+    txt9 += "</select><br><br>" +
+        "<label>生产产品类型 ： </label><select name='productType'>";
+    for(var i = 1; i < productNum+1; i++){
+        txt9 += "<option value=" + i + ">" + eval("ruleProduct.product" + i + "Name") + "</option>";
+    }
+    txt9 += "</select>";
+
+    document.getElementById("newLineForm").innerHTML = txt9;
+
 
 }
 
@@ -321,78 +389,56 @@ function btnController(obj) {
 
         if(obj.baseState.timeQuarter == 0){
             if(obj.baseState.operateState.report == 0){
-//                    $("#btnReport").show();
                 txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnApplyShortLoan'>填写报表</button>";
             }
             if(obj.baseState.operateState.ad == 0){
-//                    $("#btnAdvertising").show();
                 txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#modalAdvertising' type='button' style='' id='btnAdvertising'>投放广告</button>";
             }
             if(obj.baseState.operateState.orderMeeting == 0){
-//                    $("#btnOrderMeeting").show();
                 txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnOrderMeeting'>订货会</button>";
             }
             if(obj.baseState.operateState.bidMeeting == 0){
-//                    $("#btnBidMeeting").show();
                 txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBidMeeting'>竞单会</button>";
             }
             if(obj.baseState.operateState.longLoan == 0){
                 txt += "<button class='btn btn-danger btn-lg' data-toggle='modal' href='#modalApplyLongDebt' type='button' id='ApplyLongLoan'>申请长贷</button>";
             }
-//                $("#btnApplyLongLoan").show();  //长贷需要在投放广告后
-//                $("#btnStartYear").show();
             txt += "<button class='btn btn-success btn-lg' data-toggle='modal' href='#modalStartYear' type='button'  id='btnStartYear'>开始本年</button>";
         }else if(obj.baseState.timeQuarter < 4){
             if(obj.baseState.state == 10){
-//                    $("#btnStartQuarter").show();
                 txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#modalStartQuarter' type='button'  id='btnStartQuarter'>开始本季</button>";
             }
             if(obj.baseState.state == 11){
                 if(obj.baseState.operateState.shortLoan == 0){
-//                        $("#btnApplyShortLoan").show();
                     txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#modalApplyShortDebt' type='button' id='btnApplyShortLoan'>申请短贷</button> ";
                 }
-//                    $("#btnUpdatePurchase").show();
                 txt += "<button class='btn btn-danger btn-lg' data-toggle='modal' href='#modalUpdatePurchase' type='button' id='btnUpdatePurchase'>更新原料订单</button>";
             }
             if(obj.baseState.state == 12){
                 if(obj.baseState.operateState.addPurchase == 0){
-//                        $("#btnAddPurchase").show();
                     txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#modalAddPurchase' type='button' id='btnAddPurchase'>采购原料</button>";
                 }
+                txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#modalNewFactory' type='button' id='btnAddFactory'>购租厂房</button>";
+                txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#modalNewLine' type='button' id='btnAddLine'>新建生产线</button>";
                 if(obj.baseState.operateState.buildLine == 0){
-//                        $("#btnBuildLine").show();
                     txt += "<button class='btn btn-warning btn-lg' type='button' onclick='' style='' id='btnBuildLine'>在建生产线</button>";
                 }
+                txt += "<button class='btn btn-primary btn-lg' type='button' onclick='' style='' id='btnChangeLine'>生产线转产</button>";
                 if(obj.baseState.operateState.continueChange == 0){
-//                        $("#btnContinueChange").show();
                     txt += "<button class='btn btn-warning btn-lg' type='button' onclick='' style='' id='btnContinueChange'>继续转产</button>";
                 }
                 if(obj.baseState.operateState.saleLine == 0){
-//                        $("#btnSaleLine").show();
                     txt += "<button class='btn btn-warning btn-lg' type='button' onclick='' style='' id='btnSaleLine'>出售生产线</button>";
                 }
                 if(obj.baseState.operateState.beginProduction == 0){
-//                        $("#btnBeginProduction").show();
                     txt += "<button class='btn btn-success btn-lg' type='button' onclick='' style='' id='btnBeginProduction'>开始生产</button>";
                 }
-//                    $("#btnAddFactory").show();
-//                    $("#btnAddLine").show();
-//                    $("#btnChangeLine").show();
-//                    $("#btnUpdateReceivable").show();
-                txt += "<button class='btn btn-info btn-lg' type='button' onclick='' style='' id='btnAddFactory'>购租厂房</button>";
-                txt += "<button class='btn btn-info btn-lg' type='button' onclick='' style='' id='btnAddLine'>新建生产线</button>";
-                txt += "<button class='btn btn-primary btn-lg' type='button' onclick='' style='' id='btnChangeLine'>生产线转产</button>";
                 txt += "<button class='btn btn-danger btn-lg' type='button' onclick='' style='' id='btnUpdateReceivable'>应收款更新</button>";
             }
             if(obj.baseState.state == 13){
                 if(obj.baseState.operateState.productDev == 0){
-//                        $("#btnProductDev").show();
                     txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnProductDev'>产品研发</button>";
                 }
-//                    $("#btnDelivery").show();
-//                    $("#btnFactoryTreatment").show();
-//                    $("#btnEndQuarter").show();
                 txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnDelivery'>按订单交货</button>";
                 txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnFactoryTreatment'>厂房处理</button>";
                 txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnEndQuarter'>当季结束</button>";
@@ -400,64 +446,46 @@ function btnController(obj) {
 
         }else if(obj.baseState.timeQuarter == 4){
             if(obj.baseState.state == 10){
-//                    $("#btnStartQuarter").show();
                 txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#modalStartQuarter' type='button'  id='btnStartQuarter'>开始本季</button>";
             }
             if(obj.baseState.state == 11){
                 if(obj.baseState.operateState.shortLoan == 0){
-//                        $("#btnApplyShortLoan").show();
                     txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#modalApplyShortDebt' type='button' id='btnApplyShortLoan'>申请短贷</button> ";
                 }
-//                    $("#btnUpdatePurchase").show();
                 txt += "<button class='btn btn-danger btn-lg' data-toggle='modal' href='#modalUpdatePurchase' type='button' id='btnUpdatePurchase'>更新原料订单</button>";
             }
             if(obj.baseState.state == 12){
                 if(obj.baseState.operateState.addPurchase == 0){
-//                        $("#btnAddPurchase").show();
                     txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#modalAddPurchase' type='button' id='btnAddPurchase'>采购原料</button>";
                 }
+                txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#modalNewFactory' type='button' id='btnAddFactory'>购租厂房</button>";
+                txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#modalNewLine' type='button' id='btnAddLine'>新建生产线</button>";
                 if(obj.baseState.operateState.buildLine == 0){
-//                        $("#btnBuildLine").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBuildLine'>在建生产线</button>";
+                    txt += "<button class='btn btn-warning btn-lg' type='button' onclick='' style='' id='btnBuildLine'>在建生产线</button>";
                 }
+                txt += "<button class='btn btn-primary btn-lg' type='button' onclick='' style='' id='btnChangeLine'>生产线转产</button>";
                 if(obj.baseState.operateState.continueChange == 0){
-//                        $("#btnContinueChange").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnContinueChange'>继续转产</button>";
+                    txt += "<button class='btn btn-warning btn-lg' type='button' onclick='' style='' id='btnContinueChange'>继续转产</button>";
                 }
                 if(obj.baseState.operateState.saleLine == 0){
-//                        $("#btnSaleLine").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnSaleLine'>出售生产线</button>";
+                    txt += "<button class='btn btn-warning btn-lg' type='button' onclick='' style='' id='btnSaleLine'>出售生产线</button>";
                 }
                 if(obj.baseState.operateState.beginProduction == 0){
-//                        $("#btnBeginProduction").show();
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBeginProduction'>开始生产</button>";
+                    txt += "<button class='btn btn-success btn-lg' type='button' onclick='' style='' id='btnBeginProduction'>开始生产</button>";
                 }
-//                    $("#btnAddFactory").show();
-//                    $("#btnAddLine").show();
-//                    $("#btnChangeLine").show();
-//                    $("#btnUpdateReceivable").show();
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddFactory'>购租厂房</button>";
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnAddLine'>新建生产线</button>";
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnChangeLine'>生产线转产</button>";
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnUpdateReceivable'>应收款更新</button>";
+                txt += "<button class='btn btn-danger btn-lg' type='button' onclick='' style='' id='btnUpdateReceivable'>应收款更新</button>";
 
             }
             if(obj.baseState.state == 13){
                 if(obj.baseState.operateState.productDev == 0){
-//                        $("#btnProductDev").show();
                     txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnProductDev'>产品研发</button>";
                 }
                 if(obj.baseState.operateState.qualificationDev == 0){
-//                        $("#btnQualificationDev").show();
                     txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnQualificationDev'>资质研发</button>";
                 }
                 if(obj.baseState.operateState.marketDev == 0){
-//                        $("#btnMarketDev").show();
                     txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnMarketDev'>市场开拓</button>";
                 }
-//                    $("#btnDelivery").show();
-//                    $("#btnFactoryTreatment").show();
-//                    $("#btnEndYear").show();
                 txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnDelivery'>按订单交货</button>";
                 txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnFactoryTreatment'>厂房处理</button>";
                 txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnEndYear'>当年结束</button>";
@@ -587,6 +615,105 @@ function operateUpdatePurchase() {
                 subOnLoad();
                 document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
                 $("#btnCloseModalUpdatePurchase").click();
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+    }
+
+}
+
+function operateAddPurchase(form) {
+    var nowUserName = $("#nowUserName").val();
+    var materialNum = form.length;
+    var list = new Array();
+    for(var i = 1; i <= materialNum; i++){
+        eval("var num =form.material" + i + "AddNum.value;");
+        if(num <0){
+            alert("不能输入负数，请重新输入！");
+            return false;
+        }
+        if(num == ""){
+            num = "0";
+        }
+        list[i-1] = num;
+    }
+    console.log(list);
+    $.ajax({
+        type:"POST",
+        url:"/operateAddPurchase/" + nowUserName,
+        cache:false,
+        dataType:"json",
+        data :{array:list},
+        success:function (runningState) {
+            subOnLoad();
+            document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+            $("#btnCloseModalAddPurchase").click();
+        },
+        error:function (json) {
+            console.log(json.responseText);
+        }
+    });
+
+}
+
+function operateNewFactory(form) {
+    var nowUserName = $("#nowUserName").val();
+    var factoryType = form.factoryType.value;
+    var factoryOwning = form.factoryOwning.value;
+    var cash = parseInt($("#valueCash").html());
+    if(cash == 0){
+        alert("现金不足");
+        return false;
+    }else{
+        var factory = {
+            type: factoryType,
+            owningState: factoryOwning
+        };
+        $.ajax({
+            type:"POST",
+            url:"/operateNewFactory/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            data:factory,
+            success:function (runningState) {
+                subOnLoad();
+                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+                $("#btnCloseModalNewFactory").click();
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+    }
+
+}
+
+function operateNewLine(form) {
+    var nowUserName = $("#nowUserName").val();
+    var lineType = form.lineType.value;
+    var productType = form.productType.value;
+    var forFactory = form.forFactory.value;
+    var cash = parseInt($("#valueCash").html());
+    if(cash == 0){
+        alert("现金不足");
+        return false;
+    }else{
+        var line = {
+            type: lineType,
+            productType: productType
+        };
+        $.ajax({
+            type:"POST",
+            url:"/operateNewLine/" + nowUserName + "/" + forFactory,
+            cache:false,
+            dataType:"json",
+            data:line,
+            success:function (runningState) {
+                subOnLoad();
+                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+                $("#btnCloseModalNewLine").click();
             },
             error:function (json) {
                 console.log(json.responseText);

@@ -1,6 +1,7 @@
 package bobo.erp.service.running;
 
 import bobo.erp.domain.rule.Rule;
+import bobo.erp.domain.rule.RuleMaterial;
 import bobo.erp.domain.state.FactoryState;
 import bobo.erp.domain.state.RunningState;
 import bobo.erp.domain.state.factory.LineState;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -268,5 +270,166 @@ public class RunningOperate {
         runningState.getBaseState().getOperateState().setBeginProduction(0);
         return runningState;
     }
+
+    @Transactional
+    public RunningState addPurchase(String username, List<Integer> list){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+        RuleMaterial ruleMaterial = rule.getRuleMaterial();
+        Integer listSize = list.size();
+        List<PurchaseState> purchaseStateList = runningState.getStockState().getPurchaseStateList();
+        if (listSize > 0 && list.get(0) > 0){
+            PurchaseState purchaseState = new PurchaseState();
+            purchaseState.setType(1);
+            purchaseState.setQuantity(list.get(0));
+            purchaseState.setDeliveryTime(ruleMaterial.getMaterial1Time());
+            purchaseStateList.add(purchaseState);
+        }
+        if (listSize > 1 && list.get(1) > 0){
+            PurchaseState purchaseState = new PurchaseState();
+            purchaseState.setType(2);
+            purchaseState.setQuantity(list.get(1));
+            purchaseState.setDeliveryTime(ruleMaterial.getMaterial2Time());
+            purchaseStateList.add(purchaseState);
+        }
+        if (listSize > 2 && list.get(2) > 0){
+            PurchaseState purchaseState = new PurchaseState();
+            purchaseState.setType(3);
+            purchaseState.setQuantity(list.get(2));
+            purchaseState.setDeliveryTime(ruleMaterial.getMaterial3Time());
+            purchaseStateList.add(purchaseState);
+        }
+        if (listSize > 3 && list.get(3) > 0){
+            PurchaseState purchaseState = new PurchaseState();
+            purchaseState.setType(4);
+            purchaseState.setQuantity(list.get(3));
+            purchaseState.setDeliveryTime(ruleMaterial.getMaterial4Time());
+            purchaseStateList.add(purchaseState);
+        }
+        if (listSize > 4 && list.get(4) > 0){
+            PurchaseState purchaseState = new PurchaseState();
+            purchaseState.setType(5);
+            purchaseState.setQuantity(list.get(4));
+            purchaseState.setDeliveryTime(ruleMaterial.getMaterial5Time());
+            purchaseStateList.add(purchaseState);
+        }
+
+        //时间轴变换
+        runningState.getBaseState().getOperateState().setAddPurchase(1);    //关闭采购原料
+
+        return runningState;
+    }
+
+    @Transactional
+    public RunningState newFactory(String username, FactoryState factoryState){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+
+        Integer value = 0;
+        Integer balance = runningState.getFinanceState().getCashAmount();
+        if (factoryState.getType() == 1){
+            if (factoryState.getOwningState() == 0){
+                value = rule.getRuleFactory().getFactory1RentPrice();
+            }else {
+                value = rule.getRuleFactory().getFactory1BuyPrice();
+            }
+        }
+        if (factoryState.getType() == 2){
+            if (factoryState.getOwningState() == 0){
+                value = rule.getRuleFactory().getFactory2RentPrice();
+            }else {
+                value = rule.getRuleFactory().getFactory2BuyPrice();
+            }
+        }
+        if (factoryState.getType() == 3){
+            if (factoryState.getOwningState() == 0){
+                value = rule.getRuleFactory().getFactory3RentPrice();
+            }else {
+                value = rule.getRuleFactory().getFactory3BuyPrice();
+            }
+        }
+        if (factoryState.getType() == 4){
+            if (factoryState.getOwningState() == 0){
+                value = rule.getRuleFactory().getFactory4RentPrice();
+            }else {
+                value = rule.getRuleFactory().getFactory4BuyPrice();
+            }
+        }if (factoryState.getType() == 5){
+            if (factoryState.getOwningState() == 0){
+                value = rule.getRuleFactory().getFactory5RentPrice();
+            }else {
+                value = rule.getRuleFactory().getFactory5BuyPrice();
+            }
+        }
+        balance -= value;
+        if (balance < 0){
+            runningState.getBaseState().setMsg("现金不足");
+        }else {
+            runningState.getFinanceState().setCashAmount(balance);
+            factoryState.setValue(value);
+            factoryState.setContent(0);
+            factoryState.setFinalPaymentTime(runningState.getBaseState().getTimeYear() * 10 + runningState.getBaseState().getTimeQuarter());    //十位是年份，个位是季度
+            List<LineState> lineStateList = new ArrayList<LineState>();
+            factoryState.setLineStateList(lineStateList);
+            runningState.getFactoryStateList().add(factoryState);
+            runningState.getBaseState().setMsg("支付成功");
+            logger.info("购租厂房，Type:{}，Owning:{}", factoryState.getType(), factoryState.getOwningState());
+        }
+        return runningState;
+    }
+
+    @Transactional
+    public RunningState newLine(String username, Integer factoryId, LineState lineState){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+        Integer balance = runningState.getFinanceState().getCashAmount();
+        List<FactoryState> factoryStateList = runningState.getFactoryStateList();
+        Iterator<FactoryState> factoryStateIterator = factoryStateList.iterator();
+        while (factoryStateIterator.hasNext()){
+            FactoryState factoryState = factoryStateIterator.next();
+            if(factoryState.getId() == factoryId){  //找到放置的厂房
+                Integer lineType = lineState.getType();
+                Integer lineUnitInvest = 0;
+                Integer line1InstalTime = 0;
+                switch (lineType){
+                    case 1:
+                        lineUnitInvest = rule.getRuleLine().getLine1UnitInvest();
+                        line1InstalTime = rule.getRuleLine().getLine1InstallTime();
+                        break;
+                    case 2:
+                        lineUnitInvest = rule.getRuleLine().getLine2UnitInvest();
+                        line1InstalTime = rule.getRuleLine().getLine2InstallTime();
+                        break;
+                    case 3:
+                        lineUnitInvest = rule.getRuleLine().getLine3UnitInvest();
+                        line1InstalTime = rule.getRuleLine().getLine3InstallTime();
+                        break;
+                    case 4:
+                        lineUnitInvest = rule.getRuleLine().getLine4UnitInvest();
+                        line1InstalTime = rule.getRuleLine().getLine4InstallTime();
+                        break;
+                    case 5:
+                        lineUnitInvest = rule.getRuleLine().getLine5UnitInvest();
+                        line1InstalTime = rule.getRuleLine().getLine5InstallTime();
+                        break;
+                    default:
+                        break;
+                }
+                balance -= lineUnitInvest;
+                if (balance < 0){
+                    runningState.getBaseState().setMsg("现金不足");
+                }else {
+                    lineState.setValue(lineUnitInvest);
+                    lineState.setOwningState( 1 - line1InstalTime);
+                    factoryState.getLineStateList().add(lineState);
+                    factoryState.setContent(factoryStateList.size());
+                    logger.info("新建生产线成功");
+                }
+            }
+        }
+        return runningState;
+    }
+
+
 
 }

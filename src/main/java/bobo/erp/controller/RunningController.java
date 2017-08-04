@@ -1,7 +1,9 @@
 package bobo.erp.controller;
 
 import bobo.erp.domain.rule.Rule;
+import bobo.erp.domain.state.FactoryState;
 import bobo.erp.domain.state.RunningState;
+import bobo.erp.domain.state.factory.LineState;
 import bobo.erp.domain.state.finance.DebtState;
 import bobo.erp.domain.state.marketing.AdvertisingState;
 import bobo.erp.domain.teach.TeachClassInfo;
@@ -9,10 +11,10 @@ import bobo.erp.repository.rule.RuleRepository;
 import bobo.erp.service.running.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by 59814 on 2017/7/28.
@@ -86,6 +88,33 @@ public class RunningController {
     @ResponseBody
     public RunningState operateUpdatePurchase(@PathVariable("nowUserName") String nowUserName){
         return runningOperate.updatePurchase(nowUserName);
+    }
+
+    @PostMapping(value = "operateAddPurchase/{nowUserName}")
+    @ResponseBody
+    public RunningState operateAddPurchase(@PathVariable("nowUserName") String nowUserName,
+                                           @RequestParam(value = "array[]") String[] arrays){
+        int arrayLength = arrays.length;
+        List<Integer> list = new ArrayList<Integer>();
+        for(int i = 0; i < arrayLength; i++){
+            list.add(Integer.parseInt(arrays[i]));
+        }
+        return runningOperate.addPurchase(nowUserName, list);
+    }
+
+    @PostMapping(value = "operateNewFactory/{nowUserName}")
+    @ResponseBody
+    public RunningState operateNewFactory(@PathVariable("nowUserName") String nowUserName, FactoryState factoryState){
+        return runningOperate.newFactory(nowUserName, factoryState);
+    }
+
+    @PostMapping(value = "operateNewLine/{nowUserName}/{forFactory}")
+    @ResponseBody
+    public RunningState operateNewLine(@PathVariable("nowUserName") String nowUserName,
+                                       @PathVariable("forFactory") Integer factoryId,
+                                       LineState lineState){
+        System.out.println("请求接收测试：" + factoryId);
+        return runningOperate.newLine(nowUserName, factoryId, lineState);
     }
 
 }

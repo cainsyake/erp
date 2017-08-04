@@ -420,7 +420,45 @@
           </div>
           <div class="modal-footer">
             <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-            <button class="btn btn-success" type="button" onclick="operateAddPurchase(document.addPurchaseForm)">申请</button>
+            <button class="btn btn-success" type="button" onclick="operateAddPurchase(document.addPurchaseForm)">采购</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalNewFactory" class="modal fade">
+      <div class="modal-dialog" style="width:400px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalNewFactory">&times;</button>
+            <h4 class="modal-title" style="text-align:center">购 租 厂 房</h4>
+          </div>
+          <div class="modal-body">
+            <form action="#" method="post" name="newFactoryForm" id="newFactoryForm">
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button" onclick="operateNewFactory(document.newFactoryForm)">确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalNewLine" class="modal fade">
+      <div class="modal-dialog" style="width:300px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalNewLine">&times;</button>
+            <h4 class="modal-title" style="text-align:center">新 建 生 产 线</h4>
+          </div>
+          <div class="modal-body">
+            <form action="#" method="post" name="newLineForm" id="newLineForm">
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button" onclick="operateNewLine(document.newLineForm)">确认</button>
           </div>
         </div>
       </div>

@@ -1,6 +1,7 @@
 package bobo.erp.domain.state;
 
 import bobo.erp.domain.state.factory.LineState;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.util.List;
@@ -18,7 +19,7 @@ public class FactoryState {
     private Integer id;
 
     private Integer type;               //厂房类型
-    private Integer owningState;        //拥有状态
+    private Integer owningState;        //拥有状态 0为租用 大于0为已购买
     private Integer content;            //内含生产线数量
     private Integer finalPaymentTime;   //最后付租/购买时间
     private Integer value;              //厂房价值
@@ -79,10 +80,12 @@ public class FactoryState {
         this.value = value;
     }
 
+    @JsonBackReference
     public RunningState getRunningState() {
         return runningState;
     }
 
+    @JsonBackReference
     public void setRunningState(RunningState runningState) {
         this.runningState = runningState;
     }
