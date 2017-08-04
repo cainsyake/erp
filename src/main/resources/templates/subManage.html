@@ -95,94 +95,44 @@
   <div class="wrapper">
 
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-12">
         <div class="row">
           <div id="divTimeAxis"></div>
           <hr>
         </div>
         <div class="row">
-          <button class="btn btn-default" onclick="" type="button">贴现</button>
-          <button class="btn btn-default" onclick="" type="button">商业情报</button>
-          <button class="btn btn-default" onclick="" type="button">紧急采购</button>
-          <button class="btn btn-default" onclick="" type="button">紧急出售</button>
-          <button class="btn btn-default" onclick="" type="button">厂房贴现</button>
-          <button class="btn btn-primary" data-toggle="modal" href="#modalUpdatePassword" type="button" >修改密码</button>
-          <button class="btn btn-defaule" data-toggle="modal" href="#modalReadRule" type="button" id="btnReadRule" style="display: none">查看规则</button>
-          <button class="btn btn-defaule" data-toggle="modal" href="#modalReadMarket" type="button" id="btnReadMarket" style="display: none">查看市场</button>
+          <div class="col-md-8">
+            <button class="btn btn-default" onclick="" type="button">贴现</button>
+            <button class="btn btn-default" onclick="" type="button">商业情报</button>
+            <button class="btn btn-default" onclick="" type="button">紧急采购</button>
+            <button class="btn btn-default" onclick="" type="button">紧急出售</button>
+            <button class="btn btn-default" onclick="" type="button">厂房贴现</button>
+            <!--<button class="btn btn-primary" data-toggle="modal" href="#modalUpdatePassword" type="button" >修改密码</button>-->
+            <button class="btn btn-defaule" data-toggle="modal" href="#modalReadRule" type="button" id="btnReadRule" style="display: none">查看规则</button>
+            <button class="btn btn-defaule" data-toggle="modal" href="#modalReadMarket" type="button" id="btnReadMarket" style="display: none">查看市场</button>
+          </div>
+          <div class="col-md-4">
+            <div class="panel panel-info">
+              <div class="panel-heading">
+                <h3 class="panel-title" id="valueRunningTime">运营信息记录</h3>
+              </div>
+              <div class="panel-body" id="ajaxDiv1">
+              </div>
+            </div>
+            <!--<button class="btn btn-primary" onclick="ajaxDivShow(2)" type="button">打开查询窗</button>-->
+            <!--<button class="btn btn-danger" onclick="ajaxDivHide(2)" type="button">关闭查询窗</button>-->
+            <!--<button class="btn btn-info" onclick="ajaxDivShow(3)" type="button">打开编辑窗</button>-->
+            <!--<button class="btn btn-warning" onclick="ajaxDivHide(3)" type="button">关闭编辑窗</button>-->
+          </div>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            <h3 class="panel-title" id="valueRunningTime">运营信息记录</h3>
-          </div>
-          <div class="panel-body" id="ajaxDiv1">
-          </div>
-        </div>
-        <!--<button class="btn btn-primary" onclick="ajaxDivShow(2)" type="button">打开查询窗</button>-->
-        <!--<button class="btn btn-danger" onclick="ajaxDivHide(2)" type="button">关闭查询窗</button>-->
-        <!--<button class="btn btn-info" onclick="ajaxDivShow(3)" type="button">打开编辑窗</button>-->
-        <!--<button class="btn btn-warning" onclick="ajaxDivHide(3)" type="button">关闭编辑窗</button>-->
-      </div>
+
       <div class="col-md-12"><hr/></div>
 
 
     </div>
     <div class="row">
-      <div class="col-md-8" >
-        <section class="panel">
-          <header class="panel-heading no-border">
-            设备区域
-            <span class="tools pull-right">
-                <a href="javascript:;" class="fa fa-chevron-down"></a>
-              <!--<a href="javascript:;" class="fa fa-times"></a>-->
-              </span>
-          </header>
-          <div class="panel-body">
-            <table class="table table-bordered">
-              <thead>
-              <tr>
-                <th>厂房ID：666</th>
-                <th>厂房类型：大厂房</th>
-                <th>厂房状态：已购买</th>
-                <th>厂房价值：400</th>
-              </tr>
-              </thead>
-            </table>
-            <table class="table table-bordered">
-              <thead>
-              <tr>
-                <th>ID</th>
-                <th>生产线类型</th>
-                <th>生产线状态</th>
-                <th>生产类型</th>
-              </tr>
-              </thead>
-              <tbody>
-              <tr>
-                <td>1</td>
-                <td>科技线</td>
-                <td>空闲</td>
-                <td>P1</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>科技线</td>
-                <td>空闲</td>
-                <td>P1</td>
-              </tr>
-              <tr>
-                <td>1</td>
-                <td>科技线</td>
-                <td>空闲</td>
-                <td>P1</td>
-              </tr>
-              </tbody>
-            </table>
-          </div>
-        </section>
-
-      </div>
+      <div class="col-md-8" id="divFactoryArea"></div>
       <div class="col-md-4" >
         <section class="panel">
           <header class="panel-heading no-border">
@@ -277,6 +227,8 @@
     </div>
     <div class="row" id="ajaxDiv2">
     </div>
+    <div class="row" id="ajaxDiv3"></div>
+
 
 
 
@@ -566,6 +518,20 @@
 
 <!--script for editable table-->
 <script src="js/editable-table.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#divFactoryArea").delegate(".panel .tools .fa","click",function(){
+            var el = $(this).parents(".panel").children(".panel-body");
+            if ($(this).hasClass("fa-chevron-down")) {
+                $(this).removeClass("fa-chevron-down").addClass("fa-chevron-up");
+                el.slideUp(200);
+            } else {
+                $(this).removeClass("fa-chevron-up").addClass("fa-chevron-down");
+                el.slideDown(200); }
+        });
+    });
+</script>
 
 <!-- END JAVASCRIPTS -->
 <script>

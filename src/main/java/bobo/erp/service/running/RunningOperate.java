@@ -324,7 +324,10 @@ public class RunningOperate {
     public RunningState newFactory(String username, FactoryState factoryState){
         RunningState runningState = getSubRunningStateService.getSubRunningState(username);
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
-
+        if(rule.getRuleParam().getParamFactoryMaxNum() < runningState.getFactoryStateList().size()){
+            runningState.getBaseState().setMsg("厂房数量已经达到上限");
+            return runningState;
+        }
         Integer value = 0;
         Integer balance = runningState.getFinanceState().getCashAmount();
         if (factoryState.getType() == 1){
@@ -419,10 +422,11 @@ public class RunningOperate {
                 if (balance < 0){
                     runningState.getBaseState().setMsg("现金不足");
                 }else {
+                    runningState.getFinanceState().setCashAmount(balance);
                     lineState.setValue(lineUnitInvest);
                     lineState.setOwningState( 1 - line1InstalTime);
                     factoryState.getLineStateList().add(lineState);
-                    factoryState.setContent(factoryStateList.size());
+                    factoryState.setContent(factoryState.getLineStateList().size());
                     logger.info("新建生产线成功");
                 }
             }
