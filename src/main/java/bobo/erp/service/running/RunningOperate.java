@@ -1,6 +1,7 @@
 package bobo.erp.service.running;
 
 import bobo.erp.domain.rule.Rule;
+import bobo.erp.domain.rule.RuleLine;
 import bobo.erp.domain.rule.RuleMaterial;
 import bobo.erp.domain.state.FactoryState;
 import bobo.erp.domain.state.RunningState;
@@ -94,6 +95,8 @@ public class RunningOperate {
             financialStatement.setYear(timeYear);
             runningState.getFinanceState().getFinancialStatementList().add(financialStatement); //保存数据至财务报表
 
+            runningState.getBaseState().setMsg(""); //清空MSG
+
             runningState.getBaseState().getOperateState().setAd(1); //时间轴：关闭广告投放
             runningState.getBaseState().getOperateState().setOrderMeeting(0);   //时间轴：允许订货会
             runningState.getBaseState().getOperateState().setLongLoan(0);   //时间轴：允许长贷申请
@@ -117,8 +120,7 @@ public class RunningOperate {
             runningState.getBaseState().getOperateState().setShortLoan(1);
         }
         logger.info("用户：{} 申请贷款：{}W 类型：{} 还款期：{}", username, debtState.getAmounts(), debtState.getDebtType(), debtState.getRepaymentPeriod());
-//        List<DebtState> debtStateList = runningState.getFinanceState().getDebtStateList();
-//        debtStateList.add(debtState);
+        runningState.getBaseState().setMsg(""); //清空MSG
         return runningState;
     }
 
@@ -160,6 +162,10 @@ public class RunningOperate {
                     if(debtState.getRepaymentPeriod() == 1){
                         Integer interest = (int)Math.round(debtState.getAmounts() * rule.getRuleParam().getParamShortTermLoanRates());
                         balance -= interest;   //扣除短贷利息
+                        if(balance < 0){
+                            runningState.getBaseState().setMsg("现金不足");
+                            return runningState;
+                        }
                         for(FinancialStatement financialStatement : financialStatementList){
                             if(financialStatement.getYear() == timeYear){
                                 financialStatement.setFinancialCost(financialStatement.getFinancialCost() + interest);   //记录利息至财务报表中
@@ -167,6 +173,10 @@ public class RunningOperate {
                         }
                         balance -= debtState.getAmounts();  //归还到期短贷本金
                         debtStateIterator.remove(); //从数据库中删除相应的记录
+                        if(balance < 0){
+                            runningState.getBaseState().setMsg("现金不足");
+                            return runningState;
+                        }
                     }else {
                         debtState.setRepaymentPeriod(debtState.getRepaymentPeriod()-1);
                     }
@@ -209,7 +219,7 @@ public class RunningOperate {
                 }
             }
         }
-
+        runningState.getBaseState().setMsg(""); //清空MSG
         return runningState;
     }
 
@@ -262,12 +272,14 @@ public class RunningOperate {
 
         //时间轴变换
         runningState.getBaseState().setState(12);   //跳转至季中
-        runningState.getBaseState().getOperateState().setShortLoan(0);  //允许申请短贷
+        runningState.getBaseState().getOperateState().setShortLoan(0);  //允许申请短贷 解控
         runningState.getBaseState().getOperateState().setAddPurchase(0);
         runningState.getBaseState().getOperateState().setBuildLine(0);
         runningState.getBaseState().getOperateState().setContinueChange(0);
         runningState.getBaseState().getOperateState().setSaleLine(0);
         runningState.getBaseState().getOperateState().setBeginProduction(0);
+
+        runningState.getBaseState().setMsg(""); //清空MSG
         return runningState;
     }
 
@@ -314,8 +326,7 @@ public class RunningOperate {
             purchaseStateList.add(purchaseState);
         }
 
-        //时间轴变换
-        runningState.getBaseState().getOperateState().setAddPurchase(1);    //关闭采购原料
+        runningState.getBaseState().getOperateState().setAddPurchase(1);    //时间轴：关闭采购原料
 
         return runningState;
     }
@@ -375,7 +386,7 @@ public class RunningOperate {
             List<LineState> lineStateList = new ArrayList<LineState>();
             factoryState.setLineStateList(lineStateList);
             runningState.getFactoryStateList().add(factoryState);
-            runningState.getBaseState().setMsg("支付成功");
+            runningState.getBaseState().setMsg(""); //清空MSG
             logger.info("购租厂房，Type:{}，Owning:{}", factoryState.getType(), factoryState.getOwningState());
         }
         return runningState;
@@ -427,6 +438,7 @@ public class RunningOperate {
                     lineState.setOwningState( 1 - line1InstalTime);
                     factoryState.getLineStateList().add(lineState);
                     factoryState.setContent(factoryState.getLineStateList().size());
+                    runningState.getBaseState().setMsg(""); //清空MSG
                     logger.info("新建生产线成功");
                 }
             }
@@ -434,6 +446,67 @@ public class RunningOperate {
         return runningState;
     }
 
+    @Transactional
+    public RunningState buildLine(String username, String[] arrays){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+        Integer balance = runningState.getFinanceState().getCashAmount();
+        RuleLine ruleLine = rule.getRuleLine();
+        int arrayLength = arrays.length;
+        List<Integer> list = new ArrayList<Integer>();
+        for(int i = 0; i < arrayLength; i++){
+            list.add(Integer.parseInt(arrays[i]));
+//            System.out.println("测试，对比数组中的值：" + list.get(i));
+        }
 
+        List<FactoryState> factoryStateList = runningState.getFactoryStateList();
+        Iterator<FactoryState> factoryStateIterator = factoryStateList.iterator();
+        while (factoryStateIterator.hasNext()){
+            FactoryState factoryState = factoryStateIterator.next();
+            if(factoryState.getContent() != 0){
+                List<LineState> lineStateList = factoryState.getLineStateList();
+                Iterator<LineState> lineStateIterator = lineStateList.iterator();
+                while (lineStateIterator.hasNext()){
+                    LineState lineState = lineStateIterator.next();
+                    if(lineState.getOwningState() < 0){
+                        Integer lineId = lineState.getId();
+//                        System.out.println("测试，遍历生产线ID：" + lineId);
+                        Iterator<Integer> iterator = list.iterator();
+                        while (iterator.hasNext()){
+                            Integer tempid = iterator.next();
+//                            System.out.println("测试，遍历tempID：" + tempid);
+                            if (lineId == tempid){
+//                                System.out.println("测试，通过比对测试，ID：" + lineId);
+                                if(lineState.getType() == 1){
+                                    balance -= ruleLine.getLine1UnitInvest();
+                                }
+                                if(lineState.getType() == 2){
+                                    balance -= ruleLine.getLine2UnitInvest();
+                                }
+                                if(lineState.getType() == 3){
+                                    balance -= ruleLine.getLine3UnitInvest();
+                                }
+                                if(lineState.getType() == 4){
+                                    balance -= ruleLine.getLine4UnitInvest();
+                                }
+                                if(lineState.getType() == 5){
+                                    balance -= ruleLine.getLine5UnitInvest();
+                                }
+                                lineState.setOwningState(lineState.getOwningState() + 1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if(balance < 0){
+            runningState.getBaseState().setMsg("现金不足");
+        }else {
+            runningState.getFinanceState().setCashAmount(balance);
+            runningState.getBaseState().setMsg("");
 
+            runningState.getBaseState().getOperateState().setBuildLine(1); //时间轴： 关闭在建生产线
+        }
+        return runningState;
+    }
 }

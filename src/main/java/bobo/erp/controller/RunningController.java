@@ -117,4 +117,10 @@ public class RunningController {
         return runningOperate.newLine(nowUserName, factoryId, lineState);
     }
 
+    @PostMapping(value = "operateBuildLine/{nowUserName}")
+    @ResponseBody
+    public RunningState operateBuildLine(@PathVariable("nowUserName") String nowUserName,
+                                           @RequestParam(value = "array[]") String[] arrays){
+        return runningOperate.buildLine(nowUserName, arrays);
+    }
 }

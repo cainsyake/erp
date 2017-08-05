@@ -233,6 +233,72 @@
 
 
     <!--Modal-->
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalUpdatePassword" class="modal fade">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <form method="post" name="userChangePassword" action="#">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalUpdatePassword">&times;</button>
+              <h4 class="modal-title">修 改 密 码</h4>
+            </div>
+            <div class="modal-body">
+              <p>输入新的密码后请按提交</p>
+              <input type="password" autofocus="" placeholder="请输入新的密码" class="form-control" name="password" id="newPassword"/>
+              <input type="hidden" name="newUsername" th:value="${session.nowUserName}"id="newUsername"/>
+            </div>
+            <div class="modal-footer">
+              <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+              <button class="btn btn-primary" type="button" onclick="updatePassword()" >提交</button>
+            </div>
+          </form>
+
+
+        </div>
+      </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalReadRule" class="modal fade">
+      <div class="modal-dialog" style="width:900px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">查 看 规 则</h4>
+          </div>
+          <div class="modal-body" >
+            <div id="divReadRule" style="height:500px;overflow: auto">
+
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+            <button class="btn btn-primary" type="button" onclick="" >调用</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalReadMarket" class="modal fade">
+      <div class="modal-dialog" style="width:900px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">查 看 市 场</h4>
+          </div>
+          <div class="modal-body" >
+            <div id="divReadMarket" style="height:500px;overflow: auto">
+
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
+            <button class="btn btn-primary" type="button" onclick="" >调用</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalAdvertising" class="modal fade">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -416,71 +482,77 @@
       </div>
     </div>
 
-    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalUpdatePassword" class="modal fade">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <form method="post" name="userChangePassword" action="#">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalUpdatePassword">&times;</button>
-              <h4 class="modal-title">修 改 密 码</h4>
-            </div>
-            <div class="modal-body">
-              <p>输入新的密码后请按提交</p>
-              <input type="password" autofocus="" placeholder="请输入新的密码" class="form-control" name="password" id="newPassword"/>
-              <input type="hidden" name="newUsername" th:value="${session.nowUserName}"id="newUsername"/>
-            </div>
-            <div class="modal-footer">
-              <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-              <button class="btn btn-primary" type="button" onclick="updatePassword()" >提交</button>
-            </div>
-          </form>
-
-
-        </div>
-      </div>
-    </div>
-
-    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalReadRule" class="modal fade">
-      <div class="modal-dialog" style="width:900px">
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalBuildLine" class="modal fade">
+      <div class="modal-dialog" style="width:800px">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">查 看 规 则</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalBuildLine">&times;</button>
+            <h4 class="modal-title" style="text-align:center">在 建 生 产 线</h4>
           </div>
-          <div class="modal-body" >
-            <div id="divReadRule" style="height:500px;overflow: auto">
+          <div class="modal-body">
+            <form action="#" method="post" name="buildLineForm" id="buildLineForm">
+              <table class='table table-bordered'>
+                <thead>
+                <tr>
+                  <th><button type='button' class='btn btn-info' id="buildLineBoxCheckAll">全选</button></th>
+                  <th style="text-align: center">生产线编号</th>
+                  <th style="text-align: center">所属厂房</th>
+                  <th style="text-align: center">生产线类型</th>
+                  <th style="text-align: center">产品类型</th>
+                  <th style="text-align: center">剩余投资期</th>
+                  <th style="text-align: center">每期投资额</th>
+                </tr>
+                </thead>
+                <tbody id="tbodyBuildLine">
 
-            </div>
-
+                </tbody>
+              </table>
+            </form>
           </div>
           <div class="modal-footer">
-            <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
-            <button class="btn btn-primary" type="button" onclick="" >调用</button>
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button" onclick="operateBuildLine()">确认</button>
           </div>
         </div>
       </div>
     </div>
 
-    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalReadMarket" class="modal fade">
-      <div class="modal-dialog" style="width:900px">
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalChangeLine" class="modal fade">
+      <div class="modal-dialog" style="width:800px">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">查 看 市 场</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalChangeLine">&times;</button>
+            <h4 class="modal-title" style="text-align:center">生 产 线 转 产</h4>
           </div>
-          <div class="modal-body" >
-            <div id="divReadMarket" style="height:500px;overflow: auto">
-
-            </div>
-
+          <div class="modal-body">
+            <form action="#" method="post" name="changeLineForm" id="changeLineForm">
+              <table class='table table-bordered'>
+                <thead>
+                <tr>
+                  <th><button type='button' class='btn btn-info' id="changeLineBoxCheckAll">全选</button></th>
+                  <th style="text-align: center">生产线编号</th>
+                  <th style="text-align: center">所属厂房</th>
+                  <th style="text-align: center">生产线类型</th>
+                  <th style="text-align: center">产品类型</th>
+                  <th style="text-align: center">转产周期</th>
+                  <th style="text-align: center">转产费用</th>
+                </tr>
+                </thead>
+                <tbody id="tbodyChangeLine"></tbody>
+              </table>
+              <br><br>
+              <div id="divChangeLineProductSelect"></div>
+            </form>
           </div>
           <div class="modal-footer">
-            <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
-            <button class="btn btn-primary" type="button" onclick="" >调用</button>
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button" onclick="operateChangeLine()">确认</button>
           </div>
         </div>
       </div>
     </div>
+
+
 
   </div>
   <!--body wrapper end-->
@@ -530,6 +602,8 @@
                 $(this).removeClass("fa-chevron-up").addClass("fa-chevron-down");
                 el.slideDown(200); }
         });
+
+
     });
 </script>
 
@@ -538,6 +612,23 @@
     jQuery(document).ready(function() {
         EditableTable.init();
     });
+
+    //反选JS
+    $("#buildLineBoxCheckAll").click(function(){
+        $("input[name='buildLineBox']").each(function(){
+            if($(this).attr("checked"))
+            {
+                $(this).removeAttr("checked");
+            }
+            else
+            {
+                $(this).attr("checked","true");
+            }
+        })
+    });
+
+
+
 
     /*=====STEPY WIZARD====*/
     $(function() {
