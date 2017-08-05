@@ -34,6 +34,15 @@ function infoController(runningState, rule) {
     document.getElementById("valueCash").innerHTML = runningState.financeState.cashAmount;   //输出现金金额
     document.getElementById("valueRunningTime").innerHTML = "第 " + runningState.baseState.timeYear + " 年 第 " + runningState.baseState.timeQuarter + " 季";
 
+    var receivableStateList = runningState.financeState.receivableStateList;
+    var receivableTotal = 0;
+    $.each(receivableStateList,function(n,receivableState){
+        if(receivableState.accountPeriod == 1){
+            receivableTotal += receivableState.amounts;
+        }
+    });
+    document.getElementById("valueReceivableTotal").innerHTML = receivableTotal;    //输出到期应收款
+
     var debtList = runningState.financeState.debtStateList;
     var debtTotal = 0;
     for(var i = 0; i<eval(debtList).length; i++ ){
@@ -685,7 +694,7 @@ function btnController(obj) {
                 if(obj.baseState.operateState.beginProduction == 0){
                     txt += "<button class='btn btn-success btn-lg' data-toggle='modal' href='#' type='button' id='btnBeginProduction'>开始生产</button> ";
                 }
-                txt += "<button class='btn btn-danger btn-lg' data-toggle='modal' href='#' type='button' id='btnUpdateReceivable'>应收款更新</button>";
+                txt += "<button class='btn btn-danger btn-lg' data-toggle='modal' href='#modalUpdateReceivable' type='button' id='btnUpdateReceivable'>应收款更新</button>";
             }
             if(obj.baseState.state == 13){
                 if(obj.baseState.operateState.productDev == 0){

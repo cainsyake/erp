@@ -619,6 +619,28 @@
       </div>
     </div>
 
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalUpdateReceivable" class="modal fade">
+      <div class="modal-dialog" style="width:500px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalUpdateReceivable">&times;</button>
+            <h4 class="modal-title" style="text-align:center">更 新 应 收 款</h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <span style="font-weight: bold;font-size: 30px;margin-left: 25%">到期应收款：</span><span id="valueReceivableTotal" style="font-weight: bold;font-size: 30px">  </span><span style="font-weight: bold;font-size: 30px"> W</span>
+            </div>
+            <br><br>
+            <h3 style="text-align: center">确认后将会跳转至季末操作！</h3>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button" onclick="operateUpdateReceivable()">确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
 
   </div>
