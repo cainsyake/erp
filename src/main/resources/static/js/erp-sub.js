@@ -169,6 +169,8 @@ function infoController(runningState, rule) {
     var factoryStateList = runningState.factoryStateList;
     var txt1 = "";
     var txt2 = "";
+    var txt3 = "";
+    var txt4 = "";
     $.each(factoryStateList,function(n, factoryState) {
         var lineStateList = factoryState.lineStateList;
         var content = factoryState.content;
@@ -181,6 +183,7 @@ function infoController(runningState, rule) {
                 var ruleProductNum = 0;
                 var changTime = 0;
                 var changInvest = 0;
+                var scrapValue = 0;
                 for(var i = 1; i < 6; i++){
                     if(eval("rule.ruleLine.line" + i + "Name") != ""){
                         ruleLineNum++;
@@ -192,7 +195,8 @@ function infoController(runningState, rule) {
                         lineName = eval("rule.ruleLine.line" + i + "Name");
                         unitInvest = eval("rule.ruleLine.line" + i + "UnitInvest");
                         changTime =  eval("rule.ruleLine.line" + i + "ChangeTime");
-                        changInvest =  eval("rule.ruleLine.line" + i + "ChangeInvest")
+                        changInvest =  eval("rule.ruleLine.line" + i + "ChangeInvest");
+                        scrapValue = eval("rule.ruleLine.line" + i + "ScrapValue");
                     }
                     if(lineState.productType == i){
                         productName = eval("rule.ruleProduct.product" + i + "Name");
@@ -211,14 +215,36 @@ function infoController(runningState, rule) {
                         "</tr>";
                 }
                 if(lineState.owningState > 0 && lineState.produceState == 0){
-                    txt2 +="<tr>" +
+                    txt2 += "<tr>" +
                         "<td style='text-align: center'><input type='checkbox' name='changeLineBox' value='" + lineState.id + "'></td>" +
                         "<td style='text-align: center'>" + lineState.id + "</td>" +
                         "<td style='text-align: center'>" + factoryState.id + "</td>" +
                         "<td style='text-align: center'>" + lineName + "</td>" +
                         "<td style='text-align: center'>" + productName + "</td>" +
                         "<td style='text-align: center'>" + changTime + "</td>" +
-                        "<td style='text-align: center' id='valueUnitInvest" + lineState.id + "'>" + changInvest + "</td>" +
+                        "<td style='text-align: center' id='valueChangeInvest" + lineState.id + "'>" + changInvest + "</td>" +
+                        "</tr>";
+
+                    txt4 += "<tr>" +
+                        "<td style='text-align: center'><input type='checkbox' name='saleLineBox' value='" + lineState.id + "'></td>" +
+                        "<td style='text-align: center'>" + lineState.id + "</td>" +
+                        "<td style='text-align: center'>" + factoryState.id + "</td>" +
+                        "<td style='text-align: center'>" + lineName + "</td>" +
+                        "<td style='text-align: center'>" + productName + "</td>" +
+                        "<td style='text-align: center'>" + lineState.owningState + "</td>" +
+                        "<td style='text-align: center' id='valueLineValue" + lineState.id + "'>" + lineState.value + "</td>" +
+                        "<td style='text-align: center'id='valueLineScrapValue" + lineState.id + "'>" + scrapValue + "</td>" +
+                        "</tr>";
+                }
+                if((lineState.owningState > 0) &&  (lineState.produceState > (-changTime)) && (lineState.produceState < 0)){
+                    txt3 +="<tr>" +
+                        "<td style='text-align: center'><input type='checkbox' name='continueChangeBox' value='" + lineState.id + "'></td>" +
+                        "<td style='text-align: center'>" + lineState.id + "</td>" +
+                        "<td style='text-align: center'>" + factoryState.id + "</td>" +
+                        "<td style='text-align: center'>" + lineName + "</td>" +
+                        "<td style='text-align: center'>" + productName + "</td>" +
+                        "<td style='text-align: center'>" + (-lineState.produceState) + "</td>" +
+                        "<td style='text-align: center' id='valueContinueChangeInvest" + lineState.id + "'>" + changInvest + "</td>" +
                         "</tr>";
                 }
             });
@@ -226,6 +252,8 @@ function infoController(runningState, rule) {
     });
     document.getElementById("tbodyBuildLine").innerHTML = txt1;   //输出可续建的生产线信息
     document.getElementById("tbodyChangeLine").innerHTML = txt2;   //输出可转产的生产线信息
+    document.getElementById("tbodyContinueChange").innerHTML = txt3;   //输出可继续转产的生产线信息
+    document.getElementById("tbodySaleLine").innerHTML = txt4;   //输出可出售的生产线信息
 
 
 }
@@ -501,7 +529,6 @@ function pageController(rule, runningState) {
         var factoryRentPrice = 0;
         for(var i = 1; i < 6; i++){
             if(factoryState.type == i){
-                // volume = eval("ruleFactory.factory" + i + "Volume");
                 eval("volume = ruleFactory.factory" + i + "Volume");
                 eval("factoryRentPrice = ruleFactory.factory" + i + "RentPrice");
                 factoryName = eval("ruleFactory.factory" + i + "Name");
@@ -650,10 +677,10 @@ function btnController(obj) {
                 }
                 txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#modalChangeLine' type='button' id='btnChangeLine'>生产线转产</button> ";
                 if(obj.baseState.operateState.continueChange == 0){
-                    txt += "<button class='btn btn-warning btn-lg data-toggle='modal' href='#' type='button' id='btnContinueChange'>继续转产</button> ";
+                    txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#modalContinueChange' type='button' id='btnContinueChange'>继续转产</button> ";
                 }
                 if(obj.baseState.operateState.saleLine == 0){
-                    txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#' type='button' id='btnSaleLine'>出售生产线</button> ";
+                    txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#modalSaleLine' type='button' id='btnSaleLine'>出售生产线</button> ";
                 }
                 if(obj.baseState.operateState.beginProduction == 0){
                     txt += "<button class='btn btn-success btn-lg' data-toggle='modal' href='#' type='button' id='btnBeginProduction'>开始生产</button> ";
@@ -686,14 +713,14 @@ function btnController(obj) {
                 txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#modalNewFactory' type='button' id='btnAddFactory'>购租厂房</button> ";
                 txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#modalNewLine' type='button' id='btnAddLine'>新建生产线</button> ";
                 if(obj.baseState.operateState.buildLine == 0){
-                    txt += "<button class='btn btn-warning btn-lg' type='button' onclick='' style='' id='btnBuildLine'>在建生产线</button> ";
+                    txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#modalBuildLine' type='button' id='btnBuildLine'>在建生产线</button> ";
                 }
-                txt += "<button class='btn btn-primary btn-lg' type='button' onclick='' style='' id='btnChangeLine'>生产线转产</button> ";
+                txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#modalChangeLine' type='button' id='btnChangeLine'>生产线转产</button> ";
                 if(obj.baseState.operateState.continueChange == 0){
-                    txt += "<button class='btn btn-warning btn-lg' type='button' onclick='' style='' id='btnContinueChange'>继续转产</button> ";
+                    txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#modalContinueChange' type='button' id='btnContinueChange'>继续转产</button> ";
                 }
                 if(obj.baseState.operateState.saleLine == 0){
-                    txt += "<button class='btn btn-warning btn-lg' type='button' onclick='' style='' id='btnSaleLine'>出售生产线</button> ";
+                    txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#modalSaleLine' type='button' id='btnSaleLine'>出售生产线</button> ";
                 }
                 if(obj.baseState.operateState.beginProduction == 0){
                     txt += "<button class='btn btn-success btn-lg' type='button' onclick='' style='' id='btnBeginProduction'>开始生产</button> ";
@@ -827,7 +854,6 @@ function operateUpdatePurchase() {
     var nowUserName = $("#nowUserName").val();
     var cash = parseInt($("#valueCash").html());
     var amounts = parseInt($("#valueUpdatePurchaseAmounts").html());
-    alert("测试更新金额：" + amounts + " 现金：" + cash);
     if(amounts > cash){
         alert("现金不足");
         return false;
@@ -948,39 +974,6 @@ function operateNewLine(form) {
 
 }
 
-function operateNewLine(form) {
-    var nowUserName = $("#nowUserName").val();
-    var lineType = form.lineType.value;
-    var productType = form.productType.value;
-    var forFactory = form.forFactory.value;
-    var cash = parseInt($("#valueCash").html());
-    if(cash == 0){
-        alert("现金不足");
-        return false;
-    }else{
-        var line = {
-            type: lineType,
-            productType: productType
-        };
-        $.ajax({
-            type:"POST",
-            url:"/operateNewLine/" + nowUserName + "/" + forFactory,
-            cache:false,
-            dataType:"json",
-            data:line,
-            success:function (runningState) {
-                subOnLoad();
-                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
-                $("#btnCloseModalNewLine").click();
-            },
-            error:function (json) {
-                console.log(json.responseText);
-            }
-        });
-    }
-
-}
-
 function operateBuildLine() {
     var nowUserName = $("#nowUserName").val();
     var cash = parseInt($("#valueCash").html());
@@ -1024,6 +1017,124 @@ function operateBuildLine() {
 
     // }
 
+}
+
+function operateChangeLine(form) {
+    var nowUserName = $("#nowUserName").val();
+    var cash = parseInt($("#valueCash").html());
+    var box = document.getElementsByName('changeLineBox');
+    var changeType = form.changeType.value;
+    var s = "";
+    var list = new Array();
+    var amountsTotal = 0;
+    for(var i=0; i<box.length; i++){
+        if(box[i].checked){
+            s = box[i].value;  //如果选中，将value添加到变量s中
+            list[list.length] = s;
+            amountsTotal += eval("parseInt($('#valueChangeInvest" + box[i].value + "').html())");
+        }
+    }
+    if(cash - amountsTotal < 0){
+        alert("现金不足");
+        return false;
+    }else {
+        $.ajax({
+            type:"POST",
+            url:"/operateChangeLine/" + nowUserName + "/" + changeType,
+            cache:false,
+            dataType:"json",
+            data :{array:list},
+            success:function (runningState) {
+                subOnLoad();
+                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+                $("#btnCloseModalChangeLine").click();
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+    }
+
+
+    // if(amounts > cash){
+    //     alert("现金不足");
+    //     return false;
+    // }else{
+
+    // }
+
+}
+
+function operateContinueChange() {
+    var nowUserName = $("#nowUserName").val();
+    var cash = parseInt($("#valueCash").html());
+    var box = document.getElementsByName('continueChangeBox');
+    var s = "";
+    var list = new Array();
+    var amountsTotal = 0;
+    for(var i=0; i<box.length; i++){
+        if(box[i].checked){
+            s = box[i].value;  //如果选中，将value添加到变量s中
+            list[list.length] = s;
+            amountsTotal += eval("parseInt($('#valueContinueChangeInvest" + box[i].value + "').html())");
+        }
+    }
+    if(cash - amountsTotal < 0){
+        alert("现金不足");
+        return false;
+    }else {
+        $.ajax({
+            type:"POST",
+            url:"/operateContinueChange/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            data :{array:list},
+            success:function (runningState) {
+                subOnLoad();
+                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+                $("#btnCloseModalChangeLine").click();
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+    }
+}
+
+function operateSaleLine() {
+    var nowUserName = $("#nowUserName").val();
+    var cash = parseInt($("#valueCash").html());
+    var box = document.getElementsByName('saleLineBox');
+    var s = "";
+    var list = new Array();
+    var scrapValueTotal = 0;
+    for(var i=0; i<box.length; i++){
+        if(box[i].checked){
+            s = box[i].value;  //如果选中，将value添加到变量s中
+            list[list.length] = s;
+            scrapValueTotal += eval("parseInt($('#valueLineScrapValue" + box[i].value + "').html())");
+        }
+    }
+    if(cash + scrapValueTotal < 0){
+        alert("现金不足");
+        return false;
+    }else {
+        $.ajax({
+            type:"POST",
+            url:"/operateSaleLine/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            data :{array:list},
+            success:function (runningState) {
+                subOnLoad();
+                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+                $("#btnCloseModalSaleLine").click();
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+    }
 }
 
 function operateStartYear() {

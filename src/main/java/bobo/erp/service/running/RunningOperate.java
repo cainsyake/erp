@@ -90,10 +90,21 @@ public class RunningOperate {
             advertisingState.setYear(runningState.getBaseState().getTimeYear());
             runningState.getMarketingState().getAdvertisingStateList().add(advertisingState);   //保存数据至广告记录
 
-            FinancialStatement financialStatement = new FinancialStatement();   //投广告时新建一个财务报表
-            financialStatement.setAdvertisingCost(advertisingState.getAd0());
-            financialStatement.setYear(timeYear);
-            runningState.getFinanceState().getFinancialStatementList().add(financialStatement); //保存数据至财务报表
+            if(timeYear > 1){
+                FinancialStatement financialStatement = new FinancialStatement();   //投广告时新建一个财务报表
+                financialStatement.setAdvertisingCost(advertisingState.getAd0());
+                financialStatement.setYear(timeYear);
+                runningState.getFinanceState().getFinancialStatementList().add(financialStatement); //保存数据至财务报表
+            }else if(timeYear == 1){
+                List<FinancialStatement> financialStatementList = runningState.getFinanceState().getFinancialStatementList();
+                Iterator<FinancialStatement> financialStatementIterator = financialStatementList.iterator();
+                while (financialStatementIterator.hasNext()){
+                    FinancialStatement financialStatement = financialStatementIterator.next();
+                    if(financialStatement.getYear() == timeYear){
+                        financialStatement.setAdvertisingCost(advertisingState.getAd0());
+                    }
+                }
+            }
 
             runningState.getBaseState().setMsg(""); //清空MSG
 
@@ -509,4 +520,220 @@ public class RunningOperate {
         }
         return runningState;
     }
+
+    @Transactional
+    public RunningState changeLine(String username, Integer changeType, String[] arrays){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+        Integer balance = runningState.getFinanceState().getCashAmount();
+        RuleLine ruleLine = rule.getRuleLine();
+        int arrayLength = arrays.length;
+        List<Integer> list = new ArrayList<Integer>();
+        for(int i = 0; i < arrayLength; i++){
+            list.add(Integer.parseInt(arrays[i]));
+        }
+        List<FactoryState> factoryStateList = runningState.getFactoryStateList();
+        Iterator<FactoryState> factoryStateIterator = factoryStateList.iterator();
+        while (factoryStateIterator.hasNext()){
+            FactoryState factoryState = factoryStateIterator.next();
+            if(factoryState.getContent() != 0){
+                List<LineState> lineStateList = factoryState.getLineStateList();
+                Iterator<LineState> lineStateIterator = lineStateList.iterator();
+                while (lineStateIterator.hasNext()){
+                    LineState lineState = lineStateIterator.next();
+                    if(lineState.getOwningState() > 0 && lineState.getProduceState() == 0){
+                        Integer lineId = lineState.getId();
+                        Iterator<Integer> iterator = list.iterator();
+                        while (iterator.hasNext()){
+                            Integer tempid = iterator.next();
+                            Integer changeTime = 0;
+                            if (lineId == tempid){
+                                if(lineState.getType() == 1){
+                                    balance -= ruleLine.getLine1ChangeInvest();
+                                    changeTime = ruleLine.getLine1ChangeTime();
+                                }
+                                if(lineState.getType() == 2){
+                                    balance -= ruleLine.getLine2ChangeInvest();
+                                    changeTime = ruleLine.getLine2ChangeTime();
+                                }
+                                if(lineState.getType() == 3){
+                                    balance -= ruleLine.getLine3ChangeInvest();
+                                    changeTime = ruleLine.getLine3ChangeTime();
+                                }
+                                if(lineState.getType() == 4){
+                                    balance -= ruleLine.getLine4ChangeInvest();
+                                    changeTime = ruleLine.getLine4ChangeTime();
+                                }
+                                if(lineState.getType() == 5){
+                                    balance -= ruleLine.getLine5ChangeInvest();
+                                    changeTime = ruleLine.getLine5ChangeTime();
+                                }
+                                if(balance >= 0){
+                                    runningState.getFinanceState().setCashAmount(balance);
+                                    lineState.setProduceState(-changeTime);
+                                    lineState.setProductType(changeType);
+                                    runningState.getBaseState().setMsg("");     //清空MSG
+                                    logger.info("用户：{} 执行转产", username);
+                                }else {
+                                    runningState.getBaseState().setMsg("现金不足");
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return runningState;
+    }
+
+    @Transactional
+    public RunningState continueChange(String username, String[] arrays){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+        Integer balance = runningState.getFinanceState().getCashAmount();
+        RuleLine ruleLine = rule.getRuleLine();
+        int arrayLength = arrays.length;
+        List<Integer> list = new ArrayList<Integer>();
+        for(int i = 0; i < arrayLength; i++){
+            list.add(Integer.parseInt(arrays[i]));
+        }
+        List<FactoryState> factoryStateList = runningState.getFactoryStateList();
+        Iterator<FactoryState> factoryStateIterator = factoryStateList.iterator();
+        while (factoryStateIterator.hasNext()){
+            FactoryState factoryState = factoryStateIterator.next();
+            if(factoryState.getContent() != 0){
+                List<LineState> lineStateList = factoryState.getLineStateList();
+                Iterator<LineState> lineStateIterator = lineStateList.iterator();
+                while (lineStateIterator.hasNext()){
+                    LineState lineState = lineStateIterator.next();
+                    if(lineState.getOwningState() > 0 && lineState.getProduceState() == 0){
+                        Integer lineId = lineState.getId();
+                        Iterator<Integer> iterator = list.iterator();
+                        while (iterator.hasNext()){
+                            Integer tempid = iterator.next();
+                            if (lineId == tempid){
+                                if(lineState.getType() == 1){
+                                    balance -= ruleLine.getLine1ChangeInvest();
+                                }
+                                if(lineState.getType() == 2){
+                                    balance -= ruleLine.getLine2ChangeInvest();
+                                }
+                                if(lineState.getType() == 3){
+                                    balance -= ruleLine.getLine3ChangeInvest();
+                                }
+                                if(lineState.getType() == 4){
+                                    balance -= ruleLine.getLine4ChangeInvest();
+                                }
+                                if(lineState.getType() == 5){
+                                    balance -= ruleLine.getLine5ChangeInvest();
+                                }
+                                if(balance >= 0){
+                                    runningState.getFinanceState().setCashAmount(balance);
+                                    lineState.setProduceState(lineState.getProduceState() + 1);
+                                    runningState.getBaseState().setMsg("");     //清空MSG
+                                    runningState.getBaseState().getOperateState().setContinueChange(1);     //时间轴：关闭继续转产
+                                    logger.info("用户：{} 执行继续转产", username);
+                                }else {
+                                    runningState.getBaseState().setMsg("现金不足");
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return runningState;
+    }
+
+    @Transactional
+    public RunningState saleLine(String username, String[] arrays){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+        Integer balance = runningState.getFinanceState().getCashAmount();
+        RuleLine ruleLine = rule.getRuleLine();
+        int arrayLength = arrays.length;
+        List<Integer> list = new ArrayList<Integer>();
+        for(int i = 0; i < arrayLength; i++){
+            list.add(Integer.parseInt(arrays[i]));
+        }
+        List<FactoryState> factoryStateList = runningState.getFactoryStateList();
+        Iterator<FactoryState> factoryStateIterator = factoryStateList.iterator();
+        List<FinancialStatement> financialStatementList = runningState.getFinanceState().getFinancialStatementList();
+        Integer timeYear = runningState.getBaseState().getTimeYear();
+        while (factoryStateIterator.hasNext()){
+            FactoryState factoryState = factoryStateIterator.next();
+            if(factoryState.getContent() != 0){
+                List<LineState> lineStateList = factoryState.getLineStateList();
+                Iterator<LineState> lineStateIterator = lineStateList.iterator();
+                while (lineStateIterator.hasNext()){
+                    LineState lineState = lineStateIterator.next();
+                    if(lineState.getOwningState() > 0 && lineState.getProduceState() == 0){
+                        Integer lineId = lineState.getId();
+                        Iterator<Integer> iterator = list.iterator();
+                        while (iterator.hasNext()){
+                            Integer tempid = iterator.next();
+                            if (lineId == tempid){
+                                if(lineState.getType() == 1){
+                                    balance += ruleLine.getLine1ScrapValue();
+                                    for(FinancialStatement financialStatement : financialStatementList){
+                                        if(financialStatement.getYear() == timeYear){
+                                            financialStatement.setLostCost(financialStatement.getLostCost() + (lineState.getValue() - ruleLine.getLine1ScrapValue()));   //记录净值与残值的差额至损失
+                                        }
+                                    }
+                                }
+                                if(lineState.getType() == 2){
+                                    balance += ruleLine.getLine2ScrapValue();
+                                    for(FinancialStatement financialStatement : financialStatementList){
+                                        if(financialStatement.getYear() == timeYear){
+                                            financialStatement.setLostCost(financialStatement.getLostCost() + (lineState.getValue() - ruleLine.getLine2ScrapValue()));   //记录净值与残值的差额至损失
+                                        }
+                                    }
+                                }
+                                if(lineState.getType() == 3){
+                                    balance += ruleLine.getLine3ScrapValue();
+                                    for(FinancialStatement financialStatement : financialStatementList){
+                                        if(financialStatement.getYear() == timeYear){
+                                            financialStatement.setLostCost(financialStatement.getLostCost() + (lineState.getValue() - ruleLine.getLine3ScrapValue()));   //记录净值与残值的差额至损失
+                                        }
+                                    }
+                                }
+                                if(lineState.getType() == 4){
+                                    balance += ruleLine.getLine4ScrapValue();
+                                    for(FinancialStatement financialStatement : financialStatementList){
+                                        if(financialStatement.getYear() == timeYear){
+                                            financialStatement.setLostCost(financialStatement.getLostCost() + (lineState.getValue() - ruleLine.getLine4ScrapValue()));   //记录净值与残值的差额至损失
+                                        }
+                                    }
+                                }
+                                if(lineState.getType() == 5){
+                                    balance += ruleLine.getLine5ScrapValue();
+                                    for(FinancialStatement financialStatement : financialStatementList){
+                                        if(financialStatement.getYear() == timeYear){
+                                            financialStatement.setLostCost(financialStatement.getLostCost() + (lineState.getValue() - ruleLine.getLine5ScrapValue()));   //记录净值与残值的差额至损失
+                                        }
+                                    }
+                                }
+                                if(balance >= 0){
+                                    iterator.remove();
+                                    lineStateIterator.remove();
+                                    runningState.getFinanceState().setCashAmount(balance);
+                                    factoryState.setContent(factoryState.getContent() - 1);
+                                    runningState.getBaseState().setMsg("");     //清空MSG
+                                    runningState.getBaseState().getOperateState().setSaleLine(1);   //时间轴：关闭出售生产线
+                                    logger.info("用户：{} 执行出售生产线", username);
+                                }else {
+                                    runningState.getBaseState().setMsg("现金不足");
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return runningState;
+    }
+
 }

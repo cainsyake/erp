@@ -546,7 +546,74 @@
           </div>
           <div class="modal-footer">
             <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
-            <button class="btn btn-success" type="button" onclick="operateChangeLine()">确认</button>
+            <button class="btn btn-success" type="button" onclick="operateChangeLine(document.changeLineForm)">确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalContinueChange" class="modal fade">
+      <div class="modal-dialog" style="width:800px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalContinueChange">&times;</button>
+            <h4 class="modal-title" style="text-align:center">继 续 转 产</h4>
+          </div>
+          <div class="modal-body">
+            <form action="#" method="post" name="continueChangeForm" id="continueChangeForm">
+              <table class='table table-bordered'>
+                <thead>
+                <tr>
+                  <th><button type='button' class='btn btn-info' id="continueChangeBoxCheckAll">全选</button></th>
+                  <th style="text-align: center">生产线编号</th>
+                  <th style="text-align: center">所属厂房</th>
+                  <th style="text-align: center">生产线类型</th>
+                  <th style="text-align: center">产品类型</th>
+                  <th style="text-align: center">剩余转产周期</th>
+                  <th style="text-align: center">转产费用</th>
+                </tr>
+                </thead>
+                <tbody id="tbodyContinueChange"></tbody>
+              </table>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button" onclick="operateContinueChange()">确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalSaleLine" class="modal fade">
+      <div class="modal-dialog" style="width:800px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalSaleLine">&times;</button>
+            <h4 class="modal-title" style="text-align:center">出 售 生 产 线</h4>
+          </div>
+          <div class="modal-body">
+            <form action="#" method="post" name="saleLineForm" id="saleLineForm">
+              <table class='table table-bordered'>
+                <thead>
+                <tr>
+                  <th><button type='button' class='btn btn-info' id="saleLineBoxCheckAll">全选</button></th>
+                  <th style="text-align: center">生产线编号</th>
+                  <th style="text-align: center">所属厂房</th>
+                  <th style="text-align: center">生产线类型</th>
+                  <th style="text-align: center">产品类型</th>
+                  <th style="text-align: center">使用时间</th>
+                  <th style="text-align: center">净值</th>
+                  <th style="text-align: center">残值</th>
+                </tr>
+                </thead>
+                <tbody id="tbodySaleLine"></tbody>
+              </table>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button" onclick="operateSaleLine()">确认</button>
           </div>
         </div>
       </div>

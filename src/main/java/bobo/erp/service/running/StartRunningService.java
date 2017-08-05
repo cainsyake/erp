@@ -2,6 +2,7 @@ package bobo.erp.service.running;
 
 import bobo.erp.domain.state.BaseState;
 import bobo.erp.domain.state.RunningState;
+import bobo.erp.domain.state.finance.FinancialStatement;
 import bobo.erp.domain.teach.SubUserInfo;
 import bobo.erp.repository.UserRepository;
 import bobo.erp.repository.teach.SubUserInfoRepository;
@@ -34,6 +35,9 @@ public class StartRunningService {
         SubUserInfo subUserInfo = subUserInfoRepository.findBySubUserName(username);
         subUserInfo.getRunningState().getBaseState().setState(1);   //设置状态码为1
         subUserInfo.getRunningState().getBaseState().getOperateState().setAd(0);    //设置广告未投放
+        FinancialStatement financialStatement = new FinancialStatement();   //开始运营时新建一个财务报表
+        financialStatement.setYear(1);
+        subUserInfo.getRunningState().getFinanceState().getFinancialStatementList().add(financialStatement);
         //此处不设置Report、OrderMeeting、BigMeeting、LongLoan的状态码，待具体业务执行后才设置，状态码为null
         return subUserInfoRepository.save(subUserInfo).getRunningState();
     }

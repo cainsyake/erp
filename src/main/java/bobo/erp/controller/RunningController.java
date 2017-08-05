@@ -113,7 +113,6 @@ public class RunningController {
     public RunningState operateNewLine(@PathVariable("nowUserName") String nowUserName,
                                        @PathVariable("forFactory") Integer factoryId,
                                        LineState lineState){
-        System.out.println("请求接收测试：" + factoryId);
         return runningOperate.newLine(nowUserName, factoryId, lineState);
     }
 
@@ -122,5 +121,27 @@ public class RunningController {
     public RunningState operateBuildLine(@PathVariable("nowUserName") String nowUserName,
                                            @RequestParam(value = "array[]") String[] arrays){
         return runningOperate.buildLine(nowUserName, arrays);
+    }
+
+    @PostMapping(value = "operateChangeLine/{nowUserName}/{changeType}")
+    @ResponseBody
+    public RunningState operateChangeLine(@PathVariable("nowUserName") String nowUserName,
+                                         @PathVariable("changeType") Integer changeType,
+                                         @RequestParam(value = "array[]") String[] arrays){
+        return runningOperate.changeLine(nowUserName, changeType, arrays);
+    }
+
+    @PostMapping(value = "operateContinueChange/{nowUserName}")
+    @ResponseBody
+    public RunningState operateContinueChange(@PathVariable("nowUserName") String nowUserName,
+                                         @RequestParam(value = "array[]") String[] arrays){
+        return runningOperate.continueChange(nowUserName, arrays);
+    }
+
+    @PostMapping(value = "operateSaleLine/{nowUserName}")
+    @ResponseBody
+    public RunningState operateSaleLine(@PathVariable("nowUserName") String nowUserName,
+                                              @RequestParam(value = "array[]") String[] arrays){
+        return runningOperate.saleLine(nowUserName, arrays);
     }
 }
