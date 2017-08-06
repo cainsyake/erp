@@ -93,6 +93,12 @@ public class TeachClassInit {
                 List<DebtState>  debtStateList = new ArrayList<DebtState>();
                 List<DuesState>  duesStateList = new ArrayList<DuesState>();
                 List<ReceivableState>  receivableStateList = new ArrayList<ReceivableState>();
+                for(int j = 1; j < 5; j++){
+                    ReceivableState receivableState = new ReceivableState();
+                    receivableState.setAmounts(0);
+                    receivableState.setAccountPeriod(j);
+                    receivableStateList.add(receivableState);
+                }
                 List<FinancialStatement>  financialStatementList = new ArrayList<FinancialStatement>();
                 financeState.setDebtStateList(debtStateList);
                 financeState.setDuesStateList(duesStateList);

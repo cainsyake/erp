@@ -144,4 +144,32 @@ public class RunningController {
                                               @RequestParam(value = "array[]") String[] arrays){
         return runningOperate.saleLine(nowUserName, arrays);
     }
+
+    @PostMapping(value = "operateBeginProduction/{nowUserName}")
+    @ResponseBody
+    public RunningState operateBeginProduction(@PathVariable("nowUserName") String nowUserName,
+                                        @RequestParam(value = "array[]") String[] arrays){
+        return runningOperate.beginProduction(nowUserName, arrays);
+    }
+
+    @PostMapping(value = "operateUpdateReceivable/{nowUserName}")
+    @ResponseBody
+    public RunningState operateUpdateReceivable(@PathVariable("nowUserName") String nowUserName){
+        return runningOperate.updateReceivable(nowUserName);
+    }
+
+    @PostMapping(value = "operateDelivery/{nowUserName}")
+    @ResponseBody
+    public RunningState operateDelivery(@PathVariable("nowUserName") String nowUserName,
+                                               @RequestParam(value = "array[]") String[] arrays){
+        return runningOperate.delivery(nowUserName, arrays);
+    }
+
+    @PostMapping(value = "operateProductDev/{nowUserName}")
+    @ResponseBody
+    public RunningState operateProductDev(@PathVariable("nowUserName") String nowUserName,
+                                        @RequestParam(value = "array[]") String[] arrays){
+        return runningOperate.productDev(nowUserName, arrays);
+    }
+
 }

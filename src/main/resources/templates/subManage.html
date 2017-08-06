@@ -494,7 +494,7 @@
               <table class='table table-bordered'>
                 <thead>
                 <tr>
-                  <th><button type='button' class='btn btn-info' id="buildLineBoxCheckAll">全选</button></th>
+                  <th><button type='button' class='btn btn-info' id="buildLineBoxCheckAll" style="margin-left: 15%;margin-right: 15%;">反选</button></th>
                   <th style="text-align: center">生产线编号</th>
                   <th style="text-align: center">所属厂房</th>
                   <th style="text-align: center">生产线类型</th>
@@ -529,7 +529,7 @@
               <table class='table table-bordered'>
                 <thead>
                 <tr>
-                  <th><button type='button' class='btn btn-info' id="changeLineBoxCheckAll">全选</button></th>
+                  <th><button type='button' class='btn btn-info' id="changeLineBoxCheckAll" style="margin-left: 15%;margin-right: 15%;">反选</button></th>
                   <th style="text-align: center">生产线编号</th>
                   <th style="text-align: center">所属厂房</th>
                   <th style="text-align: center">生产线类型</th>
@@ -564,7 +564,7 @@
               <table class='table table-bordered'>
                 <thead>
                 <tr>
-                  <th><button type='button' class='btn btn-info' id="continueChangeBoxCheckAll">全选</button></th>
+                  <th><button type='button' class='btn btn-info' id="continueChangeBoxCheckAll" style="margin-left: 15%;margin-right: 15%;">反选</button></th>
                   <th style="text-align: center">生产线编号</th>
                   <th style="text-align: center">所属厂房</th>
                   <th style="text-align: center">生产线类型</th>
@@ -597,7 +597,7 @@
               <table class='table table-bordered'>
                 <thead>
                 <tr>
-                  <th><button type='button' class='btn btn-info' id="saleLineBoxCheckAll">全选</button></th>
+                  <th><button type='button' class='btn btn-info' id="saleLineBoxCheckAll" style="margin-left: 20%;margin-right: 20%;">反选</button></th>
                   <th style="text-align: center">生产线编号</th>
                   <th style="text-align: center">所属厂房</th>
                   <th style="text-align: center">生产线类型</th>
@@ -636,6 +636,74 @@
           <div class="modal-footer">
             <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
             <button class="btn btn-success" type="button" onclick="operateUpdateReceivable()">确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="moadlBeginProduction" class="modal fade">
+      <div class="modal-dialog" style="width:800px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalBeginProduction">&times;</button>
+            <h4 class="modal-title" style="text-align:center">开 始 生 产</h4>
+          </div>
+          <div class="modal-body">
+            <form action="#" method="post" name="beginProductionForm" id="beginProductionForm">
+              <table class='table table-bordered'>
+                <thead>
+                <tr>
+                  <th><button type='button' class='btn btn-info' id="beginProductionBoxCheckAll" style="margin-left: 25%;margin-right: 25%;">反选</button></th>
+                  <th style="text-align: center">生产线编号</th>
+                  <th style="text-align: center">所属厂房</th>
+                  <th style="text-align: center">生产线类型</th>
+                  <th style="text-align: center">产品类型</th>
+                  <th style="display: none">加工费</th>
+                </tr>
+                </thead>
+                <tbody id="tbodyBeginProduction"></tbody>
+              </table>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button" onclick="operateBeginProduction()">确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="moadlDelivery" class="modal fade">
+      <div class="modal-dialog" style="width:800px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalDelivery">&times;</button>
+            <h4 class="modal-title" style="text-align:center">按 订 单 交 货</h4>
+          </div>
+          <div class="modal-body">
+            <form action="#" method="post" name="deliveryForm" id="deliveryForm">
+              <table class='table table-bordered'>
+                <thead>
+                <tr>
+                  <th><button type='button' class='btn btn-info' id="deliveryBoxCheckAll" style="margin-left: 10%;margin-right: 10%;">反选</button></th>
+                  <th style="text-align: center">订单编号</th>
+                  <th style="text-align: center">年份</th>
+                  <th style="text-align: center">市场</th>
+                  <th style="text-align: center">产品</th>
+                  <th style="text-align: center">数量</th>
+                  <th style="text-align: center">总价</th>
+                  <th style="text-align: center">交货期</th>
+                  <th style="text-align: center">账期</th>
+                  <th style="text-align: center">资质</th>
+                </tr>
+                </thead>
+                <tbody id="tbodyDelivery"></tbody>
+              </table>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button" onclick="operateDelivery()">交单</button>
           </div>
         </div>
       </div>
@@ -703,8 +771,8 @@
     });
 
     //反选JS
-    $("#buildLineBoxCheckAll").click(function(){
-        $("input[name='buildLineBox']").each(function(){
+    $("#buildLineBoxCheckAll, #beginProductionBoxCheckAll, #changeLineBoxCheckAll, #continueChangeBoxCheckAll, #saleLineBoxCheckAll").click(function(){
+        $("input[name='buildLineBox'], input[name='beginProductionBox'], input[name='changeLineBox'], input[name='continueChangeBox'], input[name='saleLineBox']").each(function(){
             if($(this).attr("checked"))
             {
                 $(this).removeAttr("checked");

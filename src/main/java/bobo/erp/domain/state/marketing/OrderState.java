@@ -22,14 +22,14 @@ public class OrderState {
     private Integer area;           //区域
     private Integer totalPrice;     //总价
     private Integer typeId;         //产品类型id
-    private String typeName;       //产品名
+//    private String typeName;       //产品名
     private Integer quantity;       //产品数量
     private Integer unitPrice;      //单价
     private Integer deliveryTime;   //交货期
     private Integer accountPeriod;  //账期
-    private Integer qualificate;    //资质认证要求
+    private Integer qualificate;    //资质认证要求 0-无要求 1-资质1 2-资质2 3-资质1和资质2
     private Integer finishTime;     //交单时间(季度)
-    private Integer execution;      //完成状态
+    private Integer execution;      //完成状态 0-未完成 1-交单 2-违约
     private String owner;          //拥有者
 
     @ManyToOne
@@ -83,13 +83,13 @@ public class OrderState {
         this.typeId = typeId;
     }
 
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
+//    public String getTypeName() {
+//        return typeName;
+//    }
+//
+//    public void setTypeName(String typeName) {
+//        this.typeName = typeName;
+//    }
 
     public Integer getQuantity() {
         return quantity;

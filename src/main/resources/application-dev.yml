@@ -11,7 +11,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true
+    show-sql: false
   thymeleaf:
     mode: LEGACYHTML5 #原为HTML5
     encoding: utf-8

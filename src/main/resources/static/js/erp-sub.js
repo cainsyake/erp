@@ -176,10 +176,11 @@ function infoController(runningState, rule) {
     }
 
     var factoryStateList = runningState.factoryStateList;
-    var txt1 = "";
-    var txt2 = "";
-    var txt3 = "";
-    var txt4 = "";
+    var txt1 = "";  //在建
+    var txt2 = "";  //转产
+    var txt3 = "";  //继续转产
+    var txt4 = "";  //出售
+    var txt5 = "";  //开始生产
     $.each(factoryStateList,function(n, factoryState) {
         var lineStateList = factoryState.lineStateList;
         var content = factoryState.content;
@@ -193,6 +194,7 @@ function infoController(runningState, rule) {
                 var changTime = 0;
                 var changInvest = 0;
                 var scrapValue = 0;
+                var procCost = 0;
                 for(var i = 1; i < 6; i++){
                     if(eval("rule.ruleLine.line" + i + "Name") != ""){
                         ruleLineNum++;
@@ -209,6 +211,7 @@ function infoController(runningState, rule) {
                     }
                     if(lineState.productType == i){
                         productName = eval("rule.ruleProduct.product" + i + "Name");
+                        procCost = eval("rule.ruleProduct.product" + i + "ProcCost");
                     }
                 }
                 if(lineState.owningState < 0 && lineState.produceState != null){
@@ -244,6 +247,14 @@ function infoController(runningState, rule) {
                         "<td style='text-align: center' id='valueLineValue" + lineState.id + "'>" + lineState.value + "</td>" +
                         "<td style='text-align: center'id='valueLineScrapValue" + lineState.id + "'>" + scrapValue + "</td>" +
                         "</tr>";
+                    txt5 += "<tr>" +
+                        "<td style='text-align: center'><input type='checkbox' name='beginProductionBox' value='" + lineState.id + "'></td>" +
+                        "<td style='text-align: center'>" + lineState.id + "</td>" +
+                        "<td style='text-align: center'>" + factoryState.id + "</td>" +
+                        "<td style='text-align: center'>" + lineName + "</td>" +
+                        "<td style='text-align: center'>" + productName + "</td>" +
+                        "<td style='display: none' id='valueProcCost" + lineState.id + "'>" + procCost + "</td>" +
+                        "</tr>";
                 }
                 if((lineState.owningState > 0) &&  (lineState.produceState > (-changTime)) && (lineState.produceState < 0)){
                     txt3 +="<tr>" +
@@ -263,6 +274,35 @@ function infoController(runningState, rule) {
     document.getElementById("tbodyChangeLine").innerHTML = txt2;   //输出可转产的生产线信息
     document.getElementById("tbodyContinueChange").innerHTML = txt3;   //输出可继续转产的生产线信息
     document.getElementById("tbodySaleLine").innerHTML = txt4;   //输出可出售的生产线信息
+    document.getElementById("tbodyBeginProduction").innerHTML = txt5;   //输出可开始生产的生产线信息
+
+    var txt6 = "";
+    var orderStateList = runningState.marketingState.orderStateList;
+    $.each(orderStateList,function(n, orderState){
+        if(orderState.year == runningState.baseState.timeYear){
+            if(orderState.execution == 0){
+                for(var i = 1; i < productNum + 1; i++){
+                    if(orderState.typeId == i){
+                        var productName = eval("rule.ruleProduct.product" + i + "Name");
+                    }
+                }
+                txt6 += "<tr>" +
+                    "<td style='text-align: center'><input type='checkbox' name='deliveryBox' value='" + orderState.id + "'></td>" +
+                    "<td style='text-align: center'>" + orderState.orderId + "</td>" +
+                    "<td style='text-align: center'>" + orderState.year + "</td>" +
+                    "<td style='text-align: center'>" + orderState.area + "</td>" +
+                    "<td style='text-align: center'>" + productName + "</td>" +
+                    "<td style='text-align: center'>" + orderState.quantity + "</td>" +
+                    "<td style='text-align: center'>" + orderState.totalPrice + "</td>" +
+                    "<td style='text-align: center'>" + orderState.deliveryTime + "</td>" +
+                    "<td style='text-align: center'>" + orderState.accountPeriod + "</td>" +
+                    "<td style='text-align: center'>" + orderState.qualificate + "</td>" +
+                    "</tr>";
+            }
+        }
+    });
+    document.getElementById("tbodyDelivery").innerHTML = txt6;   //输出可交单的订单信息
+
 
 
 }
@@ -597,17 +637,18 @@ function pageController(rule, runningState) {
                 "<td>" + lineState.id + "</td>" +
                 "<td>" + lineName + "</td>" +
                 "<td>" + productName + "</td>";
-            if(lineState.produceState == null){
+            if(lineState.owningState > 0){
+                if(lineState.produceState < 0){
+                    txt10 += "<td>还需 " + (-lineState.produceState) + " 季转产完成</td>";
+                }else if(lineState.produceState == 0){
+                    txt10 += "<td>空闲</td>";
+                }else{
+                    txt10 += "<td>还需 " + lineState.produceState + " 季生产完成</td>";
+                }
+            }else {
                 txt10 += "<td>暂未建成</td>";
-            }else if(lineState.produceState == 0 && lineState.owningState <= 0){
-                txt10 += "<td>暂未建成</td>";
-            }else if(lineState.produceState < 0 && lineState.owningState > 0){
-                txt10 += "<td>还需 " + (-lineState.produceState) + " 季转产完成</td>";
-            }else if(lineState.produceState == 0 && lineState.owningState > 0){
-                txt10 += "<td>空闲</td>";
-            }else if(lineState.prodeceState > 0 && lineState.owningState > 0){
-                txt10 += "<td>还需 " + lineState.produceState + " 季生产完成</td>";
             }
+
             if(lineState.owningState < 0){
                 txt10 += "<td>还需 " + (-lineState.owningState) + " 次投资</td>";
             }else if(lineState.owningState == 0){
@@ -692,17 +733,17 @@ function btnController(obj) {
                     txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#modalSaleLine' type='button' id='btnSaleLine'>出售生产线</button> ";
                 }
                 if(obj.baseState.operateState.beginProduction == 0){
-                    txt += "<button class='btn btn-success btn-lg' data-toggle='modal' href='#' type='button' id='btnBeginProduction'>开始生产</button> ";
+                    txt += "<button class='btn btn-success btn-lg' data-toggle='modal' href='#moadlBeginProduction' type='button' id='btnBeginProduction'>开始生产</button> ";
                 }
                 txt += "<button class='btn btn-danger btn-lg' data-toggle='modal' href='#modalUpdateReceivable' type='button' id='btnUpdateReceivable'>应收款更新</button>";
             }
             if(obj.baseState.state == 13){
                 if(obj.baseState.operateState.productDev == 0){
-                    txt += "<button class='btn btn-default btn-lg' data-toggle='modal' href='#' type='button' id='btnProductDev'>产品研发</button> ";
+                    txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#' type='button' id='btnProductDev'>产品研发</button> ";
                 }
-                txt += "<button class='btn btn-default btn-lg' data-toggle='modal' href='#' type='button' id='btnDelivery'>按订单交货</button> ";
-                txt += "<button class='btn btn-default btn-lg' data-toggle='modal' href='#' type='button' id='btnFactoryTreatment'>厂房处理</button> ";
-                txt += "<button class='btn btn-default btn-lg' data-toggle='modal' href='#' type='button' id='btnEndQuarter'>当季结束</button> ";
+                txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#moadlDelivery' type='button' id='btnDelivery'>按订单交货</button> ";
+                txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#' type='button' id='btnFactoryTreatment'>厂房处理</button> ";
+                txt += "<button class='btn btn-success btn-lg' data-toggle='modal' href='#' type='button' id='btnEndQuarter'>当季结束</button> ";
             }
 
         }else if(obj.baseState.timeQuarter == 4){
@@ -732,10 +773,9 @@ function btnController(obj) {
                     txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#modalSaleLine' type='button' id='btnSaleLine'>出售生产线</button> ";
                 }
                 if(obj.baseState.operateState.beginProduction == 0){
-                    txt += "<button class='btn btn-success btn-lg' type='button' onclick='' style='' id='btnBeginProduction'>开始生产</button> ";
+                    txt += "<button class='btn btn-success btn-lg' data-toggle='modal' href='#moadlBeginProduction' type='button' id='btnBeginProduction'>开始生产</button> ";
                 }
-                txt += "<button class='btn btn-danger btn-lg' type='button' onclick='' style='' id='btnUpdateReceivable'>应收款更新</button>";
-
+                txt += "<button class='btn btn-danger btn-lg' data-toggle='modal' href='#modalUpdateReceivable' type='button' id='btnUpdateReceivable'>应收款更新</button>";
             }
             if(obj.baseState.state == 13){
                 if(obj.baseState.operateState.productDev == 0){
@@ -1144,6 +1184,94 @@ function operateSaleLine() {
             }
         });
     }
+}
+
+function operateBeginProduction() {
+    var nowUserName = $("#nowUserName").val();
+    var cash = parseInt($("#valueCash").html());
+    var box = document.getElementsByName('beginProductionBox');
+    var s = "";
+    var list = new Array();
+    var procCostTotal = 0;
+    for(var i=0; i<box.length; i++){
+        if(box[i].checked){
+            s = box[i].value;  //如果选中，将value添加到变量s中
+            list[list.length] = s;
+            procCostTotal += eval("parseInt($('#valueProcCost" + box[i].value + "').html())");
+        }
+    }
+    if(cash - procCostTotal < 0){
+        alert("现金不足");
+        return false;
+    }else {
+        $.ajax({
+            type:"POST",
+            url:"/operateBeginProduction/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            data :{array:list},
+            success:function (runningState) {
+                subOnLoad();
+                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+                $("#btnCloseModalBeginProduction").click();
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+    }
+}
+
+function operateUpdateReceivable() {
+    var nowUserName = $("#nowUserName").val();
+    var cash = parseInt($("#valueCash").html());
+    if(cash >= 0){
+        $.ajax({
+            type:"POST",
+            url:"/operateUpdateReceivable/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            success:function (runningState) {
+                subOnLoad();
+                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+                $("#btnCloseModalUpdateReceivable").click();
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+    }
+}
+
+function operateDelivery() {
+    var nowUserName = $("#nowUserName").val();
+    // var cash = parseInt($("#valueCash").html());
+    var box = document.getElementsByName('deliveryBox');
+    var s = "";
+    var list = new Array();
+    // var procCostTotal = 0;
+    for(var i=0; i<box.length; i++){
+        if(box[i].checked){
+            s = box[i].value;  //如果选中，将value添加到变量s中
+            list[list.length] = s;
+            // procCostTotal += eval("parseInt($('#valueProcCost" + box[i].value + "').html())");
+        }
+    }
+    $.ajax({
+        type:"POST",
+        url:"/operateDelivery/" + nowUserName,
+        cache:false,
+        dataType:"json",
+        data :{array:list},
+        success:function (runningState) {
+            subOnLoad();
+            document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+            $("#btnCloseModalDelivery").click();
+        },
+        error:function (json) {
+            console.log(json.responseText);
+        }
+    });
 }
 
 function operateStartYear() {
