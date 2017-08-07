@@ -21,7 +21,8 @@ public class FactoryState {
     private Integer type;               //厂房类型
     private Integer owningState;        //拥有状态 0为租用 大于0为已购买
     private Integer content;            //内含生产线数量
-    private Integer finalPaymentTime;   //最后付租/购买时间
+    private Integer finalPaymentYear;   //最后付租/购买 年份
+    private Integer finanPaymentQuarter;//最后付租/购买 季度
     private Integer value;              //厂房价值
 
 //    @OneToOne(mappedBy = "factoryState")
@@ -64,12 +65,20 @@ public class FactoryState {
         this.content = content;
     }
 
-    public Integer getFinalPaymentTime() {
-        return finalPaymentTime;
+    public Integer getFinalPaymentYear() {
+        return finalPaymentYear;
     }
 
-    public void setFinalPaymentTime(Integer finalPaymentTime) {
-        this.finalPaymentTime = finalPaymentTime;
+    public void setFinalPaymentYear(Integer finalPaymentYear) {
+        this.finalPaymentYear = finalPaymentYear;
+    }
+
+    public Integer getFinanPaymentQuarter() {
+        return finanPaymentQuarter;
+    }
+
+    public void setFinanPaymentQuarter(Integer finanPaymentQuarter) {
+        this.finanPaymentQuarter = finanPaymentQuarter;
     }
 
     public Integer getValue() {

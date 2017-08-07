@@ -1,9 +1,6 @@
 package bobo.erp.service.running;
 
-import bobo.erp.domain.rule.Rule;
-import bobo.erp.domain.rule.RuleLine;
-import bobo.erp.domain.rule.RuleMaterial;
-import bobo.erp.domain.rule.RuleProduct;
+import bobo.erp.domain.rule.*;
 import bobo.erp.domain.state.FactoryState;
 import bobo.erp.domain.state.RunningState;
 import bobo.erp.domain.state.dev.ProductDevState;
@@ -37,6 +34,8 @@ public class RunningOperate {
     private GetSubRunningStateService getSubRunningStateService;
     @Autowired
     private GetTeachClassRuleService getTeachClassRuleService;
+    @Autowired
+    private OperateFinancialStatementService operateFinancialStatementService;
 
     @Autowired
     private RunningStateRepository runningStateRepository;
@@ -397,7 +396,8 @@ public class RunningOperate {
             runningState.getFinanceState().setCashAmount(balance);
             factoryState.setValue(value);
             factoryState.setContent(0);
-            factoryState.setFinalPaymentTime(runningState.getBaseState().getTimeYear() * 10 + runningState.getBaseState().getTimeQuarter());    //十位是年份，个位是季度
+            factoryState.setFinalPaymentYear(runningState.getBaseState().getTimeYear());
+            factoryState.setFinanPaymentQuarter(runningState.getBaseState().getTimeQuarter());
             List<LineState> lineStateList = new ArrayList<LineState>();
             factoryState.setLineStateList(lineStateList);
             runningState.getFactoryStateList().add(factoryState);
@@ -1010,6 +1010,8 @@ public class RunningOperate {
                     return runningState;
                 }else {
                     balance -= devInvest;
+//                    Integer rec = operateFinancialStatementService.read("productDevCost", runningState) + devInvest;
+                    runningState = operateFinancialStatementService.write("productDevCost", operateFinancialStatementService.read("productDevCost", runningState) + devInvest, runningState);
                     ProductDevState productDevState = new ProductDevState();
                     productDevState.setState(2-devTime);
                     productDevState.setType(devType);
@@ -1021,8 +1023,176 @@ public class RunningOperate {
 
         runningState.getFinanceState().setCashAmount(balance);
         runningState.getBaseState().setMsg(""); //清空MSG
+        runningState.getBaseState().getOperateState().setProductDev(1);     //时间轴： 关闭产品研发
+        logger.info("用户：{} 成功执行产品研发", username);
         return runningState;
     }
+
+    @Transactional
+    public RunningState saleFactory(String username, String[] arrays){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+        RuleFactory ruleFactory = rule.getRuleFactory();
+        Integer balance = runningState.getFinanceState().getCashAmount();
+        int arrayLength = arrays.length;
+        List<Integer> list = new ArrayList<Integer>();
+        for(int i = 0; i < arrayLength; i++){
+            list.add(Integer.parseInt(arrays[i]));
+        }
+        List<FactoryState> factoryStateList = runningState.getFactoryStateList();
+        Iterator<FactoryState> factoryStateIterator = factoryStateList.iterator();
+
+        while (factoryStateIterator.hasNext()){
+            FactoryState factoryState = factoryStateIterator.next();
+
+            Iterator<Integer> iterator = list.iterator();
+            while (iterator.hasNext()){
+                Integer tempId = iterator.next();
+                if (factoryState.getId() == tempId){
+                    Integer factorySalePrice = 0;
+                    Integer factoryRentPrice = 0;
+                    if (factoryState.getType() == 1){
+                        factoryRentPrice = ruleFactory.getFactory1RentPrice();
+                        factorySalePrice = ruleFactory.getFactory1SalePrice();
+                    }
+                    if (factoryState.getType() == 2){
+                        factoryRentPrice = ruleFactory.getFactory2RentPrice();
+                        factorySalePrice = ruleFactory.getFactory2SalePrice();
+                    }
+                    if (factoryState.getType() == 3){
+                        factoryRentPrice = ruleFactory.getFactory3RentPrice();
+                        factorySalePrice = ruleFactory.getFactory3SalePrice();
+                    }
+                    if (factoryState.getType() == 4){
+                        factoryRentPrice = ruleFactory.getFactory4RentPrice();
+                        factorySalePrice = ruleFactory.getFactory4SalePrice();
+                    }
+                    if (factoryState.getType() == 5){
+                        factoryRentPrice = ruleFactory.getFactory5RentPrice();
+                        factorySalePrice = ruleFactory.getFactory5SalePrice();
+                    }
+
+                    if(factoryState.getContent() == 0){
+                        //厂房为空，直接出售
+                        List<ReceivableState> receivableStateList = runningState.getFinanceState().getReceivableStateList();
+                        Iterator<ReceivableState> receivableStateIterator = receivableStateList.iterator();
+                        while (receivableStateIterator.hasNext()){
+                            ReceivableState receivableState = receivableStateIterator.next();
+                            if(receivableState.getAccountPeriod() == 4){
+                                receivableState.setAmounts(receivableState.getAmounts() + factorySalePrice);    //售房款增加至应收款4期中
+                            }
+                        }
+                        factoryStateIterator.remove();  //从数据库中删除该厂房信息
+                    }else {
+                        //厂房非空，转租赁
+                        if(factoryRentPrice > balance){
+                            runningState.getBaseState().setMsg("现金不足");
+                            return runningState;
+                        }else {
+                            balance -= factoryRentPrice;
+                            factoryState.setOwningState(0); //转租赁
+                            factoryState.setFinalPaymentYear(runningState.getBaseState().getTimeYear());    //设置支付租金时间
+                            factoryState.setFinanPaymentQuarter(runningState.getBaseState().getTimeQuarter());//设置支付租金时间
+                            List<ReceivableState> receivableStateList = runningState.getFinanceState().getReceivableStateList();
+                            Iterator<ReceivableState> receivableStateIterator = receivableStateList.iterator();
+                            while (receivableStateIterator.hasNext()){
+                                ReceivableState receivableState = receivableStateIterator.next();
+                                if(receivableState.getAccountPeriod() == 4){
+                                    receivableState.setAmounts(receivableState.getAmounts() + factorySalePrice);    //售房款增加至应收款4期中
+                                }
+                            }
+                        }
+                    }
+
+
+                }
+            }
+        }
+        runningState.getBaseState().setMsg("");     //清空MSG
+        runningState.getFinanceState().setCashAmount(balance);
+        return runningState;
+    }
+
+    @Transactional
+    public RunningState exitRent(String username, String[] arrays){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        int arrayLength = arrays.length;
+        List<Integer> list = new ArrayList<Integer>();
+        for(int i = 0; i < arrayLength; i++){
+            list.add(Integer.parseInt(arrays[i]));
+        }
+        List<FactoryState> factoryStateList = runningState.getFactoryStateList();
+        Iterator<FactoryState> factoryStateIterator = factoryStateList.iterator();
+        while (factoryStateIterator.hasNext()){
+            FactoryState factoryState = factoryStateIterator.next();
+            Iterator<Integer> iterator = list.iterator();
+            while (iterator.hasNext()){
+                Integer tempId = iterator.next();
+                if (factoryState.getId() == tempId){
+                    if(factoryState.getContent() == 0){
+                        factoryStateIterator.remove();  //从数据库中删除该厂房信息
+                    }
+                }
+            }
+        }
+        runningState.getBaseState().setMsg("");     //清空MSG
+        return runningState;
+    }
+
+    @Transactional
+    public RunningState rentToBuy(String username, String[] arrays){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+        RuleFactory ruleFactory = rule.getRuleFactory();
+        Integer balance = runningState.getFinanceState().getCashAmount();
+        int arrayLength = arrays.length;
+        List<Integer> list = new ArrayList<Integer>();
+        for(int i = 0; i < arrayLength; i++){
+            list.add(Integer.parseInt(arrays[i]));
+        }
+        List<FactoryState> factoryStateList = runningState.getFactoryStateList();
+        Iterator<FactoryState> factoryStateIterator = factoryStateList.iterator();
+
+        while (factoryStateIterator.hasNext()){
+            FactoryState factoryState = factoryStateIterator.next();
+
+            Iterator<Integer> iterator = list.iterator();
+            while (iterator.hasNext()){
+                Integer tempId = iterator.next();
+                if (factoryState.getId() == tempId){
+                    Integer factoryBuyPrice = 0;
+                    if (factoryState.getType() == 1){
+                        factoryBuyPrice = ruleFactory.getFactory1BuyPrice();
+                    }
+                    if (factoryState.getType() == 2){
+                        factoryBuyPrice = ruleFactory.getFactory2BuyPrice();
+                    }
+                    if (factoryState.getType() == 3){
+                        factoryBuyPrice = ruleFactory.getFactory3BuyPrice();
+                    }
+                    if (factoryState.getType() == 4){
+                        factoryBuyPrice = ruleFactory.getFactory4BuyPrice();
+                    }
+                    if (factoryState.getType() == 5){
+                        factoryBuyPrice = ruleFactory.getFactory5BuyPrice();
+                    }
+                    if(factoryBuyPrice > balance){
+                        runningState.getBaseState().setMsg("现金不足");
+                        return runningState;
+                    }else {
+                        balance -= factoryBuyPrice;
+                        factoryState.setOwningState(1); //转购买
+                        factoryState.setFinalPaymentYear(runningState.getBaseState().getTimeYear());    //设置支付租金时间
+                        factoryState.setFinanPaymentQuarter(runningState.getBaseState().getTimeQuarter());//设置支付租金时间
+                    }
+                }
+            }
+        }
+        runningState.getBaseState().setMsg("");     //清空MSG
+        runningState.getFinanceState().setCashAmount(balance);
+        return runningState;
+    }
+
 
     @Transactional
     public RunningState testAddOrder(RunningState runningState){

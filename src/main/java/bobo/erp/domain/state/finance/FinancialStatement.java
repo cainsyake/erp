@@ -51,8 +51,8 @@ public class FinancialStatement {
     private Integer constructionInProgressValue;	//在建工程
     private Integer fixedAssets;	//固定资产合计
     private Integer assetsTotal;	//资产合计
-    private Integer LongTermDebt;	//长期负债
-    private Integer ShortTermDebt;	//短期负债
+    private Integer longTermDebt;	//长期负债
+    private Integer shortTermDebt;	//短期负债
     private Integer duesTotal;	//应付款
     private Integer debtTotal;	//负债合计
     private Integer equityCapital;	//股东资本
@@ -346,19 +346,19 @@ public class FinancialStatement {
     }
 
     public Integer getLongTermDebt() {
-        return LongTermDebt;
+        return longTermDebt;
     }
 
     public void setLongTermDebt(Integer longTermDebt) {
-        LongTermDebt = longTermDebt;
+        this.longTermDebt = longTermDebt;
     }
 
     public Integer getShortTermDebt() {
-        return ShortTermDebt;
+        return shortTermDebt;
     }
 
     public void setShortTermDebt(Integer shortTermDebt) {
-        ShortTermDebt = shortTermDebt;
+        this.shortTermDebt = shortTermDebt;
     }
 
     public Integer getDuesTotal() {

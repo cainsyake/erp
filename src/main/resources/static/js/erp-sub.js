@@ -181,9 +181,20 @@ function infoController(runningState, rule) {
     var txt3 = "";  //继续转产
     var txt4 = "";  //出售
     var txt5 = "";  //开始生产
+    var txt8 = "";  //出售厂房列表
+    var txt9 = "";  //厂房退租
+    var txt10 = ""; //租转买
     $.each(factoryStateList,function(n, factoryState) {
         var lineStateList = factoryState.lineStateList;
         var content = factoryState.content;
+        var factoryRentPrice = 0;
+        var factoryBuyPrice = 0;
+        for(var i = 1; i < 6; i++){
+            if(factoryState.type == i){
+                factoryRentPrice = eval("rule.ruleFactory.factory" + i + "RentPrice");
+                factoryBuyPrice = eval("rule.ruleFactory.factory" + i + "BuyPrice");
+            }
+        }
         if(content != 0){
             $.each(lineStateList,function(n, lineState){
                 var lineName = "";
@@ -269,12 +280,47 @@ function infoController(runningState, rule) {
                 }
             });
         }
+
+        var factoryTimeQuarter = factoryState.finanPaymentQuarter;
+        var factoryTimeYear = factoryState.finalPaymentYear;
+        if(factoryState.owningState > 0){
+            txt8 += "<tr>" +
+                "<td style='text-align: center'><input type='checkbox' name='saleFactoryBox' value='" + factoryState.id + "'></td>" +
+                "<td style='text-align: center'>" + factoryState.id + "</td>" +
+                "<td style='text-align: center'>已购买</td>" +
+                "<td style='text-align: center' id='valueFactoryContent" + factoryState.id + "'>" + factoryState.content + "</td>" +
+                "<td style='text-align: center'>第" + factoryTimeYear + " 年第 " + factoryTimeQuarter + " 季" + "</td>" +
+                "<td style='display: none' id='valueFactoryRentPrice" + factoryState.id + "'>" + factoryRentPrice + "</td>" +
+                "</tr>";
+        }
+        if(factoryState.owningState == 0 && factoryState.content == 0){
+            txt9 += "<tr>" +
+                "<td style='text-align: center'><input type='checkbox' name='exitRentBox' value='" + factoryState.id + "'></td>" +
+                "<td style='text-align: center'>" + factoryState.id + "</td>" +
+                "<td style='text-align: center'>租赁中</td>" +
+                "<td style='text-align: center'>" + factoryState.content + "</td>" +
+                "<td style='text-align: center'>第" + factoryTimeYear + " 年第 " + factoryTimeQuarter + " 季" + "</td>" +
+                "</tr>";
+        }
+        if(factoryState.owningState == 0 && (runningState.baseState.timeQuarter == factoryTimeQuarter)){
+            txt10 += "<tr>" +
+                "<td style='text-align: center'><input type='checkbox' name='rentToBuyBox' value='" + factoryState.id + "'></td>" +
+                "<td style='text-align: center'>" + factoryState.id + "</td>" +
+                "<td style='text-align: center'>租赁中</td>" +
+                "<td style='text-align: center'>" + factoryState.content + "</td>" +
+                "<td style='text-align: center'>第" + factoryTimeYear + " 年第 " + factoryTimeQuarter + " 季" + "</td>" +
+                "<td style='display: none' id='valueFactoryRentPrice" + factoryState.id + "'>" + factoryBuyPrice + "</td>" +
+                "</tr>";
+        }
     });
     document.getElementById("tbodyBuildLine").innerHTML = txt1;   //输出可续建的生产线信息
     document.getElementById("tbodyChangeLine").innerHTML = txt2;   //输出可转产的生产线信息
     document.getElementById("tbodyContinueChange").innerHTML = txt3;   //输出可继续转产的生产线信息
     document.getElementById("tbodySaleLine").innerHTML = txt4;   //输出可出售的生产线信息
     document.getElementById("tbodyBeginProduction").innerHTML = txt5;   //输出可开始生产的生产线信息
+    document.getElementById("tbodyFactoryTreatment1").innerHTML = txt8;   //输出可开始出售的厂房信息
+    document.getElementById("tbodyFactoryTreatment2").innerHTML = txt9;   //输出可退租的厂房信息
+    document.getElementById("tbodyFactoryTreatment3").innerHTML = txt10;   //输出可租转买的厂房信息
 
     var txt6 = "";
     var orderStateList = runningState.marketingState.orderStateList;
@@ -302,6 +348,49 @@ function infoController(runningState, rule) {
         }
     });
     document.getElementById("tbodyDelivery").innerHTML = txt6;   //输出可交单的订单信息
+
+    var productDevList = runningState.devState.productDevStateList;
+    var txt7 = "";
+    for(var i = 1; i < productNum + 1; i++){
+        var check = 0;
+        $.each(productDevList,function(n, productDev) {
+            var productName = "";
+            var unitInvest = 0;
+            var devTime = 0;
+            for(var j = 1; j < productNum + 1; j++){
+                if(productDev.type == j){
+                    productName = eval("rule.ruleProduct.product" + j + "Name");
+                    unitInvest = eval("rule.ruleProduct.product" + j + "DevInvest");
+                    devTime = eval("rule.ruleProduct.product" + j + "DevTime");
+                }
+            }
+            if(productDev.type == i && productDev.state != 1){
+                check = 1;
+                txt7 += "<tr>" +
+                    "<td style='text-align: center'><input type='checkbox' name='productDevBox' value='" + productDev.type + "'></td>" +
+                    "<td style='text-align: center'>" + productName + "</td>" +
+                    "<td style='text-align: center'>还需投资 " + (1- productDev.state) + " 次</td>" +
+                    "<td style='text-align: center' id='valueProductDev" + productDev.type + "'>" + unitInvest + "</td>" +
+                    "</tr>";
+            }
+            if(productDev.type == i && productDev.state == 1){
+                check = 1;
+            }
+
+        });
+        if(check == 0 ){
+            productName = eval("rule.ruleProduct.product" + i + "Name");
+            unitInvest = eval("rule.ruleProduct.product" + i + "DevInvest");
+            devTime = eval("rule.ruleProduct.product" + i + "DevTime");
+            txt7 += "<tr>" +
+                "<td style='text-align: center'><input type='checkbox' name='productDevBox' value='" + i + "'></td>" +
+                "<td style='text-align: center'>" + productName + "</td>" +
+                "<td style='text-align: center'>还需投资 " + devTime + " 次</td>" +
+                "<td style='text-align: center' id='valueProductDev" + i + "'>" + unitInvest + "</td>" +
+                "</tr>";
+        }
+    }
+    document.getElementById("tbodyProductDev").innerHTML = txt7;   //输出可研发的产品信息
 
 
 
@@ -573,8 +662,8 @@ function pageController(rule, runningState) {
         var factoryOwning = factoryState.owningState;
         var factoryId = factoryState.id;
         var factoryValue = factoryState.value;
-        var factoryTimeQuarter = factoryState.finalPaymentTime % 10;
-        var factoryTimeYear = (factoryState.finalPaymentTime - factoryTimeQuarter) / 10;
+        var factoryTimeQuarter = factoryState.finanPaymentQuarter;
+        var factoryTimeYear = factoryState.finalPaymentYear;
         var factoryRentPrice = 0;
         for(var i = 1; i < 6; i++){
             if(factoryState.type == i){
@@ -739,10 +828,10 @@ function btnController(obj) {
             }
             if(obj.baseState.state == 13){
                 if(obj.baseState.operateState.productDev == 0){
-                    txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#' type='button' id='btnProductDev'>产品研发</button> ";
+                    txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#modalProductDev' type='button' id='btnProductDev'>产品研发</button> ";
                 }
                 txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#moadlDelivery' type='button' id='btnDelivery'>按订单交货</button> ";
-                txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#' type='button' id='btnFactoryTreatment'>厂房处理</button> ";
+                txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#modalFactoryTreatment' type='button' id='btnFactoryTreatment'>厂房处理</button> ";
                 txt += "<button class='btn btn-success btn-lg' data-toggle='modal' href='#' type='button' id='btnEndQuarter'>当季结束</button> ";
             }
 
@@ -1272,6 +1361,155 @@ function operateDelivery() {
             console.log(json.responseText);
         }
     });
+}
+
+function operateProductDev() {
+    var nowUserName = $("#nowUserName").val();
+    var cash = parseInt($("#valueCash").html());
+    var box = document.getElementsByName('productDevBox');
+    var s = "";
+    var list = new Array();
+    var investTotal = 0;
+    for(var i=0; i<box.length; i++){
+        if(box[i].checked){
+            s = box[i].value;  //如果选中，将value添加到变量s中
+            list[list.length] = s;
+            investTotal += eval("parseInt($('#valueProductDev" + box[i].value + "').html())");
+        }
+    }
+    console.log("测试：研发费：" + investTotal);
+    if(investTotal > cash){
+        alert("现金不足");
+        return false;
+    }else {
+        $.ajax({
+            type:"POST",
+            url:"/operateProductDev/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            data :{array:list},
+            success:function (runningState) {
+                subOnLoad();
+                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+                $("#btnCloseModalProductDev").click();
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+    }
+
+}
+
+function operateFactoryTreatment() {
+    var nowUserName = $("#nowUserName").val();
+    var cash = parseInt($("#valueCash").html());
+    var method = $("#changeTreatment").val();
+    if(method == 1){
+        //出售厂房
+        var box = document.getElementsByName('saleFactoryBox');
+        var s = "";
+        var list = new Array();
+        var amountsTotal = 0;
+        for(var i=0; i<box.length; i++){
+            if(box[i].checked){
+                s = box[i].value;  //如果选中，将value添加到变量s中
+                list[list.length] = s;
+                var content = eval("parseInt($('#valueFactoryContent" + box[i].value + "').html())");
+                if(content > 0){
+                    amountsTotal += eval("parseInt($('#valueFactoryRentPrice" + box[i].value + "').html())");
+                }
+            }
+        }
+        if(cash - amountsTotal < 0){
+            alert("现金不足");
+            return false;
+        }else {
+            $.ajax({
+                type:"POST",
+                url:"/operateSaleFactory/" + nowUserName,
+                cache:false,
+                dataType:"json",
+                data :{array:list},
+                success:function (runningState) {
+                    subOnLoad();
+                    document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+                    $("#btnCloseModalFactoryTreatment").click();
+                },
+                error:function (json) {
+                    console.log(json.responseText);
+                }
+            });
+        }
+
+
+    }
+    if(method == 2){
+        //厂房退租
+        var box = document.getElementsByName('exitRentBox');
+        var s = "";
+        var list = new Array();
+        // var amountsTotal = 0;
+        for(var i=0; i<box.length; i++){
+            if(box[i].checked){
+                s = box[i].value;  //如果选中，将value添加到变量s中
+                list[list.length] = s;
+                // amountsTotal += eval("parseInt($('#valueFactoryRentPrice" + box[i].value + "').html())");
+            }
+        }
+        $.ajax({
+            type:"POST",
+            url:"/operateExitRent/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            data :{array:list},
+            success:function (runningState) {
+                subOnLoad();
+                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+                $("#btnCloseModalFactoryTreatment").click();
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+    }
+    if(method == 3){
+        //厂房租转买
+        var box = document.getElementsByName('rentToBuyBox');
+        var s = "";
+        var list = new Array();
+        var amountsTotal = 0;
+        for(var i=0; i<box.length; i++){
+            if(box[i].checked){
+                s = box[i].value;  //如果选中，将value添加到变量s中
+                list[list.length] = s;
+                amountsTotal += eval("parseInt($('#valueFactoryBuyPrice" + box[i].value + "').html())");
+            }
+        }
+        if(cash - amountsTotal < 0){
+            alert("现金不足");
+            return false;
+        }else {
+            $.ajax({
+                type:"POST",
+                url:"/operateRentToBuy/" + nowUserName,
+                cache:false,
+                dataType:"json",
+                data :{array:list},
+                success:function (runningState) {
+                    subOnLoad();
+                    document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+                    $("#btnCloseModalFactoryTreatment").click();
+                },
+                error:function (json) {
+                    console.log(json.responseText);
+                }
+            });
+        }
+
+
+    }
+
 }
 
 function operateStartYear() {
@@ -2260,5 +2498,24 @@ function validate(f){
         f.password.focus() ;
         return false ;
     }
+}
+
+function changeTreatment(obj) {
+    if(obj.value == 1){
+        $("#treatment1").show();
+        $("#treatment2").hide();
+        $("#treatment3").hide();
+    }
+    if(obj.value == 2){
+        $("#treatment2").show();
+        $("#treatment1").hide();
+        $("#treatment3").hide();
+    }
+    if(obj.value == 3){
+        $("#treatment3").show();
+        $("#treatment1").hide();
+        $("#treatment2").hide();
+    }
+
 }
 

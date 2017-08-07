@@ -172,4 +172,25 @@ public class RunningController {
         return runningOperate.productDev(nowUserName, arrays);
     }
 
+    @PostMapping(value = "operateSaleFactory/{nowUserName}")
+    @ResponseBody
+    public RunningState operateSaleFactory(@PathVariable("nowUserName") String nowUserName,
+                                          @RequestParam(value = "array[]") String[] arrays){
+        return runningOperate.saleFactory(nowUserName, arrays);
+    }
+
+    @PostMapping(value = "operateExitRent/{nowUserName}")
+    @ResponseBody
+    public RunningState operateExitRent(@PathVariable("nowUserName") String nowUserName,
+                                           @RequestParam(value = "array[]") String[] arrays){
+        return runningOperate.exitRent(nowUserName, arrays);
+    }
+
+    @PostMapping(value = "operateRentToBuy/{nowUserName}")
+    @ResponseBody
+    public RunningState operateRentToBuy(@PathVariable("nowUserName") String nowUserName,
+                                        @RequestParam(value = "array[]") String[] arrays){
+        return runningOperate.rentToBuy(nowUserName, arrays);
+    }
+
 }
