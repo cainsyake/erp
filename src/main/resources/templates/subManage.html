@@ -859,6 +859,66 @@
       </div>
     </div>
 
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalQualificationDev" class="modal fade">
+      <div class="modal-dialog" style="width:600px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalQualificationDev">&times;</button>
+            <h4 class="modal-title" style="text-align:center">资 质 认 证</h4>
+          </div>
+          <div class="modal-body">
+            <form action="#" method="post" name="qualificationDevForm" id="qualificationDevForm">
+              <table class='table table-bordered'>
+                <thead>
+                <tr>
+                  <th><button type='button' class='btn btn-info' id="qualificationDevBoxCheckAll" style="margin-left: 20%;margin-right: 20%;">反选</button></th>
+                  <th style="text-align: center">资质类型</th>
+                  <th style="text-align: center">研发进度</th>
+                  <th style="text-align: center">每期投资</th>
+                </tr>
+                </thead>
+                <tbody id="tbodyQualificationDev"></tbody>
+              </table>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button" onclick="operateQualificationDev()">确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalMarketDev" class="modal fade">
+      <div class="modal-dialog" style="width:600px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalMarketDev">&times;</button>
+            <h4 class="modal-title" style="text-align:center">市 场 开 拓</h4>
+          </div>
+          <div class="modal-body">
+            <form action="#" method="post" name="marketDevForm" id="marketDevForm">
+              <table class='table table-bordered'>
+                <thead>
+                <tr>
+                  <th><button type='button' class='btn btn-info' id="marketDevBoxCheckAll" style="margin-left: 25%;margin-right: 25%;">反选</button></th>
+                  <th style="text-align: center">市场类型</th>
+                  <th style="text-align: center">研发进度</th>
+                  <th style="text-align: center">每期投资</th>
+                </tr>
+                </thead>
+                <tbody id="tbodyMarketDev"></tbody>
+              </table>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button" onclick="operateMarketDev()">确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 
   </div>
   <!--body wrapper end-->

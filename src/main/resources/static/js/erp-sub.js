@@ -836,10 +836,10 @@ function btnController(obj) {
                 txt += "<button class='btn btn-danger btn-lg' data-toggle='modal' href='#modalUpdateReceivable' type='button' id='btnUpdateReceivable'>应收款更新</button>";
             }
             if(obj.baseState.state == 13){
+                txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#moadlDelivery' type='button' id='btnDelivery'>按订单交货</button> ";
                 if(obj.baseState.operateState.productDev == 0){
                     txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#modalProductDev' type='button' id='btnProductDev'>产品研发</button> ";
                 }
-                txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#moadlDelivery' type='button' id='btnDelivery'>按订单交货</button> ";
                 txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#modalFactoryTreatment' type='button' id='btnFactoryTreatment'>厂房处理</button> ";
                 txt += "<button class='btn btn-success btn-lg' data-toggle='modal' href='#modalEndQuarter' type='button' id='btnEndQuarter'>当季结束</button> ";
             }
@@ -876,18 +876,19 @@ function btnController(obj) {
                 txt += "<button class='btn btn-danger btn-lg' data-toggle='modal' href='#modalUpdateReceivable' type='button' id='btnUpdateReceivable'>应收款更新</button>";
             }
             if(obj.baseState.state == 13){
+                txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#moadlDelivery' type='button' id='btnDelivery'>按订单交货</button> ";
                 if(obj.baseState.operateState.productDev == 0){
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnProductDev'>产品研发</button> ";
+                    txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#modalProductDev' type='button' id='btnProductDev'>产品研发</button> ";
                 }
                 if(obj.baseState.operateState.qualificationDev == 0){
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnQualificationDev'>资质研发</button> ";
+                    txt += "<button class='btn btn-success btn-lg' data-toggle='modal' href='#modalQualificationDev' type='button' id='btnQualificationDev'>资质研发</button> ";
                 }
                 if(obj.baseState.operateState.marketDev == 0){
-                    txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnMarketDev'>市场开拓</button> ";
+                    txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#modalMarketDev' type='button' id='btnMarketDev'>市场开拓</button> ";
                 }
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnDelivery'>按订单交货</button> ";
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnFactoryTreatment'>厂房处理</button> ";
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnEndYear'>当年结束</button>";
+                txt += "<button class='btn btn-danger btn-lg' data-toggle='modal' href='#modalFactoryTreatment' type='button' id='btnFactoryTreatment'>厂房处理</button> ";
+
+                txt += "<button class='btn btn-success btn-lg' data-toggle='modal' href='#modalEndYear' type='button' id='btnEndYear'>当年结束</button>";
             }
         }
     }
