@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Created by 59814 on 2017/7/18.
@@ -118,7 +119,6 @@ public class UserController {
         List<User> list = getUserInfo.getUserInfoSecure(username);
         return list;
     }
-
 
 
 }

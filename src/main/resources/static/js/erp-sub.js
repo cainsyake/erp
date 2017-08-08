@@ -258,14 +258,23 @@ function infoController(runningState, rule) {
                         "<td style='text-align: center' id='valueLineValue" + lineState.id + "'>" + lineState.value + "</td>" +
                         "<td style='text-align: center'id='valueLineScrapValue" + lineState.id + "'>" + scrapValue + "</td>" +
                         "</tr>";
-                    txt5 += "<tr>" +
-                        "<td style='text-align: center'><input type='checkbox' name='beginProductionBox' value='" + lineState.id + "'></td>" +
-                        "<td style='text-align: center'>" + lineState.id + "</td>" +
-                        "<td style='text-align: center'>" + factoryState.id + "</td>" +
-                        "<td style='text-align: center'>" + lineName + "</td>" +
-                        "<td style='text-align: center'>" + productName + "</td>" +
-                        "<td style='display: none' id='valueProcCost" + lineState.id + "'>" + procCost + "</td>" +
-                        "</tr>";
+                    var productDevStateList = runningState.devState.productDevStateList;
+                    var devFinishCheck = 0;
+                    $.each(productDevStateList,function(n, productDevState){
+                        if(lineState.productType == productDevState.type){
+                            devFinishCheck = productDevState.state;
+                        }
+                    });
+                    if(devFinishCheck == 1){
+                        txt5 += "<tr>" +
+                            "<td style='text-align: center'><input type='checkbox' name='beginProductionBox' value='" + lineState.id + "'></td>" +
+                            "<td style='text-align: center'>" + lineState.id + "</td>" +
+                            "<td style='text-align: center'>" + factoryState.id + "</td>" +
+                            "<td style='text-align: center'>" + lineName + "</td>" +
+                            "<td style='text-align: center'>" + productName + "</td>" +
+                            "<td style='display: none' id='valueProcCost" + lineState.id + "'>" + procCost + "</td>" +
+                            "</tr>";
+                    }
                 }
                 if((lineState.owningState > 0) &&  (lineState.produceState > (-changTime)) && (lineState.produceState < 0)){
                     txt3 +="<tr>" +
@@ -832,7 +841,7 @@ function btnController(obj) {
                 }
                 txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#moadlDelivery' type='button' id='btnDelivery'>按订单交货</button> ";
                 txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#modalFactoryTreatment' type='button' id='btnFactoryTreatment'>厂房处理</button> ";
-                txt += "<button class='btn btn-success btn-lg' data-toggle='modal' href='#' type='button' id='btnEndQuarter'>当季结束</button> ";
+                txt += "<button class='btn btn-success btn-lg' data-toggle='modal' href='#modalEndQuarter' type='button' id='btnEndQuarter'>当季结束</button> ";
             }
 
         }else if(obj.baseState.timeQuarter == 4){
@@ -1510,6 +1519,24 @@ function operateFactoryTreatment() {
 
     }
 
+}
+
+function operateEndQuarter() {
+    var nowUserName = $("#nowUserName").val();
+    $.ajax({
+        type:"POST",
+        url:"/operateEndQuarter/" + nowUserName,
+        cache:false,
+        dataType:"json",
+        success:function (runningState) {
+            subOnLoad();
+            document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+            $("#btnCloseModalEndQuarter").click();
+        },
+        error:function (json) {
+            console.log(json.responseText);
+        }
+    });
 }
 
 function operateStartYear() {

@@ -81,7 +81,7 @@ public class RunningController {
     @PostMapping(value = "operateStartQuarter/{nowUserName}")
     @ResponseBody
     public RunningState operateStartQuarter(@PathVariable("nowUserName") String nowUserName){
-        return runningOperate.starQuarter(nowUserName);
+        return runningOperate.startQuarter(nowUserName);
     }
 
     @PostMapping(value = "operateUpdatePurchase/{nowUserName}")
@@ -191,6 +191,12 @@ public class RunningController {
     public RunningState operateRentToBuy(@PathVariable("nowUserName") String nowUserName,
                                         @RequestParam(value = "array[]") String[] arrays){
         return runningOperate.rentToBuy(nowUserName, arrays);
+    }
+
+    @PostMapping(value = "operateEndQuarter/{nowUserName}")
+    @ResponseBody
+    public RunningState operateEndQuarter(@PathVariable("nowUserName") String nowUserName){
+        return runningOperate.endQuarter(nowUserName);
     }
 
 }
