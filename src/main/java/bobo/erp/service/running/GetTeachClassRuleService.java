@@ -26,7 +26,7 @@ public class GetTeachClassRuleService {
     public Rule getTeachClassRule(String username){
         TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(username);
         Rule rule = ruleRepository.findOne(teachClassInfo.getRuleId());
-        logger.info("查询子用户：{} 教学班：{}的规则", username, teachClassInfo.getTeachClassName());
+//        logger.info("查询子用户：{} 教学班：{}的规则", username, teachClassInfo.getTeachClassName());
         return rule;
     }
 }

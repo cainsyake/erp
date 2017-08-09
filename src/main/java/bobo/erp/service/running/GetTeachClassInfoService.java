@@ -24,7 +24,7 @@ public class GetTeachClassInfoService {
     private UserRepository userRepository;
 
     public TeachClassInfo getTeachClassInfoByUsername(String strIn){
-        logger.info("查询子用户：{}的教学班信息", strIn);
+//        logger.info("查询子用户：{}的教学班信息", strIn);
         String[] str_string = strIn.split("\\d");//  \d 为正则表达式表示[0-9]数字
         String  strOut = "";
         for (int index = 0; index < str_string.length; index++)

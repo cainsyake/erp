@@ -360,6 +360,7 @@ function infoController(runningState, rule) {
 
     var productDevList = runningState.devState.productDevStateList;
     var txt7 = "";
+    var txt30 = "";
     for(var i = 1; i < productNum + 1; i++){
         var check = 0;
         $.each(productDevList,function(n, productDev) {
@@ -381,16 +382,24 @@ function infoController(runningState, rule) {
                     "<td style='text-align: center'>还需投资 " + (1- productDev.state) + " 次</td>" +
                     "<td style='text-align: center' id='valueProductDev" + productDev.type + "'>" + unitInvest + "</td>" +
                     "</tr>";
+                txt30 += "<tr>" +
+                    "<td style='text-align: center'>" + productName + "</td>" +
+                    "<td style='text-align: center'>还需投资 " + (1- productDev.state) + " 次</td>" +
+                    "</tr>";
             }
             if(productDev.type == i && productDev.state == 1){
                 check = 1;
+                txt30 += "<tr>" +
+                    "<td style='text-align: center'>" + productName + "</td>" +
+                    "<td style='text-align: center'>研发完成</td>" +
+                    "</tr>";
             }
 
         });
         if(check == 0 ){
-            productName = eval("rule.ruleProduct.product" + i + "Name");
-            unitInvest = eval("rule.ruleProduct.product" + i + "DevInvest");
-            devTime = eval("rule.ruleProduct.product" + i + "DevTime");
+            var productName = eval("rule.ruleProduct.product" + i + "Name");
+            var unitInvest = eval("rule.ruleProduct.product" + i + "DevInvest");
+            var devTime = eval("rule.ruleProduct.product" + i + "DevTime");
             txt7 += "<tr>" +
                 "<td style='text-align: center'><input type='checkbox' name='productDevBox' value='" + i + "'></td>" +
                 "<td style='text-align: center'>" + productName + "</td>" +
@@ -400,6 +409,124 @@ function infoController(runningState, rule) {
         }
     }
     document.getElementById("tbodyProductDev").innerHTML = txt7;   //输出可研发的产品信息
+    document.getElementById("tbodyProdectDevInfo").innerHTML = txt30;
+
+    var marketDevList = runningState.devState.marketDevStateList;
+    var txt8 = "";
+    var txt31 = "";
+    var marketNum = 0;
+    for(var i = 1; i < 6; i++){
+        if(eval("rule.ruleMarket.market" + i + "Name") != ""){
+            marketNum++;
+        }
+    }
+    for(var i = 1; i < marketNum + 1; i++){
+        var check = 0;
+        $.each(marketDevList,function(n, marketDev) {
+            var marketName = "";
+            var unitInvest = 0;
+            var devTime = 0;
+            for(var j = 1; j < marketNum + 1; j++){
+                if(marketDev.type == j){
+                    marketName = eval("rule.ruleMarket.market" + j + "Name");
+                    unitInvest = eval("rule.ruleMarket.market" + j + "UnitInvest");
+                    devTime = eval("rule.ruleMarket.market" + j + "DevTime");
+                }
+            }
+            if(marketDev.type == i && marketDev.state != 1){
+                check = 1;
+                txt8 += "<tr>" +
+                    "<td style='text-align: center'><input type='checkbox' name='marketDevBox' value='" + marketDev.type + "'></td>" +
+                    "<td style='text-align: center'>" + marketName + "</td>" +
+                    "<td style='text-align: center'>还需投资 " + (1- marketDev.state) + " 次</td>" +
+                    "<td style='text-align: center' id='valueMarketDev" + marketDev.type + "'>" + unitInvest + "</td>" +
+                    "</tr>";
+                txt31 += "<tr>" +
+                    "<td style='text-align: center'>" + marketName + "</td>" +
+                    "<td style='text-align: center'>还需投资 " + (1- marketDev.state) + " 次</td>" +
+                    "</tr>";
+            }
+            if(marketDev.type == i && marketDev.state == 1){
+                check = 1;
+                txt31 += "<tr>" +
+                    "<td style='text-align: center'>" + marketName + "</td>" +
+                    "<td style='text-align: center'>开拓完成</td>" +
+                    "</tr>";
+            }
+        });
+        if(check == 0 ){
+            var marketName = eval("rule.ruleMarket.market" + i + "Name");
+            var unitInvest = eval("rule.ruleMarket.market" + i + "UnitInvest");
+            var devTime = eval("rule.ruleMarket.market" + i + "DevTime");
+            txt8 += "<tr>" +
+                "<td style='text-align: center'><input type='checkbox' name='marketDevBox' value='" + i + "'></td>" +
+                "<td style='text-align: center'>" + marketName + "</td>" +
+                "<td style='text-align: center'>还需投资 " + devTime + " 次</td>" +
+                "<td style='text-align: center' id='valueMarketDev" + i + "'>" + unitInvest + "</td>" +
+                "</tr>";
+        }
+    }
+    document.getElementById("tbodyMarketDev").innerHTML = txt8;   //输出可研发的市场信息
+    document.getElementById("tbodyMarketDevInfo").innerHTML = txt31;
+
+    var qualificationDevList = runningState.devState.qualificationDevStateList;
+    var txt9 = "";
+    var txt32 = "";
+    var qualificationNum = 0;
+    for(var i = 1; i < 3; i++){
+        var isoName = eval("rule.ruleIso.iso" + i + "Name");
+        if(typeof(isoName)!="undefined" && isoName != ""){
+            qualificationNum++;
+        }
+    }
+    for(var i = 1; i < qualificationNum + 1; i++){
+        var check = 0;
+        $.each(qualificationDevList,function(n, qualificationDev) {
+            var qualificationName = "";
+            var unitInvest = 0;
+            var devTime = 0;
+            for(var j = 1; j < qualificationNum + 1; j++){
+                if(qualificationDev.type == j){
+                    qualificationName = eval("rule.ruleIso.iso" + j + "Name");
+                    unitInvest = eval("rule.ruleIso.iso" + j + "UnitInvest");
+                    devTime = eval("rule.ruleIso.iso" + j + "DevTime");
+                }
+            }
+            if(qualificationDev.type == i && qualificationDev.state != 1){
+                check = 1;
+                txt9 += "<tr>" +
+                    "<td style='text-align: center'><input type='checkbox' name='qualificationDevBox' value='" + qualificationDev.type + "'></td>" +
+                    "<td style='text-align: center'>" + qualificationName + "</td>" +
+                    "<td style='text-align: center'>还需投资 " + (1- qualificationDev.state) + " 次</td>" +
+                    "<td style='text-align: center' id='valueMarketDev" + qualificationDev.type + "'>" + unitInvest + "</td>" +
+                    "</tr>";
+                txt32 += "<tr>" +
+                    "<td style='text-align: center'>" + qualificationName + "</td>" +
+                    "<td style='text-align: center'>还需投资 " + (1- qualificationDev.state) + " 次</td>" +
+                    "</tr>";
+            }
+            if(qualificationDev.type == i && qualificationDev.state == 1){
+                check = 1;
+                txt32 += "<tr>" +
+                    "<td style='text-align: center'>" + qualificationName + "</td>" +
+                    "<td style='text-align: center'>认证完成</td>" +
+                    "</tr>";
+            }
+        });
+        if(check == 0 ){
+            var qualificationName = eval("rule.ruleIso.iso" + i + "Name");
+            var unitInvest = eval("rule.ruleIso.iso" + i + "UnitInvest");
+            var devTime = eval("rule.ruleIso.iso" + i + "DevTime");
+            txt9 += "<tr>" +
+                "<td style='text-align: center'><input type='checkbox' name='qualificationDevBox' value='" + i + "'></td>" +
+                "<td style='text-align: center'>" + qualificationName + "</td>" +
+                "<td style='text-align: center'>还需投资 " + devTime + " 次</td>" +
+                "<td style='text-align: center' id='valueQualificationDev" + i + "'>" + unitInvest + "</td>" +
+                "</tr>";
+        }
+    }
+    document.getElementById("tbodyQualificationDev").innerHTML = txt9;   //输出可研发的资质认证信息
+    document.getElementById("tbodyQualificationDevInfo").innerHTML = txt32;
 
 
 
@@ -1387,7 +1514,6 @@ function operateProductDev() {
             investTotal += eval("parseInt($('#valueProductDev" + box[i].value + "').html())");
         }
     }
-    console.log("测试：研发费：" + investTotal);
     if(investTotal > cash){
         alert("现金不足");
         return false;
@@ -1402,6 +1528,80 @@ function operateProductDev() {
                 subOnLoad();
                 document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
                 $("#btnCloseModalProductDev").click();
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+    }
+
+}
+
+function operateMarketDev() {
+    var nowUserName = $("#nowUserName").val();
+    var cash = parseInt($("#valueCash").html());
+    var box = document.getElementsByName('marketDevBox');
+    var s = "";
+    var list = new Array();
+    var investTotal = 0;
+    for(var i=0; i<box.length; i++){
+        if(box[i].checked){
+            s = box[i].value;  //如果选中，将value添加到变量s中
+            list[list.length] = s;
+            investTotal += eval("parseInt($('#valueMarketDev" + box[i].value + "').html())");
+        }
+    }
+    if(investTotal > cash){
+        alert("现金不足");
+        return false;
+    }else {
+        $.ajax({
+            type:"POST",
+            url:"/operateMarketDev/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            data :{array:list},
+            success:function (runningState) {
+                subOnLoad();
+                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+                $("#btnCloseModalMarketDev").click();
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+    }
+
+}
+
+function operateQualificationDev() {
+    var nowUserName = $("#nowUserName").val();
+    var cash = parseInt($("#valueCash").html());
+    var box = document.getElementsByName('qualificationDevBox');
+    var s = "";
+    var list = new Array();
+    var investTotal = 0;
+    for(var i=0; i<box.length; i++){
+        if(box[i].checked){
+            s = box[i].value;  //如果选中，将value添加到变量s中
+            list[list.length] = s;
+            investTotal += eval("parseInt($('#valueeQualificationDev" + box[i].value + "').html())");
+        }
+    }
+    if(investTotal > cash){
+        alert("现金不足");
+        return false;
+    }else {
+        $.ajax({
+            type:"POST",
+            url:"/operateQualificationDev/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            data :{array:list},
+            success:function (runningState) {
+                subOnLoad();
+                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+                $("#btnCloseModalQualificationDev").click();
             },
             error:function (json) {
                 console.log(json.responseText);
@@ -1533,6 +1733,24 @@ function operateEndQuarter() {
             subOnLoad();
             document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
             $("#btnCloseModalEndQuarter").click();
+        },
+        error:function (json) {
+            console.log(json.responseText);
+        }
+    });
+}
+
+function operateEndYear() {
+    var nowUserName = $("#nowUserName").val();
+    $.ajax({
+        type:"POST",
+        url:"/operateEndYear/" + nowUserName,
+        cache:false,
+        dataType:"json",
+        success:function (runningState) {
+            subOnLoad();
+            document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+            $("#btnCloseModalEndYear").click();
         },
         error:function (json) {
             console.log(json.responseText);

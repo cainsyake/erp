@@ -3,7 +3,9 @@ package bobo.erp.service.running;
 import bobo.erp.domain.rule.*;
 import bobo.erp.domain.state.FactoryState;
 import bobo.erp.domain.state.RunningState;
+import bobo.erp.domain.state.dev.MarketDevState;
 import bobo.erp.domain.state.dev.ProductDevState;
+import bobo.erp.domain.state.dev.QualificationDevState;
 import bobo.erp.domain.state.factory.LineState;
 import bobo.erp.domain.state.finance.DebtState;
 import bobo.erp.domain.state.finance.FinancialStatement;
@@ -55,12 +57,20 @@ public class RunningOperate {
 
         Integer timeYear = runningState.getBaseState().getTimeYear();
         if(timeYear > 1){
-            List<FinancialStatement> financialStatementList = runningState.getFinanceState().getFinancialStatementList();
-            for(FinancialStatement financialStatement : financialStatementList){
-                if(financialStatement.getYear() == timeYear - 1){
-                    balance -= financialStatement.getIncomeTax();   //扣除应缴税金
-                }
+            Integer tax = operateFinancialStatementService.readWithTime((timeYear - 1), "incomeTax", runningState);
+            if(tax > balance){
+                runningState.getBaseState().setMsg("现金不足");
+                return runningState;
+            }else {
+                balance -= tax;
+                operateFinancialStatementService.write("incomeTax", tax, runningState);
             }
+//            List<FinancialStatement> financialStatementList = runningState.getFinanceState().getFinancialStatementList();
+//            for(FinancialStatement financialStatement : financialStatementList){
+//                if(financialStatement.getYear() == timeYear - 1){
+//                    balance -= financialStatement.getIncomeTax();   //扣除应缴税金
+//                }
+//            }
 
             List<DebtState> debtStateList = runningState.getFinanceState().getDebtStateList();
             Iterator<DebtState> debtStateIterator = debtStateList.iterator();
@@ -69,11 +79,12 @@ public class RunningOperate {
                 if (debtState.getDebtType() == 2){
                     Integer interest = (int)Math.round(debtState.getAmounts() * rule.getRuleParam().getParamLongTermLoanRates());
                     balance -= interest;   //扣除长贷利息
-                    for(FinancialStatement financialStatement : financialStatementList){
-                        if(financialStatement.getYear() == timeYear){
-                            financialStatement.setFinancialCost(financialStatement.getFinancialCost() + interest);   //记录利息至财务报表中
-                        }
-                    }
+                    operateFinancialStatementService.write("financialCost", operateFinancialStatementService.read("financialCost", runningState) + interest, runningState);
+//                    for(FinancialStatement financialStatement : financialStatementList){
+//                        if(financialStatement.getYear() == timeYear){
+//                            financialStatement.setFinancialCost(financialStatement.getFinancialCost() + interest);   //记录利息至财务报表中
+//                        }
+//                    }
                     if(debtState.getRepaymentPeriod() == 1){
                         balance -= debtState.getAmounts();  //归还到期长贷本金
                         debtStateIterator.remove();     //删除数据库中的相应记录
@@ -99,14 +110,16 @@ public class RunningOperate {
                 financialStatement.setYear(timeYear);
                 runningState.getFinanceState().getFinancialStatementList().add(financialStatement); //保存数据至财务报表
             }else if(timeYear == 1){
-                List<FinancialStatement> financialStatementList = runningState.getFinanceState().getFinancialStatementList();
-                Iterator<FinancialStatement> financialStatementIterator = financialStatementList.iterator();
-                while (financialStatementIterator.hasNext()){
-                    FinancialStatement financialStatement = financialStatementIterator.next();
-                    if(financialStatement.getYear() == timeYear){
-                        financialStatement.setAdvertisingCost(advertisingState.getAd0());
-                    }
-                }
+                operateFinancialStatementService.write("advertisingCost", advertisingState.getAd0(), runningState);
+                
+//                List<FinancialStatement> financialStatementList = runningState.getFinanceState().getFinancialStatementList();
+//                Iterator<FinancialStatement> financialStatementIterator = financialStatementList.iterator();
+//                while (financialStatementIterator.hasNext()){
+//                    FinancialStatement financialStatement = financialStatementIterator.next();
+//                    if(financialStatement.getYear() == timeYear){
+//                        financialStatement.setAdvertisingCost(advertisingState.getAd0());
+//                    }
+//                }
             }
 
             runningState.getBaseState().setMsg(""); //清空MSG
@@ -1247,12 +1260,12 @@ public class RunningOperate {
          * 1.支付行政管理费
          * 2.厂房续租
          * 3.更新建设
+         * 4.违约记录
          */
         if(rule.getRuleParam().getParamManagementCost() > balance){
             runningState.getBaseState().setMsg("现金不足");
         }else {
             balance -= rule.getRuleParam().getParamManagementCost();//支付行政管理费
-//            runningState.getFinanceState().setCashAmount(balance - rule.getRuleParam().getParamManagementCost());
             operateFinancialStatementService.write("managementCost", rule.getRuleParam().getParamManagementCost(), runningState);
         }
 
@@ -1291,6 +1304,237 @@ public class RunningOperate {
         return runningState;
     }
 
+    @Transactional
+    public RunningState marketDev(String username, String[] arrays){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+        RuleMarket ruleMarket = rule.getRuleMarket();
+        Integer balance = runningState.getFinanceState().getCashAmount();
+        List<MarketDevState> marketDevStateList = runningState.getDevState().getMarketDevStateList();
+        int arrayLength = arrays.length;
+        List<Integer> list = new ArrayList<Integer>();
+        for(int i = 0; i < arrayLength; i++){
+            list.add(Integer.parseInt(arrays[i]));
+        }
+        Iterator<Integer> iterator = list.iterator();
+        while (iterator.hasNext()){
+            Integer devType = iterator.next();
+            Integer check = 0;  //检查标记
+            Iterator<MarketDevState> marketDevStateIterator = marketDevStateList.iterator();
+            while (marketDevStateIterator.hasNext()){
+                MarketDevState marketDevState = marketDevStateIterator.next();
+                Integer tempType = marketDevState.getType();
+                Integer devInvest = 0;
+                if(tempType == 1){
+                    devInvest = ruleMarket.getMarket1UnitInvest();
+                }
+                if(tempType == 2){
+                    devInvest = ruleMarket.getMarket2UnitInvest();
+                }
+                if(tempType == 3){
+                    devInvest = ruleMarket.getMarket3UnitInvest();
+                }
+                if(tempType == 4){
+                    devInvest = ruleMarket.getMarket4UnitInvest();
+                }
+                if(tempType == 5){
+                    devInvest = ruleMarket.getMarket5UnitInvest();
+                }
+                if (devType == tempType){
+                    check = 1;
+                    if(devInvest > balance){
+                        runningState.getBaseState().setMsg("现金不足 ");
+                        return runningState;
+                    }else {
+                        balance -= devInvest;
+                        marketDevState.setState(marketDevState.getState() + 1);
+                    }
+
+                }
+            }
+            if(check == 0){
+                //如果检查标记仍然是0，表示在现有DevList中还没有该类型的DevState
+                Integer devInvest = 0;
+                Integer devTime = 0;
+                if(devType == 1){
+                    devInvest = ruleMarket.getMarket1UnitInvest();
+                    devTime = ruleMarket.getMarket1DevTime();
+                }
+                if(devType == 2){
+                    devInvest = ruleMarket.getMarket2UnitInvest();
+                    devTime = ruleMarket.getMarket3DevTime();
+                }
+                if(devType == 3){
+                    devInvest = ruleMarket.getMarket2UnitInvest();
+                    devTime = ruleMarket.getMarket3DevTime();
+                }
+                if(devType == 4){
+                    devInvest = ruleMarket.getMarket4UnitInvest();
+                    devTime = ruleMarket.getMarket4DevTime();
+                }
+                if(devType == 5){
+                    devInvest = ruleMarket.getMarket5UnitInvest();
+                    devTime = ruleMarket.getMarket5DevTime();
+                }
+                if(devInvest > balance){
+                    runningState.getBaseState().setMsg("现金不足");
+                    return runningState;
+                }else {
+                    balance -= devInvest;
+                    runningState = operateFinancialStatementService.write("marketDevCost", operateFinancialStatementService.read("marketDevCost", runningState) + devInvest, runningState);
+                    MarketDevState marketDevState = new MarketDevState();
+                    marketDevState.setState(2-devTime);
+                    marketDevState.setType(devType);
+                    marketDevStateList.add(marketDevState);
+                }
+
+            }
+        }
+
+        runningState.getFinanceState().setCashAmount(balance);
+        runningState.getBaseState().setMsg(""); //清空MSG
+        runningState.getBaseState().getOperateState().setMarketDev(1);     //时间轴： 关闭市场开拓
+        logger.info("用户：{} 成功执行市场开拓", username);
+        return runningState;
+    }
+
+    @Transactional
+    public RunningState qualificationDev(String username, String[] arrays){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+        RuleIso ruleIso = rule.getRuleIso();
+        Integer balance = runningState.getFinanceState().getCashAmount();
+        List<QualificationDevState> qualificationDevStateList = runningState.getDevState().getQualificationDevStateList();
+        int arrayLength = arrays.length;
+        List<Integer> list = new ArrayList<Integer>();
+        for(int i = 0; i < arrayLength; i++){
+            list.add(Integer.parseInt(arrays[i]));
+        }
+        Iterator<Integer> iterator = list.iterator();
+        while (iterator.hasNext()){
+            Integer devType = iterator.next();
+            Integer check = 0;  //检查标记
+            Iterator<QualificationDevState> qualificationDevStateIterator = qualificationDevStateList.iterator();
+            while (qualificationDevStateIterator.hasNext()){
+                QualificationDevState qualificationDevState = qualificationDevStateIterator.next();
+                Integer tempType = qualificationDevState.getType();
+                Integer devInvest = 0;
+                if(tempType == 1){
+                    devInvest = ruleIso.getIso1UnitInvest();
+                }
+                if(tempType == 2){
+                    devInvest = ruleIso.getIso2UnitInvest();
+                }
+                if (devType == tempType){
+                    check = 1;
+                    if(devInvest > balance){
+                        runningState.getBaseState().setMsg("现金不足  ");
+                        return runningState;
+                    }else {
+                        balance -= devInvest;
+                        qualificationDevState.setState(qualificationDevState.getState() + 1);
+                    }
+
+                }
+            }
+            if(check == 0){
+                //如果检查标记仍然是0，表示在现有DevList中还没有该类型的DevState
+                Integer devInvest = 0;
+                Integer devTime = 0;
+                if(devType == 1){
+                    devInvest = ruleIso.getIso1UnitInvest();
+                    devTime = ruleIso.getIso1DevTime();
+                }
+                if(devType == 2){
+                    devInvest = ruleIso.getIso2UnitInvest();
+                    devTime = ruleIso.getIso2DevTime();
+                }
+                if(devInvest > balance){
+                    runningState.getBaseState().setMsg("现金不足 ");
+                    return runningState;
+                }else {
+                    balance -= devInvest;
+                    runningState = operateFinancialStatementService.write("isoDevCost", operateFinancialStatementService.read("isoDevCost", runningState) + devInvest, runningState);
+                    QualificationDevState qualificationDevState = new QualificationDevState();
+                    qualificationDevState.setState(2-devTime);
+                    qualificationDevState.setType(devType);
+                    qualificationDevStateList.add(qualificationDevState);
+                }
+            }
+        }
+
+        runningState.getFinanceState().setCashAmount(balance);
+        runningState.getBaseState().setMsg(""); //清空MSG
+        runningState.getBaseState().getOperateState().setQualificationDev(1);     //时间轴： 关闭资质认证
+        logger.info("用户：{} 成功执行资质认证", username);
+        return runningState;
+    }
+
+    @Transactional
+    public RunningState endYear(String username){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+        RuleFactory ruleFactory = rule.getRuleFactory();
+        Integer balance = runningState.getFinanceState().getCashAmount();
+
+        //时间轴变换
+        runningState.getBaseState().setTimeYear(runningState.getBaseState().getTimeYear() + 1);     //跳转至下一年
+        runningState.getBaseState().setTimeQuarter(0);   //跳转至年初
+        runningState.getBaseState().setState(1);   //跳转至季初
+        runningState.getBaseState().getOperateState().setProductDev(0);  //解除控制 产品研发
+        runningState.getBaseState().getOperateState().setMarketDev(0);  //解除控制 市场开拓
+        runningState.getBaseState().getOperateState().setQualificationDev(0);   //解除控制 资质认证
+        runningState.getBaseState().getOperateState().setReport(0); //允许 填写报表
+
+        /**
+         * 自动进行的业务操作：
+         * 1.支付行政管理费
+         * 2.厂房续租
+         * 3.支付设备维修费
+         * 4.计提折旧
+         * 5.违约扣款
+         */
+        if(rule.getRuleParam().getParamManagementCost() > balance){
+            runningState.getBaseState().setMsg("现金不足");
+        }else {
+            balance -= rule.getRuleParam().getParamManagementCost();//支付行政管理费
+            operateFinancialStatementService.write("managementCost", rule.getRuleParam().getParamManagementCost(), runningState);
+        }
+
+        List<FactoryState> factoryStateList = runningState.getFactoryStateList();
+        for (FactoryState factoryState : factoryStateList){
+            if((factoryState.getFinalPaymentYear() != runningState.getBaseState().getTimeYear()) && (factoryState.getFinanPaymentQuarter() == runningState.getBaseState().getTimeQuarter())){
+                Integer rentPrice = 0;
+                if(factoryState.getType() == 1){
+                    rentPrice = ruleFactory.getFactory1RentPrice();
+                }
+                if(factoryState.getType() == 2){
+                    rentPrice = ruleFactory.getFactory2RentPrice();
+                }
+                if(factoryState.getType() == 3){
+                    rentPrice = ruleFactory.getFactory3RentPrice();
+                }
+                if(factoryState.getType() == 4){
+                    rentPrice = ruleFactory.getFactory4RentPrice();
+                }
+                if(factoryState.getType() == 5){
+                    rentPrice = ruleFactory.getFactory5RentPrice();
+                }
+                if(rentPrice > balance){
+                    runningState.getBaseState().setMsg("现金不足");
+                    return runningState;
+                }else {
+                    balance -= rentPrice;   //支付续租费用
+                    factoryState.setFinalPaymentYear(runningState.getBaseState().getTimeYear());
+                    operateFinancialStatementService.write("factoryRent", rentPrice, runningState);
+                }
+            }
+
+        }
+        runningState.getFinanceState().setCashAmount(balance);
+        runningState.getBaseState().setMsg(""); //清空MSG
+        return runningState;
+    }
 
     @Transactional
     public RunningState testAddOrder(RunningState runningState){

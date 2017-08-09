@@ -199,4 +199,23 @@ public class RunningController {
         return runningOperate.endQuarter(nowUserName);
     }
 
+    @PostMapping(value = "operateMarketDev/{nowUserName}")
+    @ResponseBody
+    public RunningState operateMarketDev(@PathVariable("nowUserName") String nowUserName,
+                                          @RequestParam(value = "array[]") String[] arrays){
+        return runningOperate.marketDev(nowUserName, arrays);
+    }
+
+    @PostMapping(value = "operateQualificationDev/{nowUserName}")
+    @ResponseBody
+    public RunningState operateQualificationDev(@PathVariable("nowUserName") String nowUserName,
+                                         @RequestParam(value = "array[]") String[] arrays){
+        return runningOperate.qualificationDev(nowUserName, arrays);
+    }
+
+    @PostMapping(value = "operateEndYear/{nowUserName}")
+    @ResponseBody
+    public RunningState operateEndYear(@PathVariable("nowUserName") String nowUserName){
+        return runningOperate.endYear(nowUserName);
+    }
 }
