@@ -1,6 +1,7 @@
 package bobo.erp.domain.state;
 
 import bobo.erp.domain.teach.SubUserInfo;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.util.List;
@@ -53,10 +54,12 @@ public class RunningState {
         this.id = id;
     }
 
+    @JsonBackReference
     public SubUserInfo getSubUserInfo() {
         return subUserInfo;
     }
 
+    @JsonBackReference
     public void setSubUserInfo(SubUserInfo subUserInfo) {
         this.subUserInfo = subUserInfo;
     }

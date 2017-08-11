@@ -1537,6 +1537,84 @@ public class RunningOperate {
     }
 
     @Transactional
+    public RunningState discount(String username, String[] arrays){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+        RuleParam ruleParam = rule.getRuleParam();
+        Integer balance = runningState.getFinanceState().getCashAmount();
+        List<ReceivableState> receivableStateList = runningState.getFinanceState().getReceivableStateList();
+        Iterator<ReceivableState> receivableStateIterator = receivableStateList.iterator();
+        int arrayLength = arrays.length;
+        List<Integer> list = new ArrayList<Integer>();
+        for(int i = 0; i < arrayLength; i++){
+            list.add(Integer.parseInt(arrays[i]));
+        }
+        if(ruleParam.getParamDiscountMode() == 0){
+            //独立贴现
+            for(int i = 1; i < 5; i++){
+                while (receivableStateIterator.hasNext()){
+                    ReceivableState receivableState = receivableStateIterator.next();
+                    if(receivableState.getAccountPeriod() == i){
+                        Integer tempAmounts = list.get(i - 1);
+                        Integer interest = 0;
+                        if (tempAmounts > receivableState.getAmounts()){
+                            runningState.getBaseState().setMsg("应收款不足");
+                            return runningState;
+                        }else {
+                            receivableState.setAmounts(receivableState.getAmounts() - tempAmounts);
+                            if(i <= 2){
+                                interest = (int)Math.ceil(tempAmounts * ruleParam.getParamShortTermDiscountRates());    //贴息向上取整
+                            }else {
+                                interest = (int)Math.ceil(tempAmounts * ruleParam.getParamLongTermDiscountRates());
+                            }
+                            balance += tempAmounts - interest;
+                            operateFinancialStatementService.write("financialCost", interest, runningState);
+                        }
+                    }
+                }
+            }
+        }else {
+            Integer tempShortTotal = 0;
+            Integer tempLongTotal = 0;
+            for(int i = 1; i < 5; i++){
+                while (receivableStateIterator.hasNext()){
+                    ReceivableState receivableState = receivableStateIterator.next();
+                    if(receivableState.getAccountPeriod() == i){
+                        Integer tempAmounts = list.get(i - 1);
+                        if(i <= 2){
+                            tempShortTotal += tempAmounts;
+                        }else {
+                            tempLongTotal += tempAmounts;
+                        }
+                        Integer interest = 0;
+                        if (tempAmounts > receivableState.getAmounts()){
+                            runningState.getBaseState().setMsg("应收款不足");
+                            return runningState;
+                        }else {
+                            receivableState.setAmounts(receivableState.getAmounts() - tempAmounts);
+                            if(i == 2){
+                                interest = (int)Math.ceil(tempShortTotal * ruleParam.getParamShortTermDiscountRates());    //贴息向上取整
+                                balance += tempShortTotal - interest;
+                                operateFinancialStatementService.write("financialCost", interest, runningState);
+                            }
+                            if(i == 4){
+                                interest = (int)Math.ceil(tempLongTotal * ruleParam.getParamLongTermDiscountRates());
+                                balance += tempLongTotal - interest;
+                                operateFinancialStatementService.write("financialCost", interest, runningState);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+        runningState.getFinanceState().setCashAmount(balance);
+        return runningState;
+    }
+
+    @Transactional
     public RunningState testAddOrder(RunningState runningState){
 
         List<OrderState> orderStateList = runningState.getMarketingState().getOrderStateList();

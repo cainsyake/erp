@@ -4,15 +4,13 @@ import bobo.erp.domain.teach.SubUserInfo;
 import bobo.erp.domain.teach.TeachClassInfo;
 import bobo.erp.repository.teach.SubUserInfoRepository;
 import bobo.erp.repository.teach.TeachClassInfoRepository;
+import bobo.erp.service.running.GetTeachClassInfoService;
 import bobo.erp.service.teach.TeachClassInit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
@@ -29,6 +27,9 @@ public class TeachController {
 
     @Autowired
     private TeachClassInit teachClassInit;
+
+    @Autowired
+    private GetTeachClassInfoService getTeachClassInfoService;
 
     @Autowired
     private TeachClassInfoRepository teachClassInfoRepository;
@@ -56,8 +57,15 @@ public class TeachController {
         }catch (Exception e){
             msg = "还原失败，请检查当前状态";
         }
-//        return teachClassInit.teachClassReturnOriginal(nowUserName);
         return msg;
     }
+
+    @PostMapping(value = "getTeachClassInfo/{nowUserName}")
+    @ResponseBody
+    public TeachClassInfo getTeachClassInfo(@PathVariable("nowUserName") String nowUserName){
+
+        return getTeachClassInfoService.getTeachClassInfoByUsername(nowUserName);
+    }
+
 
 }

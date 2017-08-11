@@ -102,7 +102,7 @@
         </div>
         <div class="row">
           <div class="col-md-8">
-            <button class="btn btn-default" onclick="" type="button">贴现</button>
+            <button class="btn btn-info" data-toggle="modal" href="#modalDiscount" type="button">贴现</button>
             <button class="btn btn-default" onclick="" type="button">商业情报</button>
             <button class="btn btn-default" onclick="" type="button">紧急采购</button>
             <button class="btn btn-default" onclick="" type="button">紧急出售</button>
@@ -942,6 +942,29 @@
           <div class="modal-footer">
             <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
             <button class="btn btn-primary" type="button" onclick="operateEndYear()" >确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalDiscount" class="modal fade">
+      <div class="modal-dialog" style="width:250px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalDiscount">&times;</button>
+            <h4 class="modal-title" style="text-align:center">应 收 款 贴 现</h4>
+          </div>
+          <div class="modal-body">
+            <form action="#" method="post" name="discountForm" id="discountForm">
+              <label>一期：</label><input type="number" min="0" style="width: 80px" name="discount1" id="discount1" value="0"/><br><br>
+              <label>二期：</label><input type="number" min="0" style="width: 80px" name="discount2" id="discount2" value="0"/><br><br>
+              <label>三期：</label><input type="number" min="0" style="width: 80px" name="discount3" id="discount3" value="0"/><br><br>
+              <label>四期：</label><input type="number" min="0" style="width: 80px" name="discount4" id="discount4" value="0"/>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button" onclick="operateDiscount(document.discountForm)">确认</button>
           </div>
         </div>
       </div>

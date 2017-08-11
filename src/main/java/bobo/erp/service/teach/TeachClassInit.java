@@ -2,6 +2,7 @@ package bobo.erp.service.teach;
 
 import bobo.erp.controller.MarketController;
 import bobo.erp.domain.User;
+import bobo.erp.domain.collator.Collator;
 import bobo.erp.domain.rule.Rule;
 import bobo.erp.domain.state.*;
 import bobo.erp.domain.state.base.OperateState;
@@ -187,6 +188,27 @@ public class TeachClassInit {
             Integer teacherId = userT.getId();
             teachClassInfo.setUserId(teacherId);    //绑定教学班的老师id
             teachClassInfo.setSubUserInfoList(subUserInfoList);
+
+            Integer marketNum = 0;
+            if(!(rule.getRuleMarket().getMarket1Name().isEmpty())){
+                marketNum++;
+            }
+            if(!(rule.getRuleMarket().getMarket2Name().isEmpty())){
+                marketNum++;
+            }
+            if(!(rule.getRuleMarket().getMarket3Name().isEmpty())){
+                marketNum++;
+            }
+            if(!(rule.getRuleMarket().getMarket4Name().isEmpty())){
+                marketNum++;
+            }
+            if(!(rule.getRuleMarket().getMarket5Name().isEmpty())){
+                marketNum++;
+            }
+            Collator collator = new Collator();
+            collator.setAreaQuantity(marketNum);
+            collator.setSameTimeOpenQuantity(rule.getRuleParam().getParamMarketSametimeOpenNum());
+            teachClassInfo.setCollator(collator);
             teachClassInfoRepository.save(teachClassInfo);
             return "成功初始化";
         }else {

@@ -13,8 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by 59814 on 2017/7/28.
@@ -31,10 +30,6 @@ public class RunningController {
     private RunningOperate runningOperate;
     @Autowired
     private GetTeachClassInfoService getTeachClassInfoService;
-
-    @Autowired
-    private RuleRepository ruleRepository;
-
 
     @PostMapping(value = "getSubRunningState/{nowUserName}")
     @ResponseBody
@@ -218,4 +213,12 @@ public class RunningController {
     public RunningState operateEndYear(@PathVariable("nowUserName") String nowUserName){
         return runningOperate.endYear(nowUserName);
     }
+
+    @PostMapping(value = "operateDiscount/{nowUserName}")
+    @ResponseBody
+    public RunningState operateDiscount(@PathVariable("nowUserName") String nowUserName,
+                                        @RequestParam(value = "array[]") String[] arrays){
+        return runningOperate.discount(nowUserName, arrays);
+    }
+
 }

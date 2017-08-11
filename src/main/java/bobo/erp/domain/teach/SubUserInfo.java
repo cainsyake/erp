@@ -59,12 +59,10 @@ public class SubUserInfo {
         this.userId = userId;
     }
 
-    @JsonBackReference
     public RunningState getRunningState() {
         return runningState;
     }
 
-    @JsonBackReference
     public void setRunningState(RunningState runningState) {
         this.runningState = runningState;
     }

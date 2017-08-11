@@ -79,7 +79,12 @@
                     <button class="btn btn-success btn-lg" onclick="findRuleAll()" type="button">查看规则库</button>
                     <button class="btn btn-danger btn-lg" data-toggle="modal" href="#modalAddMarket" type="button">添加市场库</button>
                     <button class="btn btn-success btn-lg" onclick="findMarketAll()" type="button">查看市场库</button>
-                    <button class="btn btn-default btn-lg" data-toggle="modal" href="#modalAddAdmin" type="button">数据库设置</button>
+                    <button class="btn btn-default btn-lg" data-toggle="modal" href="" type="button">数据库设置</button>
+                    <br/><br/>
+                    <button class="btn btn-info btn-lg" onclick="readRunningState()" type="button">运营状态</button>
+                    <button class="btn btn-warning btn-lg" onclick="" type="button">选单管理</button>
+                    <button class="btn btn-danger btn-lg" onclick="" type="button">竞单管理</button>
+                    <button class="btn btn-success btn-lg" onclick="" type="button">发放报表</button>
 
 
                 </div>
@@ -1802,7 +1807,7 @@
 
 
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalThClassInit">&times;</button>
                                 <h4 class="modal-title">教 学 班 初 始 化</h4>
                             </div>
                             <div class="modal-body">
@@ -1827,7 +1832,6 @@
                     </div>
                 </div>
             </div>
-
             <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalUpdatePassword" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -1853,7 +1857,6 @@
                     </div>
                 </div>
             </div>
-
             <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalReadRule" class="modal fade">
                 <div class="modal-dialog" style="width:900px">
                     <div class="modal-content">
@@ -1874,7 +1877,6 @@
                     </div>
                 </div>
             </div>
-
             <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalAddMarket" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -1902,7 +1904,6 @@
                     </div>
                 </div>
             </div>
-
             <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalReadMarket" class="modal fade">
                 <div class="modal-dialog" style="width:900px">
                     <div class="modal-content">
@@ -1939,6 +1940,44 @@
 
 <!--平台管理JS-->
 <script language="javascript">
+    function readRunningState() {
+        var txt="";
+        var nowUserName = $("#nowUserName").val();
+
+        $.ajax({
+            type:"POST",
+            url:"/getTeachClassInfo/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            success:function (json) {
+                var subUserInfoList = json.subUserInfoList;
+                txt += "<table class='table table-striped table-hover table-bordered' id='editable-sample'>" +
+                    "<thead>" +
+                    "<tr>" +
+                    "<th>用户名</th>" +
+                    "<th>运营状态</th>" +
+                    "<th>运营年份</th>" +
+                    "<th>运营季度</th>" +
+                    "<th>现金</th>" +
+                    "</tr>" +
+                    "</thead>" +
+                    "<tbody>";
+                $.each(subUserInfoList,function(n, subUserInfo){
+                    txt += "<tr>" +
+                        "<td>" + subUserInfo.subUserName + "</td>" +
+                        "<td>" + subUserInfo.runningState.baseState.state + "</td>" +
+                        "<td>" + subUserInfo.runningState.baseState.timeYear + "</td>" +
+                        "<td>" + subUserInfo.runningState.baseState.timeQuarter + "</td>" +
+                        "<td>" + subUserInfo.runningState.financeState.cashAmount + "</td>" +
+                        "</tr>"
+                });
+                txt += "</tbody>" +
+                    "</table>"
+                document.getElementById("ajaxDiv2").innerHTML = txt;
+            }
+        });
+    }
+    
     function teachClassReturnOriginal() {
         if (confirm("确认要执行还原操作吗?") == false) {
             return;
@@ -3376,19 +3415,6 @@
         document.getElementById("ajaxDiv1").innerHTML = operatorTime + " : 正在添加规则";
     }
 
-    function validate(f){
-        if(!(/^\w{4,20}$/.test(f.username.value))){
-            alert("请输入长度为4-20的用户名。") ;
-            f.username.focus() ;
-            return false ;
-        }
-        if(!(/^\w{6,20}$/.test(f.password.value))){
-            alert("请输入长度为6-20的密码。") ;
-            f.password.focus() ;
-            return false ;
-        }
-    }
-
     function thClassInit() {
         $.ajax({
             cache: true,
@@ -3399,25 +3425,12 @@
             success: function(data) {
                 console.log(data);
                 document.getElementById("ajaxDiv1").innerHTML = getTime() + " " + data;
+                $("#btnCloseModalThClassInit").click();
             }
         });
     }
 
-    function addTeacher() {
-        $.ajax({
-            cache: true,
-            type: "POST",
-            url:"userAdd",
-            data:$('#teacherAddForm').serialize(),
-            async: false,
-            error: function(request) {
-                alert("Connection error");
-            },
-            success: function(data) {
-                document.getElementById("ajaxDiv1").innerHTML = "添加教学班老师成功";
-            }
-        });
-    }
+
 
 </script>
 

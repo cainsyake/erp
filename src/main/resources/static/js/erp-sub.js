@@ -1758,6 +1758,38 @@ function operateEndYear() {
     });
 }
 
+function operateDiscount(form) {
+    var nowUserName = $("#nowUserName").val();
+    var materialNum = form.length;
+    var list = new Array();
+    for(var i = 1; i <= 4; i++){
+        eval("var num =form.discount" + i + ".value");
+        if(num <0){
+            alert("不能输入负数，请重新输入！");
+            return false;
+        }
+        if(num == ""){
+            num = "0";
+        }
+        list[i-1] = num;
+    }
+    $.ajax({
+        type:"POST",
+        url:"/operateDiscount/" + nowUserName,
+        cache:false,
+        dataType:"json",
+        data :{array:list},
+        success:function (runningState) {
+            subOnLoad();
+            document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+            $("#btnCloseModalDiscount").click();
+        },
+        error:function (json) {
+            console.log(json.responseText);
+        }
+    });
+}
+
 function operateStartYear() {
     var nowUserName = $("#nowUserName").val();;
     $.ajax({

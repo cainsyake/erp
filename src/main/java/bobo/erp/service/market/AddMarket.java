@@ -118,7 +118,7 @@ public class AddMarket {
             Integer orderArea=0;          //区域
             Integer orderProduct=0;       //产品Id
             Integer orderQuantity=0;      //数量
-            Double orderTotalPrice=0.0;    //总价
+            Integer orderTotalPrice=0;    //总价
             Integer orderDeliveryTime=0;  //交货期
             Integer orderAccountPeriod=0; //账期
             Integer orderQualificate=0;   //订单要求
@@ -176,7 +176,7 @@ public class AddMarket {
                             break;
                         case 4:
                             try {
-                                orderTotalPrice = Double.valueOf(cell.getNumericCellValue());
+                                orderTotalPrice = Integer.valueOf((int)cell.getNumericCellValue());
                             } catch (Exception e) {
                                 rowMessage += "数据录入错误";
                             }

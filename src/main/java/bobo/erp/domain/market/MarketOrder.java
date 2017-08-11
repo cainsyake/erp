@@ -23,7 +23,7 @@ public class MarketOrder {
     private Integer orderArea;          //区域
     private Integer orderProduct;       //产品Id
     private Integer orderQuantity;      //数量
-    private Double orderTotalPrice;    //总价
+    private Integer orderTotalPrice;    //总价
     private Integer orderDeliveryTime;  //交货期
     private Integer orderAccountPeriod; //账期
     private Integer orderQualificate;   //订单要求
@@ -76,11 +76,11 @@ public class MarketOrder {
         this.orderQuantity = orderQuantity;
     }
 
-    public Double getOrderTotalPrice() {
+    public Integer getOrderTotalPrice() {
         return orderTotalPrice;
     }
 
-    public void setOrderTotalPrice(Double orderTotalPrice) {
+    public void setOrderTotalPrice(Integer orderTotalPrice) {
         this.orderTotalPrice = orderTotalPrice;
     }
 

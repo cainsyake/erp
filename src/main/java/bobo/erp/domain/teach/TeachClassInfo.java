@@ -1,5 +1,7 @@
 package bobo.erp.domain.teach;
 
+import bobo.erp.domain.collator.Collator;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
@@ -28,6 +30,10 @@ public class TeachClassInfo {
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "teach_class_id")
     private List<SubUserInfo> subUserInfoList;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "collator_id")
+    private Collator collator;
 
     public Integer getTeachClassId() {
         return teachClassId;
@@ -83,5 +89,13 @@ public class TeachClassInfo {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Collator getCollator() {
+        return collator;
+    }
+
+    public void setCollator(Collator collator) {
+        this.collator = collator;
     }
 }
