@@ -17,7 +17,7 @@ public class DebtState {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private Integer debtType;           //负债类型
+    private Integer debtType;           //负债类型  1-短期 2-长期
     private Integer repaymentPeriod;    //还款期
     private Integer amounts;            //金额
 

@@ -1,5 +1,6 @@
 package bobo.erp.service.running;
 
+import bobo.erp.domain.rule.Rule;
 import bobo.erp.domain.state.BaseState;
 import bobo.erp.domain.state.RunningState;
 import bobo.erp.domain.state.finance.FinancialStatement;
@@ -20,14 +21,11 @@ public class StartRunningService {
     private Logger logger = LoggerFactory.getLogger(StartRunningService.class);
 
     @Autowired
-    private GetTeachClassInfoService getTeachClassInfoService;
-
-    @Autowired
-    private TeachClassInfoRepository teachClassInfoRepository;
-    @Autowired
     private SubUserInfoRepository subUserInfoRepository;
     @Autowired
-    private UserRepository userRepository;
+    private OperateFinancialStatementService operateFinancialStatementService;
+    @Autowired
+    private GetTeachClassRuleService getTeachClassRuleService;
 
     public RunningState startRunning(String username){
         //利用Hibernate查询出来的对象是持久态,直接set修改属性即可自动保存更改至数据库
@@ -35,8 +33,10 @@ public class StartRunningService {
         SubUserInfo subUserInfo = subUserInfoRepository.findBySubUserName(username);
         subUserInfo.getRunningState().getBaseState().setState(1);   //设置状态码为1
         subUserInfo.getRunningState().getBaseState().getOperateState().setAd(0);    //设置广告未投放
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
         FinancialStatement financialStatement = new FinancialStatement();   //开始运营时新建一个财务报表
         financialStatement.setYear(1);
+        financialStatement.setEquityCapital(rule.getRuleParam().getParamInitialCash());
         subUserInfo.getRunningState().getFinanceState().getFinancialStatementList().add(financialStatement);
         //此处不设置Report、OrderMeeting、BigMeeting、LongLoan的状态码，待具体业务执行后才设置，状态码为null
         return subUserInfoRepository.save(subUserInfo).getRunningState();

@@ -12,6 +12,7 @@ import bobo.erp.domain.state.finance.FinancialStatement;
 import bobo.erp.domain.state.finance.ReceivableState;
 import bobo.erp.domain.state.marketing.AdvertisingState;
 import bobo.erp.domain.state.marketing.OrderState;
+import bobo.erp.domain.state.stock.MaterialState;
 import bobo.erp.domain.state.stock.ProductState;
 import bobo.erp.domain.state.stock.PurchaseState;
 import bobo.erp.repository.state.RunningStateRepository;
@@ -21,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.sound.sampled.Line;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -38,9 +40,6 @@ public class RunningOperate {
     private GetTeachClassRuleService getTeachClassRuleService;
     @Autowired
     private OperateFinancialStatementService operateFinancialStatementService;
-
-    @Autowired
-    private RunningStateRepository runningStateRepository;
 
     @Transactional
     public RunningState advertising(String username, AdvertisingState advertisingState){
@@ -63,15 +62,7 @@ public class RunningOperate {
                 return runningState;
             }else {
                 balance -= tax;
-                operateFinancialStatementService.write("incomeTax", tax, runningState);
             }
-//            List<FinancialStatement> financialStatementList = runningState.getFinanceState().getFinancialStatementList();
-//            for(FinancialStatement financialStatement : financialStatementList){
-//                if(financialStatement.getYear() == timeYear - 1){
-//                    balance -= financialStatement.getIncomeTax();   //扣除应缴税金
-//                }
-//            }
-
             List<DebtState> debtStateList = runningState.getFinanceState().getDebtStateList();
             Iterator<DebtState> debtStateIterator = debtStateList.iterator();
             while (debtStateIterator.hasNext()){
@@ -80,11 +71,6 @@ public class RunningOperate {
                     Integer interest = (int)Math.round(debtState.getAmounts() * rule.getRuleParam().getParamLongTermLoanRates());
                     balance -= interest;   //扣除长贷利息
                     operateFinancialStatementService.write("financialCost", operateFinancialStatementService.read("financialCost", runningState) + interest, runningState);
-//                    for(FinancialStatement financialStatement : financialStatementList){
-//                        if(financialStatement.getYear() == timeYear){
-//                            financialStatement.setFinancialCost(financialStatement.getFinancialCost() + interest);   //记录利息至财务报表中
-//                        }
-//                    }
                     if(debtState.getRepaymentPeriod() == 1){
                         balance -= debtState.getAmounts();  //归还到期长贷本金
                         debtStateIterator.remove();     //删除数据库中的相应记录
@@ -109,28 +95,24 @@ public class RunningOperate {
                 financialStatement.setAdvertisingCost(advertisingState.getAd0());
                 financialStatement.setYear(timeYear);
                 runningState.getFinanceState().getFinancialStatementList().add(financialStatement); //保存数据至财务报表
+                operateFinancialStatementService.write("equityCapital", operateFinancialStatementService.readWithTime(timeYear - 1, "equityCapital", runningState), runningState);     //权益 - 股东资本
+                System.out.println("测试：" + operateFinancialStatementService.read("equityCapital", runningState));
             }else if(timeYear == 1){
                 operateFinancialStatementService.write("advertisingCost", advertisingState.getAd0(), runningState);
-                
-//                List<FinancialStatement> financialStatementList = runningState.getFinanceState().getFinancialStatementList();
-//                Iterator<FinancialStatement> financialStatementIterator = financialStatementList.iterator();
-//                while (financialStatementIterator.hasNext()){
-//                    FinancialStatement financialStatement = financialStatementIterator.next();
-//                    if(financialStatement.getYear() == timeYear){
-//                        financialStatement.setAdvertisingCost(advertisingState.getAd0());
-//                    }
-//                }
+                operateFinancialStatementService.write("equityCapital", rule.getRuleParam().getParamInitialCash(), runningState);     //权益 - 股东资本
+            }
+            if(timeYear == 1){
+
+            }else {
+
             }
 
             runningState.getBaseState().setMsg(""); //清空MSG
-
             runningState.getBaseState().getOperateState().setAd(1); //时间轴：关闭广告投放
             runningState.getBaseState().getOperateState().setOrderMeeting(0);   //时间轴：允许订货会
             runningState.getBaseState().getOperateState().setLongLoan(0);   //时间轴：允许长贷申请
-
-            logger.info("最新余额：{}", runningState.getFinanceState().getCashAmount());
         }
-        logger.info("测试广告总额：{}", advertisingState.getAd0());
+        logger.info("广告总额：{}", advertisingState.getAd0());
         return runningState;
 //        return runningStateRepository.save(runningState);
     }
@@ -188,20 +170,24 @@ public class RunningOperate {
                 if(debtState.getRepaymentPeriod() == 1){
                     Integer interest = (int)Math.round(debtState.getAmounts() * rule.getRuleParam().getParamShortTermLoanRates());
                     logger.info("测试扣除利息前的余额：{}", balance);
-                    balance -= interest;   //扣除短贷利息
-                    if(balance < 0){
+
+                    if (interest > balance){
                         runningState.getBaseState().setMsg("现金不足");
                         return runningState;
+                    }else {
+                        balance -= interest;   //扣除短贷利息
                     }
                     //记录利息至财务报表中
                     operateFinancialStatementService.write("financialCost", operateFinancialStatementService.read("financialCost", runningState) + interest, runningState);
-                    balance -= debtState.getAmounts();  //归还到期短贷本金
-                    logger.info("测试归还本金后的余额：{}", balance);
-                    debtStateIterator.remove(); //从数据库中删除相应的记录
-                    if(balance < 0){
+                    if (debtState.getAmounts() > balance){
                         runningState.getBaseState().setMsg("现金不足");
                         return runningState;
+                    }else {
+                        balance -= debtState.getAmounts();  //归还到期短贷本金
                     }
+
+                    logger.info("测试归还本金后的余额：{}", balance);
+                    debtStateIterator.remove(); //从数据库中删除相应的记录
                 }else {
                     debtState.setRepaymentPeriod(debtState.getRepaymentPeriod()-1);
                 }
@@ -209,7 +195,7 @@ public class RunningOperate {
         }
 
         List<ProductState> productStateList = runningState.getStockState().getProductStateList();
-        Iterator<ProductState> productStateIterator = productStateList.iterator();
+
         List<FactoryState> factoryStateList = runningState.getFactoryStateList();
         Iterator<FactoryState> factoryStateIterator = factoryStateList.iterator();
         while (factoryStateIterator.hasNext()){
@@ -221,14 +207,16 @@ public class RunningOperate {
                 //更新生产
                 if(lineState.getOwningState() > 0){
                     if(lineState.getProduceState() == 1){
+                        System.out.println("测试节点，进入成品产出处理");
                         Integer productType = lineState.getProductType();
+                        Iterator<ProductState> productStateIterator = productStateList.iterator();
                         while (productStateIterator.hasNext()){
                             ProductState productState = productStateIterator.next();
                             if (productState.getType() == productType){
+                                System.out.println("测试节点，前置 产品" + productType + "库存：" + productState.getQuantity());
                                 productState.setQuantity(productState.getQuantity() + 1);   //增加产品库存
+                                System.out.println("测试节点，后置 产品" + productType + "库存：" + productState.getQuantity());
                             }
-                        }
-                        for(int i = 1; i < 6; i++){
                         }
                     }
                     if(lineState.getProduceState() > 0){
@@ -242,6 +230,9 @@ public class RunningOperate {
                 //更新生产线建设
                 if(lineState.getOwningState() == 0){
                     lineState.setOwningState(1);    //安装完成
+                }
+                if (lineState.getOwningState() < 0){
+                    lineState.setProduceState(0);   //允许续建
                 }
 
             }
@@ -290,6 +281,13 @@ public class RunningOperate {
                     return runningState;
                 }else {
                     balance -= purchaseTotalAmounts;
+                    List<MaterialState> materialStateList = runningState.getStockState().getMaterialStateList();
+                    for (MaterialState materialState : materialStateList){
+                        if(materialState.getType() == tempType){
+                            Integer tempMaterialQuantity = materialState.getQuantity();
+                            materialState.setQuantity(tempMaterialQuantity + tempQuantity);     //增加原料库存
+                        }
+                    }
                     purchaseStateIterator.remove();     //从数据库中删除相应采购记录
                 }
 
@@ -409,7 +407,7 @@ public class RunningOperate {
             runningState.getBaseState().setMsg("现金不足");
         }else {
             if(factoryState.getOwningState() == 0){
-                operateFinancialStatementService.write("factoryRent", value, runningState);
+                operateFinancialStatementService.write("factoryRent", operateFinancialStatementService.read("factoryRent", runningState) + value, runningState);
             }
             runningState.getFinanceState().setCashAmount(balance);
             factoryState.setValue(value);
@@ -489,7 +487,6 @@ public class RunningOperate {
         List<Integer> list = new ArrayList<Integer>();
         for(int i = 0; i < arrayLength; i++){
             list.add(Integer.parseInt(arrays[i]));
-//            System.out.println("测试，对比数组中的值：" + list.get(i));
         }
 
         List<FactoryState> factoryStateList = runningState.getFactoryStateList();
@@ -503,13 +500,10 @@ public class RunningOperate {
                     LineState lineState = lineStateIterator.next();
                     if(lineState.getOwningState() < 0){
                         Integer lineId = lineState.getId();
-//                        System.out.println("测试，遍历生产线ID：" + lineId);
                         Iterator<Integer> iterator = list.iterator();
                         while (iterator.hasNext()){
                             Integer tempid = iterator.next();
-//                            System.out.println("测试，遍历tempID：" + tempid);
                             if (lineId == tempid){
-//                                System.out.println("测试，通过比对测试，ID：" + lineId);
                                 if(lineState.getType() == 1){
                                     balance -= ruleLine.getLine1UnitInvest();
                                 }
@@ -570,31 +564,34 @@ public class RunningOperate {
                             Integer tempid = iterator.next();
                             Integer changeTime = 0;
                             if (lineId == tempid){
+                                Integer changeInvest = 0;
                                 if(lineState.getType() == 1){
-                                    balance -= ruleLine.getLine1ChangeInvest();
+                                    changeInvest = ruleLine.getLine1ChangeInvest();
                                     changeTime = ruleLine.getLine1ChangeTime();
                                 }
                                 if(lineState.getType() == 2){
-                                    balance -= ruleLine.getLine2ChangeInvest();
+                                    changeInvest = ruleLine.getLine2ChangeInvest();
                                     changeTime = ruleLine.getLine2ChangeTime();
                                 }
                                 if(lineState.getType() == 3){
-                                    balance -= ruleLine.getLine3ChangeInvest();
+                                    changeInvest = ruleLine.getLine3ChangeInvest();
                                     changeTime = ruleLine.getLine3ChangeTime();
                                 }
                                 if(lineState.getType() == 4){
-                                    balance -= ruleLine.getLine4ChangeInvest();
+                                    changeInvest = ruleLine.getLine4ChangeInvest();
                                     changeTime = ruleLine.getLine4ChangeTime();
                                 }
                                 if(lineState.getType() == 5){
-                                    balance -= ruleLine.getLine5ChangeInvest();
+                                    changeInvest = ruleLine.getLine5ChangeInvest();
                                     changeTime = ruleLine.getLine5ChangeTime();
                                 }
-                                if(balance < 0){
+                                if(changeInvest > balance){
                                     runningState.getBaseState().setMsg("现金不足");
                                     logger.info("用户：{} 执行转产失败", username);
                                     return runningState;
                                 }else {
+                                    balance -= changeInvest;
+                                    operateFinancialStatementService.write("transferCost", operateFinancialStatementService.read("transferCost", runningState) + changeInvest, runningState);
                                     lineState.setProduceState(-changeTime);
                                     lineState.setProductType(changeType);
                                 }
@@ -638,26 +635,29 @@ public class RunningOperate {
                         while (iterator.hasNext()){
                             Integer tempid = iterator.next();
                             if (lineId == tempid){
+                                Integer changeInvest = 0;
                                 if(lineState.getType() == 1){
-                                    balance -= ruleLine.getLine1ChangeInvest();
+                                    changeInvest = ruleLine.getLine1ChangeInvest();
                                 }
                                 if(lineState.getType() == 2){
-                                    balance -= ruleLine.getLine2ChangeInvest();
+                                    changeInvest = ruleLine.getLine2ChangeInvest();
                                 }
                                 if(lineState.getType() == 3){
-                                    balance -= ruleLine.getLine3ChangeInvest();
+                                    changeInvest = ruleLine.getLine3ChangeInvest();
                                 }
                                 if(lineState.getType() == 4){
-                                    balance -= ruleLine.getLine4ChangeInvest();
+                                    changeInvest = ruleLine.getLine4ChangeInvest();
                                 }
                                 if(lineState.getType() == 5){
-                                    balance -= ruleLine.getLine5ChangeInvest();
+                                    changeInvest = ruleLine.getLine5ChangeInvest();
                                 }
-                                if(balance < 0){
+                                if(changeInvest > balance){
                                     runningState.getBaseState().setMsg("现金不足");
                                     logger.info("用户：{} 执行继续转产失败", username);
                                     return runningState;
                                 }else {
+                                    balance -= changeInvest;
+                                    operateFinancialStatementService.write("transferCost", operateFinancialStatementService.read("transferCost", runningState) + changeInvest, runningState);
                                     lineState.setProduceState(lineState.getProduceState() + 1);
                                 }
 
@@ -707,47 +707,22 @@ public class RunningOperate {
                                 if(lineState.getType() == 1){
                                     balance += ruleLine.getLine1ScrapValue();
                                     operateFinancialStatementService.write("lostCost", operateFinancialStatementService.read("lostCost", runningState) + (lineState.getValue() - ruleLine.getLine1ScrapValue()), runningState);
-//                                    for(FinancialStatement financialStatement : financialStatementList){
-//                                        if(financialStatement.getYear() == timeYear){
-//                                            financialStatement.setLostCost(financialStatement.getLostCost() + (lineState.getValue() - ruleLine.getLine1ScrapValue()));   //记录净值与残值的差额至损失
-//                                        }
-//                                    }
                                 }
                                 if(lineState.getType() == 2){
                                     balance += ruleLine.getLine2ScrapValue();
                                     operateFinancialStatementService.write("lostCost", operateFinancialStatementService.read("lostCost", runningState) + (lineState.getValue() - ruleLine.getLine2ScrapValue()), runningState);
-//                                    for(FinancialStatement financialStatement : financialStatementList){
-//                                        if(financialStatement.getYear() == timeYear){
-//                                            financialStatement.setLostCost(financialStatement.getLostCost() + (lineState.getValue() - ruleLine.getLine2ScrapValue()));   //记录净值与残值的差额至损失
-//                                        }
-//                                    }
                                 }
                                 if(lineState.getType() == 3){
                                     balance += ruleLine.getLine3ScrapValue();
                                     operateFinancialStatementService.write("lostCost", operateFinancialStatementService.read("lostCost", runningState) + (lineState.getValue() - ruleLine.getLine3ScrapValue()), runningState);
-//                                    for(FinancialStatement financialStatement : financialStatementList){
-//                                        if(financialStatement.getYear() == timeYear){
-//                                            financialStatement.setLostCost(financialStatement.getLostCost() + (lineState.getValue() - ruleLine.getLine3ScrapValue()));   //记录净值与残值的差额至损失
-//                                        }
-//                                    }
                                 }
                                 if(lineState.getType() == 4){
                                     balance += ruleLine.getLine4ScrapValue();
                                     operateFinancialStatementService.write("lostCost", operateFinancialStatementService.read("lostCost", runningState) + (lineState.getValue() - ruleLine.getLine4ScrapValue()), runningState);
-//                                    for(FinancialStatement financialStatement : financialStatementList){
-//                                        if(financialStatement.getYear() == timeYear){
-//                                            financialStatement.setLostCost(financialStatement.getLostCost() + (lineState.getValue() - ruleLine.getLine4ScrapValue()));   //记录净值与残值的差额至损失
-//                                        }
-//                                    }
                                 }
                                 if(lineState.getType() == 5){
                                     balance += ruleLine.getLine5ScrapValue();
                                     operateFinancialStatementService.write("lostCost", operateFinancialStatementService.read("lostCost", runningState) + (lineState.getValue() - ruleLine.getLine5ScrapValue()), runningState);
-//                                    for(FinancialStatement financialStatement : financialStatementList){
-//                                        if(financialStatement.getYear() == timeYear){
-//                                            financialStatement.setLostCost(financialStatement.getLostCost() + (lineState.getValue() - ruleLine.getLine5ScrapValue()));   //记录净值与残值的差额至损失
-//                                        }
-//                                    }
                                 }
                                 if(balance < 0){
                                     runningState.getBaseState().setMsg("现金不足");
@@ -821,48 +796,24 @@ public class RunningOperate {
                                 }
                                 if(lineState.getProductType() == 1){
                                     balance -= ruleProduct.getProduct1ProcCost();
-//                                    for(ProductDevState productDevState : productDevStateList){
-//                                        if (productDevState.getType() == 1){
-//                                            devState = productDevState.getState();
-//                                        }
-//                                    }
                                 }
                                 if(lineState.getProductType() == 2){
                                     balance -= ruleProduct.getProduct2ProcCost();
-//                                    for(ProductDevState productDevState : productDevStateList){
-//                                        if (productDevState.getType() == 2){
-//                                            devState = productDevState.getState();
-//                                        }
-//                                    }
                                 }
                                 if(lineState.getProductType() == 3){
                                     balance -= ruleProduct.getProduct3ProcCost();
-//                                    for(ProductDevState productDevState : productDevStateList){
-//                                        if (productDevState.getType() == 3){
-//                                            devState = productDevState.getState();
-//                                        }
-//                                    }
                                 }
                                 if(lineState.getProductType() == 4){
                                     balance -= ruleProduct.getProduct4ProcCost();
-//                                    for(ProductDevState productDevState : productDevStateList){
-//                                        if (productDevState.getType() == 4){
-//                                            devState = productDevState.getState();
-//                                        }
-//                                    }
                                 }
                                 if(lineState.getProductType() == 5){
                                     balance -= ruleProduct.getProduct5ProcCost();
-//                                    for(ProductDevState productDevState : productDevStateList){
-//                                        if (productDevState.getType() == 5){
-//                                            devState = productDevState.getState();
-//                                        }
-//                                    }
                                 }
                                 if(balance < 0){
                                     runningState.getBaseState().setMsg("现金不足");
                                     logger.info("用户：{} 执行开始生产失败", username);
                                 }else {
+                                    //TODO:还需要增加原料的消耗处理代码
                                     lineState.setProduceState(produceTime);
                                     iterator.remove();  //清除List中该线ID
                                     logger.info("用户：{} 执行开始生产,生产线ID：{}，产品：{}", username, lineId, lineState.getProductType());
@@ -920,7 +871,13 @@ public class RunningOperate {
         runningState.getBaseState().getOperateState().setBeginProduction(0);    ////解除控制 开始生产
 
 //        return runningState;
-        return testAddOrder(runningState);  //每次更新应收款都用这个函数增加订单以供测试
+        //TODO:需改进增加测试订单的方法
+        if(runningState.getBaseState().getTimeQuarter() == 1){
+            return testAddOrder(runningState);  //每年第一季度更新应收款都用这个函数增加订单以供测试
+        }else {
+            return runningState;
+        }
+
     }
 
     @Transactional
@@ -969,6 +926,27 @@ public class RunningOperate {
                                         }
                                         orderState.setExecution(1);
                                         orderState.setFinishTime(runningState.getBaseState().getTimeQuarter());
+                                        Integer directCost = 0;
+                                        if(orderState.getTypeId() == 1){
+                                            directCost = orderState.getQuantity() * rule.getRuleProduct().getProduct1FinalCost();
+                                        }
+                                        if(orderState.getTypeId() == 2){
+                                            directCost = orderState.getQuantity() * rule.getRuleProduct().getProduct2FinalCost();
+                                        }
+                                        if(orderState.getTypeId() == 3){
+                                            directCost = orderState.getQuantity() * rule.getRuleProduct().getProduct3FinalCost();
+                                        }
+                                        if(orderState.getTypeId() == 4){
+                                            directCost = orderState.getQuantity() * rule.getRuleProduct().getProduct4FinalCost();
+                                        }
+                                        if(orderState.getTypeId() == 5){
+                                            directCost = orderState.getQuantity() * rule.getRuleProduct().getProduct5FinalCost();
+                                        }
+                                        Integer grossProfit = orderState.getTotalPrice() - directCost;
+                                        operateFinancialStatementService.write("salesIncome", operateFinancialStatementService.read("salesIncome", runningState) + orderState.getTotalPrice(), runningState);
+                                        operateFinancialStatementService.write("directCost", operateFinancialStatementService.read("directCost", runningState) + directCost, runningState);
+                                        operateFinancialStatementService.write("grossProfit", operateFinancialStatementService.read("grossProfit", runningState) + grossProfit, runningState);
+
 
                                     }
                                 }
@@ -1027,6 +1005,7 @@ public class RunningOperate {
                     }else {
                         balance -= devInvest;
                         productDevState.setState(productDevState.getState() + 1);
+                        operateFinancialStatementService.write("productDevCost", operateFinancialStatementService.read("productDevCost", runningState) + devInvest, runningState);
                     }
 
                 }
@@ -1060,8 +1039,7 @@ public class RunningOperate {
                     return runningState;
                 }else {
                     balance -= devInvest;
-//                    Integer rec = operateFinancialStatementService.read("productDevCost", runningState) + devInvest;
-                    runningState = operateFinancialStatementService.write("productDevCost", operateFinancialStatementService.read("productDevCost", runningState) + devInvest, runningState);
+                    operateFinancialStatementService.write("productDevCost", operateFinancialStatementService.read("productDevCost", runningState) + devInvest, runningState);
                     ProductDevState productDevState = new ProductDevState();
                     productDevState.setState(2-devTime);
                     productDevState.setType(devType);
@@ -1143,6 +1121,7 @@ public class RunningOperate {
                             factoryState.setOwningState(0); //转租赁
                             factoryState.setFinalPaymentYear(runningState.getBaseState().getTimeYear());    //设置支付租金时间
                             factoryState.setFinanPaymentQuarter(runningState.getBaseState().getTimeQuarter());//设置支付租金时间
+                            operateFinancialStatementService.write("factoryRent", operateFinancialStatementService.read("factoryRent", runningState) + factoryRentPrice, runningState);
                             List<ReceivableState> receivableStateList = runningState.getFinanceState().getReceivableStateList();
                             Iterator<ReceivableState> receivableStateIterator = receivableStateList.iterator();
                             while (receivableStateIterator.hasNext()){
@@ -1266,7 +1245,7 @@ public class RunningOperate {
             runningState.getBaseState().setMsg("现金不足");
         }else {
             balance -= rule.getRuleParam().getParamManagementCost();//支付行政管理费
-            operateFinancialStatementService.write("managementCost", rule.getRuleParam().getParamManagementCost(), runningState);
+            operateFinancialStatementService.write("managementCost", operateFinancialStatementService.read("managementCost", runningState) + rule.getRuleParam().getParamManagementCost(), runningState);
         }
 
         List<FactoryState> factoryStateList = runningState.getFactoryStateList();
@@ -1289,16 +1268,33 @@ public class RunningOperate {
                     rentPrice = ruleFactory.getFactory5RentPrice();
                 }
                 if(rentPrice > balance){
-                    runningState.getBaseState().setMsg("现金不足");
+                    runningState.getBaseState().setMsg("现金不足 ");
                     return runningState;
                 }else {
                     balance -= rentPrice;   //支付续租费用
                     factoryState.setFinalPaymentYear(runningState.getBaseState().getTimeYear());
-                    operateFinancialStatementService.write("factoryRent", rentPrice, runningState);
+                    operateFinancialStatementService.write("factoryRent", operateFinancialStatementService.read("factoryRent", runningState) + rentPrice, runningState);
                 }
             }
 
         }
+        List<OrderState> orderStateList = runningState.getMarketingState().getOrderStateList();
+        Iterator<OrderState> orderStateIterator = orderStateList.iterator();
+        Integer timeYear = runningState.getBaseState().getTimeYear();
+        Integer timeQuarter = runningState.getBaseState().getTimeQuarter();
+        while (orderStateIterator.hasNext()){
+            OrderState orderState = orderStateIterator.next();
+            if((orderState.getYear() == timeYear) && (orderState.getDeliveryTime() == timeQuarter)){
+                if(orderState.getExecution() == 0){
+                    orderState.setExecution(2); //设置该订单为违约
+                    Integer lostCost = (int)Math.round (rule.getRuleParam().getParamPenatly() * orderState.getTotalPrice());
+                    operateFinancialStatementService.write("lostCost", operateFinancialStatementService.read("lostCost", runningState) + lostCost, runningState);
+                }
+            }
+
+        }
+
+
         runningState.getFinanceState().setCashAmount(balance);
         runningState.getBaseState().setMsg(""); //清空MSG
         return runningState;
@@ -1362,7 +1358,7 @@ public class RunningOperate {
                 }
                 if(devType == 2){
                     devInvest = ruleMarket.getMarket2UnitInvest();
-                    devTime = ruleMarket.getMarket3DevTime();
+                    devTime = ruleMarket.getMarket2DevTime();
                 }
                 if(devType == 3){
                     devInvest = ruleMarket.getMarket2UnitInvest();
@@ -1498,39 +1494,346 @@ public class RunningOperate {
             runningState.getBaseState().setMsg("现金不足");
         }else {
             balance -= rule.getRuleParam().getParamManagementCost();//支付行政管理费
-            operateFinancialStatementService.write("managementCost", rule.getRuleParam().getParamManagementCost(), runningState);
+            System.out.println("节点测试，前置管理费 年末检测值：" + operateFinancialStatementService.read("managementCost", runningState));
+            operateFinancialStatementService.write("managementCost", operateFinancialStatementService.read("managementCost", runningState) + rule.getRuleParam().getParamManagementCost(), runningState);
+            System.out.println("节点测试，后置管理费 年末检测值：" + operateFinancialStatementService.read("managementCost", runningState));
         }
 
+        Integer wipValue = 0;   //在制品价值
+
         List<FactoryState> factoryStateList = runningState.getFactoryStateList();
+        Integer factoryValue = 0;   //厂房价值
+        Integer equipmentValue = 0; //机器设备价值
+        Integer constructionInProgressValue = 0;    //在建工程
+        Integer upkeepCost = 0;     //维护费
         for (FactoryState factoryState : factoryStateList){
-            if((factoryState.getFinalPaymentYear() != runningState.getBaseState().getTimeYear()) && (factoryState.getFinanPaymentQuarter() == runningState.getBaseState().getTimeQuarter())){
-                Integer rentPrice = 0;
-                if(factoryState.getType() == 1){
-                    rentPrice = ruleFactory.getFactory1RentPrice();
+            if (factoryState.getOwningState() == 0){
+                //对租赁状态的厂房进行续租检查
+                if((factoryState.getFinalPaymentYear() != runningState.getBaseState().getTimeYear()) && (factoryState.getFinanPaymentQuarter() == runningState.getBaseState().getTimeQuarter())){
+                    Integer rentPrice = 0;
+                    if(factoryState.getType() == 1){
+                        rentPrice = ruleFactory.getFactory1RentPrice();
+                    }
+                    if(factoryState.getType() == 2){
+                        rentPrice = ruleFactory.getFactory2RentPrice();
+                    }
+                    if(factoryState.getType() == 3){
+                        rentPrice = ruleFactory.getFactory3RentPrice();
+                    }
+                    if(factoryState.getType() == 4){
+                        rentPrice = ruleFactory.getFactory4RentPrice();
+                    }
+                    if(factoryState.getType() == 5){
+                        rentPrice = ruleFactory.getFactory5RentPrice();
+                    }
+                    if(rentPrice > balance){
+                        runningState.getBaseState().setMsg("现金不足");
+                        return runningState;
+                    }else {
+                        balance -= rentPrice;   //支付续租费用
+                        factoryState.setFinalPaymentYear(runningState.getBaseState().getTimeYear());
+                        operateFinancialStatementService.write("factoryRent", operateFinancialStatementService.read("factoryRent", runningState) + rentPrice, runningState);
+                    }
                 }
-                if(factoryState.getType() == 2){
-                    rentPrice = ruleFactory.getFactory2RentPrice();
+            }else {
+                //对购买状态的厂房进行价值统计
+                if (factoryState.getType() == 1){
+                    factoryValue += ruleFactory.getFactory1BuyPrice();
                 }
-                if(factoryState.getType() == 3){
-                    rentPrice = ruleFactory.getFactory3RentPrice();
+                if (factoryState.getType() == 2){
+                    factoryValue += ruleFactory.getFactory2BuyPrice();
                 }
-                if(factoryState.getType() == 4){
-                    rentPrice = ruleFactory.getFactory4RentPrice();
+                if (factoryState.getType() == 3){
+                    factoryValue += ruleFactory.getFactory3BuyPrice();
                 }
-                if(factoryState.getType() == 5){
-                    rentPrice = ruleFactory.getFactory5RentPrice();
+                if (factoryState.getType() == 4){
+                    factoryValue += ruleFactory.getFactory4BuyPrice();
                 }
-                if(rentPrice > balance){
-                    runningState.getBaseState().setMsg("现金不足");
-                    return runningState;
-                }else {
-                    balance -= rentPrice;   //支付续租费用
-                    factoryState.setFinalPaymentYear(runningState.getBaseState().getTimeYear());
-                    operateFinancialStatementService.write("factoryRent", rentPrice, runningState);
+                if (factoryState.getType() == 5){
+                    factoryValue += ruleFactory.getFactory5BuyPrice();
                 }
             }
 
+
+
+            List<LineState> lineStateList = factoryState.getLineStateList();
+            for(LineState lineState : lineStateList){
+                Integer depreciation = 0;
+                if(lineState.getType() == 1){
+                    upkeepCost += rule.getRuleLine().getLine1Upkeep();
+                    if (lineState.getOwningState() > 0){
+                        equipmentValue += lineState.getValue();
+                    }else {
+                        constructionInProgressValue += lineState.getValue();
+                    }
+                    if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine1DepreTime()))){
+                        depreciation = rule.getRuleLine().getLine1Depreciation();
+                        lineState.setValue(lineState.getValue() - depreciation);
+                        operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
+                    }
+                }
+                if(lineState.getType() == 2){
+                    upkeepCost += rule.getRuleLine().getLine2Upkeep();
+                    if (lineState.getOwningState() > 0){
+                        equipmentValue += lineState.getValue();
+                    }else {
+                        constructionInProgressValue += lineState.getValue();
+                    }
+                    if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine2DepreTime()))){
+                        depreciation = rule.getRuleLine().getLine2Depreciation();
+                        lineState.setValue(lineState.getValue() - depreciation);
+                        operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
+                    }
+                }
+                if(lineState.getType() == 3){
+                    upkeepCost += rule.getRuleLine().getLine3Upkeep();
+                    if (lineState.getOwningState() > 0){
+                        equipmentValue += lineState.getValue();
+                    }else {
+                        constructionInProgressValue += lineState.getValue();
+                    }
+                    if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine3DepreTime()))){
+                        depreciation = rule.getRuleLine().getLine3Depreciation();
+                        lineState.setValue(lineState.getValue() - depreciation);
+                        operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
+                    }
+                }
+                if(lineState.getType() == 4){
+                    upkeepCost += rule.getRuleLine().getLine4Upkeep();
+                    if (lineState.getOwningState() > 0){
+                        equipmentValue += lineState.getValue();
+                    }else {
+                        constructionInProgressValue += lineState.getValue();
+                    }
+                    if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine4DepreTime()))){
+                        depreciation = rule.getRuleLine().getLine4Depreciation();
+                        lineState.setValue(lineState.getValue() - depreciation);
+                        operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
+                    }
+                }
+                if(lineState.getType() == 5){
+                    upkeepCost += rule.getRuleLine().getLine5Upkeep();
+                    if (lineState.getOwningState() > 0){
+                        equipmentValue += lineState.getValue();
+                    }else {
+                        constructionInProgressValue += lineState.getValue();
+                    }
+                    if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine5DepreTime()))){
+                        depreciation = rule.getRuleLine().getLine5Depreciation();
+                        lineState.setValue(lineState.getValue() - depreciation);
+                        operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
+                    }
+                }
+                if(lineState.getOwningState() > 0 && lineState.getProduceState() > 0){
+                    if (lineState.getProductType() == 1){
+                        wipValue += rule.getRuleProduct().getProduct1FinalCost();
+                    }
+                    if (lineState.getProductType() == 2){
+                        wipValue += rule.getRuleProduct().getProduct2FinalCost();
+                    }
+                    if (lineState.getProductType() == 3){
+                        wipValue += rule.getRuleProduct().getProduct3FinalCost();
+                    }
+                    if (lineState.getProductType() == 4){
+                        wipValue += rule.getRuleProduct().getProduct4FinalCost();
+                    }
+                    if (lineState.getProductType() == 5){
+                        wipValue += rule.getRuleProduct().getProduct5FinalCost();
+                    }
+                }
+            }
         }
+        if (upkeepCost > balance){
+            runningState.getBaseState().setMsg("现金不足");
+            return runningState;
+        }else {
+            balance -= upkeepCost;  //一次性扣缴设备维护费
+            operateFinancialStatementService.write("upkeepCost", upkeepCost, runningState);
+        }
+
+        List<OrderState> orderStateList = runningState.getMarketingState().getOrderStateList();
+        Iterator<OrderState> orderStateIterator = orderStateList.iterator();
+        Integer timeYear = runningState.getBaseState().getTimeYear();
+        Integer timeQuarter = runningState.getBaseState().getTimeQuarter();
+        while (orderStateIterator.hasNext()){
+            OrderState orderState = orderStateIterator.next();
+            if((orderState.getYear() == timeYear) && (orderState.getDeliveryTime() == timeQuarter)){
+                if(orderState.getExecution() == 0){
+                    System.out.println("年末记录订单违约");
+                    orderState.setExecution(2); //设置该订单为违约
+                    Integer lostCost = (int)Math.round (rule.getRuleParam().getParamPenatly() * orderState.getTotalPrice());
+                    operateFinancialStatementService.write("lostCost", operateFinancialStatementService.read("lostCost", runningState) + lostCost, runningState);
+                }
+            }
+        }
+        Integer lostCost = operateFinancialStatementService.read("lostCost", runningState);
+        if(lostCost > balance){
+            runningState.getBaseState().setMsg("现金不足");
+            return runningState;
+        }else {
+            balance -= lostCost;    //一次性扣缴违约金
+        }
+
+        //财务报表汇总计算
+        operateFinancialStatementService.write("omnibusCost",
+                operateFinancialStatementService.read("managementCost", runningState) +
+                        operateFinancialStatementService.read("advertisingCost", runningState) +
+                        operateFinancialStatementService.read("upkeepCost", runningState) +
+                        operateFinancialStatementService.read("lostCost", runningState) +
+                        operateFinancialStatementService.read("transferCost", runningState) +
+                        operateFinancialStatementService.read("factoryRent", runningState) +
+                        operateFinancialStatementService.read("marketDevCost", runningState) +
+                        operateFinancialStatementService.read("isoDevCost", runningState) +
+                        operateFinancialStatementService.read("productDevCost", runningState) +
+                        operateFinancialStatementService.read("infomationCost", runningState),
+                runningState);      //综合费用合计
+        System.out.println("测试节点，综合费用：" + operateFinancialStatementService.read("omnibusCost", runningState));
+
+        operateFinancialStatementService.write("profitBeforeDepreciation",
+                operateFinancialStatementService.read("grossProfit",runningState) - operateFinancialStatementService.read("omnibusCost", runningState),
+                runningState);      //折旧前利润
+        operateFinancialStatementService.write("profitBeforeIntetest",
+                operateFinancialStatementService.read("profitBeforeDepreciation", runningState) - operateFinancialStatementService.read("depreciation", runningState),
+                runningState);      //利前利润
+        operateFinancialStatementService.write("profitBeforeTax",
+                operateFinancialStatementService.read("profitBeforeIntetest", runningState) - operateFinancialStatementService.read("financialCost", runningState),
+                runningState);      //税前利润
+
+        Integer incomeTax = 0;  //所得税计算
+        if(timeYear > 1){
+            if((operateFinancialStatementService.read("profitBeforeTax", runningState) + operateFinancialStatementService.readWithTime(timeYear -1, "ownersEquity", runningState)) > rule.getRuleParam().getParamInitialCash()){
+                incomeTax = (int)Math.round(operateFinancialStatementService.read("profitBeforeTax", runningState) * rule.getRuleParam().getParamTaxRate());
+                operateFinancialStatementService.write("incomeTax", incomeTax, runningState);
+            }
+        }else {
+            if(operateFinancialStatementService.read("profitBeforeTax", runningState) > rule.getRuleParam().getParamInitialCash()){
+                incomeTax = (int)Math.round(operateFinancialStatementService.read("profitBeforeTax", runningState) * rule.getRuleParam().getParamTaxRate());
+                operateFinancialStatementService.write("incomeTax", incomeTax, runningState);
+            }
+        }
+        operateFinancialStatementService.write("netProfit",
+                operateFinancialStatementService.read("profitBeforeTax", runningState) - operateFinancialStatementService.read("incomeTax", runningState),
+                runningState);      //净利润
+
+        operateFinancialStatementService.write("cashAmount", runningState.getFinanceState().getCashAmount(), runningState); //流动资产 - 现金
+
+        Integer receivableTotal = 0;
+        List<ReceivableState> receivableStateList = runningState.getFinanceState().getReceivableStateList();
+        for(ReceivableState receivableState : receivableStateList){
+            if(receivableState.getAmounts() > 0){
+                receivableTotal += receivableState.getAmounts();
+            }
+        }
+        operateFinancialStatementService.write("receivableTotal", receivableTotal, runningState);   //流动资产 - 应收款
+        operateFinancialStatementService.write("wipValue", wipValue, runningState);     //流动资产 - 在制品
+
+        Integer finishedProductValue = 0;
+        List<ProductState> productStateList = runningState.getStockState().getProductStateList();
+        for(ProductState productState : productStateList){
+            if(productState.getQuantity() > 0){
+                if (productState.getType() == 1){
+                    finishedProductValue += productState.getQuantity() * rule.getRuleProduct().getProduct1FinalCost();
+                }
+                if (productState.getType() == 2){
+                    finishedProductValue += productState.getQuantity() * rule.getRuleProduct().getProduct2FinalCost();
+                }
+                if (productState.getType() == 3){
+                    finishedProductValue += productState.getQuantity() * rule.getRuleProduct().getProduct3FinalCost();
+                }
+                if (productState.getType() == 4){
+                    finishedProductValue += productState.getQuantity() * rule.getRuleProduct().getProduct4FinalCost();
+                }
+                if (productState.getType() == 5){
+                    finishedProductValue += productState.getQuantity() * rule.getRuleProduct().getProduct5FinalCost();
+                }
+            }
+        }
+        operateFinancialStatementService.write("finishedProductValue", finishedProductValue, runningState);     //流动资产 - 产成品
+
+        Integer materialVaule = 0;
+        List<MaterialState> materialStateList = runningState.getStockState().getMaterialStateList();
+        for (MaterialState materialState : materialStateList){
+            if(materialState.getQuantity() > 0){
+                if (materialState.getType() == 1){
+                    materialVaule += materialState.getQuantity() * rule.getRuleMaterial().getMaterial1Price();
+                }
+                if (materialState.getType() == 2){
+                    materialVaule += materialState.getQuantity() * rule.getRuleMaterial().getMaterial2Price();
+                }
+                if (materialState.getType() == 3){
+                    materialVaule += materialState.getQuantity() * rule.getRuleMaterial().getMaterial3Price();
+                }
+                if (materialState.getType() == 4){
+                    materialVaule += materialState.getQuantity() * rule.getRuleMaterial().getMaterial4Price();
+                }
+                if (materialState.getType() == 5){
+                    materialVaule += materialState.getQuantity() * rule.getRuleMaterial().getMaterial5Price();
+                }
+            }
+        }
+        operateFinancialStatementService.write("materialVaule", materialVaule, runningState);       //流动资产 - 原材料
+
+        operateFinancialStatementService.write("currentAssets",
+                operateFinancialStatementService.read("cashAmount", runningState) +
+                        operateFinancialStatementService.read("receivableTotal", runningState) +
+                        operateFinancialStatementService.read("wipValue", runningState) +
+                        operateFinancialStatementService.read("finishedProductValue", runningState) +
+                        operateFinancialStatementService.read("materialVaule", runningState),
+                runningState);      //流动资产合计
+
+        operateFinancialStatementService.write("factoryValue", factoryValue, runningState);     //固定资产 - 厂房
+        operateFinancialStatementService.write("equipmentValue", equipmentValue, runningState);     //固定资产 - 机器设备
+        operateFinancialStatementService.write("constructionInProgressValue", constructionInProgressValue, runningState);     //固定资产 - 在建工程
+        operateFinancialStatementService.write("fixedAssets",
+                operateFinancialStatementService.read("factoryValue", runningState) +
+                        operateFinancialStatementService.read("equipmentValue", runningState) +
+                        operateFinancialStatementService.read("constructionInProgressValue", runningState),
+                runningState);      //固定资产合计
+
+        operateFinancialStatementService.write("assetsTotal",
+                operateFinancialStatementService.read("currentAssets", runningState) +
+                        operateFinancialStatementService.read("fixedAssets", runningState),
+                runningState);      //资产合计
+
+        Integer longTermDebt = 0;
+        Integer shrotTermDebt = 0;
+        List<DebtState> debtStateList = runningState.getFinanceState().getDebtStateList();
+        for (DebtState debtState : debtStateList){
+            if (debtState.getDebtType() == 1){
+                shrotTermDebt += debtState.getAmounts();
+            }
+            if (debtState.getDebtType() == 2){
+                longTermDebt += debtState.getAmounts();
+            }
+        }
+        operateFinancialStatementService.write("longTermDebt", longTermDebt, runningState);     //负债 - 长期负债
+        operateFinancialStatementService.write("shrotTermDebt", shrotTermDebt, runningState);     //负债 - 短期负债
+        operateFinancialStatementService.write("duesTotal", 0, runningState);     //负债 - 应付款
+        operateFinancialStatementService.write("debtTotal",
+                operateFinancialStatementService.read("longTermDebt", runningState) +
+                        operateFinancialStatementService.read("shrotTermDebt", runningState) +
+                        operateFinancialStatementService.read("duesTotal", runningState),
+                runningState);      //负债合计
+
+        if (timeYear == 1){
+            operateFinancialStatementService.write("profitRetention", 0, runningState); //权益 - 利润留存
+        }else {
+            operateFinancialStatementService.write("profitRetention",
+                    operateFinancialStatementService.readWithTime(timeYear - 1, "profitRetention", runningState) +
+                            operateFinancialStatementService.readWithTime(timeYear - 1, "netProfit", runningState),
+                    runningState);
+        }
+        operateFinancialStatementService.write("ownersEquity",
+                operateFinancialStatementService.read("equityCapital", runningState) +
+                        operateFinancialStatementService.read("profitRetention", runningState) +
+                        operateFinancialStatementService.read("netProfit", runningState),
+                runningState);      //权益合计
+
+        operateFinancialStatementService.write("debtTotalAndOwnersEquity",
+                operateFinancialStatementService.read("debtTotal", runningState) +
+                        operateFinancialStatementService.read("ownersEquity", runningState),
+                runningState);      //负债权益合计
+
         runningState.getFinanceState().setCashAmount(balance);
         runningState.getBaseState().setMsg(""); //清空MSG
         return runningState;
@@ -1619,12 +1922,12 @@ public class RunningOperate {
 
         List<OrderState> orderStateList = runningState.getMarketingState().getOrderStateList();
         OrderState orderState1 = new OrderState();
-        orderState1.setAccountPeriod(1);
+        orderState1.setAccountPeriod(3);
         orderState1.setArea(1);
-        orderState1.setDeliveryTime(3);
+        orderState1.setDeliveryTime(1);
         orderState1.setExecution(0);
-        orderState1.setOrderId(1);
-        orderState1.setOwner("XY1");
+        orderState1.setOrderId(10 + runningState.getBaseState().getTimeYear());
+        orderState1.setOwner("OWNER");
         orderState1.setQualificate(0);
         orderState1.setTotalPrice(50);
         orderState1.setTypeId(1);
@@ -1632,6 +1935,36 @@ public class RunningOperate {
         orderState1.setUnitPrice(50);
         orderState1.setYear(1);
         orderStateList.add(orderState1);
+
+        OrderState orderState2 = new OrderState();
+        orderState2.setAccountPeriod(1);
+        orderState2.setArea(1);
+        orderState2.setDeliveryTime(2);
+        orderState2.setExecution(0);
+        orderState2.setOrderId(20 + runningState.getBaseState().getTimeYear());
+        orderState2.setOwner("OWNER");
+        orderState2.setQualificate(0);
+        orderState2.setTotalPrice(70);
+        orderState2.setTypeId(2);
+        orderState2.setQuantity(1);
+        orderState2.setUnitPrice(70);
+        orderState2.setYear(1);
+        orderStateList.add(orderState2);
+
+        OrderState orderState3 = new OrderState();
+        orderState3.setAccountPeriod(1);
+        orderState3.setArea(1);
+        orderState3.setDeliveryTime(2);
+        orderState3.setExecution(0);
+        orderState3.setOrderId(30 + runningState.getBaseState().getTimeYear());
+        orderState3.setOwner("OWNER");
+        orderState3.setQualificate(0);
+        orderState3.setTotalPrice(96);
+        orderState3.setTypeId(1);
+        orderState3.setQuantity(2);
+        orderState3.setUnitPrice(48);
+        orderState3.setYear(1);
+        orderStateList.add(orderState3);
 
         return runningState;
     }
