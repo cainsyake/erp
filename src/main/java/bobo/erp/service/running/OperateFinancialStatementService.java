@@ -2,6 +2,8 @@ package bobo.erp.service.running;
 
 import bobo.erp.domain.state.RunningState;
 import bobo.erp.domain.state.finance.FinancialStatement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,10 +15,13 @@ import java.util.List;
  */
 @Service
 public class OperateFinancialStatementService {
+    private Logger logger = LoggerFactory.getLogger(OperateFinancialStatementService.class);
+
     @Transactional
     public RunningState write(String attribute, Integer value, RunningState runningState){
         //根据runningState中的年份查表
         Integer year = runningState.getBaseState().getTimeYear();
+//        logger.info("第 {}年报表写入,科目：{},金额:{}", year, attribute, value);
         List<FinancialStatement> financialStatementList = runningState.getFinanceState().getFinancialStatementList();
         Iterator<FinancialStatement> financialStatementIterator = financialStatementList.iterator();
         while (financialStatementIterator.hasNext()){
@@ -59,10 +64,10 @@ public class OperateFinancialStatementService {
                     case "omnibusCost":
                         financialStatement.setOmnibusCost(value);
                         break;
-                    case "salesIncome ":
+                    case "salesIncome":
                         financialStatement.setSalesIncome (value);
                         break;
-                    case "directCost ":
+                    case "directCost":
                         financialStatement.setDirectCost (value);
                         break;
                     case "grossProfit":
@@ -122,10 +127,10 @@ public class OperateFinancialStatementService {
                     case "assetsTotal":
                         financialStatement.setAssetsTotal(value);
                         break;
-                    case "LongTermDebt":
+                    case "longTermDebt":
                         financialStatement.setLongTermDebt(value);
                         break;
-                    case "ShortTermDebt":
+                    case "shortTermDebt":
                         financialStatement.setShortTermDebt(value);
                         break;
                     case "duesTotal":
@@ -147,6 +152,7 @@ public class OperateFinancialStatementService {
                         financialStatement.setDebtTotalAndOwnersEquity(value);
                         break;
                     default:
+                        logger.error("没有找到科目:{},请检查入口参数", attribute);
                         break;
                 }
             }
@@ -158,6 +164,7 @@ public class OperateFinancialStatementService {
     public Integer read(String attribute, RunningState runningState){
         //根据runningState中的年份查表
         Integer year = runningState.getBaseState().getTimeYear();
+//        logger.info("第 {}年报表读取,科目：{}", year, attribute);
         List<FinancialStatement> financialStatementList = runningState.getFinanceState().getFinancialStatementList();
         Iterator<FinancialStatement> financialStatementIterator = financialStatementList.iterator();
         Integer result = 0;
@@ -212,11 +219,11 @@ public class OperateFinancialStatementService {
                         result = financialStatement.getOmnibusCost();
                         break;
 
-                    case "salesIncome ":
+                    case "salesIncome":
                         result = financialStatement.getSalesIncome ();
                         break;
 
-                    case "directCost ":
+                    case "directCost":
                         result = financialStatement.getDirectCost ();
                         break;
 
@@ -296,11 +303,11 @@ public class OperateFinancialStatementService {
                         result = financialStatement.getAssetsTotal();
                         break;
 
-                    case "LongTermDebt":
+                    case "longTermDebt":
                         result = financialStatement.getLongTermDebt();
                         break;
 
-                    case "ShortTermDebt":
+                    case "shortTermDebt":
                         result = financialStatement.getShortTermDebt();
                         break;
 
@@ -385,10 +392,10 @@ public class OperateFinancialStatementService {
                     case "omnibusCost":
                         financialStatement.setOmnibusCost(value);
                         break;
-                    case "salesIncome ":
+                    case "salesIncome":
                         financialStatement.setSalesIncome (value);
                         break;
-                    case "directCost ":
+                    case "directCost":
                         financialStatement.setDirectCost (value);
                         break;
                     case "grossProfit":
@@ -448,10 +455,10 @@ public class OperateFinancialStatementService {
                     case "assetsTotal":
                         financialStatement.setAssetsTotal(value);
                         break;
-                    case "LongTermDebt":
+                    case "longTermDebt":
                         financialStatement.setLongTermDebt(value);
                         break;
-                    case "ShortTermDebt":
+                    case "shortTermDebt":
                         financialStatement.setShortTermDebt(value);
                         break;
                     case "duesTotal":
@@ -537,11 +544,11 @@ public class OperateFinancialStatementService {
                         result = financialStatement.getOmnibusCost();
                         break;
 
-                    case "salesIncome ":
+                    case "salesIncome":
                         result = financialStatement.getSalesIncome ();
                         break;
 
-                    case "directCost ":
+                    case "directCost":
                         result = financialStatement.getDirectCost ();
                         break;
 
@@ -621,11 +628,11 @@ public class OperateFinancialStatementService {
                         result = financialStatement.getAssetsTotal();
                         break;
 
-                    case "LongTermDebt":
+                    case "longTermDebt":
                         result = financialStatement.getLongTermDebt();
                         break;
 
-                    case "ShortTermDebt":
+                    case "shortTermDebt":
                         result = financialStatement.getShortTermDebt();
                         break;
 
