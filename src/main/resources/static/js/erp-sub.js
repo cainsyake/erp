@@ -723,11 +723,29 @@ function pageController(rule, runningState) {
     document.getElementById("longDebtForm").innerHTML = txt6;
 
     var txt7 = "";
+    var txt12 = "";
     for(var i = 1; i <= materialNum; i++){
         eval("var strName = ruleMaterial.material" + i + "Name");
+        eval("var materialEmPrice = ruleMaterial.material" + i + "Price * ruleParam.paramMaterailBuyRation");
         txt7 += "<label>" + strName + " ： </label><input type='number' min='0' placeholder='采购量' style='width:100px' id='material" + i + "AddNum' name=='material" + i + "AddNum'><br>";
+        txt12 += "<label>" + strName + " ： </label>" +
+            "<input type='number' min='0' style='width:100px' id='material" + i + "EmergencyAddNum' name=='material" + i + "EmergencyAddNum'>" +
+            "<input type='number' id='material" + i + "EmergencyPrice' name=='material" + i + "EmergencyPrice' value='" + materialEmPrice + "' style='display: none'>" +
+            "<br>";
+
+    }
+    var txt13 = "";
+    for(var i = 1; i < productNum + 1; i++){
+        eval("var strName = ruleProduct.product" + i + "Name");
+        eval("var productEmPrice = ruleProduct.product" + i + "FinalCost * ruleParam.paramProductBuyRation");
+        txt13 += "<label>" + strName + " ： </label>" +
+            "<input type='number' min='0' style='width:100px' id='product" + i + "EmergencyAddNum' name=='product" + i + "EmergencyAddNum'>" +
+            "<input type='number' id='product" + i + "EmergencyPrice' name=='product" + i + "EmergencyPrice' value='" + productEmPrice + "' style='display: none'>" +
+            "<br>";
     }
     document.getElementById("addPurchaseForm").innerHTML = txt7;
+    document.getElementById("emergencyPurchaseForm1").innerHTML = txt12;
+    document.getElementById("emergencyPurchaseForm2").innerHTML = txt13;
 
     txt8 = "<select name='factoryType'>";
     var ruleFactory = rule.ruleFactory;
@@ -1772,6 +1790,51 @@ function operateDiscount(form) {
             num = "0";
         }
         list[i-1] = num;
+    }
+    $.ajax({
+        type:"POST",
+        url:"/operateDiscount/" + nowUserName,
+        cache:false,
+        dataType:"json",
+        data :{array:list},
+        success:function (runningState) {
+            subOnLoad();
+            document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+            $("#btnCloseModalDiscount").click();
+        },
+        error:function (json) {
+            console.log(json.responseText);
+        }
+    });
+}
+
+function operateEmergencyPurchase(form1, form2) {
+    var nowUserName = $("#nowUserName").val();
+    var materialNum = form1.length;
+    var productNum = form2.length;
+    var list1 = new Array();
+    var list2 = new Array();
+    for(var i = 1; i < materialNum + 1; i++){
+        eval("var num =form1.material" + i + "EmergencyAddNum.value");
+        if(num <0){
+            alert("不能输入负数，请重新输入！");
+            return false;
+        }
+        if(num == ""){
+            num = "0";
+        }
+        list1[i-1] = num;
+    }
+    for(var i = 1; i < productNum + 1; i++){
+        eval("var num =form1.product" + i + "EmergencyAddNum.value");
+        if(num <0){
+            alert("不能输入负数，请重新输入！");
+            return false;
+        }
+        if(num == ""){
+            num = "0";
+        }
+        list2[i-1] = num;
     }
     $.ajax({
         type:"POST",

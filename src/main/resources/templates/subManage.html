@@ -103,10 +103,10 @@
         <div class="row">
           <div class="col-md-8">
             <button class="btn btn-info" data-toggle="modal" href="#modalDiscount" type="button">贴现</button>
-            <button class="btn btn-default" onclick="" type="button">商业情报</button>
-            <button class="btn btn-default" onclick="" type="button">紧急采购</button>
-            <button class="btn btn-default" onclick="" type="button">紧急出售</button>
-            <button class="btn btn-default" onclick="" type="button">厂房贴现</button>
+            <button class="btn btn-primary" data-toggle="modal" href="#" type="button">商业情报</button>
+            <button class="btn btn-warning" data-toggle="modal" href="#modalEmergencyPurchase" type="button">紧急采购</button>
+            <button class="btn btn-danger" data-toggle="modal" href="#" type="button">紧急出售</button>
+            <button class="btn btn-success" data-toggle="modal" href="#" type="button">厂房贴现</button>
             <button class="btn btn-defaule" data-toggle="modal" href="#modalReadRule" type="button" id="btnReadRule" style="display: none">查看规则</button>
             <button class="btn btn-defaule" data-toggle="modal" href="#modalReadMarket" type="button" id="btnReadMarket" style="display: none">查看市场</button>
           </div>
@@ -118,10 +118,6 @@
               <div class="panel-body" id="ajaxDiv1">
               </div>
             </div>
-            <!--<button class="btn btn-primary" onclick="ajaxDivShow(2)" type="button">打开查询窗</button>-->
-            <!--<button class="btn btn-danger" onclick="ajaxDivHide(2)" type="button">关闭查询窗</button>-->
-            <!--<button class="btn btn-info" onclick="ajaxDivShow(3)" type="button">打开编辑窗</button>-->
-            <!--<button class="btn btn-warning" onclick="ajaxDivHide(3)" type="button">关闭编辑窗</button>-->
           </div>
         </div>
       </div>
@@ -965,6 +961,32 @@
           <div class="modal-footer">
             <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
             <button class="btn btn-success" type="button" onclick="operateDiscount(document.discountForm)">确认</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="modalEmergencyPurchase" class="modal fade">
+      <div class="modal-dialog" style="width:350px">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalEmergencyPurchase">&times;</button>
+            <h4 class="modal-title" style="text-align:center">紧 急 采 购</h4>
+          </div>
+          <div class="modal-body">
+            <div style="margin-left: 25%;margin-right: 25%">
+              <form action="#" method="post" name="emergencyPurchaseForm1" id="emergencyPurchaseForm1">
+              </form>
+            </div>
+            <hr>
+            <div style="margin-left: 25%;margin-right: 25%">
+              <form action="#" method="post" name="emergencyPurchaseForm2" id="emergencyPurchaseForm2">
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button data-dismiss="modal" class="btn btn-default" type="button">取消</button>
+            <button class="btn btn-success" type="button" onclick="operateEmergencyPurchase(document.emergencyPurchaseForm1, document.emergencyPurchaseForm2)">采购</button>
           </div>
         </div>
       </div>

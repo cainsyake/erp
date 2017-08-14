@@ -1103,8 +1103,7 @@ public class RunningOperate {
             if (runningState.getBaseState().getMsg().isEmpty()){
                 balance -= productCost;
                 //设置生产线生产状态
-                while (factoryStateIterator.hasNext()){
-                    FactoryState factoryState = factoryStateIterator.next();
+                for (FactoryState factoryState : factoryStateList){
                     if(factoryState.getContent() != 0){
                         List<LineState> lineStateList = factoryState.getLineStateList();
                         Iterator<LineState> lineStateIterator = lineStateList.iterator();
@@ -1874,7 +1873,9 @@ public class RunningOperate {
             for(LineState lineState : lineStateList){
                 Integer depreciation = 0;
                 if(lineState.getType() == 1){
-                    upkeepCost += rule.getRuleLine().getLine1Upkeep();
+                    if (lineState.getOwningState() > 0){
+                        upkeepCost += rule.getRuleLine().getLine1Upkeep();
+                    }
                     if (lineState.getOwningState() > 0){
                         equipmentValue += lineState.getValue();
                     }else {
@@ -1887,7 +1888,9 @@ public class RunningOperate {
                     }
                 }
                 if(lineState.getType() == 2){
-                    upkeepCost += rule.getRuleLine().getLine2Upkeep();
+                    if (lineState.getOwningState() > 0){
+                        upkeepCost += rule.getRuleLine().getLine2Upkeep();
+                    }
                     if (lineState.getOwningState() > 0){
                         equipmentValue += lineState.getValue();
                     }else {
@@ -1900,7 +1903,9 @@ public class RunningOperate {
                     }
                 }
                 if(lineState.getType() == 3){
-                    upkeepCost += rule.getRuleLine().getLine3Upkeep();
+                    if (lineState.getOwningState() > 0){
+                        upkeepCost += rule.getRuleLine().getLine3Upkeep();
+                    }
                     if (lineState.getOwningState() > 0){
                         equipmentValue += lineState.getValue();
                     }else {
@@ -1913,7 +1918,9 @@ public class RunningOperate {
                     }
                 }
                 if(lineState.getType() == 4){
-                    upkeepCost += rule.getRuleLine().getLine4Upkeep();
+                    if (lineState.getOwningState() > 0){
+                        upkeepCost += rule.getRuleLine().getLine4Upkeep();
+                    }
                     if (lineState.getOwningState() > 0){
                         equipmentValue += lineState.getValue();
                     }else {
@@ -1926,7 +1933,9 @@ public class RunningOperate {
                     }
                 }
                 if(lineState.getType() == 5){
-                    upkeepCost += rule.getRuleLine().getLine5Upkeep();
+                    if (lineState.getOwningState() > 0){
+                        upkeepCost += rule.getRuleLine().getLine5Upkeep();
+                    }
                     if (lineState.getOwningState() > 0){
                         equipmentValue += lineState.getValue();
                     }else {
@@ -2053,7 +2062,7 @@ public class RunningOperate {
                 operateFinancialStatementService.read("profitBeforeTax", runningState) - operateFinancialStatementService.read("incomeTax", runningState),
                 runningState);      //净利润
 
-        operateFinancialStatementService.write("cashAmount", runningState.getFinanceState().getCashAmount(), runningState); //流动资产 - 现金
+        operateFinancialStatementService.write("cashAmount", balance, runningState); //流动资产 - 现金
 
         Integer receivableTotal = 0;
         List<ReceivableState> receivableStateList = runningState.getFinanceState().getReceivableStateList();
@@ -2266,7 +2275,7 @@ public class RunningOperate {
     }
 
     @Transactional
-    public RunningState decuction(List<Integer> mixMaterialList, List<Integer> mixProductList, RunningState runningState){
+    public RunningState decuction(List<Integer> reduceMaterialList, List<Integer> reduceProductList, RunningState runningState){
         runningState.getBaseState().setMsg("");
         List<MaterialState> materialStateList = runningState.getStockState().getMaterialStateList();
         List<ProductState> productStateList = runningState.getStockState().getProductStateList();
@@ -2275,28 +2284,43 @@ public class RunningOperate {
         //检查是否有足够库存
         for (MaterialState materialState : materialStateList){
             int type = materialState.getType();
-            if (mixMaterialList.get(type - 1) > materialState.getQuantity()){
+            if (reduceMaterialList.get(type - 1) > materialState.getQuantity()){
                 check = 1;
             }
         }
         for (ProductState productState : productStateList){
             int type = productState.getType();
-            if (mixProductList.get(type - 1) > productState.getQuantity()){
+            if (reduceProductList.get(type - 1) > productState.getQuantity()){
                 check = 1;
             }
         }
         if (check != 0){
-            runningState.getBaseState().setMsg("原料不足");
+            runningState.getBaseState().setMsg("原料或产品不足");
             return runningState;
         }else {
             for (MaterialState materialState : materialStateList){
                 int type = materialState.getType();
-                materialState.setQuantity(materialState.getQuantity() - mixMaterialList.get(type - 1));
+                materialState.setQuantity(materialState.getQuantity() - reduceMaterialList.get(type - 1));
             }
             for (ProductState productState : productStateList){
                 int type = productState.getType();
-                productState.setQuantity(productState.getQuantity() - mixProductList.get(type - 1));
+                productState.setQuantity(productState.getQuantity() - reduceProductList.get(type - 1));
             }
+        }
+        return runningState;
+    }
+
+    @Transactional
+    public RunningState addition(List<Integer> addMaterialList, List<Integer> addProductList, RunningState runningState){
+        List<MaterialState> materialStateList = runningState.getStockState().getMaterialStateList();
+        List<ProductState> productStateList = runningState.getStockState().getProductStateList();
+        for (MaterialState materialState : materialStateList){
+            int type = materialState.getType();
+            materialState.setQuantity(materialState.getQuantity() + addMaterialList.get(type - 1));
+        }
+        for (ProductState productState : productStateList){
+            int type = productState.getType();
+            productState.setQuantity(productState.getQuantity() + addProductList.get(type - 1));
         }
         return runningState;
     }
