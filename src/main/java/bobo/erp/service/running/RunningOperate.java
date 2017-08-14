@@ -779,6 +779,7 @@ public class RunningOperate {
         Integer balance = runningState.getFinanceState().getCashAmount();
         RuleLine ruleLine = rule.getRuleLine();
         RuleProduct ruleProduct = rule.getRuleProduct();
+        RuleProductMix ruleProductMix = rule.getRuleProductMix();
         List<ProductDevState> productDevStateList = runningState.getDevState().getProductDevStateList();
         int arrayLength = arrays.length;
         List<Integer> list = new ArrayList<Integer>();
@@ -787,6 +788,15 @@ public class RunningOperate {
         }
         List<FactoryState> factoryStateList = runningState.getFactoryStateList();
         Iterator<FactoryState> factoryStateIterator = factoryStateList.iterator();
+
+        List<Integer> mixMaterialList = new ArrayList<Integer>();
+        List<Integer> mixProductList = new ArrayList<Integer>();
+        for (int i = 0; i < 5; i++){
+            mixMaterialList.add(0);
+            mixProductList.add(0);
+        }
+        Integer productCost = 0;
+
         while (factoryStateIterator.hasNext()){
             FactoryState factoryState = factoryStateIterator.next();
             if(factoryState.getContent() != 0){
@@ -799,47 +809,171 @@ public class RunningOperate {
                         Iterator<Integer> iterator = list.iterator();
                         while (iterator.hasNext()){
                             Integer tempid = iterator.next();
-                            Integer produceTime = 0;
-                            Integer devState = 0;
-                            if (lineId == tempid){
-                                if(lineState.getType() == 1){
-                                    produceTime = ruleLine.getLine1ProduceTime();
-                                }
-                                if(lineState.getType() == 2){
-                                    produceTime = ruleLine.getLine2ProduceTime();
-                                }
-                                if(lineState.getType() == 3){
-                                    produceTime = ruleLine.getLine3ProduceTime();
-                                }
-                                if(lineState.getType() == 4){
-                                    produceTime = ruleLine.getLine4ProduceTime();
-                                }
-                                if(lineState.getType() == 5){
-                                    produceTime = ruleLine.getLine5ProduceTime();
-                                }
+                            if (lineId.intValue() == tempid.intValue()){
                                 if(lineState.getProductType() == 1){
-                                    balance -= ruleProduct.getProduct1ProcCost();
+                                    productCost += ruleProduct.getProduct1ProcCost();
+                                    if (ruleProductMix.getProduct1MixR1() != null){
+                                        mixMaterialList.set(0, mixMaterialList.get(0) + ruleProductMix.getProduct1MixR1());
+                                    }
+                                    if (ruleProductMix.getProduct1MixR2() != null){
+                                        mixMaterialList.set(1, mixMaterialList.get(1) + ruleProductMix.getProduct1MixR2());
+                                    }
+                                    if (ruleProductMix.getProduct1MixR3() != null){
+                                        mixMaterialList.set(2, mixMaterialList.get(2) + ruleProductMix.getProduct1MixR3());
+                                    }
+                                    if (ruleProductMix.getProduct1MixR4() != null){
+                                        mixMaterialList.set(3, mixMaterialList.get(3) + ruleProductMix.getProduct1MixR4());
+                                    }
+                                    if (ruleProductMix.getProduct1MixR5() != null){
+                                        mixMaterialList.set(4, mixMaterialList.get(4) + ruleProductMix.getProduct1MixR5());
+                                    }
+                                    if (ruleProductMix.getProduct1MixP1() != null){
+                                        mixProductList.set(0, mixProductList.get(0) + ruleProductMix.getProduct1MixP1());
+                                    }
+                                    if (ruleProductMix.getProduct1MixP2() != null){
+                                        mixProductList.set(1, mixProductList.get(1) + ruleProductMix.getProduct1MixP2());
+                                    }
+                                    if (ruleProductMix.getProduct1MixP3() != null){
+                                        mixProductList.set(2, mixProductList.get(2) + ruleProductMix.getProduct1MixP3());
+                                    }
+                                    if (ruleProductMix.getProduct1MixP4() != null){
+                                        mixProductList.set(3, mixProductList.get(3) + ruleProductMix.getProduct1MixP4());
+                                    }
+                                    if (ruleProductMix.getProduct1MixP5() != null){
+                                        mixProductList.set(4, mixProductList.get(4) + ruleProductMix.getProduct1MixP5());
+                                    }
                                 }
                                 if(lineState.getProductType() == 2){
-                                    balance -= ruleProduct.getProduct2ProcCost();
+                                    productCost += ruleProduct.getProduct2ProcCost();
+                                    if (ruleProductMix.getProduct2MixR1() != null){
+                                        mixMaterialList.set(0, mixMaterialList.get(0) + ruleProductMix.getProduct2MixR1());
+                                    }
+                                    if (ruleProductMix.getProduct2MixR2() != null){
+                                        mixMaterialList.set(1, mixMaterialList.get(1) + ruleProductMix.getProduct2MixR2());
+                                    }
+                                    if (ruleProductMix.getProduct2MixR3() != null){
+                                        mixMaterialList.set(2, mixMaterialList.get(2) + ruleProductMix.getProduct2MixR3());
+                                    }
+                                    if (ruleProductMix.getProduct2MixR4() != null){
+                                        mixMaterialList.set(3, mixMaterialList.get(3) + ruleProductMix.getProduct2MixR4());
+                                    }
+                                    if (ruleProductMix.getProduct2MixR5() != null){
+                                        mixMaterialList.set(4, mixMaterialList.get(4) + ruleProductMix.getProduct2MixR5());
+                                    }
+                                    if (ruleProductMix.getProduct2MixP1() != null){
+                                        mixProductList.set(0, mixProductList.get(0) + ruleProductMix.getProduct2MixP1());
+                                    }
+                                    if (ruleProductMix.getProduct2MixP2() != null){
+                                        mixProductList.set(1, mixProductList.get(1) + ruleProductMix.getProduct2MixP2());
+                                    }
+                                    if (ruleProductMix.getProduct2MixP3() != null){
+                                        mixProductList.set(2, mixProductList.get(2) + ruleProductMix.getProduct2MixP3());
+                                    }
+                                    if (ruleProductMix.getProduct2MixP4() != null){
+                                        mixProductList.set(3, mixProductList.get(3) + ruleProductMix.getProduct2MixP4());
+                                    }
+                                    if (ruleProductMix.getProduct2MixP5() != null){
+                                        mixProductList.set(4, mixProductList.get(4) + ruleProductMix.getProduct2MixP5());
+                                    }
                                 }
                                 if(lineState.getProductType() == 3){
-                                    balance -= ruleProduct.getProduct3ProcCost();
+                                    productCost += ruleProduct.getProduct3ProcCost();
+                                    if (ruleProductMix.getProduct3MixR1() != null){
+                                        mixMaterialList.set(0, mixMaterialList.get(0) + ruleProductMix.getProduct3MixR1());
+                                    }
+                                    if (ruleProductMix.getProduct3MixR2() != null){
+                                        mixMaterialList.set(1, mixMaterialList.get(1) + ruleProductMix.getProduct3MixR2());
+                                    }
+                                    if (ruleProductMix.getProduct3MixR3() != null){
+                                        mixMaterialList.set(2, mixMaterialList.get(2) + ruleProductMix.getProduct3MixR3());
+                                    }
+                                    if (ruleProductMix.getProduct3MixR4() != null){
+                                        mixMaterialList.set(3, mixMaterialList.get(3) + ruleProductMix.getProduct3MixR4());
+                                    }
+                                    if (ruleProductMix.getProduct3MixR5() != null){
+                                        mixMaterialList.set(4, mixMaterialList.get(4) + ruleProductMix.getProduct3MixR5());
+                                    }
+                                    if (ruleProductMix.getProduct3MixP1() != null){
+                                        mixProductList.set(0, mixProductList.get(0) + ruleProductMix.getProduct3MixP1());
+                                    }
+                                    if (ruleProductMix.getProduct3MixP2() != null){
+                                        mixProductList.set(1, mixProductList.get(1) + ruleProductMix.getProduct3MixP2());
+                                    }
+                                    if (ruleProductMix.getProduct3MixP3() != null){
+                                        mixProductList.set(2, mixProductList.get(2) + ruleProductMix.getProduct3MixP3());
+                                    }
+                                    if (ruleProductMix.getProduct3MixP4() != null){
+                                        mixProductList.set(3, mixProductList.get(3) + ruleProductMix.getProduct3MixP4());
+                                    }
+                                    if (ruleProductMix.getProduct3MixP5() != null){
+                                        mixProductList.set(4, mixProductList.get(4) + ruleProductMix.getProduct3MixP5());
+                                    }
                                 }
                                 if(lineState.getProductType() == 4){
-                                    balance -= ruleProduct.getProduct4ProcCost();
+                                    productCost += ruleProduct.getProduct4ProcCost();
+                                    if (ruleProductMix.getProduct4MixR1() != null){
+                                        mixMaterialList.set(0, mixMaterialList.get(0) + ruleProductMix.getProduct4MixR1());
+                                    }
+                                    if (ruleProductMix.getProduct4MixR2() != null){
+                                        mixMaterialList.set(1, mixMaterialList.get(1) + ruleProductMix.getProduct4MixR2());
+                                    }
+                                    if (ruleProductMix.getProduct4MixR3() != null){
+                                        mixMaterialList.set(2, mixMaterialList.get(2) + ruleProductMix.getProduct4MixR3());
+                                    }
+                                    if (ruleProductMix.getProduct4MixR4() != null){
+                                        mixMaterialList.set(3, mixMaterialList.get(3) + ruleProductMix.getProduct4MixR4());
+                                    }
+                                    if (ruleProductMix.getProduct4MixR5() != null){
+                                        mixMaterialList.set(4, mixMaterialList.get(4) + ruleProductMix.getProduct4MixR5());
+                                    }
+                                    if (ruleProductMix.getProduct4MixP1() != null){
+                                        mixProductList.set(0, mixProductList.get(0) + ruleProductMix.getProduct4MixP1());
+                                    }
+                                    if (ruleProductMix.getProduct4MixP2() != null){
+                                        mixProductList.set(1, mixProductList.get(1) + ruleProductMix.getProduct4MixP2());
+                                    }
+                                    if (ruleProductMix.getProduct4MixP3() != null){
+                                        mixProductList.set(2, mixProductList.get(2) + ruleProductMix.getProduct4MixP3());
+                                    }
+                                    if (ruleProductMix.getProduct4MixP4() != null){
+                                        mixProductList.set(3, mixProductList.get(3) + ruleProductMix.getProduct4MixP4());
+                                    }
+                                    if (ruleProductMix.getProduct4MixP5() != null){
+                                        mixProductList.set(4, mixProductList.get(4) + ruleProductMix.getProduct4MixP5());
+                                    }
                                 }
                                 if(lineState.getProductType() == 5){
-                                    balance -= ruleProduct.getProduct5ProcCost();
-                                }
-                                if(balance < 0){
-                                    runningState.getBaseState().setMsg("现金不足");
-                                    logger.info("用户：{} 执行开始生产失败", username);
-                                }else {
-                                    //TODO:还需要增加原料的消耗处理代码
-                                    lineState.setProduceState(produceTime);
-                                    iterator.remove();  //清除List中该线ID
-                                    logger.info("用户：{} 执行开始生产,生产线ID：{}，产品：{}", username, lineId, lineState.getProductType());
+                                    productCost += ruleProduct.getProduct5ProcCost();
+                                    if (ruleProductMix.getProduct5MixR1() != null){
+                                        mixMaterialList.set(0, mixMaterialList.get(0) + ruleProductMix.getProduct5MixR1());
+                                    }
+                                    if (ruleProductMix.getProduct5MixR2() != null){
+                                        mixMaterialList.set(1, mixMaterialList.get(1) + ruleProductMix.getProduct5MixR2());
+                                    }
+                                    if (ruleProductMix.getProduct5MixR3() != null){
+                                        mixMaterialList.set(2, mixMaterialList.get(2) + ruleProductMix.getProduct5MixR3());
+                                    }
+                                    if (ruleProductMix.getProduct5MixR4() != null){
+                                        mixMaterialList.set(3, mixMaterialList.get(3) + ruleProductMix.getProduct5MixR4());
+                                    }
+                                    if (ruleProductMix.getProduct5MixR5() != null){
+                                        mixMaterialList.set(4, mixMaterialList.get(4) + ruleProductMix.getProduct5MixR5());
+                                    }
+                                    if (ruleProductMix.getProduct5MixP1() != null){
+                                        mixProductList.set(0, mixProductList.get(0) + ruleProductMix.getProduct5MixP1());
+                                    }
+                                    if (ruleProductMix.getProduct5MixP2() != null){
+                                        mixProductList.set(1, mixProductList.get(1) + ruleProductMix.getProduct5MixP2());
+                                    }
+                                    if (ruleProductMix.getProduct5MixP3() != null){
+                                        mixProductList.set(2, mixProductList.get(2) + ruleProductMix.getProduct5MixP3());
+                                    }
+                                    if (ruleProductMix.getProduct5MixP4() != null){
+                                        mixProductList.set(3, mixProductList.get(3) + ruleProductMix.getProduct5MixP4());
+                                    }
+                                    if (ruleProductMix.getProduct5MixP5() != null){
+                                        mixProductList.set(4, mixProductList.get(4) + ruleProductMix.getProduct5MixP5());
+                                    }
                                 }
                             }
                         }
@@ -848,11 +982,61 @@ public class RunningOperate {
             }
         }
 
-        if(balance >= 0){
-            runningState.getFinanceState().setCashAmount(balance);
-            runningState.getBaseState().setMsg("");     //清空MSG
-            runningState.getBaseState().getOperateState().setBeginProduction(1);    //时间轴：关闭 开始生产
+        //开始进行条件检查
+        if (productCost > balance){
+            runningState.getBaseState().setMsg("现金不足");
+            return runningState;
+        }else {
+            runningState = decuction(mixMaterialList, mixProductList, runningState);
+            if (runningState.getBaseState().getMsg().isEmpty()){
+                balance -= productCost;
+                //设置生产线生产状态
+                while (factoryStateIterator.hasNext()){
+                    FactoryState factoryState = factoryStateIterator.next();
+                    if(factoryState.getContent() != 0){
+                        List<LineState> lineStateList = factoryState.getLineStateList();
+                        Iterator<LineState> lineStateIterator = lineStateList.iterator();
+                        while (lineStateIterator.hasNext()){
+                            LineState lineState = lineStateIterator.next();
+                            if(lineState.getOwningState() > 0 && lineState.getProduceState() == 0){
+                                Integer lineId = lineState.getId();
+                                Iterator<Integer> iterator = list.iterator();
+                                while (iterator.hasNext()){
+                                    Integer tempid = iterator.next();
+                                    Integer produceTime = 0;
+                                    Integer devState = 0;
+                                    if (lineId.intValue() == tempid.intValue()){
+                                        if(lineState.getType() == 1){
+                                            produceTime = ruleLine.getLine1ProduceTime();
+                                        }
+                                        if(lineState.getType() == 2){
+                                            produceTime = ruleLine.getLine2ProduceTime();
+                                        }
+                                        if(lineState.getType() == 3){
+                                            produceTime = ruleLine.getLine3ProduceTime();
+                                        }
+                                        if(lineState.getType() == 4){
+                                            produceTime = ruleLine.getLine4ProduceTime();
+                                        }
+                                        if(lineState.getType() == 5){
+                                            produceTime = ruleLine.getLine5ProduceTime();
+                                        }
+                                        lineState.setProduceState(produceTime);
+                                        iterator.remove();  //清除List中该线ID
+                                        logger.info("用户：{} 执行开始生产,生产线ID：{}，产品：{}", username, lineId, lineState.getProductType());
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }else {
+                return runningState;
+            }
         }
+        runningState.getFinanceState().setCashAmount(balance);
+        runningState.getBaseState().setMsg("");     //清空MSG
+        runningState.getBaseState().getOperateState().setBeginProduction(1);    //时间轴：关闭 开始生产
         return runningState;
     }
 
@@ -937,19 +1121,18 @@ public class RunningOperate {
                                         if(orderState.getAccountPeriod() == 0){
                                             balance += orderState.getTotalPrice();
                                         }else {
-                                            receivableStateList.get(orderState.getAccountPeriod() - 1).setAmounts(orderState.getTotalPrice() + receivableStateList.get(orderState.getAccountPeriod() - 1).getAmounts());
-//                                            Iterator<ReceivableState> receivableStateIterator = receivableStateList.iterator();
-//                                            while (receivableStateIterator.hasNext()){
-//                                                ReceivableState receivableState = receivableStateIterator.next();
-//                                                if(receivableState.getAccountPeriod() == orderState.getAccountPeriod()){
-//                                                    receivableState.setAmounts(receivableState.getAmounts() + orderState.getTotalPrice());
-//                                                }
-//                                            }
+//                                            receivableStateList.get(orderState.getAccountPeriod() - 1).setAmounts(orderState.getTotalPrice() + receivableStateList.get(orderState.getAccountPeriod() - 1).getAmounts());
+                                            Iterator<ReceivableState> receivableStateIterator = receivableStateList.iterator();
+                                            while (receivableStateIterator.hasNext()){
+                                                ReceivableState receivableState = receivableStateIterator.next();
+                                                if(receivableState.getAccountPeriod() == orderState.getAccountPeriod()){
+                                                    receivableState.setAmounts(receivableState.getAmounts() + orderState.getTotalPrice());
+                                                }
+                                            }
                                         }
                                         orderState.setExecution(1);
                                         orderState.setFinishTime(runningState.getBaseState().getTimeQuarter());
                                         Integer directCost = 0;
-                                        System.out.println("测试，订单金额：" + orderState.getTotalPrice());
                                         if(orderState.getTypeId() == 1){
                                             directCost = orderState.getQuantity() * rule.getRuleProduct().getProduct1FinalCost();
                                         }
@@ -1968,6 +2151,42 @@ public class RunningOperate {
 
 
         runningState.getFinanceState().setCashAmount(balance);
+        return runningState;
+    }
+
+    @Transactional
+    public RunningState decuction(List<Integer> mixMaterialList, List<Integer> mixProductList, RunningState runningState){
+        runningState.getBaseState().setMsg("");
+        List<MaterialState> materialStateList = runningState.getStockState().getMaterialStateList();
+        List<ProductState> productStateList = runningState.getStockState().getProductStateList();
+        int check = 0;
+
+        //检查是否有足够库存
+        for (MaterialState materialState : materialStateList){
+            int type = materialState.getType();
+            if (mixMaterialList.get(type - 1) > materialState.getQuantity()){
+                check = 1;
+            }
+        }
+        for (ProductState productState : productStateList){
+            int type = productState.getType();
+            if (mixProductList.get(type - 1) > productState.getQuantity()){
+                check = 1;
+            }
+        }
+        if (check != 0){
+            runningState.getBaseState().setMsg("原料不足");
+            return runningState;
+        }else {
+            for (MaterialState materialState : materialStateList){
+                int type = materialState.getType();
+                materialState.setQuantity(materialState.getQuantity() - mixMaterialList.get(type - 1));
+            }
+            for (ProductState productState : productStateList){
+                int type = productState.getType();
+                productState.setQuantity(productState.getQuantity() - mixProductList.get(type - 1));
+            }
+        }
         return runningState;
     }
 

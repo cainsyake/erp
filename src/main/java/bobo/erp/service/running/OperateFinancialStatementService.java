@@ -152,6 +152,7 @@ public class OperateFinancialStatementService {
                         financialStatement.setDebtTotalAndOwnersEquity(value);
                         break;
                     default:
+                        System.out.println("没有找到科目：" + attribute + " 金额：" + value);
                         logger.error("没有找到科目:{},请检查入口参数", attribute);
                         break;
                 }
