@@ -2314,6 +2314,7 @@ public class RunningOperate {
     public RunningState addition(List<Integer> addMaterialList, List<Integer> addProductList, RunningState runningState){
         List<MaterialState> materialStateList = runningState.getStockState().getMaterialStateList();
         List<ProductState> productStateList = runningState.getStockState().getProductStateList();
+
         for (MaterialState materialState : materialStateList){
             int type = materialState.getType();
             materialState.setQuantity(materialState.getQuantity() + addMaterialList.get(type - 1));
@@ -2322,6 +2323,86 @@ public class RunningOperate {
             int type = productState.getType();
             productState.setQuantity(productState.getQuantity() + addProductList.get(type - 1));
         }
+        return runningState;
+    }
+
+    @Transactional
+    public RunningState emergencyPurchase(String username, String[] arrays1, String[] arrays2){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+        RuleParam ruleParam = rule.getRuleParam();
+        Integer balance = runningState.getFinanceState().getCashAmount();
+        Integer tempTotalAmount = 0;
+        Integer lostCostTotal = 0;
+
+        int arrayLength1 = arrays1.length;
+        List<Integer> list1 = new ArrayList<Integer>();
+        for(int i = 0; i < arrayLength1; i++){
+            list1.add(Integer.parseInt(arrays1[i]));
+        }
+        int arrayLength2 = arrays2.length;
+        List<Integer> list2 = new ArrayList<Integer>();
+        for(int i = 0; i < arrayLength2; i++){
+            list2.add(Integer.parseInt(arrays2[i]));
+        }
+
+        List<MaterialState> materialStateList = runningState.getStockState().getMaterialStateList();
+        List<ProductState> productStateList = runningState.getStockState().getProductStateList();
+        for (MaterialState materialState : materialStateList){
+            Integer type = materialState.getType();
+            if (type == 1){
+                tempTotalAmount += (int)(rule.getRuleMaterial().getMaterial1Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1));
+                lostCostTotal += (int)(rule.getRuleMaterial().getMaterial1Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1) - rule.getRuleMaterial().getMaterial1Price() * list1.get(type -1));
+            }
+            if (type == 2){
+                tempTotalAmount += (int)(rule.getRuleMaterial().getMaterial2Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1));
+                lostCostTotal += (int)(rule.getRuleMaterial().getMaterial2Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1) - rule.getRuleMaterial().getMaterial2Price() * list1.get(type -1));
+            }
+            if (type == 3){
+                tempTotalAmount += (int)(rule.getRuleMaterial().getMaterial3Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1));
+                lostCostTotal += (int)(rule.getRuleMaterial().getMaterial3Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1) - rule.getRuleMaterial().getMaterial3Price() * list1.get(type -1));
+            }
+            if (type == 4){
+                tempTotalAmount += (int)(rule.getRuleMaterial().getMaterial4Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1));
+                lostCostTotal += (int)(rule.getRuleMaterial().getMaterial4Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1) - rule.getRuleMaterial().getMaterial4Price() * list1.get(type -1));
+            }
+            if (type == 5){
+                tempTotalAmount += (int)(rule.getRuleMaterial().getMaterial5Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1));
+                lostCostTotal += (int)(rule.getRuleMaterial().getMaterial5Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1) - rule.getRuleMaterial().getMaterial5Price() * list1.get(type -1));
+            }
+        }
+        for (ProductState productState : productStateList){
+            Integer type = productState.getType();
+            if (type == 1){
+                tempTotalAmount += (int)(rule.getRuleProduct().getProduct1FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
+                lostCostTotal += (int)(rule.getRuleProduct().getProduct1FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list1.get(type -1) - rule.getRuleProduct().getProduct1FinalCost() * list1.get(type -1));
+            }
+            if (type == 2){
+                tempTotalAmount += (int)(rule.getRuleProduct().getProduct2FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
+                lostCostTotal += (int)(rule.getRuleProduct().getProduct2FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list1.get(type -1) - rule.getRuleProduct().getProduct2FinalCost() * list1.get(type -1));
+            }
+            if (type == 3){
+                tempTotalAmount += (int)(rule.getRuleProduct().getProduct3FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
+                lostCostTotal += (int)(rule.getRuleProduct().getProduct3FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list1.get(type -1) - rule.getRuleProduct().getProduct3FinalCost() * list1.get(type -1));
+            }
+            if (type == 4){
+                tempTotalAmount += (int)(rule.getRuleProduct().getProduct4FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
+                lostCostTotal += (int)(rule.getRuleProduct().getProduct4FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list1.get(type -1) - rule.getRuleProduct().getProduct4FinalCost() * list1.get(type -1));
+            }
+            if (type == 5){
+                tempTotalAmount += (int)(rule.getRuleProduct().getProduct5FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
+                lostCostTotal += (int)(rule.getRuleProduct().getProduct5FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list1.get(type -1) - rule.getRuleProduct().getProduct5FinalCost() * list1.get(type -1));
+            }
+        }
+
+        if (tempTotalAmount > balance){
+            runningState.getBaseState().setMsg("现金不足");
+            return runningState;
+        }
+        balance -= tempTotalAmount;
+        operateFinancialStatementService.write("lostCost", lostCostTotal, runningState);
+        runningState.getFinanceState().setCashAmount(balance);
+        runningState = addition(list1, list2, runningState);
         return runningState;
     }
 

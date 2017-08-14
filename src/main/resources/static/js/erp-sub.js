@@ -1810,47 +1810,60 @@ function operateDiscount(form) {
 
 function operateEmergencyPurchase(form1, form2) {
     var nowUserName = $("#nowUserName").val();
-    var materialNum = form1.length;
-    var productNum = form2.length;
+    var cash = parseInt($("#valueCash").html());
+    var materialNum = form1.length / 2;
+    var productNum = form2.length / 2;
     var list1 = new Array();
     var list2 = new Array();
+    var totalAmount = 0;
     for(var i = 1; i < materialNum + 1; i++){
-        eval("var num =form1.material" + i + "EmergencyAddNum.value");
+        eval("var num =form1.material" + i + "EmergencyAddNum.value;");
         if(num <0){
             alert("不能输入负数，请重新输入！");
             return false;
         }
+        eval("totalAmount += form1.material" + i + "EmergencyAddNum.value * form1.material" + i + "EmergencyPrice.value;");
         if(num == ""){
             num = "0";
         }
         list1[i-1] = num;
     }
     for(var i = 1; i < productNum + 1; i++){
-        eval("var num =form1.product" + i + "EmergencyAddNum.value");
+        eval("var num =form2.product" + i + "EmergencyAddNum.value");
         if(num <0){
             alert("不能输入负数，请重新输入！");
             return false;
         }
+        eval("totalAmount += form2.product" + i + "EmergencyAddNum.value * form2.product" + i + "EmergencyPrice.value");
         if(num == ""){
             num = "0";
         }
         list2[i-1] = num;
     }
-    $.ajax({
-        type:"POST",
-        url:"/operateDiscount/" + nowUserName,
-        cache:false,
-        dataType:"json",
-        data :{array:list},
-        success:function (runningState) {
-            subOnLoad();
-            document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
-            $("#btnCloseModalDiscount").click();
-        },
-        error:function (json) {
-            console.log(json.responseText);
-        }
-    });
+    if(totalAmount > cash){
+        alert("现金不足");
+        return false;
+    }else {
+        $.ajax({
+            type:"POST",
+            url:"/operateEmergencyPurchase/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            data :{
+                array1:list1,
+                array2:list2
+            },
+            success:function (runningState) {
+                subOnLoad();
+                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
+                $("#btnCloseModalEmergencyPurchase").click();
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+    }
+
 }
 
 function operateStartYear() {

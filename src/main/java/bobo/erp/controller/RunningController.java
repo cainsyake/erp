@@ -221,4 +221,13 @@ public class RunningController {
         return runningOperate.discount(nowUserName, arrays);
     }
 
+    @PostMapping(value = "operateEmergencyPurchase/{nowUserName}")
+    @ResponseBody
+    public RunningState operateEmergencyPurchase(@PathVariable("nowUserName") String nowUserName,
+                                                 @RequestParam(value = "array1[]") String[] arrays1,
+                                                 @RequestParam(value = "array2[]") String[] arrays2){
+        System.out.println("测试 接收到紧急采购请求");
+        return runningOperate.emergencyPurchase(nowUserName, arrays1, arrays2);
+    }
+
 }
