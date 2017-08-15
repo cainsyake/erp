@@ -1791,7 +1791,7 @@ public class RunningOperate {
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
         RuleFactory ruleFactory = rule.getRuleFactory();
         Integer balance = runningState.getFinanceState().getCashAmount();
-
+//        Integer tempTotalAmount = 0;
 
         /**
          * 自动进行的业务操作：
@@ -1803,12 +1803,11 @@ public class RunningOperate {
          * 6.时间轴变换
          */
         Integer managementCost = rule.getRuleParam().getParamManagementCost();
+//        tempTotalAmount += managementCost;
         if(managementCost > balance){
             runningState.getBaseState().setMsg("现金不足");
         }else {
             balance -= managementCost;//支付行政管理费
-//            Integer tempAmount = 0;
-//            tempAmount = operateFinancialStatementService.read("managementCost", runningState);
             operateFinancialStatementService.write("managementCost", operateFinancialStatementService.read("managementCost", runningState) + managementCost, runningState);
         }
 
@@ -1876,75 +1875,75 @@ public class RunningOperate {
                     if (lineState.getOwningState() > 0){
                         upkeepCost += rule.getRuleLine().getLine1Upkeep();
                     }
-                    if (lineState.getOwningState() > 0){
-                        equipmentValue += lineState.getValue();
-                    }else {
-                        constructionInProgressValue += lineState.getValue();
-                    }
                     if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine1DepreTime()))){
                         depreciation = rule.getRuleLine().getLine1Depreciation();
                         lineState.setValue(lineState.getValue() - depreciation);
                         operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
+                    }
+                    if (lineState.getOwningState() > 0){
+                        equipmentValue += lineState.getValue();
+                    }else {
+                        constructionInProgressValue += lineState.getValue();
                     }
                 }
                 if(lineState.getType() == 2){
                     if (lineState.getOwningState() > 0){
                         upkeepCost += rule.getRuleLine().getLine2Upkeep();
                     }
-                    if (lineState.getOwningState() > 0){
-                        equipmentValue += lineState.getValue();
-                    }else {
-                        constructionInProgressValue += lineState.getValue();
-                    }
                     if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine2DepreTime()))){
                         depreciation = rule.getRuleLine().getLine2Depreciation();
                         lineState.setValue(lineState.getValue() - depreciation);
                         operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
+                    }
+                    if (lineState.getOwningState() > 0){
+                        equipmentValue += lineState.getValue();
+                    }else {
+                        constructionInProgressValue += lineState.getValue();
                     }
                 }
                 if(lineState.getType() == 3){
                     if (lineState.getOwningState() > 0){
                         upkeepCost += rule.getRuleLine().getLine3Upkeep();
                     }
-                    if (lineState.getOwningState() > 0){
-                        equipmentValue += lineState.getValue();
-                    }else {
-                        constructionInProgressValue += lineState.getValue();
-                    }
                     if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine3DepreTime()))){
                         depreciation = rule.getRuleLine().getLine3Depreciation();
                         lineState.setValue(lineState.getValue() - depreciation);
                         operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
+                    }
+                    if (lineState.getOwningState() > 0){
+                        equipmentValue += lineState.getValue();
+                    }else {
+                        constructionInProgressValue += lineState.getValue();
                     }
                 }
                 if(lineState.getType() == 4){
                     if (lineState.getOwningState() > 0){
                         upkeepCost += rule.getRuleLine().getLine4Upkeep();
                     }
-                    if (lineState.getOwningState() > 0){
-                        equipmentValue += lineState.getValue();
-                    }else {
-                        constructionInProgressValue += lineState.getValue();
-                    }
                     if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine4DepreTime()))){
                         depreciation = rule.getRuleLine().getLine4Depreciation();
                         lineState.setValue(lineState.getValue() - depreciation);
                         operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
+                    }
+                    if (lineState.getOwningState() > 0){
+                        equipmentValue += lineState.getValue();
+                    }else {
+                        constructionInProgressValue += lineState.getValue();
                     }
                 }
                 if(lineState.getType() == 5){
                     if (lineState.getOwningState() > 0){
                         upkeepCost += rule.getRuleLine().getLine5Upkeep();
                     }
-                    if (lineState.getOwningState() > 0){
-                        equipmentValue += lineState.getValue();
-                    }else {
-                        constructionInProgressValue += lineState.getValue();
-                    }
                     if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine5DepreTime()))){
                         depreciation = rule.getRuleLine().getLine5Depreciation();
                         lineState.setValue(lineState.getValue() - depreciation);
                         operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
+                    }
+                    if (lineState.getOwningState() > 0){
+                        equipmentValue += lineState.getValue();
+                    }else {
+                        constructionInProgressValue += lineState.getValue();
                     }
                 }
                 if(lineState.getOwningState() > 0){
@@ -2011,7 +2010,6 @@ public class RunningOperate {
         operateFinancialStatementService.write("isoDevCost", operateFinancialStatementService.read("isoDevCost", runningState), runningState);
         operateFinancialStatementService.write("productDevCost", operateFinancialStatementService.read("productDevCost", runningState), runningState);
         operateFinancialStatementService.write("infomationCost", operateFinancialStatementService.read("infomationCost", runningState), runningState);
-        operateFinancialStatementService.write("", operateFinancialStatementService.read("", runningState), runningState);
 
         operateFinancialStatementService.write("omnibusCost",
                 operateFinancialStatementService.read("managementCost", runningState) +
@@ -2033,10 +2031,11 @@ public class RunningOperate {
         operateFinancialStatementService.write("profitBeforeDepreciation",
                 operateFinancialStatementService.read("grossProfit",runningState) - operateFinancialStatementService.read("omnibusCost", runningState),
                 runningState);      //折旧前利润
+        operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState), runningState);  //覆写 折旧
         operateFinancialStatementService.write("profitBeforeIntetest",
                 operateFinancialStatementService.read("profitBeforeDepreciation", runningState) - operateFinancialStatementService.read("depreciation", runningState),
                 runningState);      //利前利润
-        operateFinancialStatementService.write("financialCost", operateFinancialStatementService.read("financialCost", runningState), runningState);    //财务费用
+        operateFinancialStatementService.write("financialCost", operateFinancialStatementService.read("financialCost", runningState), runningState);    //覆写 财务费用
 
         operateFinancialStatementService.write("profitBeforeTax",
                 operateFinancialStatementService.read("profitBeforeIntetest", runningState) - operateFinancialStatementService.read("financialCost", runningState),
@@ -2375,23 +2374,23 @@ public class RunningOperate {
             Integer type = productState.getType();
             if (type == 1){
                 tempTotalAmount += (int)(rule.getRuleProduct().getProduct1FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
-                lostCostTotal += (int)(rule.getRuleProduct().getProduct1FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list1.get(type -1) - rule.getRuleProduct().getProduct1FinalCost() * list1.get(type -1));
+                lostCostTotal += (int)(rule.getRuleProduct().getProduct1FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1) - rule.getRuleProduct().getProduct1FinalCost() * list2.get(type -1));
             }
             if (type == 2){
                 tempTotalAmount += (int)(rule.getRuleProduct().getProduct2FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
-                lostCostTotal += (int)(rule.getRuleProduct().getProduct2FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list1.get(type -1) - rule.getRuleProduct().getProduct2FinalCost() * list1.get(type -1));
+                lostCostTotal += (int)(rule.getRuleProduct().getProduct2FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1) - rule.getRuleProduct().getProduct2FinalCost() * list2.get(type -1));
             }
             if (type == 3){
                 tempTotalAmount += (int)(rule.getRuleProduct().getProduct3FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
-                lostCostTotal += (int)(rule.getRuleProduct().getProduct3FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list1.get(type -1) - rule.getRuleProduct().getProduct3FinalCost() * list1.get(type -1));
+                lostCostTotal += (int)(rule.getRuleProduct().getProduct3FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1) - rule.getRuleProduct().getProduct3FinalCost() * list2.get(type -1));
             }
             if (type == 4){
                 tempTotalAmount += (int)(rule.getRuleProduct().getProduct4FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
-                lostCostTotal += (int)(rule.getRuleProduct().getProduct4FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list1.get(type -1) - rule.getRuleProduct().getProduct4FinalCost() * list1.get(type -1));
+                lostCostTotal += (int)(rule.getRuleProduct().getProduct4FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1) - rule.getRuleProduct().getProduct4FinalCost() * list2.get(type -1));
             }
             if (type == 5){
                 tempTotalAmount += (int)(rule.getRuleProduct().getProduct5FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
-                lostCostTotal += (int)(rule.getRuleProduct().getProduct5FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list1.get(type -1) - rule.getRuleProduct().getProduct5FinalCost() * list1.get(type -1));
+                lostCostTotal += (int)(rule.getRuleProduct().getProduct5FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1) - rule.getRuleProduct().getProduct5FinalCost() * list2.get(type -1));
             }
         }
 
@@ -2400,7 +2399,7 @@ public class RunningOperate {
             return runningState;
         }
         balance -= tempTotalAmount;
-        operateFinancialStatementService.write("lostCost", lostCostTotal, runningState);
+        operateFinancialStatementService.write("lostCost", operateFinancialStatementService.read("lostCost", runningState) + lostCostTotal, runningState);
         runningState.getFinanceState().setCashAmount(balance);
         runningState = addition(list1, list2, runningState);
         return runningState;
@@ -2408,53 +2407,53 @@ public class RunningOperate {
 
     @Transactional
     public RunningState testAddOrder(RunningState runningState){
+        if (runningState.getBaseState().getTimeYear() > 1){
+            List<OrderState> orderStateList = runningState.getMarketingState().getOrderStateList();
+            OrderState orderState1 = new OrderState();
+            orderState1.setAccountPeriod(3);
+            orderState1.setArea(1);
+            orderState1.setDeliveryTime(4);
+            orderState1.setExecution(0);
+            orderState1.setOrderId(10 + runningState.getBaseState().getTimeYear());
+            orderState1.setOwner("OWNER");
+            orderState1.setQualificate(0);
+            orderState1.setTotalPrice(100);
+            orderState1.setTypeId(1);
+            orderState1.setQuantity(2);
+            orderState1.setUnitPrice(50);
+            orderState1.setYear(runningState.getBaseState().getTimeYear());
+            orderStateList.add(orderState1);
 
-        List<OrderState> orderStateList = runningState.getMarketingState().getOrderStateList();
-        OrderState orderState1 = new OrderState();
-        orderState1.setAccountPeriod(3);
-        orderState1.setArea(1);
-        orderState1.setDeliveryTime(2);
-        orderState1.setExecution(0);
-        orderState1.setOrderId(10 + runningState.getBaseState().getTimeYear());
-        orderState1.setOwner("OWNER");
-        orderState1.setQualificate(0);
-        orderState1.setTotalPrice(50);
-        orderState1.setTypeId(1);
-        orderState1.setQuantity(1);
-        orderState1.setUnitPrice(50);
-        orderState1.setYear(runningState.getBaseState().getTimeYear());
-        orderStateList.add(orderState1);
+            OrderState orderState2 = new OrderState();
+            orderState2.setAccountPeriod(1);
+            orderState2.setArea(1);
+            orderState2.setDeliveryTime(3);
+            orderState2.setExecution(0);
+            orderState2.setOrderId(20 + runningState.getBaseState().getTimeYear());
+            orderState2.setOwner("OWNER");
+            orderState2.setQualificate(0);
+            orderState2.setTotalPrice(140);
+            orderState2.setTypeId(2);
+            orderState2.setQuantity(2);
+            orderState2.setUnitPrice(70);
+            orderState2.setYear(runningState.getBaseState().getTimeYear());
+            orderStateList.add(orderState2);
 
-        OrderState orderState2 = new OrderState();
-        orderState2.setAccountPeriod(1);
-        orderState2.setArea(1);
-        orderState2.setDeliveryTime(3);
-        orderState2.setExecution(0);
-        orderState2.setOrderId(20 + runningState.getBaseState().getTimeYear());
-        orderState2.setOwner("OWNER");
-        orderState2.setQualificate(0);
-        orderState2.setTotalPrice(70);
-        orderState2.setTypeId(2);
-        orderState2.setQuantity(1);
-        orderState2.setUnitPrice(70);
-        orderState2.setYear(runningState.getBaseState().getTimeYear());
-        orderStateList.add(orderState2);
-
-        OrderState orderState3 = new OrderState();
-        orderState3.setAccountPeriod(1);
-        orderState3.setArea(1);
-        orderState3.setDeliveryTime(1);
-        orderState3.setExecution(0);
-        orderState3.setOrderId(30 + runningState.getBaseState().getTimeYear());
-        orderState3.setOwner("OWNER");
-        orderState3.setQualificate(0);
-        orderState3.setTotalPrice(96);
-        orderState3.setTypeId(1);
-        orderState3.setQuantity(2);
-        orderState3.setUnitPrice(48);
-        orderState3.setYear(runningState.getBaseState().getTimeYear());
-        orderStateList.add(orderState3);
-
+            OrderState orderState3 = new OrderState();
+            orderState3.setAccountPeriod(1);
+            orderState3.setArea(1);
+            orderState3.setDeliveryTime(4);
+            orderState3.setExecution(0);
+            orderState3.setOrderId(30 + runningState.getBaseState().getTimeYear());
+            orderState3.setOwner("OWNER");
+            orderState3.setQualificate(0);
+            orderState3.setTotalPrice(144);
+            orderState3.setTypeId(1);
+            orderState3.setQuantity(3);
+            orderState3.setUnitPrice(48);
+            orderState3.setYear(runningState.getBaseState().getTimeYear());
+            orderStateList.add(orderState3);
+        }
         return runningState;
     }
 }
