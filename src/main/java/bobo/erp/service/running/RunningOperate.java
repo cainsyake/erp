@@ -169,16 +169,12 @@ public class RunningOperate {
     public RunningState startQuarter(String username){
         RunningState runningState = getSubRunningStateService.getSubRunningState(username);
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
-
-        //时间轴变换
-        runningState.getBaseState().setState(11);   //跳转至季初
-        runningState.getBaseState().getOperateState().setShortLoan(0);  //允许申请短贷
-
         /**
          * 自动进行的业务操作：
          * 1.更新短贷
          * 2.更新生产
          * 3.更新建设
+         * 4.时间轴变换
          */
         Integer balance = runningState.getFinanceState().getCashAmount();
         Integer interest = 0;
@@ -201,6 +197,7 @@ public class RunningOperate {
         //检测是否可以继续执行当季开始
         if (tempTotalAmount > balance){
             runningState.getBaseState().setMsg("现金不足");
+            logger.info("用户：{} 现金不足返回 操作：开始当季", username);
             return runningState;
         }else {
             balance -= tempTotalAmount;
@@ -256,6 +253,10 @@ public class RunningOperate {
 
             }
         }
+        //时间轴变换
+        runningState.getBaseState().setState(11);   //跳转至季初
+        runningState.getBaseState().getOperateState().setShortLoan(0);  //允许申请短贷
+
         runningState.getFinanceState().setCashAmount(balance);
         runningState.getBaseState().setMsg(""); //清空MSG
         return runningState;
@@ -268,33 +269,34 @@ public class RunningOperate {
         List<PurchaseState> purchaseStateList = runningState.getStockState().getPurchaseStateList();
         Iterator<PurchaseState> purchaseStateIterator = purchaseStateList.iterator();
         Integer balance = runningState.getFinanceState().getCashAmount();
-        Integer purchaseTotalAmounts = 0;
+
         Integer tempTotalAmount = 0;
         //计算要支付的原料货款总额
         for (PurchaseState purchaseState : purchaseStateList){
             Integer tempType = purchaseState.getType();
             Integer tempQuantity = purchaseState.getQuantity();
             Integer tempDeliveryTime = purchaseState.getDeliveryTime();
+            Integer purchaseTotalAmounts = 0;
             if(tempDeliveryTime == 1){
                 if(tempType == 1){
                     Integer price = rule.getRuleMaterial().getMaterial1Price();
-                    purchaseTotalAmounts += tempQuantity * price;
+                    purchaseTotalAmounts = tempQuantity * price;
                 }
                 if(tempType == 2){
                     Integer price = rule.getRuleMaterial().getMaterial2Price();
-                    purchaseTotalAmounts += tempQuantity * price;
+                    purchaseTotalAmounts = tempQuantity * price;
                 }
                 if(tempType == 3){
                     Integer price = rule.getRuleMaterial().getMaterial3Price();
-                    purchaseTotalAmounts += tempQuantity * price;
+                    purchaseTotalAmounts = tempQuantity * price;
                 }
                 if(tempType == 4){
                     Integer price = rule.getRuleMaterial().getMaterial4Price();
-                    purchaseTotalAmounts += tempQuantity * price;
+                    purchaseTotalAmounts = tempQuantity * price;
                 }
                 if(tempType == 5){
                     Integer price = rule.getRuleMaterial().getMaterial5Price();
-                    purchaseTotalAmounts += tempQuantity * price;
+                    purchaseTotalAmounts = tempQuantity * price;
                 }
                 tempTotalAmount += purchaseTotalAmounts;
             }
