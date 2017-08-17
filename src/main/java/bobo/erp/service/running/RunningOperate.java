@@ -1632,10 +1632,10 @@ public class RunningOperate {
         for(int i = 0; i < arrayLength; i++){
             list.add(Integer.parseInt(arrays[i]));
         }
-        Iterator<Integer> iterator = list.iterator();
-        while (iterator.hasNext()){
-            Integer devType = iterator.next();
-            Integer check = 0;  //检查标记
+
+        //计算开发费用
+        for (Integer devType : list){
+            Integer check = 0;
             Iterator<MarketDevState> marketDevStateIterator = marketDevStateList.iterator();
             while (marketDevStateIterator.hasNext()){
                 MarketDevState marketDevState = marketDevStateIterator.next();
@@ -1656,61 +1656,83 @@ public class RunningOperate {
                 if(tempType == 5){
                     devInvest = ruleMarket.getMarket5UnitInvest();
                 }
-                if (devType == tempType){
+                if (devType.intValue() == tempType.intValue()){
                     check = 1;
-                    if(devInvest > balance){
-                        runningState.getBaseState().setMsg("现金不足 ");
-                        return runningState;
-                    }else {
-                        balance -= devInvest;
-                        marketDevState.setState(marketDevState.getState() + 1);
-                    }
-
+                    tempTotalAmount += devInvest;
                 }
             }
             if(check == 0){
                 //如果检查标记仍然是0，表示在现有DevList中还没有该类型的DevState
                 Integer devInvest = 0;
-                Integer devTime = 0;
                 if(devType == 1){
                     devInvest = ruleMarket.getMarket1UnitInvest();
-                    devTime = ruleMarket.getMarket1DevTime();
                 }
                 if(devType == 2){
                     devInvest = ruleMarket.getMarket2UnitInvest();
-                    devTime = ruleMarket.getMarket2DevTime();
                 }
                 if(devType == 3){
                     devInvest = ruleMarket.getMarket2UnitInvest();
-                    devTime = ruleMarket.getMarket3DevTime();
                 }
                 if(devType == 4){
                     devInvest = ruleMarket.getMarket4UnitInvest();
-                    devTime = ruleMarket.getMarket4DevTime();
                 }
                 if(devType == 5){
                     devInvest = ruleMarket.getMarket5UnitInvest();
+                }
+                tempTotalAmount += devInvest;
+            }
+        }
+
+        //进行条件检查
+        if (tempTotalAmount > balance){
+            runningState.getBaseState().setMsg("现金不足");
+            return runningState;
+        }
+        balance -= tempTotalAmount;
+        runningState = operateFinancialStatementService.write("marketDevCost", operateFinancialStatementService.read("marketDevCost", runningState) + tempTotalAmount, runningState);
+
+        Iterator<Integer> iterator = list.iterator();
+        while (iterator.hasNext()){
+            Integer devType = iterator.next();
+            Integer check = 0;  //检查标记
+            Iterator<MarketDevState> marketDevStateIterator = marketDevStateList.iterator();
+            while (marketDevStateIterator.hasNext()){
+                MarketDevState marketDevState = marketDevStateIterator.next();
+                Integer tempType = marketDevState.getType();
+                if (devType.intValue() == tempType.intValue()){
+                    check = 1;
+                    marketDevState.setState(marketDevState.getState() + 1);
+                }
+            }
+            if(check == 0){
+                //如果检查标记仍然是0，表示在现有DevList中还没有该类型的DevState
+                Integer devTime = 0;
+                if(devType == 1){
+                    devTime = ruleMarket.getMarket1DevTime();
+                }
+                if(devType == 2){
+                    devTime = ruleMarket.getMarket2DevTime();
+                }
+                if(devType == 3){
+                    devTime = ruleMarket.getMarket3DevTime();
+                }
+                if(devType == 4){
+                    devTime = ruleMarket.getMarket4DevTime();
+                }
+                if(devType == 5){
                     devTime = ruleMarket.getMarket5DevTime();
                 }
-                if(devInvest > balance){
-                    runningState.getBaseState().setMsg("现金不足");
-                    return runningState;
-                }else {
-                    balance -= devInvest;
-                    runningState = operateFinancialStatementService.write("marketDevCost", operateFinancialStatementService.read("marketDevCost", runningState) + devInvest, runningState);
-                    MarketDevState marketDevState = new MarketDevState();
-                    marketDevState.setState(2-devTime);
-                    marketDevState.setType(devType);
-                    marketDevStateList.add(marketDevState);
-                }
-
+                MarketDevState marketDevState = new MarketDevState();   //实例化该类型研发对象
+                marketDevState.setState(2 - devTime);
+                marketDevState.setType(devType);
+                marketDevStateList.add(marketDevState);
             }
         }
 
         runningState.getFinanceState().setCashAmount(balance);
         runningState.getBaseState().setMsg(""); //清空MSG
         runningState.getBaseState().getOperateState().setMarketDev(1);     //时间轴： 关闭市场开拓
-        logger.info("用户：{} 成功执行市场开拓", username);
+//        logger.info("用户：{} 成功执行市场开拓", username);
         return runningState;
     }
 
@@ -1727,9 +1749,9 @@ public class RunningOperate {
         for(int i = 0; i < arrayLength; i++){
             list.add(Integer.parseInt(arrays[i]));
         }
-        Iterator<Integer> iterator = list.iterator();
-        while (iterator.hasNext()){
-            Integer devType = iterator.next();
+
+        //计算资质认证费用
+        for (Integer devType : list){
             Integer check = 0;  //检查标记
             Iterator<QualificationDevState> qualificationDevStateIterator = qualificationDevStateList.iterator();
             while (qualificationDevStateIterator.hasNext()){
@@ -1742,48 +1764,67 @@ public class RunningOperate {
                 if(tempType == 2){
                     devInvest = ruleIso.getIso2UnitInvest();
                 }
-                if (devType == tempType){
+                if (devType.intValue() == tempType.intValue()){
                     check = 1;
-                    if(devInvest > balance){
-                        runningState.getBaseState().setMsg("现金不足  ");
-                        return runningState;
-                    }else {
-                        balance -= devInvest;
-                        qualificationDevState.setState(qualificationDevState.getState() + 1);
-                    }
-
+                    tempTotalAmount += devInvest;
                 }
             }
             if(check == 0){
                 //如果检查标记仍然是0，表示在现有DevList中还没有该类型的DevState
                 Integer devInvest = 0;
-                Integer devTime = 0;
                 if(devType == 1){
                     devInvest = ruleIso.getIso1UnitInvest();
-                    devTime = ruleIso.getIso1DevTime();
                 }
                 if(devType == 2){
                     devInvest = ruleIso.getIso2UnitInvest();
+                }
+                tempTotalAmount += devInvest;
+            }
+        }
+
+        //进行条件检查
+        if (tempTotalAmount > balance){
+            runningState.getBaseState().setMsg("现金不足");
+            return runningState;
+        }
+
+        //处理资质认证
+        balance -= tempTotalAmount;
+        runningState = operateFinancialStatementService.write("isoDevCost", operateFinancialStatementService.read("isoDevCost", runningState) + tempTotalAmount, runningState);
+
+        Iterator<Integer> iterator = list.iterator();
+        while (iterator.hasNext()){
+            Integer devType = iterator.next();
+            Integer check = 0;  //检查标记
+            Iterator<QualificationDevState> qualificationDevStateIterator = qualificationDevStateList.iterator();
+            while (qualificationDevStateIterator.hasNext()){
+                QualificationDevState qualificationDevState = qualificationDevStateIterator.next();
+                Integer tempType = qualificationDevState.getType();
+                if (devType.intValue() == tempType.intValue()){
+                    check = 1;
+                    qualificationDevState.setState(qualificationDevState.getState() + 1);
+                }
+            }
+            if(check == 0){
+                //如果检查标记仍然是0，表示在现有DevList中还没有该类型的DevState
+                Integer devTime = 0;
+                if(devType == 1){
+                    devTime = ruleIso.getIso1DevTime();
+                }
+                if(devType == 2){
                     devTime = ruleIso.getIso2DevTime();
                 }
-                if(devInvest > balance){
-                    runningState.getBaseState().setMsg("现金不足 ");
-                    return runningState;
-                }else {
-                    balance -= devInvest;
-                    runningState = operateFinancialStatementService.write("isoDevCost", operateFinancialStatementService.read("isoDevCost", runningState) + devInvest, runningState);
-                    QualificationDevState qualificationDevState = new QualificationDevState();
-                    qualificationDevState.setState(2-devTime);
-                    qualificationDevState.setType(devType);
-                    qualificationDevStateList.add(qualificationDevState);
-                }
+                QualificationDevState qualificationDevState = new QualificationDevState();  //实例化该类型资质认证对象
+                qualificationDevState.setState(2 - devTime);
+                qualificationDevState.setType(devType);
+                qualificationDevStateList.add(qualificationDevState);
             }
         }
 
         runningState.getFinanceState().setCashAmount(balance);
         runningState.getBaseState().setMsg(""); //清空MSG
         runningState.getBaseState().getOperateState().setQualificationDev(1);     //时间轴： 关闭资质认证
-        logger.info("用户：{} 成功执行资质认证", username);
+//        logger.info("用户：{} 成功执行资质认证", username);
         return runningState;
     }
 

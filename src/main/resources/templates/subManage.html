@@ -1052,8 +1052,8 @@
     });
 
     //反选JS
-    $("#buildLineBoxCheckAll, #beginProductionBoxCheckAll, #changeLineBoxCheckAll, #continueChangeBoxCheckAll, #saleLineBoxCheckAll").click(function(){
-        $("input[name='buildLineBox'], input[name='beginProductionBox'], input[name='changeLineBox'], input[name='continueChangeBox'], input[name='saleLineBox']").each(function(){
+    $("#buildLineBoxCheckAll, #beginProductionBoxCheckAll, #changeLineBoxCheckAll, #continueChangeBoxCheckAll, #saleLineBoxCheckAll, #qualificationDevBoxCheckAll, #marketDevBoxCheckAll, #deliveryBoxCheckAll, #productDevBoxCheckAll").click(function(){
+        $("input[name='buildLineBox'], input[name='beginProductionBox'], input[name='changeLineBox'], input[name='continueChangeBox'], input[name='saleLineBox'], input[name='marketDevBox'], input[name='qualificationDevBox'], input[name='deliveryBox'], input[name='productDevBox']").each(function(){
             if($(this).attr("checked"))
             {
                 $(this).removeAttr("checked");
