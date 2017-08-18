@@ -24,7 +24,7 @@ public class GetSubRunningStateService {
 
     public RunningState getSubRunningState(String username){
         SubUserInfo subUserInfo = subUserInfoRepository.findBySubUserName(username);
-        logger.info("获取用户：{}的RunningState", username);
+//        logger.info("获取用户：{}的RunningState", username);
         return subUserInfo.getRunningState();
     }
 }

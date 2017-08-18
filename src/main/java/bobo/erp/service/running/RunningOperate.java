@@ -2475,17 +2475,17 @@ public class RunningOperate {
             orderStateList.add(orderState1);
 
             OrderState orderState2 = new OrderState();
-            orderState2.setAccountPeriod(1);
+            orderState2.setAccountPeriod(2);
             orderState2.setArea(1);
-            orderState2.setDeliveryTime(3);
+            orderState2.setDeliveryTime(4);
             orderState2.setExecution(0);
             orderState2.setOrderId(20 + runningState.getBaseState().getTimeYear());
             orderState2.setOwner("OWNER");
             orderState2.setQualificate(0);
-            orderState2.setTotalPrice(140);
+            orderState2.setTotalPrice(215);
             orderState2.setTypeId(2);
-            orderState2.setQuantity(2);
-            orderState2.setUnitPrice(70);
+            orderState2.setQuantity(3);
+            orderState2.setUnitPrice(72);
             orderState2.setYear(runningState.getBaseState().getTimeYear());
             orderStateList.add(orderState2);
 
@@ -2503,6 +2503,38 @@ public class RunningOperate {
             orderState3.setUnitPrice(48);
             orderState3.setYear(runningState.getBaseState().getTimeYear());
             orderStateList.add(orderState3);
+
+            OrderState orderState4 = new OrderState();
+            orderState4.setAccountPeriod(4);
+            orderState4.setArea(1);
+            orderState4.setDeliveryTime(4);
+            orderState4.setExecution(0);
+            orderState4.setOrderId(10 + runningState.getBaseState().getTimeYear());
+            orderState4.setOwner("OWNER");
+            orderState4.setQualificate(0);
+            orderState4.setTotalPrice(210);
+            orderState4.setTypeId(1);
+            orderState4.setQuantity(4);
+            orderState4.setUnitPrice(53);
+            orderState4.setYear(runningState.getBaseState().getTimeYear());
+            orderStateList.add(orderState4);
+        }
+        if (runningState.getBaseState().getTimeYear() > 3){
+            List<OrderState> orderStateList = runningState.getMarketingState().getOrderStateList();
+            OrderState orderState1 = new OrderState();
+            orderState1.setAccountPeriod(3);
+            orderState1.setArea(1);
+            orderState1.setDeliveryTime(4);
+            orderState1.setExecution(0);
+            orderState1.setOrderId(10 + runningState.getBaseState().getTimeYear());
+            orderState1.setOwner("OWNER");
+            orderState1.setQualificate(0);
+            orderState1.setTotalPrice(140);
+            orderState1.setTypeId(4);
+            orderState1.setQuantity(1);
+            orderState1.setUnitPrice(140);
+            orderState1.setYear(runningState.getBaseState().getTimeYear());
+            orderStateList.add(orderState1);
         }
         return runningState;
     }
