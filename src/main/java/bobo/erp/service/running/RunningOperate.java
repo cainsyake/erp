@@ -2245,7 +2245,7 @@ public class RunningOperate {
         RuleParam ruleParam = rule.getRuleParam();
         Integer balance = runningState.getFinanceState().getCashAmount();
         List<ReceivableState> receivableStateList = runningState.getFinanceState().getReceivableStateList();
-        Iterator<ReceivableState> receivableStateIterator = receivableStateList.iterator();
+
         int arrayLength = arrays.length;
         List<Integer> list = new ArrayList<Integer>();
         for(int i = 0; i < arrayLength; i++){
@@ -2253,11 +2253,16 @@ public class RunningOperate {
         }
         if(ruleParam.getParamDiscountMode() == 0){
             //独立贴现
+            System.out.println("测试节点，进入独立贴现");
             for(int i = 1; i < 5; i++){
+                System.out.println("测试节点，外层循环，i = " + i);
+                Iterator<ReceivableState> receivableStateIterator = receivableStateList.iterator();
                 while (receivableStateIterator.hasNext()){
                     ReceivableState receivableState = receivableStateIterator.next();
+                    System.out.println("测试节点，内层循环，应收账期： " + receivableState.getAccountPeriod());
                     if(receivableState.getAccountPeriod() == i){
                         Integer tempAmounts = list.get(i - 1);
+                        System.out.println("测试节点，贴现额：" + tempAmounts + "  贴现期数:" + i);
                         Integer interest = 0;
                         if (tempAmounts > receivableState.getAmounts()){
                             runningState.getBaseState().setMsg("应收款不足");
@@ -2270,15 +2275,17 @@ public class RunningOperate {
                                 interest = (int)Math.ceil(tempAmounts * ruleParam.getParamLongTermDiscountRates());
                             }
                             balance += tempAmounts - interest;
-                            operateFinancialStatementService.write("financialCost", interest, runningState);
+                            operateFinancialStatementService.write("financialCost", operateFinancialStatementService.read("financialCost", runningState) + interest, runningState);
                         }
                     }
                 }
             }
         }else {
+            //联合贴现
             Integer tempShortTotal = 0;
             Integer tempLongTotal = 0;
             for(int i = 1; i < 5; i++){
+                Iterator<ReceivableState> receivableStateIterator = receivableStateList.iterator();
                 while (receivableStateIterator.hasNext()){
                     ReceivableState receivableState = receivableStateIterator.next();
                     if(receivableState.getAccountPeriod() == i){
@@ -2297,12 +2304,12 @@ public class RunningOperate {
                             if(i == 2){
                                 interest = (int)Math.ceil(tempShortTotal * ruleParam.getParamShortTermDiscountRates());    //贴息向上取整
                                 balance += tempShortTotal - interest;
-                                operateFinancialStatementService.write("financialCost", interest, runningState);
+                                operateFinancialStatementService.write("financialCost", operateFinancialStatementService.read("financialCost", runningState) + interest, runningState);
                             }
                             if(i == 4){
                                 interest = (int)Math.ceil(tempLongTotal * ruleParam.getParamLongTermDiscountRates());
                                 balance += tempLongTotal - interest;
-                                operateFinancialStatementService.write("financialCost", interest, runningState);
+                                operateFinancialStatementService.write("financialCost", operateFinancialStatementService.read("financialCost", runningState) + interest, runningState);
                             }
                         }
                     }

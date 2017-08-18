@@ -1778,8 +1778,8 @@ function operateEndYear() {
 
 function operateDiscount(form) {
     var nowUserName = $("#nowUserName").val();
-    var materialNum = form.length;
     var list = new Array();
+    console.log("收到贴现请求，测试");
     for(var i = 1; i <= 4; i++){
         eval("var num =form.discount" + i + ".value");
         if(num <0){
@@ -1791,6 +1791,8 @@ function operateDiscount(form) {
         }
         list[i-1] = num;
     }
+    console.log("测试节点，下面是LIST对象");
+    console.log(list);
     $.ajax({
         type:"POST",
         url:"/operateDiscount/" + nowUserName,
