@@ -5,6 +5,7 @@ import bobo.erp.domain.teach.TeachClassInfo;
 import bobo.erp.repository.teach.SubUserInfoRepository;
 import bobo.erp.repository.teach.TeachClassInfoRepository;
 import bobo.erp.service.running.GetTeachClassInfoService;
+import bobo.erp.service.teach.CheckThisYearOrder;
 import bobo.erp.service.teach.TeachClassInit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +31,9 @@ public class TeachController {
 
     @Autowired
     private GetTeachClassInfoService getTeachClassInfoService;
+
+    @Autowired
+    private CheckThisYearOrder checkThisYearOrder;
 
     @Autowired
     private TeachClassInfoRepository teachClassInfoRepository;
@@ -65,6 +69,18 @@ public class TeachController {
     public TeachClassInfo getTeachClassInfo(@PathVariable("nowUserName") String nowUserName){
 
         return getTeachClassInfoService.getTeachClassInfoByUsername(nowUserName);
+    }
+
+    @PostMapping(value = "checkThisYearOrder/{seriesId}/{time}")
+    @ResponseBody
+    public Integer checkThisYearOrder(@PathVariable("seriesId") Integer seriesId, @PathVariable("time") Integer time){
+        return checkThisYearOrder.checkOrder(seriesId, time);
+    }
+
+    @PostMapping(value = "checkThisYearBid/{seriesId}/{time}")
+    @ResponseBody
+    public Integer checkThisYearBid(@PathVariable("seriesId") Integer seriesId, @PathVariable("time") Integer time){
+        return checkThisYearOrder.checkBid(seriesId, time);
     }
 
 

@@ -209,6 +209,10 @@ public class TeachClassInit {
             collator.setAreaQuantity(marketNum);
             collator.setSameTimeOpenQuantity(rule.getRuleParam().getParamMarketSametimeOpenNum());
             teachClassInfo.setCollator(collator);
+
+            teachClassInfo.setTime(1);  //设置运行时间为 1
+            teachClassInfo.setOrderMeetingState(0); //设置选单会状态为 未开始
+            teachClassInfo.setOrderMeetingState(0); //设置竞单会状态为 未开始
             teachClassInfoRepository.save(teachClassInfo);
             return "成功初始化";
         }else {

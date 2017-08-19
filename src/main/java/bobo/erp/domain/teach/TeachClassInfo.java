@@ -24,8 +24,9 @@ public class TeachClassInfo {
     private Integer teachClassVolume;   //子用户数量
     private Integer ruleId;             //调用的规则
     private Integer marketSeriesId;     //调用的市场
-
-
+    private Integer time;               //运行时间
+    private Integer orderMeetingState;  //选单会状态 0/1/2 -> 未开始/进行中/已结束
+    private Integer bidMeetingState;    //竞单会状态 0/1/2 -> 未开始/进行中/已结束
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "teach_class_id")
@@ -97,5 +98,29 @@ public class TeachClassInfo {
 
     public void setCollator(Collator collator) {
         this.collator = collator;
+    }
+
+    public Integer getTime() {
+        return time;
+    }
+
+    public void setTime(Integer time) {
+        this.time = time;
+    }
+
+    public Integer getOrderMeetingState() {
+        return orderMeetingState;
+    }
+
+    public void setOrderMeetingState(Integer orderMeetingState) {
+        this.orderMeetingState = orderMeetingState;
+    }
+
+    public Integer getBidMeetingState() {
+        return bidMeetingState;
+    }
+
+    public void setBidMeetingState(Integer bidMeetingState) {
+        this.bidMeetingState = bidMeetingState;
     }
 }

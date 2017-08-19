@@ -10,4 +10,10 @@ import java.util.List;
  */
 public interface MarketBidRepository extends JpaRepository<MarketBid, Integer> {
     public List<MarketBid> findByMarketSeriesId(Integer seriesId);
+
+    public List<MarketBid> findByMarketSeriesIdAndBidYear(Integer seriesId, Integer bidYear);
+
+    public List<MarketBid> findByMarketSeriesIdAndBidYearAndBidArea(Integer seriesId, Integer bidYear, Integer bidArea);
+
+    public List<MarketBid> findByMarketSeriesIdAndBidYearAndBidAreaAndBidProduct(Integer seriesId, Integer bidYear, Integer bidArea, Integer bidProduct);
 }

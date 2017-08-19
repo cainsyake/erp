@@ -35,6 +35,8 @@ public class OperateState {
     private Integer marketDev;  //市场研发
     private Integer longLoan;   //申请长贷
 
+    private Integer reportResult;   //财务报表结果 NULL/1/2 -> 未填/正确/有误
+
     @OneToOne(mappedBy = "operateState")
     private BaseState baseState;
 
@@ -172,6 +174,14 @@ public class OperateState {
 
     public void setLongLoan(Integer longLoan) {
         this.longLoan = longLoan;
+    }
+
+    public Integer getReportResult() {
+        return reportResult;
+    }
+
+    public void setReportResult(Integer reportResult) {
+        this.reportResult = reportResult;
     }
 
     @JsonBackReference
