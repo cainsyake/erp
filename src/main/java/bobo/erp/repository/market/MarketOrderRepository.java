@@ -13,7 +13,7 @@ public interface MarketOrderRepository extends JpaRepository<MarketOrder, Intege
 
     public List<MarketOrder> findByMarketSeriesIdAndOrderYear(Integer seriesId, Integer orderYear);
 
-//    public List<MarketOrder> findByMarketSeriesIdAndOrderYearAndOrOrderArea(Integer seriesId, Integer orderYear, Integer orderArea);
-//
-//    public List<MarketOrder> findByMarketSeriesIdAndOrderYearAndOrOrderAreaAndOrderProduct(Integer seriesId, Integer orderYear, Integer orderArea, Integer orderProduct);
+    public List<MarketOrder> findByMarketSeriesIdAndOrderYearAndOrderArea(Integer seriesId, Integer orderYear, Integer orderArea);
+
+    public List<MarketOrder> findByMarketSeriesIdAndOrderYearAndOrderAreaAndOrderProduct(Integer seriesId, Integer orderYear, Integer orderArea, Integer orderProduct);
 }

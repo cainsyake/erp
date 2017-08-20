@@ -12,6 +12,19 @@ function thcOnload() {
     });
 }
 
+function startOrderMeeting() {
+    var nowUserName = $("#nowUserName").val();
+    $.ajax({
+        type:"POST",
+        url:"/getTeachClassInfo/" + nowUserName,
+        cache:false,
+        dataType:"json",
+        success:function (thc) {
+            pageOrderMeeting(thc);
+        }
+    });
+}
+
 function pageOrderMeeting(thc) {
     $.ajax({
         type:"POST",
@@ -24,33 +37,50 @@ function pageOrderMeeting(thc) {
                 document.getElementById("divOrderCheck").innerHTML = txt;
             }else {
                 if(thc.orderMeetingState == 0){
-                    var txtOrderCheck = "<button class='btn btn-info' onclick='' type='button'>开始本年选单</button>";
+                    var txtOrderCheck = "";
                     var txtOrderMeeting = "<hr>" +
                         "<h4 style='text-align: center'>第 " + thc.time + " 年广告投放情况</h4>" +
                         "<table class='table table-striped table-hover table-bordered'>" +
                         "<thead>" +
-                        "<th>用户名</th>" +
-                        "<th>用户时间</th>" +
-                        "<th>报表情况</th>" +
-                        "<th>广告投放状态</th>" +
+                        "<th style='text-align: center'>用户名</th>" +
+                        "<th style='text-align: center'>用户时间</th>" +
+                        "<th style='text-align: center'>报表情况</th>" +
+                        "<th style='text-align: center'>广告投放状态</th>" +
                         "</tr>" +
                         "</thead>" +
                         "<tbody>";
 
+                    var tabAd = 0;
                     var subUserInfoList = thc.subUserInfoList;
                     $.each(subUserInfoList,function(n, subUserInfo){
                         if(subUserInfo.runningState.baseState.state != -2){
                             //遍历非破产的子用户信息
                             txtOrderMeeting += "<tr>" +
-                                "<td>" + subUserInfo.subUserName + "</td>" +
-                                "<td>第" + subUserInfo.runningState.baseState.timeYear + "年 " + subUserInfo.runningState.baseState.timeQuarter + "季</td>" +
-                                "<td>正常</td>" +
-                                "<td>未投</td>" +
-                                "</tr>";
+                                "<td style='text-align: center'>" + subUserInfo.subUserName + "</td>" +
+                                "<td style='text-align: center'>第" + subUserInfo.runningState.baseState.timeYear + "年 " + subUserInfo.runningState.baseState.timeQuarter + "季</td>";
+                            if(subUserInfo.runningState.baseState.operateState.reportResult == null){
+                                txtOrderMeeting += "<td style='text-align: center'>未填</td>";
+                            }else if(subUserInfo.runningState.baseState.operateState.reportResult == 1){
+                                txtOrderMeeting += "<td style='text-align: center;color: blue'>正确</td>";
+                            }else if(subUserInfo.runningState.baseState.operateState.reportResult == 2){
+                                txtOrderMeeting += "<td style='text-align: center;color: red'>有误</td>";
+                            }
+                            if(subUserInfo.runningState.baseState.operateState.ad == 0 || subUserInfo.runningState.baseState.operateState.ad == null){
+                                txtOrderMeeting += "<td style='text-align: center'>未投</td>";
+                                tabAd = 1;
+                            }else if(subUserInfo.runningState.baseState.operateState.ad == 1){
+                                txtOrderMeeting += "<td style='text-align: center;color: blue'>已投</td>";
+                            }
+                            txtOrderMeeting += "</tr>";
                         }
                     });
                     txtOrderMeeting += "</tbody>" +
                         "</table>";
+                    if(tabAd = 0){
+                        txtOrderCheck = "<button class='btn btn-info' onclick='startOrderMeeting()' type='button'>开始本年选单</button>";
+                    }else{
+                        txtOrderCheck = "<button class='btn btn-warning' type='button'>还不能开始选单</button>";
+                    }
                     document.getElementById("divOrderCheck").innerHTML = txtOrderCheck;
                     document.getElementById("divOrderMeeting").innerHTML = txtOrderMeeting;
                 }
