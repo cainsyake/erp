@@ -16,11 +16,24 @@ function startOrderMeeting() {
     var nowUserName = $("#nowUserName").val();
     $.ajax({
         type:"POST",
-        url:"/getTeachClassInfo/" + nowUserName,
+        url:"/startOrderMeeting/" + nowUserName,
         cache:false,
         dataType:"json",
         success:function (thc) {
-            pageOrderMeeting(thc);
+            thcOnload();
+        }
+    });
+}
+
+function endOrderMeeting() {
+    var nowUserName = $("#nowUserName").val();
+    $.ajax({
+        type:"POST",
+        url:"/endOrderMeeting/" + nowUserName,
+        cache:false,
+        dataType:"json",
+        success:function (thc) {
+            thcOnload();
         }
     });
 }
@@ -33,7 +46,7 @@ function pageOrderMeeting(thc) {
         dataType:"json",
         success:function (check) {
             if(check == 0){
-                var txt = "<button class='btn btn-info' onclick='' type='button'>结束本年选单</button>";
+                var txt = "<button class='btn btn-info' onclick='endOrderMeeting()' type='button'>结束本年选单</button>";
                 document.getElementById("divOrderCheck").innerHTML = txt;
             }else {
                 if(thc.orderMeetingState == 0){
@@ -76,7 +89,7 @@ function pageOrderMeeting(thc) {
                     });
                     txtOrderMeeting += "</tbody>" +
                         "</table>";
-                    if(tabAd = 0){
+                    if(tabAd == 0){
                         txtOrderCheck = "<button class='btn btn-info' onclick='startOrderMeeting()' type='button'>开始本年选单</button>";
                     }else{
                         txtOrderCheck = "<button class='btn btn-warning' type='button'>还不能开始选单</button>";
@@ -287,6 +300,7 @@ function addMarket() {
         },
         success: function(data) {
             document.getElementById("ajaxDiv1").innerHTML = data;
+            $("#btnCloseAddMarket").click();
         }
     });
 }

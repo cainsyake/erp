@@ -16,6 +16,7 @@ import bobo.erp.service.running.GetTeachClassRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -33,6 +34,7 @@ public class OrderMeeting {
     @Autowired
     private MarketOrderRepository marketOrderRepository;
 
+    @Transactional
     public TeachClassInfo startOrderMeeting(String username){
         TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(username);
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
@@ -104,299 +106,178 @@ public class OrderMeeting {
                     productCollator.setType(j + 1);
                     productCollator.setState(-1);
                     //当前开放的排位尚未设置
-                    if (!productCollatorList.isEmpty()){
+                    if (!productOrderList.isEmpty()){
                         List<Integer> orderList = new ArrayList<Integer>();
+                        //测试代码 开始
+                        System.out.println("测试节点，输出区域：" + (i+1) + " 产品：" + (j+1) + " 的订单数量：" + productOrderList.size());
+                        //测试代码 结束
                         for (int k = 0; k < productOrderList.size(); k++){
                             orderList.add(productOrderList.get(k).getMarketOrderId());  //添加订单ID至排序器订单List
                         }
-
+                        System.out.println("测试节点，输出区域：" + (i+1) + " 产品：" + (j+1) + " 排序前的adMap长度" + advertisingStateHashMap.size());
                         List<SortResult> sortResultList = sort(advertisingStateHashMap, i + 1, j + 1, rule.getRuleParam().getParamAdvertisingMinFee());
-
+                        //测试代码 开始
+                        System.out.println("测试节点，输出区域：" + (i+1) + " 产品：" + (j+1) + " 排序后的adMap长度" + advertisingStateHashMap.size());
+                        //测试代码 结束
+                        productCollator.setOrderIdList(orderList);
+                        productCollator.setSortResultList(sortResultList);
                     }
+                    productCollatorList.add(productCollator);
                 }
+                areaCollator.setProductCollatorList(productCollatorList);
             }
             areaCollatorList.add(areaCollator);
         }
+
         collator.setAreaCollatorList(areaCollatorList);
+        teachClassInfo.setCollator(collator);
+        teachClassInfo.setOrderMeetingState(1);
+
+        //测试代码 开始
+        System.out.println("测试节点，排序器工作结束");
+        //测试代码 结束
 
         return teachClassInfo;
     }
 
+    @Transactional
+    public TeachClassInfo endOrderMeeting(String username){
+        TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+
+        //测试代码 开始
+        System.out.println("测试节点，时间：" + teachClassInfo.getTime());
+        System.out.println("测试节点，选单状态：" + teachClassInfo.getOrderMeetingState());
+        //测试代码 结束
+
+        teachClassInfo.setOrderMeetingState(2);
+
+        //TODO 在选单会开发中，直接将时间变更放在选单会结束，等竞单模块开始开发后，需要新编写时间变换方法
+        teachClassInfo.setTime(teachClassInfo.getTime() + 1);
+        teachClassInfo.setOrderMeetingState(0); //变换年份后选单会状态变回 未开始
+
+        return teachClassInfo;
+    }
+
+
     public List<SortResult> sort(HashMap<String, AdvertisingState> advertisingStateHashMap, Integer area, Integer product, Integer minAd){
         List<SortResult> sortResultList = new ArrayList<SortResult>();
-        for (int i = 0; i < advertisingStateHashMap.size(); i++){
+        HashMap<String, AdvertisingState> localMap = new HashMap<String, AdvertisingState>();
+        localMap.putAll(advertisingStateHashMap);
+
+        int size = localMap.size();
+        for (int i = 0; i < size; i++){
+            // TTTTTTTTTTTTTTTTT
+//            System.out.println("测试输出外循环次数：" + (i + 1));
+//            System.out.println("测试输出MAP长度：" + advertisingStateHashMap.size());
+            //TTTTTTTTTTTTTTTTTT
             int tempMax = 0;
             int round = 0;
             String maxName = "";
-            Iterator iterator = advertisingStateHashMap.entrySet().iterator();
+            Iterator iterator = localMap.entrySet().iterator();
             while (iterator.hasNext()){
                 Map.Entry entry = (Map.Entry)iterator.next();
                 String username = (String)entry.getKey();
                 AdvertisingState advertisingState = (AdvertisingState)entry.getValue();
-
+                int adValue = 0;
                 if (area == 1 && product == 1){
-                    int adValue = advertisingState.getAd1();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd1();
                 }
                 if (area == 1 && product == 2){
-                    int adValue = advertisingState.getAd2();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd2();
                 }
                 if (area == 1 && product == 3){
-                    int adValue = advertisingState.getAd3();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd3();
                 }
                 if (area == 1 && product == 4){
-                    int adValue = advertisingState.getAd4();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd4();
                 }
                 if (area == 1 && product == 5){
-                    int adValue = advertisingState.getAd5();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd5();
                 }
-                //Area2
                 if (area == 2 && product == 1){
-                    int adValue = advertisingState.getAd6();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd6();
                 }
                 if (area == 2 && product == 2){
-                    int adValue = advertisingState.getAd7();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd7();
                 }
                 if (area == 2 && product == 3){
-                    int adValue = advertisingState.getAd8();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd8();
                 }
                 if (area == 2 && product == 4){
-                    int adValue = advertisingState.getAd9();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd9();
                 }
                 if (area == 2 && product == 5){
-                    int adValue = advertisingState.getAd10();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd10();
                 }
-                //Area3
                 if (area == 3 && product == 1){
-                    int adValue = advertisingState.getAd11();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd11();
                 }
                 if (area == 3 && product == 2){
-                    int adValue = advertisingState.getAd12();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd12();
                 }
                 if (area == 3 && product == 3){
-                    int adValue = advertisingState.getAd13();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd13();
                 }
                 if (area == 3 && product == 4){
-                    int adValue = advertisingState.getAd14();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd14();
                 }
                 if (area == 3 && product == 5){
-                    int adValue = advertisingState.getAd15();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd15();
                 }
-                //Area4
                 if (area == 4 && product == 1){
-                    int adValue = advertisingState.getAd16();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd16();
                 }
                 if (area == 4 && product == 2){
-                    int adValue = advertisingState.getAd17();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd17();
                 }
                 if (area == 4 && product == 3){
-                    int adValue = advertisingState.getAd18();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd18();
                 }
                 if (area == 4 && product == 4){
-                    int adValue = advertisingState.getAd19();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd19();
                 }
                 if (area == 4 && product == 5){
-                    int adValue = advertisingState.getAd20();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd20();
                 }
-                //Area5
                 if (area == 5 && product == 1){
-                    int adValue = advertisingState.getAd21();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd21();
                 }
                 if (area == 5 && product == 2){
-                    int adValue = advertisingState.getAd22();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd22();
                 }
                 if (area == 5 && product == 3){
-                    int adValue = advertisingState.getAd23();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd23();
                 }
                 if (area == 5 && product == 4){
-                    int adValue = advertisingState.getAd24();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd24();
                 }
                 if (area == 5 && product == 5){
-                    int adValue = advertisingState.getAd25();
-                    if (adValue >= minAd){
-                        if (adValue >= tempMax){
-                            maxName = username;
-                            round = (adValue - minAd) / (2 * minAd) + 1;
-                            advertisingStateHashMap.remove(username);
-                        }
-                    }
+                    adValue = advertisingState.getAd25();
                 }
 
+                if (adValue >= minAd){
+                    // TTT
+//                    System.out.println("测试 外层编号：" + i + " 子用户:" + username + " 广告额：" + adValue);
+//                    System.out.println("测试 当前temp最大广告额：" + tempMax);
+                    // TTT
+                    if (adValue >= tempMax){
+                        maxName = username;
+                        tempMax = adValue;
+                        round = (adValue - minAd) / (2 * minAd) + 1;
+                    }
+                }
             }
 
             if (maxName != ""){
+                //TODO 暂未添加对广告额相同，对区域总额进行比较的代码
                 SortResult sortResult = new SortResult();
                 sortResult.setRank(sortResultList.size() + 1);
                 sortResult.setRound(round);
                 sortResult.setUsername(maxName);
                 sortResultList.add(sortResult);
+
+                localMap.remove(maxName);
             }
         }
 

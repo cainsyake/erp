@@ -6,6 +6,7 @@ import bobo.erp.repository.teach.SubUserInfoRepository;
 import bobo.erp.repository.teach.TeachClassInfoRepository;
 import bobo.erp.service.running.GetTeachClassInfoService;
 import bobo.erp.service.teach.CheckThisYearOrder;
+import bobo.erp.service.teach.OrderMeeting;
 import bobo.erp.service.teach.TeachClassInit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,6 +35,9 @@ public class TeachController {
 
     @Autowired
     private CheckThisYearOrder checkThisYearOrder;
+
+    @Autowired
+    private OrderMeeting orderMeeting;
 
     @Autowired
     private TeachClassInfoRepository teachClassInfoRepository;
@@ -67,7 +71,6 @@ public class TeachController {
     @PostMapping(value = "getTeachClassInfo/{nowUserName}")
     @ResponseBody
     public TeachClassInfo getTeachClassInfo(@PathVariable("nowUserName") String nowUserName){
-
         return getTeachClassInfoService.getTeachClassInfoByUsername(nowUserName);
     }
 
@@ -83,7 +86,16 @@ public class TeachController {
         return checkThisYearOrder.checkBid(seriesId, time);
     }
 
+    @PostMapping(value = "startOrderMeeting/{nowUserName}")
+    @ResponseBody
+    public TeachClassInfo startOrderMeeting(@PathVariable("nowUserName") String nowUserName){
+        return orderMeeting.startOrderMeeting(nowUserName);
+    }
 
-
+    @PostMapping(value = "endOrderMeeting/{nowUserName}")
+    @ResponseBody
+    public TeachClassInfo endOrderMeeting(@PathVariable("nowUserName") String nowUserName){
+        return orderMeeting.endOrderMeeting(nowUserName);
+    }
 
 }
