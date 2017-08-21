@@ -121,9 +121,18 @@ public class OrderMeeting {
                         //测试代码 结束
                         productCollator.setOrderIdList(orderList);
                         productCollator.setSortResultList(sortResultList);
+                    }else {
+                        //目标区域-产品无订单的业务处理
+                        List<Integer> orderList = new ArrayList<Integer>();
+                        productCollator.setOrderIdList(orderList);
+                        //无需设置排序结果List
                     }
                     productCollatorList.add(productCollator);
                 }
+                areaCollator.setProductCollatorList(productCollatorList);
+            }else {
+                //当目标区域无订单时，设置空的产品排序器
+                List<ProductCollator> productCollatorList = new ArrayList<ProductCollator>();
                 areaCollator.setProductCollatorList(productCollatorList);
             }
             areaCollatorList.add(areaCollator);
@@ -132,6 +141,7 @@ public class OrderMeeting {
         collator.setAreaCollatorList(areaCollatorList);
         teachClassInfo.setCollator(collator);
         teachClassInfo.setOrderMeetingState(1);
+        //TODO 还需要添加初始开放区域和初始开放产品
 
         //测试代码 开始
         System.out.println("测试节点，排序器工作结束");

@@ -21,6 +21,9 @@ function startOrderMeeting() {
         dataType:"json",
         success:function (thc) {
             thcOnload();
+            console.log("测试1");
+            setInterval(testOnTime,2000);
+            console.log("测试2");
         }
     });
 }
@@ -34,8 +37,13 @@ function endOrderMeeting() {
         dataType:"json",
         success:function (thc) {
             thcOnload();
+
         }
     });
+}
+
+function testOnTime() {
+    console.log("测试定时请求");
 }
 
 function pageOrderMeeting(thc) {
