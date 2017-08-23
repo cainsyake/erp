@@ -1,4 +1,8 @@
 window.onload=thcOnload;
+// $(function () {
+//     //iCount获取setInterval句柄
+//     var intervalId = 0;
+// });
 function thcOnload() {
     var nowUserName = $("#nowUserName").val();
     $.ajax({
@@ -7,6 +11,9 @@ function thcOnload() {
         cache:false,
         dataType:"json",
         success:function (thc) {
+            if(thc.orderMeetingState == 1){
+                window.setInterval(orderMeetingUpdate, 10000);
+            }
             checkTime(thc);
             pageOrderMeeting(thc);
         }
@@ -15,8 +22,9 @@ function thcOnload() {
 
 function startOrderMeeting() {
     var nowUserName = $("#nowUserName").val();
-    var d = new Date();
-    console.log("测试初始时间戳：" + d.getTime());
+
+
+
     $.ajax({
         type:"POST",
         url:"/startOrderMeeting/" + nowUserName,
@@ -36,44 +44,41 @@ function startOrderMeeting() {
 }
 
 function orderMeetingUpdate(thc) {
-    var areaCollatorList = thc.collator.areaCollatorList;
-    var openAreaList = thc.collator.openAreaList;
-    $.each(openAreaList,function(n,openArea){
-        //遍历开放区域List
-        var areaCollator = areaCollatorList[openArea - 1];  //打开区域排序器
-        var productCollatorList = areaCollator.productCollatorList;
-        if(productCollatorList.length == 0){
-            //该区域无订单，提交切换区域请求
-            $.ajax({
-                type:"POST",
-                url:"/nextArea/" + nowUserName + "/" + openArea,
-                cache:false,
-                dataType:"json",
-                success:function (thc) {
-                    // thcOnload();
-                }
-            });
-        }else {
-            var openProduct = areaCollator.openProduct;     //获取当前开放产品ID
-            if(openProduct == 0){
+    var nowUserName = $("#nowUserName").val();
+    console.log("测试 进入订单会更新函数");
+    $.ajax({
+        type:"POST",
+        url:"/getTeachClassInfo/" + nowUserName,
+        cache:false,
+        dataType:"json",
+        success:function (thc) {
+            if(thc.orderMeetingState == 2){
+                window.location.reload();
+            }
+            var areaCollatorList = thc.collator.areaCollatorList;
+            var openAreaList = thc.collator.openAreaList;
+            if(openAreaList.length == 0){
                 $.ajax({
                     type:"POST",
-                    url:"/nextProduct/" + nowUserName + "/" + openArea,
+                    url:"/endOrderMeeting/" + nowUserName,
                     cache:false,
                     dataType:"json",
                     success:function (thc) {
                         // thcOnload();
                     }
                 });
-            }else {
-                var productCollator = productCollatorList[openProduct - 1];     //打开产品排序器
-                var orderIdList = productCollator.orderIdList;
-                var sortResultList = productCollator.sortResultList;
-                if(orderIdList.length == 0 || sortResultList == 0){
-                    //该产品无订单或无人投广告，提交切换产品请求
+            }
+            $.each(openAreaList,function(n,openArea){
+                //遍历开放区域List
+                console.log("测试 当前开放区域ID：" + openArea);
+                var areaCollator = areaCollatorList[openArea - 1];  //打开区域排序器
+                var productCollatorList = areaCollator.productCollatorList;
+                if(productCollatorList.length == 0){
+                    //该区域无订单，提交切换区域请求
+                    console.log("该区域无订单，提交切换区域请求");
                     $.ajax({
                         type:"POST",
-                        url:"/nextProduct/" + nowUserName + "/" + openArea,
+                        url:"/nextArea/" + nowUserName + "/" + openArea,
                         cache:false,
                         dataType:"json",
                         success:function (thc) {
@@ -81,8 +86,9 @@ function orderMeetingUpdate(thc) {
                         }
                     });
                 }else {
-                    var openUser = productCollator.openUser;
-                    if(openUser == 0){
+                    var openProduct = areaCollator.openProduct;     //获取当前开放产品ID
+                    console.log("测试 当前开放产品ID：" + openProduct);
+                    if(openProduct == 0){
                         $.ajax({
                             type:"POST",
                             url:"/nextProduct/" + nowUserName + "/" + openArea,
@@ -93,28 +99,59 @@ function orderMeetingUpdate(thc) {
                             }
                         });
                     }else {
-                        var time = productCollator.time;
-                        var nowTime = new Date();
-                        var timeResult = time.getTime() - nowTime.getTime();
-                        if(timeResult < 0){
+                        var productCollator = productCollatorList[openProduct - 1];     //打开产品排序器
+                        var orderIdList = productCollator.orderIdList;
+                        var sortResultList = productCollator.sortResultList;
+                        if(orderIdList.length == 0 || sortResultList == 0){
+                            //该产品无订单或无人投广告，提交切换产品请求
+                            console.log("该产品无订单或无人投广告，提交切换产品请求");
                             $.ajax({
                                 type:"POST",
-                                url:"/nextUser/" + nowUserName + "/" + openArea,
+                                url:"/nextProduct/" + nowUserName + "/" + openArea,
                                 cache:false,
                                 dataType:"json",
                                 success:function (thc) {
                                     // thcOnload();
                                 }
                             });
+                        }else {
+                            var openUser = productCollator.openUser;
+                            console.log("测试 输出当前开放排位:" + openUser);
+                            if(openUser == 0){
+                                console.log("测试 当前产品排序器开放用户排位是0 执行切换用户操作");
+                                $.ajax({
+                                    type:"POST",
+                                    url:"/nextProduct/" + nowUserName + "/" + openArea,
+                                    cache:false,
+                                    dataType:"json",
+                                    success:function (thc) {
+                                        // thcOnload();
+                                    }
+                                });
+                            }else {
+                                var time = productCollator.time;
+                                var nowTime = new Date();
+                                var timeResult = time.getTime() - nowTime.getTime();
+                                console.log("测试 输出剩余选单时间(ms):" + timeResult);
+                                if(timeResult < 0){
+                                    $.ajax({
+                                        type:"POST",
+                                        url:"/nextUser/" + nowUserName + "/" + openArea,
+                                        cache:false,
+                                        dataType:"json",
+                                        success:function (thc) {
+                                            // thcOnload();
+                                        }
+                                    });
+                                }
+                            }
+
                         }
                     }
-
                 }
-            }
-
+            });
         }
     });
-
 }
 
 function test(d) {
