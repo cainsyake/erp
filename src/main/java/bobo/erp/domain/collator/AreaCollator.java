@@ -19,7 +19,7 @@ public class AreaCollator {
 
     private Integer type;           //区域类型
 
-    private Integer state;          //开放状态  -1：未开放 0：正在开放 1：结束开放
+    private Integer state;          //开放状态  0：未开放 1：正在开放 2：结束开放
 
     private Integer openProduct;    //当前开放产品id
 

@@ -7,6 +7,7 @@ function thcOnload() {
         cache:false,
         dataType:"json",
         success:function (thc) {
+            checkTime(thc);
             pageOrderMeeting(thc);
         }
     });
@@ -14,6 +15,8 @@ function thcOnload() {
 
 function startOrderMeeting() {
     var nowUserName = $("#nowUserName").val();
+    var d = new Date();
+    console.log("测试初始时间戳：" + d.getTime());
     $.ajax({
         type:"POST",
         url:"/startOrderMeeting/" + nowUserName,
@@ -21,11 +24,104 @@ function startOrderMeeting() {
         dataType:"json",
         success:function (thc) {
             thcOnload();
-            console.log("测试1");
-            setInterval(testOnTime,2000);
-            console.log("测试2");
+            
+            //以下为测试代码
+            // var id = window.setInterval(function(){
+            //     test(d)
+            // }, 1000);
+            // console.log("测试ID：" + id);
+            console.log("测试服务器时间：" + thc.collator.areaCollatorList[0].productCollatorList[0].time);
         }
     });
+}
+
+function orderMeetingUpdate(thc) {
+    var areaCollatorList = thc.collator.areaCollatorList;
+    var openAreaList = thc.collator.openAreaList;
+    $.each(openAreaList,function(n,openArea){
+        //遍历开放区域List
+        var areaCollator = areaCollatorList[openArea - 1];  //打开区域排序器
+        var productCollatorList = areaCollator.productCollatorList;
+        if(productCollatorList.length == 0){
+            //该区域无订单，提交切换区域请求
+            $.ajax({
+                type:"POST",
+                url:"/nextArea/" + nowUserName + "/" + openArea,
+                cache:false,
+                dataType:"json",
+                success:function (thc) {
+                    // thcOnload();
+                }
+            });
+        }else {
+            var openProduct = areaCollator.openProduct;     //获取当前开放产品ID
+            if(openProduct == 0){
+                $.ajax({
+                    type:"POST",
+                    url:"/nextProduct/" + nowUserName + "/" + openArea,
+                    cache:false,
+                    dataType:"json",
+                    success:function (thc) {
+                        // thcOnload();
+                    }
+                });
+            }else {
+                var productCollator = productCollatorList[openProduct - 1];     //打开产品排序器
+                var orderIdList = productCollator.orderIdList;
+                var sortResultList = productCollator.sortResultList;
+                if(orderIdList.length == 0 || sortResultList == 0){
+                    //该产品无订单或无人投广告，提交切换产品请求
+                    $.ajax({
+                        type:"POST",
+                        url:"/nextProduct/" + nowUserName + "/" + openArea,
+                        cache:false,
+                        dataType:"json",
+                        success:function (thc) {
+                            // thcOnload();
+                        }
+                    });
+                }else {
+                    var openUser = productCollator.openUser;
+                    if(openUser == 0){
+                        $.ajax({
+                            type:"POST",
+                            url:"/nextProduct/" + nowUserName + "/" + openArea,
+                            cache:false,
+                            dataType:"json",
+                            success:function (thc) {
+                                // thcOnload();
+                            }
+                        });
+                    }else {
+                        var time = productCollator.time;
+                        var nowTime = new Date();
+                        var timeResult = time.getTime() - nowTime.getTime();
+                        if(timeResult < 0){
+                            $.ajax({
+                                type:"POST",
+                                url:"/nextUser/" + nowUserName + "/" + openArea,
+                                cache:false,
+                                dataType:"json",
+                                success:function (thc) {
+                                    // thcOnload();
+                                }
+                            });
+                        }
+                    }
+
+                }
+            }
+
+        }
+    });
+
+}
+
+function test(d) {
+    var nowTime = new Date();
+    console.log("测试延时时间戳：" + nowTime.getTime());
+    var time = nowTime.getTime() - d.getTime();
+    console.log("测试时间差：" + time);
 }
 
 function endOrderMeeting() {
@@ -37,13 +133,25 @@ function endOrderMeeting() {
         dataType:"json",
         success:function (thc) {
             thcOnload();
-
         }
     });
 }
 
-function testOnTime() {
-    console.log("测试定时请求");
+function checkTime(thc) {
+    //完成竞单模块后需要增加对竞单会状态的检验
+    var nowUserName = $("#nowUserName").val();
+    if(thc.orderMeetingState == 2){
+        $.ajax({
+            type:"POST",
+            url:"/changeTime/" + nowUserName,
+            cache:false,
+            dataType:"json",
+            success:function (thc) {
+                thcOnload();
+            }
+        });
+    }
+
 }
 
 function pageOrderMeeting(thc) {

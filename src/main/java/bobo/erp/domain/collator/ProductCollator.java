@@ -3,6 +3,7 @@ package bobo.erp.domain.collator;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,9 +20,11 @@ public class ProductCollator {
 
     private Integer type;           //产品类型
 
-    private Integer state;          //开放状态  -1：未开放 0：正在开放 1：结束开放
+    private Integer state;          //开放状态  0：未开放 1：正在开放 2：结束开放
 
     private Integer openUser;       //当前开放的用户排位
+
+    private Date time;  //到期时间
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_collator_id")
@@ -81,6 +84,14 @@ public class ProductCollator {
 
     public void setOrderIdList(List<Integer> orderIdList) {
         this.orderIdList = orderIdList;
+    }
+
+    public Date getTime() {
+        return time;
+    }
+
+    public void setTime(Date time) {
+        this.time = time;
     }
 
     @JsonBackReference

@@ -22,6 +22,8 @@ public class Collator {
 
     private Integer sameTimeOpenQuantity;   //区域同时开放数量
 
+    private Integer productNum;             //产品数量
+
     @ElementCollection
     @CollectionTable(name="open_area_list")
     @Column(name="area_id")
@@ -56,6 +58,14 @@ public class Collator {
 
     public void setSameTimeOpenQuantity(Integer sameTimeOpenQuantity) {
         this.sameTimeOpenQuantity = sameTimeOpenQuantity;
+    }
+
+    public Integer getProductNum() {
+        return productNum;
+    }
+
+    public void setProductNum(Integer productNum) {
+        this.productNum = productNum;
     }
 
     public List<Integer> getOpenAreaList() {

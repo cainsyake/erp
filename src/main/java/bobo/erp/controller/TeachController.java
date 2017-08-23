@@ -98,4 +98,27 @@ public class TeachController {
         return orderMeeting.endOrderMeeting(nowUserName);
     }
 
+    @PostMapping(value = "changeTime/{nowUserName}")
+    @ResponseBody
+    public TeachClassInfo changeTime(@PathVariable("nowUserName") String nowUserName){
+        return orderMeeting.changeTime(nowUserName);
+    }
+
+    @PostMapping(value = "nextArea/{nowUserName}/{id}")
+    @ResponseBody
+    public TeachClassInfo nextArea(@PathVariable("nowUserName") String nowUserName, @PathVariable("id") Integer id){
+        return orderMeeting.nextArea(nowUserName, id);
+    }
+
+    @PostMapping(value = "nextProduct/{nowUserName}/{id}")
+    @ResponseBody
+    public TeachClassInfo nextProduct(@PathVariable("nowUserName") String nowUserName, @PathVariable("id") Integer id){
+        return orderMeeting.nextProduct(nowUserName, id);
+    }
+
+    @PostMapping(value = "nextUser/{nowUserName}/{id}")
+    @ResponseBody
+    public TeachClassInfo nextUser(@PathVariable("nowUserName") String nowUserName, @PathVariable("id") Integer id){
+        return orderMeeting.nextUser(nowUserName, id);
+    }
 }

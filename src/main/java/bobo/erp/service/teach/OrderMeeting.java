@@ -88,8 +88,15 @@ public class OrderMeeting {
             productNum++;
         }
 
+        collator.setProductNum(productNum);     //设置产品数量
         collator.setAreaQuantity(areaQuantity);     //设置区域数量
         collator.setSameTimeOpenQuantity(rule.getRuleParam().getParamMarketSametimeOpenNum());      //设置同开数量
+
+        List<Integer> openAreaList = new ArrayList<Integer>();
+        for (int i = 0 ; i < rule.getRuleParam().getParamMarketSametimeOpenNum(); i++){
+            openAreaList.add( i + 1);
+        }
+        collator.setOpenAreaList(openAreaList);     //设置初始开放区域List
 
         List<AreaCollator> areaCollatorList = new ArrayList<AreaCollator>();
         for (int i = 0; i < areaQuantity; i++){
@@ -108,19 +115,18 @@ public class OrderMeeting {
                     //当前开放的排位尚未设置
                     if (!productOrderList.isEmpty()){
                         List<Integer> orderList = new ArrayList<Integer>();
-                        //测试代码 开始
-                        System.out.println("测试节点，输出区域：" + (i+1) + " 产品：" + (j+1) + " 的订单数量：" + productOrderList.size());
-                        //测试代码 结束
                         for (int k = 0; k < productOrderList.size(); k++){
                             orderList.add(productOrderList.get(k).getMarketOrderId());  //添加订单ID至排序器订单List
                         }
-                        System.out.println("测试节点，输出区域：" + (i+1) + " 产品：" + (j+1) + " 排序前的adMap长度" + advertisingStateHashMap.size());
                         List<SortResult> sortResultList = sort(advertisingStateHashMap, i + 1, j + 1, rule.getRuleParam().getParamAdvertisingMinFee());
-                        //测试代码 开始
-                        System.out.println("测试节点，输出区域：" + (i+1) + " 产品：" + (j+1) + " 排序后的adMap长度" + advertisingStateHashMap.size());
-                        //测试代码 结束
+                        if (!sortResultList.isEmpty()){
+                            productCollator.setOpenUser(0);     //如果排序结果List非空，初始化产品排序器的用户排位为0
+                        }
                         productCollator.setOrderIdList(orderList);
                         productCollator.setSortResultList(sortResultList);
+
+                        Date time = new Date();
+                        productCollator.setTime(time);
                     }else {
                         //目标区域-产品无订单的业务处理
                         List<Integer> orderList = new ArrayList<Integer>();
@@ -129,7 +135,8 @@ public class OrderMeeting {
                     }
                     productCollatorList.add(productCollator);
                 }
-                areaCollator.setProductCollatorList(productCollatorList);
+                areaCollator.setProductCollatorList(productCollatorList);   //设置产品排序器List
+                areaCollator.setOpenProduct(0);     //设置初始开放产品为0
             }else {
                 //当目标区域无订单时，设置空的产品排序器
                 List<ProductCollator> productCollatorList = new ArrayList<ProductCollator>();
@@ -140,8 +147,8 @@ public class OrderMeeting {
 
         collator.setAreaCollatorList(areaCollatorList);
         teachClassInfo.setCollator(collator);
-        teachClassInfo.setOrderMeetingState(1);
-        //TODO 还需要添加初始开放区域和初始开放产品
+        teachClassInfo.setOrderMeetingState(1);     //设置选单会状态为 正在进行中
+        //TODO 还需要添加初始开放区域和初始开放产品 非空的产品排序器还需要添加默认用户排位(0)
 
         //测试代码 开始
         System.out.println("测试节点，排序器工作结束");
@@ -154,18 +161,7 @@ public class OrderMeeting {
     public TeachClassInfo endOrderMeeting(String username){
         TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(username);
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
-
-        //测试代码 开始
-        System.out.println("测试节点，时间：" + teachClassInfo.getTime());
-        System.out.println("测试节点，选单状态：" + teachClassInfo.getOrderMeetingState());
-        //测试代码 结束
-
         teachClassInfo.setOrderMeetingState(2);
-
-        //TODO 在选单会开发中，直接将时间变更放在选单会结束，等竞单模块开始开发后，需要新编写时间变换方法
-        teachClassInfo.setTime(teachClassInfo.getTime() + 1);
-        teachClassInfo.setOrderMeetingState(0); //变换年份后选单会状态变回 未开始
-
         return teachClassInfo;
     }
 
@@ -177,10 +173,6 @@ public class OrderMeeting {
 
         int size = localMap.size();
         for (int i = 0; i < size; i++){
-            // TTTTTTTTTTTTTTTTT
-//            System.out.println("测试输出外循环次数：" + (i + 1));
-//            System.out.println("测试输出MAP长度：" + advertisingStateHashMap.size());
-            //TTTTTTTTTTTTTTTTTT
             int tempMax = 0;
             int round = 0;
             String maxName = "";
@@ -267,10 +259,6 @@ public class OrderMeeting {
                 }
 
                 if (adValue >= minAd){
-                    // TTT
-//                    System.out.println("测试 外层编号：" + i + " 子用户:" + username + " 广告额：" + adValue);
-//                    System.out.println("测试 当前temp最大广告额：" + tempMax);
-                    // TTT
                     if (adValue >= tempMax){
                         maxName = username;
                         tempMax = adValue;
@@ -293,5 +281,118 @@ public class OrderMeeting {
 
         return sortResultList;
     }
+
+    @Transactional
+    public TeachClassInfo changeTime(String username){
+        TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(username);
+        //TODO 完成竞单模块后需要增加对竞单会状态的检验
+        if (teachClassInfo.getOrderMeetingState() == 2){
+            teachClassInfo.setTime(teachClassInfo.getTime() + 1);
+            teachClassInfo.setOrderMeetingState(0);
+            teachClassInfo.setBidMeetingState(0);
+        }
+        return teachClassInfo;
+    }
+
+    @Transactional
+    public TeachClassInfo nextArea(String username, Integer id){
+        TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+        int maxOpen = 0;
+        List<Integer> openAreaList = teachClassInfo.getCollator().getOpenAreaList();
+        for (Integer areaId : openAreaList){
+            if (areaId > maxOpen){
+                maxOpen = areaId;
+            }
+        }
+        AreaCollator areaCollatorClose = teachClassInfo.getCollator().getAreaCollatorList().get(id - 1);
+        areaCollatorClose.setState(2);  //关闭该区域排序器
+        Iterator<Integer> iterator = openAreaList.iterator();
+        while (iterator.hasNext()){
+            int tempId = iterator.next();
+            if (tempId == id){
+                iterator.remove();  //从开放区域List中删除此区域ID
+            }
+        }
+        if (maxOpen < teachClassInfo.getCollator().getAreaQuantity()){
+            openAreaList.add(maxOpen + 1);
+            AreaCollator areaCollatorNew = teachClassInfo.getCollator().getAreaCollatorList().get(maxOpen);
+            areaCollatorNew.setState(1);    //打开新的区域排序器
+            areaCollatorNew.setOpenProduct(0);  //设置新的区域排序器的开放产品ID为0
+        }
+        return teachClassInfo;
+    }
+
+    @Transactional
+    public TeachClassInfo nextProduct(String username, Integer id){
+        TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+        AreaCollator areaCollator = teachClassInfo.getCollator().getAreaCollatorList().get(id - 1);
+        int next = areaCollator.getOpenProduct();
+        if (next < teachClassInfo.getCollator().getProductNum()){
+            areaCollator.getProductCollatorList().get(next - 1).setState(2);    //关闭当前产品排序器
+            ProductCollator productCollator = areaCollator.getProductCollatorList().get(next);  //打开新的产品排序器
+            productCollator.setState(1);
+            productCollator.setOpenUser(0); //设置新的产品排序器的用户排位为0
+            areaCollator.setOpenProduct(next + 1);  //设置该区域排序器的开放产品ID为新的产品
+        }else {
+            //当前产品是最后一个产品 执行切换区域操作
+            areaCollator.getProductCollatorList().get(next - 1).setState(2);    //关闭当前产品排序器
+            nextArea(username, id);
+        }
+        return teachClassInfo;
+    }
+
+    @Transactional
+    public TeachClassInfo nextUser(String username, Integer id){
+        TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(username);
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+        AreaCollator areaCollator = teachClassInfo.getCollator().getAreaCollatorList().get(id - 1);
+        ProductCollator productCollator = areaCollator.getProductCollatorList().get(areaCollator.getOpenProduct() - 1); //打开产品排序器
+        List<SortResult> sortResultList = productCollator.getSortResultList();
+        int check = 0;  //检查全体用户的round
+        for (SortResult sortResult : sortResultList){
+            if (sortResult.getRound() > 0){
+                check++;
+            }
+        }
+        if (check == 0){
+            //全部用户的round均为0，调用切换产品方法
+            nextProduct(username, id);
+        }
+        productCollator = nextUserOperate(productCollator, rule);
+        return teachClassInfo;
+    }
+
+    @Transactional
+    public ProductCollator nextUserOperate(ProductCollator productCollator, Rule rule){
+        int next = productCollator.getOpenUser();
+        List<SortResult> sortResultList = productCollator.getSortResultList();
+        int n = 0;
+        for (SortResult sortResult : sortResultList){
+            if (next == sortResultList.size()){
+                productCollator.setOpenUser(0);
+                return nextUserOperate(productCollator, rule);
+            }
+            if (n == next){
+                if (sortResult.getRound() > 0){
+                    productCollator.setOpenUser(next + 1);
+                    sortResult.setRound(sortResult.getRound() - 1);
+                    long currentTime = System.currentTimeMillis();
+                    currentTime += 1000 * rule.getRuleParam().getParamSelectOrderTime();
+                    Date time = new Date(currentTime);
+                    productCollator.setTime(time);
+                }else {
+                    next++;
+                }
+            }
+            n++;
+        }
+        return productCollator;
+    }
+
+
+
+
 
 }
