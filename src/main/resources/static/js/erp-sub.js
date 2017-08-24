@@ -917,6 +917,18 @@ function pageController(rule, runningState) {
     txt11 += "</select>";
     document.getElementById("divChangeLineProductSelect").innerHTML = txt11;   //输出可转产的产品信息
 
+    var txt14 = "<button href='#tab1' data-toggle='tab'>标签1</button><br>" +
+        "<button href='#tab2' data-toggle='tab'>标签2</button><br>" +
+        "<div id='myTabContent' class='tab-content'>" +
+        "<div class='tab-pane fade in active' id='tab1'>" +
+        "标签1内容" +
+        "</div>" +
+        "<div class='tab-pane fade' id='tab2'>" +
+        "标签2内容" +
+        "</div>"
+        "</div>";
+    document.getElementById("divOrderMeeting").innerHTML = txt14;   //
+
 
 }
 
@@ -940,10 +952,10 @@ function btnController(obj) {
                 txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#modalAdvertising' type='button' style='' id='btnAdvertising'>投放广告</button> ";
             }
             if(obj.baseState.operateState.orderMeeting == 0){
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnOrderMeeting'>订货会</button> ";
+                txt += "<button class='btn btn-warning btn-lg' data-toggle='modal' href='#modalOrderMeeting' type='button' style='' id='btnOrderMeeting'>订货会</button> ";
             }
             if(obj.baseState.operateState.bidMeeting == 0){
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnBidMeeting'>竞单会</button> ";
+                txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#modalBidMeeting' type='button' style='' id='btnBidMeeting'>竞单会</button> ";
             }
             if(obj.baseState.operateState.longLoan == 0){
                 txt += "<button class='btn btn-danger btn-lg' data-toggle='modal' href='#modalApplyLongDebt' type='button' id='ApplyLongLoan'>申请长贷</button> ";
