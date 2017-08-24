@@ -296,7 +296,6 @@ public class OrderMeeting {
 
     @Transactional
     public TeachClassInfo nextArea(String username, Integer id){
-        System.out.println("测试 接收到教学班：" + username + " 的切换区域请求");
         TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(username);
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
         int maxOpen = 0;
@@ -326,7 +325,6 @@ public class OrderMeeting {
 
     @Transactional
     public TeachClassInfo nextProduct(String username, Integer id){
-        System.out.println("测试 接收到教学班：" + username + " 的切换产品请求");
         TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(username);
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
         AreaCollator areaCollator = teachClassInfo.getCollator().getAreaCollatorList().get(id - 1);
@@ -349,7 +347,7 @@ public class OrderMeeting {
 
     @Transactional
     public TeachClassInfo nextUser(String username, Integer id){
-        System.out.println("测试 接收到教学班：" + username + " 的切换用户请求");
+//        System.out.println("测试 接收到教学班：" + username + " 的切换用户请求");
         TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(username);
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
         AreaCollator areaCollator = teachClassInfo.getCollator().getAreaCollatorList().get(id - 1);
@@ -363,7 +361,8 @@ public class OrderMeeting {
         }
         if (check == 0){
             //全部用户的round均为0，调用切换产品方法
-            nextProduct(username, id);
+            System.out.println("测试 该产品全部用户round均为0");
+            return nextProduct(username, id);
         }
         System.out.println("测试 区域：" + id + " 产品：" + areaCollator.getOpenProduct() + " 的已投用户数量："  + sortResultList.size());
         productCollator = nextUserOperate(productCollator, rule);
@@ -379,14 +378,17 @@ public class OrderMeeting {
         for (SortResult sortResult : sortResultList){
             System.out.println("测试 遍历排序结果，用户名：" + sortResult.getUsername() + " 循环次数：" + n);
             if (next == sortResultList.size()){
+                System.out.println("已遍历至最后一个rank，通过递归重新遍历");
                 productCollator.setOpenUser(0);
                 return nextUserOperate(productCollator, rule);
             }
             if (n == next){
-                System.out.println("测试 找到下一目标用户");
+                System.out.println("测试 打开目标开放排位：" + (next + 1));
                 if (sortResult.getRound() > 0){
+                    System.out.println("测试 前置round：" + sortResult.getRound());
                     productCollator.setOpenUser(next + 1);
                     sortResult.setRound(sortResult.getRound() - 1);
+                    System.out.println("测试 后置round：" + sortResult.getRound());
                     long currentTime = System.currentTimeMillis();
                     currentTime += 1000 * rule.getRuleParam().getParamSelectOrderTime();
                     Date time = new Date(currentTime);

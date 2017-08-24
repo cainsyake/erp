@@ -1,8 +1,4 @@
 window.onload=thcOnload;
-// $(function () {
-//     //iCount获取setInterval句柄
-//     var intervalId = 0;
-// });
 function thcOnload() {
     var nowUserName = $("#nowUserName").val();
     $.ajax({
@@ -12,7 +8,7 @@ function thcOnload() {
         dataType:"json",
         success:function (thc) {
             if(thc.orderMeetingState == 1){
-                window.setInterval(orderMeetingUpdate, 10000);
+                window.setInterval(orderMeetingUpdate, 500);
             }
             checkTime(thc);
             pageOrderMeeting(thc);
@@ -43,8 +39,9 @@ function startOrderMeeting() {
     });
 }
 
-function orderMeetingUpdate(thc) {
+function orderMeetingUpdate() {
     var nowUserName = $("#nowUserName").val();
+    var time1 = new Date();
     console.log("测试 进入订单会更新函数");
     $.ajax({
         type:"POST",
@@ -112,6 +109,9 @@ function orderMeetingUpdate(thc) {
                                 dataType:"json",
                                 success:function (thc) {
                                     // thcOnload();
+                                    var time2 = new Date();
+                                    var time3 = time2.getTime() - time1.getTime();
+                                    console.log("测试 切换产品处理时间：" + time3 + " ms");
                                 }
                             });
                         }else {
@@ -121,17 +121,20 @@ function orderMeetingUpdate(thc) {
                                 console.log("测试 当前产品排序器开放用户排位是0 执行切换用户操作");
                                 $.ajax({
                                     type:"POST",
-                                    url:"/nextProduct/" + nowUserName + "/" + openArea,
+                                    url:"/nextUser/" + nowUserName + "/" + openArea,
                                     cache:false,
                                     dataType:"json",
                                     success:function (thc) {
                                         // thcOnload();
+                                        var time2 = new Date();
+                                        var time3 = time2.getTime() - time1.getTime();
+                                        console.log("测试 切换用户处理时间：" + time3 + " ms");
                                     }
                                 });
                             }else {
                                 var time = productCollator.time;
                                 var nowTime = new Date();
-                                var timeResult = time.getTime() - nowTime.getTime();
+                                var timeResult = time - nowTime.getTime();
                                 console.log("测试 输出剩余选单时间(ms):" + timeResult);
                                 if(timeResult < 0){
                                     $.ajax({
@@ -150,15 +153,9 @@ function orderMeetingUpdate(thc) {
                     }
                 }
             });
+            pageOrderMeeting(thc);
         }
     });
-}
-
-function test(d) {
-    var nowTime = new Date();
-    console.log("测试延时时间戳：" + nowTime.getTime());
-    var time = nowTime.getTime() - d.getTime();
-    console.log("测试时间差：" + time);
 }
 
 function endOrderMeeting() {
@@ -249,6 +246,71 @@ function pageOrderMeeting(thc) {
                     }
                     document.getElementById("divOrderCheck").innerHTML = txtOrderCheck;
                     document.getElementById("divOrderMeeting").innerHTML = txtOrderMeeting;
+                }else if(thc.orderMeetingState == 1){
+                    txtOrderCheck = "<h3 style='text-align: center'>正 在 选 单</h3>";
+                    var txtOrderMeeting = "<hr>" +
+                        "<h4 style='text-align: center'>第 " + thc.time + " 年选单情况</h4>" +
+                        "<table class='table table-striped table-hover table-bordered'>" +
+                        "<thead>" +
+                        "<th style='text-align: center'>区域ID</th>" +
+                        "<th style='text-align: center'>产品ID</th>" +
+                        "<th style='text-align: center'>当前排位</th>" +
+                        "<th style='text-align: center'>选单用户</th>" +
+                        "<th style='text-align: center'>剩余时间</th>" +
+                        "</tr>" +
+                        "</thead>" +
+                        "<tbody>";
+                    var collator = thc.collator;
+                    var openAreaList = collator.openAreaList;
+                    var areaCollatorList = thc.collator.areaCollatorList;
+                    $.each(openAreaList,function(n, openArea){
+                        txtOrderMeeting += "<tr>" +
+                            "<td style='text-align: center'>" + openArea + "</td>";
+                        var areaCollator = areaCollatorList[openArea - 1];  //打开区域排序器
+                        var productCollatorList = areaCollator.productCollatorList;
+                        if(productCollatorList.length == 0){
+                            //该区域无订单，提交切换区域请求
+                            txtOrderMeeting += "<td style='text-align: center'>无</td>";
+                        }else {
+                            var openProduct = areaCollator.openProduct;     //获取当前开放产品ID
+                            txtOrderMeeting += "<td style='text-align: center'>" + openProduct + "</td>";
+                            if(openProduct == 0){
+                                txtOrderMeeting += "<td style='text-align: center'>无</td>" +
+                                    "<td style='text-align: center'>无</td>";
+                            }else {
+                                var productCollator = productCollatorList[openProduct - 1];     //打开产品排序器
+                                var orderIdList = productCollator.orderIdList;
+                                var sortResultList = productCollator.sortResultList;
+                                if(orderIdList.length == 0 || sortResultList == 0){
+                                    //该产品无订单或无人投广告，提交切换产品请求
+                                    txtOrderMeeting += "<td style='text-align: center'>无</td>" +
+                                        "<td style='text-align: center'>无</td>";
+                                }else {
+                                    var openUser = productCollator.openUser;
+                                    console.log("测试 输出当前开放排位:" + openUser);
+                                    if(openUser == 0){
+                                        txtOrderMeeting += "<td style='text-align: center'>0</td>" +
+                                            "<td style='text-align: center'>无</td>";
+                                    }else {
+                                        var time = productCollator.time;
+                                        var nowTime = new Date();
+                                        var timeResult = parseInt((time - nowTime.getTime()) / 1000);
+                                        var name = sortResultList[openUser - 1].username;
+                                        txtOrderMeeting += "<td style='text-align: center'>" + openUser + "</td>" +
+                                            "<td style='text-align: center'>" + name + "</td>" +
+                                            "<td style='text-align: center'>" + timeResult + "</td>";
+                                    }
+
+                                }
+                            }
+                        }
+                    txtOrderMeeting += "</tr>";
+                    });
+                    txtOrderMeeting += "</tbody></table>";
+                    document.getElementById("divOrderCheck").innerHTML = txtOrderCheck;
+                    document.getElementById("divOrderMeeting").innerHTML = txtOrderMeeting;
+                }else {
+
                 }
 
             }
