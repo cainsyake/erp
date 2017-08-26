@@ -1014,15 +1014,213 @@
       <div class="modal-dialog" style="width:800px">
         <div class="modal-content">
           <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalOrderMeeting">&times;</button>
-            <h4 class="modal-title" style="text-align:center">订 货 会</h4>
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true" id="btnCloseModalReport">&times;</button>
+            <h4 class="modal-title" style="text-align:center">填 写 报 表</h4>
           </div>
           <div class="modal-body">
-            <div id="divOrderMeeting"></div>
+            <div id="divReport">
+              <ul class='nav nav-tabs'>
+                <li><a href='#tabReport1' data-toggle='tab'>综合费用表</a></li>
+                <li><a href='#tabReport2' data-toggle='tab'>利润表</a></li>
+                <li><a href='#tabReport3' data-toggle='tab'>资产负债表</a></li>
+              </ul>
+            </div>
+            <div id='myTabContent' class='tab-content'>
+              <div class='tab-pane fade in active' id='tabReport1'>
+                <table class='table table-bordered'>
+                  <tbody>
+                  <tr>
+                    <th style="text-align: center">管理费</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">广告费</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">维护费</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">损失费</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">转产费</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">租金</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">市场开拓费</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">产品研发费</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">资质认证费</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">信息费</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">合计</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class='tab-pane fade' id='tabReport2'>
+                <table class='table table-bordered'>
+                  <tbody>
+                  <tr>
+                    <th style="text-align: center">销售收入</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">直接成本</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center;color: blue">毛利</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">综合费用</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center;color: blue">折旧前利润</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">折旧</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center;color: blue">支付利息前利润</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">财务费用</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center;color: blue">税前利润</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">所得税</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center;color: blue">年度净利润</th>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class='tab-pane fade' id='tabReport3'>
+                <table class='table table-bordered'>
+                  <tbody>
+                  <tr>
+                    <th style="text-align: center">资产</th>
+                    <th style="text-align: center">期末</th>
+                    <th style="text-align: center">负债和所有者权益</th>
+                    <th style="text-align: center">资产</th>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">流动资产</th>
+                    <th style="text-align: center"></th>
+                    <th style="text-align: center">负债</th>
+                    <th style="text-align: center"></th>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center">现金</td>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                    <td style="text-align: center">长期贷款</td>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center">应收款</td>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                    <td style="text-align: center">短期贷款</td>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center">在制品</td>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                    <td style="text-align: center">应付款</td>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center">产成品</td>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                    <td style="text-align: center">所得税</td>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center">原料</td>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                    <td style="text-align: center"></td>
+                    <td style="text-align: center"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center;color: deepskyblue;">流动资产合计</th>
+                    <th style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></th>
+                    <th style="text-align: center;color: deepskyblue">负债合计</th>
+                    <th style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></th>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center">固定资产</th>
+                    <th style="text-align: center"></th>
+                    <th style="text-align: center">所有者权益</th>
+                    <th style="text-align: center"></th>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center">厂房</td>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                    <td style="text-align: center">股东资本</td>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center">机器设备</td>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                    <td style="text-align: center">利润留存</td>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <td style="text-align: center">在建工程</td>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                    <td style="text-align: center">年度净利</td>
+                    <td style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></td>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center;color: deepskyblue;">固定资产合计</th>
+                    <th style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></th>
+                    <th style="text-align: center;color: deepskyblue">所有者权益合计</th>
+                    <th style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></th>
+                  </tr>
+                  <tr>
+                    <th style="text-align: center;color: blue;">资产</th>
+                    <th style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></th>
+                    <th style="text-align: center;color: blue">负债和所有者权益</th>
+                    <th style="text-align: center"><input type="number" name="" value="0" style="width: 80px"></th>
+                  </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
             <button data-dismiss="modal" class="btn btn-default" type="button">关闭</button>
-            <button class="btn btn-success" type="button" onclick="operateOrderMeeting()">刷新</button>
+            <button class="btn btn-success" type="button" onclick="operateReport()">提交</button>
           </div>
         </div>
       </div>

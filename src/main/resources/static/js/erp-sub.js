@@ -951,7 +951,7 @@ function btnController(obj) {
 
         if(obj.baseState.timeQuarter == 0){
             if(obj.baseState.operateState.report == 0){
-                txt += "<button class='btn btn-default btn-lg' type='button' onclick='' style='' id='btnApplyShortLoan'>填写报表</button> ";
+                txt += "<button class='btn btn-primary btn-lg' data-toggle='modal' href='#modalReport' type='button' style='' id='btnReport'>填写报表</button> ";
             }
             if(obj.baseState.operateState.ad == 0){
                 txt += "<button class='btn btn-info btn-lg' data-toggle='modal' href='#modalAdvertising' type='button' style='' id='btnAdvertising'>投放广告</button> ";
