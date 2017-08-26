@@ -2470,7 +2470,7 @@ public class RunningOperate {
             orderState1.setTotalPrice(100);
             orderState1.setTypeId(1);
             orderState1.setQuantity(2);
-            orderState1.setUnitPrice(50);
+//            orderState1.setUnitPrice(50);
             orderState1.setYear(runningState.getBaseState().getTimeYear());
             orderStateList.add(orderState1);
 
@@ -2485,7 +2485,7 @@ public class RunningOperate {
             orderState2.setTotalPrice(215);
             orderState2.setTypeId(2);
             orderState2.setQuantity(3);
-            orderState2.setUnitPrice(72);
+//            orderState2.setUnitPrice(72);
             orderState2.setYear(runningState.getBaseState().getTimeYear());
             orderStateList.add(orderState2);
 
@@ -2500,7 +2500,7 @@ public class RunningOperate {
             orderState3.setTotalPrice(144);
             orderState3.setTypeId(1);
             orderState3.setQuantity(3);
-            orderState3.setUnitPrice(48);
+//            orderState3.setUnitPrice(48);
             orderState3.setYear(runningState.getBaseState().getTimeYear());
             orderStateList.add(orderState3);
 
@@ -2515,7 +2515,7 @@ public class RunningOperate {
             orderState4.setTotalPrice(210);
             orderState4.setTypeId(1);
             orderState4.setQuantity(4);
-            orderState4.setUnitPrice(53);
+//            orderState4.setUnitPrice(53);
             orderState4.setYear(runningState.getBaseState().getTimeYear());
             orderStateList.add(orderState4);
         }
@@ -2532,7 +2532,7 @@ public class RunningOperate {
             orderState1.setTotalPrice(140);
             orderState1.setTypeId(4);
             orderState1.setQuantity(1);
-            orderState1.setUnitPrice(140);
+//            orderState1.setUnitPrice(140);
             orderState1.setYear(runningState.getBaseState().getTimeYear());
             orderStateList.add(orderState1);
         }

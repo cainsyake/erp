@@ -130,4 +130,13 @@ public class TeachController {
                                           @PathVariable("product") Integer product){
         return orderMeeting.getOrderList(nowUserName, area, product);
     }
+
+    @PostMapping(value = "getOrder/{nowUserName}/{area}/{product}/{id}")
+    @ResponseBody
+    public TeachClassInfo getOrder(@PathVariable("nowUserName") String nowUserName,
+                                      @PathVariable("area") Integer area,
+                                      @PathVariable("product") Integer product,
+                                      @PathVariable("id") Integer id){
+        return orderMeeting.getOrder(nowUserName, area, product, id);
+    }
 }

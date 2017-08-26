@@ -6,6 +6,7 @@ import bobo.erp.domain.collator.ProductCollator;
 import bobo.erp.domain.collator.SortResult;
 import bobo.erp.domain.market.MarketOrder;
 import bobo.erp.domain.rule.Rule;
+import bobo.erp.domain.state.RunningState;
 import bobo.erp.domain.state.marketing.AdvertisingState;
 import bobo.erp.domain.state.marketing.OrderState;
 import bobo.erp.domain.teach.SubUserInfo;
@@ -361,10 +362,8 @@ public class OrderMeeting {
         }
         if (check == 0){
             //全部用户的round均为0，调用切换产品方法
-            System.out.println("测试 该产品全部用户round均为0");
             return nextProduct(username, id);
         }
-        System.out.println("测试 区域：" + id + " 产品：" + areaCollator.getOpenProduct() + " 的已投用户数量："  + sortResultList.size());
         productCollator = nextUserOperate(productCollator, rule);
         return teachClassInfo;
     }
@@ -372,23 +371,17 @@ public class OrderMeeting {
     @Transactional
     public ProductCollator nextUserOperate(ProductCollator productCollator, Rule rule){
         int next = productCollator.getOpenUser();
-        System.out.println("测试 当前开放排位：" + next);
         List<SortResult> sortResultList = productCollator.getSortResultList();
         int n = 0;
         for (SortResult sortResult : sortResultList){
-            System.out.println("测试 遍历排序结果，用户名：" + sortResult.getUsername() + " 循环次数：" + n);
             if (next == sortResultList.size()){
-                System.out.println("已遍历至最后一个rank，通过递归重新遍历");
                 productCollator.setOpenUser(0);
                 return nextUserOperate(productCollator, rule);
             }
             if (n == next){
-                System.out.println("测试 打开目标开放排位：" + (next + 1));
                 if (sortResult.getRound() > 0){
-                    System.out.println("测试 前置round：" + sortResult.getRound());
                     productCollator.setOpenUser(next + 1);
                     sortResult.setRound(sortResult.getRound() - 1);
-                    System.out.println("测试 后置round：" + sortResult.getRound());
                     long currentTime = System.currentTimeMillis();
                     currentTime += 1000 * rule.getRuleParam().getParamSelectOrderTime();
                     Date time = new Date(currentTime);
@@ -405,15 +398,49 @@ public class OrderMeeting {
     @Transactional
     public List<MarketOrder> getOrderList(String username, Integer area, Integer product){
         TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(username);
-//        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
-//        Integer productId = 0;
-//        List<AreaCollator> areaCollatorList = teachClassInfo.getCollator().getAreaCollatorList();
-//        for (AreaCollator areaCollator : areaCollatorList){
-//            if (areaCollator.getType() == area){
-//                productId = areaCollator.getOpenProduct();
-//            }
-//        }
         return marketOrderRepository.findByMarketSeriesIdAndOrderYearAndOrderAreaAndOrderProduct(teachClassInfo.getMarketSeriesId(), teachClassInfo.getTime(), area, product);
+    }
+
+    @Transactional
+    public TeachClassInfo getOrder(String username, Integer area, Integer product, Integer id){
+        TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(username);
+        RunningState runningState = new RunningState();
+        List<SubUserInfo> subUserInfoList = teachClassInfo.getSubUserInfoList();
+        for (SubUserInfo subUserInfo : subUserInfoList){
+            System.out.println("测试，SUB名：" + subUserInfo.getSubUserName() + "  参数名：" + username);
+            if(subUserInfo.getSubUserName().equals(username)){
+                System.out.println("比对成功");
+                runningState = subUserInfo.getRunningState();
+            }
+        }
+        Collator collator = teachClassInfo.getCollator();
+        List<AreaCollator> areaCollatorList = collator.getAreaCollatorList();
+        ProductCollator productCollator =areaCollatorList.get(area - 1).getProductCollatorList().get(product - 1);
+        List<Integer> orderIdList = productCollator.getOrderIdList();
+        Iterator<Integer> iterator = orderIdList.iterator();
+        while (iterator.hasNext()){
+            Integer orderId = iterator.next();
+            if (orderId.intValue() == id.intValue()){
+                iterator.remove();      //从orderIdList中删除此订单ID
+            }
+        }
+        MarketOrder marketOrder = marketOrderRepository.findOne(id);
+        OrderState orderState = new OrderState();
+        orderState.setOrderId(id);
+        orderState.setYear(marketOrder.getOrderYear());
+        orderState.setArea(marketOrder.getOrderArea());
+        orderState.setTotalPrice(marketOrder.getOrderTotalPrice());
+        orderState.setTypeId(marketOrder.getOrderProduct());
+        orderState.setQuantity(marketOrder.getOrderQuantity());
+        orderState.setDeliveryTime(marketOrder.getOrderDeliveryTime());
+        orderState.setAccountPeriod(marketOrder.getOrderAccountPeriod());
+        orderState.setQualificate(marketOrder.getOrderQualificate());
+        orderState.setExecution(0); //设置订单状态为 未完成
+        orderState.setOwner(username);
+        runningState.getMarketingState().getOrderStateList().add(orderState);
+
+        nextUser(username, area);
+        return teachClassInfo;
     }
 
 

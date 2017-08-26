@@ -1178,7 +1178,7 @@ function orderMeetingUpdate() {
                                                     }
                                                 }
                                                 if(check == 1){
-                                                    txtOrderInfo += "<td style='text-align: center'><button class='btn btn-info btn-sm' onclick=''>选单</button></td>";
+                                                    txtOrderInfo += "<td style='text-align: center'><button class='btn btn-info btn-sm' onclick='operateGetOrder(" + openArea + "," + openProduct + "," + order.marketOrderId + ")'>选单</button></td>";
                                                 }else{
                                                     txtOrderInfo += "<td style='text-align: center'> -- </td>";
                                                 }
@@ -1228,13 +1228,25 @@ function orderMeetingUpdate() {
     });
 }
 
+function operateGetOrder(area, product, id) {
+    var nowUserName = $("#nowUserName").val();
+    $.ajax({
+        type:"POST",
+        url:"/getOrder/" + nowUserName + "/" + area + "/" + product + "/" + id,
+        cache:false,
+        dataType:"json",
+        success:function (runningState) {
+            alert("获取订单成功");
+        }
+    });
+}
+
 function operateOrderMeeting() {
-    console.log("测试 启用定时更新函数")
     window.setInterval(orderMeetingUpdate, 1000);
 }
 
 function oprateAdvertising(form) {
-    var nowUserName = $("#nowUserName").val();;
+    var nowUserName = $("#nowUserName").val();
     for(var i =1; i < 26; i++){
         eval("var ad =form.ad"+ i + ".value;");
 

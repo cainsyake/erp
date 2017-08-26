@@ -22,9 +22,8 @@ public class OrderState {
     private Integer area;           //区域
     private Integer totalPrice;     //总价
     private Integer typeId;         //产品类型id
-//    private String typeName;       //产品名
     private Integer quantity;       //产品数量
-    private Integer unitPrice;      //单价
+//    private Integer unitPrice;      //单价
     private Integer deliveryTime;   //交货期
     private Integer accountPeriod;  //账期
     private Integer qualificate;    //资质认证要求 0-无要求 1-资质1 2-资质2 3-资质1和资质2
@@ -99,13 +98,13 @@ public class OrderState {
         this.quantity = quantity;
     }
 
-    public Integer getUnitPrice() {
-        return unitPrice;
-    }
-
-    public void setUnitPrice(Integer unitPrice) {
-        this.unitPrice = unitPrice;
-    }
+//    public Integer getUnitPrice() {
+//        return unitPrice;
+//    }
+//
+//    public void setUnitPrice(Integer unitPrice) {
+//        this.unitPrice = unitPrice;
+//    }
 
     public Integer getDeliveryTime() {
         return deliveryTime;
