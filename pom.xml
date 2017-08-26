@@ -5,11 +5,11 @@
 
 	<groupId>bobo.erp</groupId>
 	<artifactId>erp</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0-BASE</version>
 	<packaging>jar</packaging>
 
 	<name>erp</name>
-	<description>Demo project for Spring Boot</description>
+	<description>ERP electronic sand table based on BS architecture</description>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>
