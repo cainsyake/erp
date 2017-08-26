@@ -917,16 +917,21 @@ function pageController(rule, runningState) {
     txt11 += "</select>";
     document.getElementById("divChangeLineProductSelect").innerHTML = txt11;   //输出可转产的产品信息
 
-    var txt14 = "<button href='#tab1' data-toggle='tab'>标签1</button><br>" +
-        "<button href='#tab2' data-toggle='tab'>标签2</button><br>" +
-        "<div id='myTabContent' class='tab-content'>" +
-        "<div class='tab-pane fade in active' id='tab1'>" +
-        "标签1内容" +
-        "</div>" +
-        "<div class='tab-pane fade' id='tab2'>" +
-        "标签2内容" +
-        "</div>"
-        "</div>";
+    var txt14 = "<ul class='nav nav-tabs'>";
+    for(var i = 1; i < marketNum + 1; i++){
+        var marketName = eval("rule.ruleMarket.market" + i + "Name");
+        txt14 += "<li><a href='#tab" + i + "' data-toggle='tab'>" + marketName + "</a></li>";
+    }
+    txt14 += "</ul>" +
+        "<div id='myTabContent' class='tab-content'>";
+    for(var i = 1; i < marketNum + 1; i++){
+        var marketName = eval("rule.ruleMarket.market" + i + "Name");
+        txt14 += "<div class='tab-pane fade' id='tab" + i +"'>" +
+            "<div id='divAreaState" + i +"'></div>" +
+            "<div id='divOrderInfo" + i + "'></div>" +
+            "</div>";
+    }
+    txt14 += "</div>";
     document.getElementById("divOrderMeeting").innerHTML = txt14;   //
 
 
@@ -1050,6 +1055,182 @@ function btnController(obj) {
         }
     }
     document.getElementById("divTimeAxis").innerHTML = txt;
+}
+
+function orderMeetingUpdate() {
+    var nowUserName = $("#nowUserName").val();
+    $.ajax({
+        type:"POST",
+        url:"/getTeachClassRule/" + nowUserName,
+        cache:false,
+        dataType:"json",
+        success:function (rule) {
+            $.ajax({
+                type:"POST",
+                url:"/getTeachClassInfo/" + nowUserName,
+                cache:false,
+                dataType:"json",
+                success:function (thc) {
+                    if(thc.orderMeetingState == 2){
+                        window.location.reload();
+                    }
+                    var subUserInfoList = thc.subUserInfoList;
+                    var runningState;
+                    $.each(subUserInfoList,function(n, subUserInfo){
+                        if (subUserInfo.subUserName == nowUserName){
+                            runningState = subUserInfo.runningState;    //提取出runningState
+                        }
+                    });
+                    var collator = thc.collator;    //提出出排序器
+                    var userQualification = 0;
+                    if(runningState.devState.qualificationDevStateList.length != 0){
+                        //计算用户资质
+                        var userQualificationState1 = 0;
+                        var userQualificationState2 = 0;
+                        $.each(runningState.devState.qualificationDevStateList,function(n, qualificationDevState){
+                            if (qualificationDevState.type == 1){
+                                userQualificationState1 = qualificationDevState.state;
+                            }else if(qualificationDevState.type == 2){
+                                userQualificationState2 = qualificationDevState.state;
+                            }
+                        });
+                        if(userQualificationState1 > 0 && userQualificationState2 < 1){
+                            userQualification = 1;
+                        }else if(userQualificationState2 > 0 && userQualificationState1 < 1){
+                            userQualification = 2;
+                        }else if(userQualificationState1 > 0 && userQualificationState2 > 0){
+                            userQualification = 3;
+                        }
+                    }
+                    var marketNum = 0;
+                    for(var j = 1; j <= 5; j++){
+                        if(eval("rule.ruleMarket.market" + j + "Name") != ""){
+                            marketNum++;
+                        }
+                    }
+                    var openAreaList = collator.openAreaList;
+                    var areaCollatorList = collator.areaCollatorList;
+                    $.each(openAreaList,function(n, openArea){
+                        var marketName = eval("rule.ruleMarket.market" + openArea + "Name");
+                        var areaCollator = areaCollatorList[openArea - 1];  //打开区域排序器
+                        var openProduct = areaCollator.openProduct;
+                        var productName = eval("rule.ruleProduct.product" + openProduct + "Name");
+                        var productCollatorList = areaCollator.productCollatorList;
+                        if(productCollatorList.length != 0){
+                            var productCollator = productCollatorList[openProduct - 1];     //打开产品排序器
+                            var orderIdList = productCollator.orderIdList;
+                            var sortResultList = productCollator.sortResultList;
+                            if(orderIdList.length == 0 || sortResultList == 0){
+                                //无订单或无人投广告
+                            }else {
+                                var openUser = productCollator.openUser;
+                                if(openUser == 0){
+                                    //当前产品排序器开放用户排位是0
+                                }else {
+                                    var time = productCollator.time;
+                                    var nowTime = new Date();
+                                    var timeResult = parseInt((time - nowTime.getTime()) / 1000);
+                                    var username = sortResultList[openUser - 1].username;
+                                    var txtOrderInfo = "<table class='table table-bordered'>" +
+                                        "<thead>" +
+                                        "<tr>" +
+                                        "<th style='text-align: center'>订单ID</th>" +
+                                        "<th style='text-align: center'>数量</th>" +
+                                        "<th style='text-align: center'>总价</th>" +
+                                        "<th style='text-align: center'>单价</th>" +
+                                        "<th style='text-align: center'>交货期</th>" +
+                                        "<th style='text-align: center'>账期</th>" +
+                                        "<th style='text-align: center'>资质认证</th>" +
+                                        "<th style='text-align: center'>操作</th>" +
+                                        "</tr>" +
+                                        "</thead>" +
+                                        "<tbody>";
+                                    var orderList;
+                                    $.ajax({
+                                        type:"POST",
+                                        url:"/getOrderList/" + nowUserName + "/" + openArea + "/" + openProduct,
+                                        cache:false,
+                                        async:false,
+                                        dataType:"json",
+                                        success:function (list) {
+                                            orderList = list;
+                                        }
+                                    });
+                                    $.each(orderIdList,function(n, orderId){
+                                        $.each(orderList,function(n, order){
+                                            if(order.marketOrderId == orderId){
+                                                var unitPriceP = order.orderTotalPrice / order.orderQuantity;
+                                                var unitPrice = unitPriceP.toFixed(2);
+                                                txtOrderInfo += "<tr>" +
+                                                    "<td style='text-align: center'>" + order.marketOrderId + "</td>" +
+                                                    "<td style='text-align: center'>" + order.orderQuantity + "</td>" +
+                                                    "<td style='text-align: center'>" + order.orderTotalPrice + "</td>" +
+                                                    "<td style='text-align: center'>" + unitPrice + "</td>" +
+                                                    "<td style='text-align: center'>" + order.orderDeliveryTime + "</td>" +
+                                                    "<td style='text-align: center'>" + order.orderAccountPeriod + "</td>" +
+                                                    "<td style='text-align: center'>" + order.orderQualificate + "</td>";
+                                                var check = 0;
+                                                if(username == nowUserName){
+                                                    if(order.orderQualificate == 0 || userQualification == 3){
+                                                        check = 1;
+                                                    }else if(order.orderQualificate == userQualification){
+                                                        check = 1;
+                                                    }
+                                                }
+                                                if(check == 1){
+                                                    txtOrderInfo += "<td style='text-align: center'><button class='btn btn-info btn-sm' onclick=''>选单</button></td>";
+                                                }else{
+                                                    txtOrderInfo += "<td style='text-align: center'> -- </td>";
+                                                }
+                                                txtOrderInfo += "</tr>";
+                                            }
+                                        });
+                                    });
+                                    txtOrderInfo += "</tbody></table>";
+                                    document.getElementById("divOrderInfo" + openArea).innerHTML = txtOrderInfo;
+                                }
+                            }
+                        }else{
+                            //该区域无订单
+                        }
+                        if(username == nowUserName){
+                            var txtAreaState = "<h3 style='text-align: center;color: red'>" + marketName + " " + productName + " 正在选单 选单者：" + username + " 剩余时间：" + timeResult + " 秒</h3>";
+                        }else {
+                            var txtAreaState = "<h3 style='text-align: center;color: blue'>" + marketName + " " + productName + " 正在选单 选单者：" + username + " 剩余时间：" + timeResult + " 秒</h3>";
+                        }
+                        document.getElementById("divAreaState" + openArea).innerHTML = txtAreaState;
+                    });
+                    for(var j = 1; j < areaCollatorList.length + 1; j++){
+                        $.each(areaCollatorList,function(n, areaCollator){
+                            if(areaCollator.state == 0){
+                                var marketType = areaCollator.type;
+                                var marketName = eval("rule.ruleMarket.market" + marketType + "Name");
+                                var txtAreaState = "<h3>" + marketName + " 还未选单</h3>";
+                                document.getElementById("divAreaState" + marketType).innerHTML = txtAreaState;
+                            }
+                            if(areaCollator.state == 2){
+                                var marketType = areaCollator.type;
+                                var marketName = eval("rule.ruleMarket.market" + marketType + "Name");
+                                var txtAreaState = "<h3>" + marketName + " 已结束选单</h3>";
+                                document.getElementById("divAreaState" + marketType).innerHTML = txtAreaState;
+                            }
+                        });
+                    }
+                    for(var j = collator.areaQuantity + 1; j < marketNum + 1; j++){
+                        var marketName = eval("rule.ruleMarket.market" + j + "Name");
+                        var txtAreaState = "<h3>" + marketName + " 本年无订单</h3>";
+                        document.getElementById("divAreaState" + j).innerHTML = txtAreaState;
+                    }
+
+                }
+            });
+        }
+    });
+}
+
+function operateOrderMeeting() {
+    console.log("测试 启用定时更新函数")
+    window.setInterval(orderMeetingUpdate, 1000);
 }
 
 function oprateAdvertising(form) {

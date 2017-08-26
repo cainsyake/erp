@@ -402,6 +402,20 @@ public class OrderMeeting {
         return productCollator;
     }
 
+    @Transactional
+    public List<MarketOrder> getOrderList(String username, Integer area, Integer product){
+        TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(username);
+//        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
+//        Integer productId = 0;
+//        List<AreaCollator> areaCollatorList = teachClassInfo.getCollator().getAreaCollatorList();
+//        for (AreaCollator areaCollator : areaCollatorList){
+//            if (areaCollator.getType() == area){
+//                productId = areaCollator.getOpenProduct();
+//            }
+//        }
+        return marketOrderRepository.findByMarketSeriesIdAndOrderYearAndOrderAreaAndOrderProduct(teachClassInfo.getMarketSeriesId(), teachClassInfo.getTime(), area, product);
+    }
+
 
 
 

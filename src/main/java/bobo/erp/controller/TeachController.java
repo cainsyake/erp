@@ -1,5 +1,6 @@
 package bobo.erp.controller;
 
+import bobo.erp.domain.market.MarketOrder;
 import bobo.erp.domain.teach.SubUserInfo;
 import bobo.erp.domain.teach.TeachClassInfo;
 import bobo.erp.repository.teach.SubUserInfoRepository;
@@ -120,5 +121,13 @@ public class TeachController {
     @ResponseBody
     public TeachClassInfo nextUser(@PathVariable("nowUserName") String nowUserName, @PathVariable("id") Integer id){
         return orderMeeting.nextUser(nowUserName, id);
+    }
+
+    @PostMapping(value = "getOrderList/{nowUserName}/{area}/{product}")
+    @ResponseBody
+    public List<MarketOrder> getOrderList(@PathVariable("nowUserName") String nowUserName,
+                                          @PathVariable("area") Integer area,
+                                          @PathVariable("product") Integer product){
+        return orderMeeting.getOrderList(nowUserName, area, product);
     }
 }

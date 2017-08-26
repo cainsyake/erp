@@ -18,9 +18,6 @@ function thcOnload() {
 
 function startOrderMeeting() {
     var nowUserName = $("#nowUserName").val();
-
-
-
     $.ajax({
         type:"POST",
         url:"/startOrderMeeting/" + nowUserName,
@@ -28,13 +25,6 @@ function startOrderMeeting() {
         dataType:"json",
         success:function (thc) {
             thcOnload();
-            
-            //以下为测试代码
-            // var id = window.setInterval(function(){
-            //     test(d)
-            // }, 1000);
-            // console.log("测试ID：" + id);
-            console.log("测试服务器时间：" + thc.collator.areaCollatorList[0].productCollatorList[0].time);
         }
     });
 }
@@ -42,7 +32,6 @@ function startOrderMeeting() {
 function orderMeetingUpdate() {
     var nowUserName = $("#nowUserName").val();
     var time1 = new Date();
-    console.log("测试 进入订单会更新函数");
     $.ajax({
         type:"POST",
         url:"/getTeachClassInfo/" + nowUserName,
