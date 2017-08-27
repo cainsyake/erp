@@ -14,6 +14,7 @@ MAET-ERP沙盘 基于B/S架构的ERP电子沙盘平台
 <br><br>
 [DEMO](http://erp.cainsyake.com.cn)
 <br>
+安装及使用教程请查看[WIKI](https://github.com/cainsyake/erp/wiki)
 
 <br><br>
 开发状态：<br>
