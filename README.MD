@@ -13,9 +13,8 @@ MAET-ERP沙盘 基于B/S架构的ERP电子沙盘平台
 平台管理 --> 教学班管理 --> 子用户运营
 <br><br>
 现在服务器上部署的是1.0版本，可提供大部分模块进行测试。<br>
-[MAET ERP](http://erp.cainsyake.com.cn)
-<br><br>
-安装及使用教程请查看 [WIKI](https://github.com/cainsyake/erp/wiki)
+探索 [MAET ERP](http://erp.cainsyake.com.cn)<br>
+安装及使用教程请移步至 [WIKI](https://github.com/cainsyake/erp/wiki)
 <br><br>
 开发状态：<br>
 平台管理：已完成常用模块开发<br>
