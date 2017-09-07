@@ -156,11 +156,14 @@ public class RunningOperate {
     @Transactional
     public RunningState startYear(String username){
         RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+
         runningState.getBaseState().setTimeQuarter(1); //跳转至第一季度
         runningState.getBaseState().setState(10);   //跳转至季度开始前
-        runningState.getBaseState().getOperateState().setLongLoan(1);   //时间轴： 关闭长贷申请
-        runningState.getBaseState().getOperateState().setOrderMeeting(1);   //时间轴： 关闭订货会
-        runningState.getBaseState().getOperateState().setBidMeeting(1);   //时间轴： 关闭竞单会
+//        runningState.getBaseState().getOperateState().setLongLoan(1);   //时间轴： 关闭长贷申请
+//        runningState.getBaseState().getOperateState().setOrderMeeting(1);   //时间轴： 关闭订货会
+//        runningState.getBaseState().getOperateState().setBidMeeting(1);   //时间轴： 关闭竞单会
+        runningState.getBaseState().getOperateState().setReportResult(0);   //修改报表核验结果为未填写
+        runningState.getBaseState().getOperateState().setReport(0); //解除控制 填写报表
         runningState.getBaseState().getOperateState().setAd(0);     //解除控制 广告投放
         return runningState;
     }
@@ -2452,6 +2455,15 @@ public class RunningOperate {
         operateFinancialStatementService.write("lostCost", operateFinancialStatementService.read("lostCost", runningState) + lostCostTotal, runningState);
         runningState.getFinanceState().setCashAmount(balance);
         runningState = addition(list1, list2, runningState);
+        return runningState;
+    }
+
+    @Transactional
+    public RunningState report(String username, Integer result){
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
+        runningState.getBaseState().getOperateState().setReportResult(result);
+
+        runningState.getBaseState().getOperateState().setReport(1); //时间轴 关闭 填写报表
         return runningState;
     }
 

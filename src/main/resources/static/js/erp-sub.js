@@ -1057,6 +1057,338 @@ function btnController(obj) {
     document.getElementById("divTimeAxis").innerHTML = txt;
 }
 
+function reportCalculation() {
+
+    var total1 = 0;
+    for(var i = 1; i < 11; i++){
+        var temp = 0;
+        eval("temp = $('#reprot1Subject" + i + "').val()");
+        if(temp != ""){
+            total1 += parseInt(temp);
+        }
+    }
+    document.getElementById("reprot1Total").innerHTML = total1;
+
+    var r2s1 = eval("$('#reprot2Subject1').val()");
+    var r2s2 = eval("$('#reprot2Subject2').val()");
+    if(r2s1 == ""){
+        r2s1 = 0;
+    }
+    if(r2s2 == ""){
+        r2s2 = 0;
+    }
+    var r2s3 = parseInt(r2s1) - parseInt(r2s2); //利润表 - 毛利
+    document.getElementById("reprot2Subject3").innerHTML = r2s3;
+    var r2s4 = eval("$('#reprot2Subject4').val()");
+    if(r2s4 == ""){
+        r2s4 = 0;
+    }
+    var r2s5 = parseInt(r2s3) - parseInt(r2s4); //利润表 - 折旧前利润
+    document.getElementById("reprot2Subject5").innerHTML = r2s5;
+    var r2s6 = eval("$('#reprot2Subject6').val()");
+    if(r2s6 == ""){
+        r2s6 = 0;
+    }
+    var r2s7 = parseInt(r2s5) - parseInt(r2s6); //利润表 - 支付利息前利润
+    document.getElementById("reprot2Subject7").innerHTML = r2s7;
+    var r2s8 = eval("$('#reprot2Subject8').val()");
+    if(r2s8 == ""){
+        r2s8 = 0;
+    }
+    var r2s9 = parseInt(r2s7) - parseInt(r2s8); //利润表 - 税前利润
+    document.getElementById("reprot2Subject9").innerHTML = r2s9;
+    var r2s10 = eval("$('#reprot2Subject10').val()");
+    if(r2s10 == ""){
+        r2s10 = 0;
+    }
+    var r2s11 = parseInt(r2s9) - parseInt(r2s10); //利润表 - 年度净利润
+    document.getElementById("reprot2Subject11").innerHTML = r2s11;
+
+    var total2 = 0; //流动资产合计
+    for (var i = 1; i < 6; i++){
+        var temp = 0;
+        eval("temp = $('#reprot3Subject" + i + "').val()");
+        if(temp != ""){
+            total2 += parseInt(temp);
+        }
+    }
+    document.getElementById("reprot3Subject6").innerHTML = total2;
+    var total3 = 0; //固定资产合计
+    for (var i = 7; i < 10; i++){
+        var temp = 0;
+        eval("temp = $('#reprot3Subject" + i + "').val()");
+        if(temp != ""){
+            total3 += parseInt(temp);
+        }
+    }
+    document.getElementById("reprot3Subject10").innerHTML = total3;
+    document.getElementById("reprot3Subject11").innerHTML = total2 + total3;
+    var total4 = 0; //负债合计
+    for (var i = 12; i < 16; i++){
+        var temp = 0;
+        eval("temp = $('#reprot3Subject" + i + "').val()");
+        if(temp != ""){
+            total4 += parseInt(temp);
+        }
+    }
+    document.getElementById("reprot3Subject16").innerHTML = total4;
+    var total5 = 0; //所有者权益合计
+    for (var i = 17; i < 20; i++){
+        var temp = 0;
+        eval("temp = $('#reprot3Subject" + i + "').val()");
+        if(temp != ""){
+            total5 += parseInt(temp);
+        }
+    }
+    document.getElementById("reprot3Subject20").innerHTML = total5;
+    document.getElementById("reprot3Subject21").innerHTML = total4 + total5;
+}
+
+function operateReport() {
+    var nowUserName = $("#nowUserName").val();
+    $.ajax({
+        type:"POST",
+        url:"/getSubRunningState/" + nowUserName,
+        cache:false,
+        dataType:"json",
+        success:function (runningState) {
+            var financialStatementList = runningState.financeState.financialStatementList;
+            $.each(financialStatementList,function(n,financialStatement) {
+                var tempYear = financialStatement.year;
+                if(tempYear == runningState.baseState.timeYear - 1){
+                    //找到上一年的报表
+                    var check = 1;  //报表正常标记
+                    //获取填写的综合费用表数值
+                    var r1s1 = $('#reprot1Subject1').val();
+                    var r1s2 = $('#reprot1Subject2').val();
+                    var r1s3 = $('#reprot1Subject3').val();
+                    var r1s4 = $('#reprot1Subject4').val();
+                    var r1s5 = $('#reprot1Subject5').val();
+                    var r1s6 = $('#reprot1Subject6').val();
+                    var r1s7 = $('#reprot1Subject7').val();
+                    var r1s8 = $('#reprot1Subject8').val();
+                    var r1s9 = $('#reprot1Subject9').val();
+                    var r1s10 = $('#reprot1Subject10').val();
+                    var r1s11 = parseInt($("#reprot1Subject11").html());
+                    for (var i = 1; i < 11; i++){
+                        if(eval("r1s" + i + "== ''")){
+                            eval("r1s" + i + "= 0");
+                        }
+                    }
+                    //开始检查综合费用表各科目
+                    if(r1s1 != financialStatement.managementCost){
+                        check = 2;
+                        console.log("测试 管理费有误");
+                    }
+                    if(r1s2 != financialStatement.advertisingCost){
+                        check = 2;
+                        console.log("测试 2费有误");
+                    }
+                    if(r1s3 != financialStatement.upkeepCost){
+                        check = 2;
+                        console.log("测试 3费有误");
+                    }
+                    if(r1s4 != financialStatement.lostCost){
+                        check = 2;
+                        console.log("测试 4费有误");
+                    }
+                    if(r1s5 != financialStatement.transferCost){
+                        check = 2;
+                        console.log("测试 5费有误");
+                    }
+                    if(r1s6 != financialStatement.factoryRent){
+                        check = 2;
+                        console.log("测试 6费有误");
+                    }
+                    if(r1s7 != financialStatement.marketDevCost){
+                        check = 2;
+                        console.log("测试 7费有误");
+                    }
+                    if(r1s8 != financialStatement.productDevCost){
+                        check = 2;
+                        console.log("测试 8费有误");
+                    }
+                    if(r1s9 != financialStatement.isoDevCost){
+                        check = 2;
+                        console.log("测试 9费有误");
+                    }
+                    if(r1s10 != financialStatement.infomationCost){
+                        check = 2;
+                        console.log("测试 10费有误");
+                    }
+                    //结束检查综合费用表各科目
+                    if (check == 1){
+                        console.log("测试 综合费用表检查全部正确");
+                        //获取填写的利润表数值
+                        var r2s1 = $('#reprot2Subject1').val();
+                        var r2s2 = $('#reprot2Subject2').val();
+                        var r2s4 = $('#reprot2Subject4').val();
+                        var r2s6 = $('#reprot2Subject6').val();
+                        var r2s8 = $('#reprot2Subject8').val();
+                        var r2s10 = $('#reprot2Subject10').val();
+                        if(r2s1 == ""){
+                            r2s1 = 0;
+                        }
+                        if(r2s2 == ""){
+                            r2s2 = 0;
+                        }
+                        if(r2s4 == ""){
+                            r2s4 = 0;
+                        }
+                        if(r2s6 == ""){
+                            r2s6 = 0;
+                        }
+                        if(r2s8 == ""){
+                            r2s8 = 0;
+                        }
+                        if(r2s10 == ""){
+                            r2s10 = 0;
+                        }
+                        //开始检查利润表
+                        if(r2s1 != financialStatement.salesIncome){
+                            check = 2;
+                            console.log("测试 利润表 1 有误");
+                        }
+                        if(r2s2 != financialStatement.directCost){
+                            check = 2;
+                            console.log("测试 利润表 2 有误");
+                        }
+                        if(r2s4 != financialStatement.omnibusCost){
+                            check = 2;
+                            console.log("测试 利润表 4 有误");
+                        }
+                        if(r2s6 != financialStatement.depreciation){
+                            check = 2;
+                            console.log("测试 利润表 6 有误");
+                        }
+                        if(r2s8 != financialStatement.financialCost){
+                            check = 2;
+                            console.log("测试 利润表 8 有误");
+                        }
+                        if(r2s10 != financialStatement.incomeTax){
+                            check = 2;
+                            console.log("测试 利润表 10 有误");
+                        }
+                        //结束检查利润表
+                        if(check == 1){
+                            console.log("测试 利润表检查全部正确");
+                            //获取填写的资产负债表 - 流动资产 各科目
+                            var r3s1 = $('#reprot3Subject1').val();
+                            var r3s2 = $('#reprot3Subject2').val();
+                            var r3s3 = $('#reprot3Subject3').val();
+                            var r3s4 = $('#reprot3Subject4').val();
+                            var r3s5 = $('#reprot3Subject5').val();
+                            for (var i = 1; i < 6; i++){
+                                if(eval("r3s" + i + "== ''")){
+                                    eval("r3s" + i + "= 0");
+                                }
+                            }
+                            //获取填写的资产负债表 - 固定资产 各科目
+                            var r3s7 = $('#reprot3Subject7').val();
+                            var r3s8 = $('#reprot3Subject8').val();
+                            var r3s9 = $('#reprot3Subject9').val();
+                            for (var i = 7; i < 10; i++){
+                                if(eval("r3s" + i + "== ''")){
+                                    eval("r3s" + i + "= 0");
+                                }
+                            }
+                            //获取填写的资产负债表 - 负债 各科目
+                            var r3s12 = $('#reprot3Subject12').val();
+                            var r3s13 = $('#reprot3Subject13').val();
+                            var r3s14 = $('#reprot3Subject14').val();
+                            var r3s15 = $('#reprot3Subject15').val();
+                            for (var i = 12; i < 16; i++){
+                                if(eval("r3s" + i + "== ''")){
+                                    eval("r3s" + i + "= 0");
+                                }
+                            }
+                            //获取填写的资产负债表 - 所有者权益 各科目
+                            var r3s17 = $('#reprot3Subject17').val();
+                            var r3s18 = $('#reprot3Subject18').val();
+                            var r3s19 = $('#reprot3Subject19').val();
+                            for (var i = 17; i < 20; i++){
+                                if(eval("r3s" + i + "== ''")){
+                                    eval("r3s" + i + "= 0");
+                                }
+                            }
+
+                            //开始检查资产负债表
+                            if(r3s1 != financialStatement.cashAmount){
+                                check = 2;
+                            }
+                            if(r3s2 != financialStatement.receivableTotal){
+                                check = 2;
+                            }
+                            if(r3s3 != financialStatement.wipValue){
+                                check = 2;
+                            }
+                            if(r3s4 != financialStatement.finishedProductValue){
+                                check = 2;
+                            }
+                            if(r3s5 != financialStatement.materialVaule){
+                                check = 2;
+                            }
+                            if(r3s7 != financialStatement.factoryValue){
+                                check = 2;
+                            }
+                            if(r3s8 != financialStatement.equipmentValue){
+                                check = 2;
+                            }
+                            if(r3s9 != financialStatement.constructionInProgressValue){
+                                check = 2;
+                            }
+                            if(r3s12 != financialStatement.longTermDebt){
+                                check = 2;
+                            }
+                            if(r3s13 != financialStatement.shortTermDebt){
+                                check = 2;
+                            }
+                            if(r3s14 != financialStatement.duesTotal){
+                                check = 2;
+                            }
+                            if(r3s15 != financialStatement.incomeTax){
+                                check = 2;
+                            }
+                            if(r3s17 != financialStatement.equityCapital){
+                                check = 2;
+                            }
+                            if(r3s18 != financialStatement.profitRetention){
+                                check = 2;
+                            }
+                            if(r3s19 != financialStatement.netProfit){
+                                check = 2;
+                            }
+                        }
+
+                    }
+
+                    //发送检查结果
+                    $.ajax({
+                        type:"POST",
+                        url:"/operateReport/" + nowUserName + "/" + check,
+                        cache:false,
+                        dataType:"json",
+                        success:function (runningState) {
+                            subOnLoad();
+                            if(check == 1){
+                                alert("报表填写正确！");
+                            }else {
+                                alert("报表填写有误！");
+                            }
+                        },
+                        error:function (json) {
+                            console.log(json.responseText);
+                        }
+                    });
+                }
+            });
+        },
+        error:function (json) {
+            console.log(json.responseText);
+        }
+    });
+}
+
 function orderMeetingUpdate() {
     var nowUserName = $("#nowUserName").val();
     $.ajax({

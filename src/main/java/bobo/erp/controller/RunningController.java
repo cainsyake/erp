@@ -226,8 +226,15 @@ public class RunningController {
     public RunningState operateEmergencyPurchase(@PathVariable("nowUserName") String nowUserName,
                                                  @RequestParam(value = "array1[]") String[] arrays1,
                                                  @RequestParam(value = "array2[]") String[] arrays2){
-        System.out.println("测试 接收到紧急采购请求");
         return runningOperate.emergencyPurchase(nowUserName, arrays1, arrays2);
+    }
+
+    @PostMapping(value = "operateReport/{nowUserName}/{result}")
+    @ResponseBody
+    public RunningState operateReport(@PathVariable("nowUserName") String nowUserName,
+                                      @PathVariable("result") Integer result){
+        System.out.println("测试 接收到报表核验结果");
+        return runningOperate.report(nowUserName, result);
     }
 
 }
