@@ -6,7 +6,7 @@ spring:
   datasource:
     driver-class-fileName: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/erp
-    username: root
+    username: bobodba
     password: 718293
   jpa:
     hibernate:
