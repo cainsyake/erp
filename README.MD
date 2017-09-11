@@ -1,6 +1,6 @@
 
 ![](https://raw.githubusercontent.com/cainsyake/erp/master/src/main/resources/static/images/logo.png)<br>
-![](https://img.shields.io/badge/%7BGithub%7D-%7BV1.0.1%7D-519dd9.svg)
+![](https://img.shields.io/badge/release-v1.0.1-519dd9.svg)
 <br>
 MAET-ERP沙盘 基于B/S架构的ERP电子沙盘平台
 ===
