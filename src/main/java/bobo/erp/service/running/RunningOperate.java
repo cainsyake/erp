@@ -128,26 +128,27 @@ public class RunningOperate {
 
     @Transactional
     public RunningState applyDebt(String username, DebtState debtState){
-        RunningState runningState = getSubRunningStateService.getSubRunningState(username);
-        Rule rule = getTeachClassRuleService.getTeachClassRule(username);
-        Integer balance = runningState.getFinanceState().getCashAmount();
-        Integer debtLimit = 0;
-        Integer timeYear = runningState.getBaseState().getTimeYear();
+        RunningState runningState = getSubRunningStateService.getSubRunningState(username); //通过用户名获取运行状态runningState
+        Rule rule = getTeachClassRuleService.getTeachClassRule(username);   //通过用户名获取规则rule
+        Integer balance = runningState.getFinanceState().getCashAmount();   //从runningState中提取出现金数额
+        Integer debtLimit = 0;  //贷款额度
+        Integer timeYear = runningState.getBaseState().getTimeYear();   //从runningState中提取出当前年份
+        //TODO 贷款额度计算未扣减已贷款额
         if (timeYear == 1){
-            debtLimit = (int)(rule.getRuleParam().getParamInitialCash() * rule.getRuleParam().getParamLoanRatio());
+            debtLimit = (int)(rule.getRuleParam().getParamInitialCash() * rule.getRuleParam().getParamLoanRatio()); //如果运行年份为第一年，贷款额度为初始现金*规则的贷款倍数
         }else {
-            debtLimit = (int)(operateFinancialStatementService.readWithTime(timeYear - 1, "ownersEquity", runningState) * rule.getRuleParam().getParamLoanRatio());
+            debtLimit = (int)(operateFinancialStatementService.readWithTime(timeYear - 1, "ownersEquity", runningState) * rule.getRuleParam().getParamLoanRatio()); //贷款额度为上年权益*规则的贷款倍数
         }
-        if (debtState.getAmounts() > debtLimit){
+        if (debtState.getAmounts() > debtLimit){    //判断是否有足够的贷款额度
             runningState.getBaseState().setMsg("贷款额度不足");
         }else {
-            balance += debtState.getAmounts();
-            runningState.getFinanceState().setCashAmount(balance);  //修改现金余额
-            runningState.getFinanceState().getDebtStateList().add(debtState);   //存入贷款记录表
-            if(debtState.getDebtType() == 1){
-                runningState.getBaseState().getOperateState().setShortLoan(1);
+            balance += debtState.getAmounts();  //现金数额修改为原现金数额 + 贷款申请额
+            runningState.getFinanceState().setCashAmount(balance);  //保存现金数额至runningState对象中
+            runningState.getFinanceState().getDebtStateList().add(debtState);   //增加贷款记录至runningState对象中
+            if(debtState.getDebtType() == 1){   //判断是否是短贷
+                runningState.getBaseState().getOperateState().setShortLoan(1);  //时间轴:关闭短贷申请,即标记已进行短贷申请
             }
-            logger.info("用户：{} 申请贷款：{}W 类型：{} 还款期：{}", username, debtState.getAmounts(), debtState.getDebtType(), debtState.getRepaymentPeriod());
+            logger.info("用户：{} 申请贷款：{}W 类型：{} 还款期：{}", username, debtState.getAmounts(), debtState.getDebtType(), debtState.getRepaymentPeriod());  //后台打印日志
             runningState.getBaseState().setMsg(""); //清空MSG
         }
         return runningState;

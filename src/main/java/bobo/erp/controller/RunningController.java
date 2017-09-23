@@ -61,10 +61,10 @@ public class RunningController {
         return getTeachClassInfoService.getTeachClassInfoByUsername(nowUserName);
     }
 
-    @PostMapping(value = "operateApplyDebt/{nowUserName}")
-    @ResponseBody
-    public RunningState operateApplyDebt(@PathVariable("nowUserName") String nowUserName, DebtState debtState){
-        return runningOperate.applyDebt(nowUserName, debtState);
+    @PostMapping(value = "operateApplyDebt/{nowUserName}")  //@PostMapping注解是一个组合注解，该注解将Http Post映射到下面的处理方法上
+    @ResponseBody   //@ResponseBody注解将Controller的方法返回的对象通过适当的HttpMessageConverter转换为指定格式后(此为JSON)，写入到Response对象的body数据区
+    public RunningState operateApplyDebt(@PathVariable("nowUserName") String nowUserName, DebtState debtState){     //从请求中获取参数nowUserName及debtState
+        return runningOperate.applyDebt(nowUserName, debtState);    //调用applyDebt方法并返回runningState
     }
 
     @PostMapping(value = "operateStartYear/{nowUserName}")
