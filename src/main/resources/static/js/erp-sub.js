@@ -1,22 +1,21 @@
-window.onload=subOnLoad;
+window.onload=subOnLoad;    //页面载入时执行此函数
 function subOnLoad() {
-    var nowUserName = $("#nowUserName").val();
+    var nowUserName = $("#nowUserName").val();  //从页面读取用户名
     $.ajax({
         type:"POST",
         url:"/getTeachClassRule/" + nowUserName,
         cache:false,
         dataType:"json",
-        success:function (rule) {
-
+        success:function (rule) {   //请求成功后服务器返回rule对象
             $.ajax({
                 type:"POST",
                 url:"/getSubRunningState/" + nowUserName,
                 cache:false,
                 dataType:"json",
-                success:function (runningState) {
-                    btnController(runningState);
-                    pageController(rule, runningState);
-                    infoController(runningState, rule);
+                success:function (runningState) {   //请求成功后服务器返回runningState对象
+                    btnController(runningState);    //页面按钮控制函数
+                    pageController(rule, runningState); //页面表格控制函数
+                    infoController(runningState, rule); //页面内容控制函数
                 },
                 error:function (json) {
                     console.log(json.responseText);
@@ -27,7 +26,6 @@ function subOnLoad() {
             console.log(json.responseText);
         }
     });
-
 }
 
 function infoController(runningState, rule) {
@@ -1645,39 +1643,38 @@ function operateApplyLongDebt(form) {
 }
 
 function operateApplyShortDebt() {
-    var nowUserName = $("#nowUserName").val();
-    var debtLimit = parseInt($("#valueDebtLimit2").html());
-    var shortDebtAmount = $("#shortDebtAmount").val();
-    if(debtLimit == 0){
+    var nowUserName = $("#nowUserName").val();  //从页面读取用户名
+    var debtLimit = parseInt($("#valueDebtLimit2").html()); //从页面读取贷款额度
+    var shortDebtAmount = $("#shortDebtAmount").val();  //从页面读取贷款申请额
+    if(debtLimit == 0){     //判断贷款额度是否为0
         alert("现在已经没有贷款额度了，无法申请贷款");
         return false;
     }
-    if(shortDebtAmount > debtLimit){
+    if(shortDebtAmount > debtLimit){    //判断贷款申请额是否大于贷款额度
         alert("贷款额度不足，申请失败");
         return false;
     }else{
-        var debt = {
-            debtType: 1,
-            repaymentPeriod: 4,
-            amounts: shortDebtAmount
+        var debt = {    //贷款对象
+            debtType: 1,    //贷款类型,1-短贷 2-长贷
+            repaymentPeriod: 4, //还款期
+            amounts: shortDebtAmount    //贷款申请额
         };
         $.ajax({
-            type:"POST",
-            url:"/operateApplyDebt/" + nowUserName,
-            cache:false,
-            dataType:"json",
-            data:debt,
-            success:function (runningState) {
-                subOnLoad();
-                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg;
-                $("#btnCloseModalApplyShortDebt").click();
+            type:"POST",    //请求类型
+            url:"/operateApplyDebt/" + nowUserName, //请求URL
+            cache:false,    //是否从缓存中读取
+            dataType:"json",    //预期服务器返回的数据类型
+            data:debt,  //发送到服务器的数据
+            success:function (runningState) {   //请求成功后回调函数
+                subOnLoad();    //调用页面载入函数，重新加载页面内容
+                document.getElementById("ajaxDiv1").innerHTML = runningState.baseState.msg; //输入MSG到页面
+                $("#btnCloseModalApplyShortDebt").click();  //关闭贷款申请框
             },
-            error:function (json) {
-                console.log(json.responseText);
+            error:function (json) {     //请求失败后回调函数
+                console.log(json.responseText);     //在控制台中打印返回信息
             }
         });
     }
-
 }
 
 function operateUpdatePurchase() {
