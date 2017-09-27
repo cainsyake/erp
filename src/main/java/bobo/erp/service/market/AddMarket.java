@@ -345,6 +345,7 @@ public class AddMarket {
         }
         //全部验证通过才导入到数据库
         if(StringUtils.isEmpty(errorMsg)){
+            //TODO 在这里添加市场数据分析汇总的代码
             //先导入MarketSeries
             Date date = new Date();
             MarketSeries marketSeries = new MarketSeries();
