@@ -6,7 +6,7 @@ spring:
   datasource:
     driver-class-fileName: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/erp
-    username: bobodba
+    username: root
     password: 718293
   jpa:
     hibernate:
@@ -17,4 +17,4 @@ spring:
     encoding: utf-8
     content-type: text/html
     cache: false
-
+filepath: D:\fileupload #平台文件路径

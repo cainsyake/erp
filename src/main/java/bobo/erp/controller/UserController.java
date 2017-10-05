@@ -3,6 +3,7 @@ package bobo.erp.controller;
 import bobo.erp.domain.User;
 import bobo.erp.repository.UserRepository;
 import bobo.erp.service.GetUserInfo;
+import bobo.erp.service.PlatformUserInit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,14 @@ public class UserController {
     @Autowired
     private GetUserInfo getUserInfo;
 
+    @Autowired
+    private PlatformUserInit platformUserInit;
 
+    @GetMapping(value = "platformUserInit/1005")   //URL中的'1005'仅作随机校验，可更换成任意字符串
+    @ResponseBody
+    public String platformUserInit(){
+        return platformUserInit.platformUserInit();
+    }
 
     @PostMapping(value = "userAdd")
     public String  userAdd(@Valid User user, BindingResult bindingResult, Model model){

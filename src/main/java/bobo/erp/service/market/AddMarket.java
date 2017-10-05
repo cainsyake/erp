@@ -16,6 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -45,12 +46,16 @@ public class AddMarket {
     @Autowired
     private MarketBidRepository marketBidRepository;
 
+    @Value("${filepath}")
+    private String filepath;    //从配置文件中读取文件路径
+
     public String addMarket(String fileName, MultipartFile mfile, String uploader, String seriesName){
-        File uploadDir = new  File("D:\\fileupload");
+        File uploadDir = new  File(filepath);
+        System.out.println("测试输出文件路径：" + filepath);
         //创建一个目录 （它的路径名由当前 File 对象指定，包括任一必须的父路径。）
         if (!uploadDir.exists()) uploadDir.mkdirs();
         //新建一个文件
-        File tempFile = new File("D:\\fileupload\\" + new Date().getTime() + ".xlsx");
+        File tempFile = new File( filepath + "\\" + new Date().getTime() + ".xlsx");
         //初始化输入流
         InputStream is = null;
         try{

@@ -237,4 +237,13 @@ public class RunningController {
         return runningOperate.report(nowUserName, result);
     }
 
+    @PostMapping(value = "getServiceTime")
+    @ResponseBody
+    public Date getServiceTime(){
+        Date date = new Date();
+        return date;
+    }
+
+
+
 }
