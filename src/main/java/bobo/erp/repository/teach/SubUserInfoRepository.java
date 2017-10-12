@@ -1,9 +1,7 @@
 package bobo.erp.repository.teach;
 
-import bobo.erp.domain.teach.SubUserInfo;
+import bobo.erp.entity.teach.SubUserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 /**
  * Created by 59814 on 2017/7/23.

@@ -1,22 +1,20 @@
 package bobo.erp.controller;
 
-import bobo.erp.domain.market.MarketBid;
-import bobo.erp.domain.market.MarketOrder;
-import bobo.erp.domain.market.MarketSeries;
-import bobo.erp.service.market.AddMarket;
-import bobo.erp.service.market.UseMarket;
+import bobo.erp.entity.market.MarketBid;
+import bobo.erp.entity.market.MarketOrder;
+import bobo.erp.entity.market.MarketSeries;
+import bobo.erp.model.market.AddMarket;
+import bobo.erp.model.market.UseMarket;
+import bobo.erp.repository.market.MarketSeriesRepository;
 import bobo.erp.utils.ExcelImportUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.apache.poi.hssf.usermodel.*;
 
-import javax.persistence.GeneratedValue;
 import java.io.IOException;
 import java.util.List;
 
@@ -32,6 +30,9 @@ public class MarketController {
 
     @Autowired
     private UseMarket useMarket;
+
+    @Autowired
+    private MarketSeriesRepository marketSeriesRepository;
 
     @PostMapping(value = "addMarket")
     @ResponseBody
@@ -70,6 +71,12 @@ public class MarketController {
     @ResponseBody
     public List<MarketSeries> findMarketSeriesAll(){
         return useMarket.findMarketSeriesAll();
+    }
+
+    @PostMapping(value = "getMarketSeries/{seriesId}")
+    @ResponseBody
+    public MarketSeries getMarketSeries(@PathVariable("seriesId") Integer seriesId){
+        return marketSeriesRepository.findOne(seriesId);
     }
 
 }

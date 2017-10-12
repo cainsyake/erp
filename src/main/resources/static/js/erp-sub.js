@@ -1055,6 +1055,8 @@ function btnController(obj) {
     document.getElementById("divTimeAxis").innerHTML = txt;
 }
 
+
+
 function reportCalculation() {
 
     var total1 = 0;

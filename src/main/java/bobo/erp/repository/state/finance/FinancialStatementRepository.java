@@ -1,6 +1,6 @@
 package bobo.erp.repository.state.finance;
 
-import bobo.erp.domain.state.finance.FinancialStatement;
+import bobo.erp.entity.state.finance.FinancialStatement;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

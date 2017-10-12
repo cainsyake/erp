@@ -1,6 +1,6 @@
 package bobo.erp.repository.market;
 
-import bobo.erp.domain.market.MarketSeries;
+import bobo.erp.entity.market.MarketSeries;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

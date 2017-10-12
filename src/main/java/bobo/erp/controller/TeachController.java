@@ -1,14 +1,13 @@
 package bobo.erp.controller;
 
-import bobo.erp.domain.market.MarketOrder;
-import bobo.erp.domain.teach.SubUserInfo;
-import bobo.erp.domain.teach.TeachClassInfo;
+import bobo.erp.entity.market.MarketOrder;
+import bobo.erp.entity.teach.TeachClassInfo;
 import bobo.erp.repository.teach.SubUserInfoRepository;
 import bobo.erp.repository.teach.TeachClassInfoRepository;
-import bobo.erp.service.running.GetTeachClassInfoService;
-import bobo.erp.service.teach.CheckThisYearOrder;
-import bobo.erp.service.teach.OrderMeeting;
-import bobo.erp.service.teach.TeachClassInit;
+import bobo.erp.model.running.GetTeachClassInfoService;
+import bobo.erp.model.teach.CheckThisYearOrder;
+import bobo.erp.model.teach.OrderMeeting;
+import bobo.erp.model.teach.TeachClassInit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by 59814 on 2017/7/23.

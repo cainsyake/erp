@@ -1,6 +1,6 @@
 package bobo.erp.repository.teach;
 
-import bobo.erp.domain.teach.TeachClassInfo;
+import bobo.erp.entity.teach.TeachClassInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

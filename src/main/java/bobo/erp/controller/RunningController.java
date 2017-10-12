@@ -1,14 +1,13 @@
 package bobo.erp.controller;
 
-import bobo.erp.domain.rule.Rule;
-import bobo.erp.domain.state.FactoryState;
-import bobo.erp.domain.state.RunningState;
-import bobo.erp.domain.state.factory.LineState;
-import bobo.erp.domain.state.finance.DebtState;
-import bobo.erp.domain.state.marketing.AdvertisingState;
-import bobo.erp.domain.teach.TeachClassInfo;
-import bobo.erp.repository.rule.RuleRepository;
-import bobo.erp.service.running.*;
+import bobo.erp.entity.rule.Rule;
+import bobo.erp.entity.state.FactoryState;
+import bobo.erp.entity.state.RunningState;
+import bobo.erp.entity.state.factory.LineState;
+import bobo.erp.entity.state.finance.DebtState;
+import bobo.erp.entity.state.marketing.AdvertisingState;
+import bobo.erp.entity.teach.TeachClassInfo;
+import bobo.erp.model.running.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;

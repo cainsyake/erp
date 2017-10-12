@@ -16,6 +16,44 @@ function thcOnload() {
     });
 }
 
+function cloneRule() {
+    var nowUserName = $("#nowUserName").val();
+    var host = "http://erp.cainsyake.com.cn";
+    var id = 1;
+    var url = host + "/ruleFindById/"+ id + "?callback=?";
+    $.getJSON(url, function (jsondata) {
+        console.log(jsondata);
+    });
+    $.ajax({
+        type:"GET",
+        url:host + "/ruleFindById/"+ id,
+        cache:false,
+        dataType:"json",
+        success:function (rule) {
+            console.log("测试输出获取到的RULE—REMOTE");
+            console.log(rule);
+            $.ajax({
+                type:"POST",
+                url:"/cloneRule",
+                cache:false,
+                data:rule,
+                dataType:"json",
+                success:function (rule) {
+                console.log("测试 成功克隆RULE");
+            },
+            error:function (json) {
+                console.log(json.responseText);
+            }
+        });
+        },
+        error:function (json) {
+            console.log("测试失败");
+            console.log(json.responseText);
+        }
+    });
+
+}
+
 function startOrderMeeting() {
     var nowUserName = $("#nowUserName").val();
     $.ajax({

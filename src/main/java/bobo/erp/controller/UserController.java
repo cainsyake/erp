@@ -1,9 +1,9 @@
 package bobo.erp.controller;
 
-import bobo.erp.domain.User;
+import bobo.erp.entity.user.User;
 import bobo.erp.repository.UserRepository;
-import bobo.erp.service.GetUserInfo;
-import bobo.erp.service.PlatformUserInit;
+import bobo.erp.model.user.GetUserInfo;
+import bobo.erp.model.user.PlatformUserInit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Scanner;
 
 /**
  * Created by 59814 on 2017/7/18.

@@ -1,6 +1,6 @@
 package bobo.erp.repository.state.marketing;
 
-import bobo.erp.domain.state.marketing.AdvertisingState;
+import bobo.erp.entity.state.marketing.AdvertisingState;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

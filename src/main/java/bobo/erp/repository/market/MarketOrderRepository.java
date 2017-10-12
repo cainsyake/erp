@@ -1,6 +1,6 @@
 package bobo.erp.repository.market;
 
-import bobo.erp.domain.market.MarketOrder;
+import bobo.erp.entity.market.MarketOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

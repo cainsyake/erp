@@ -892,7 +892,7 @@
             yAxis.ticks(__axis_y_ticks).outerTickSize(0).tickFormat(__axis_y_format);
             yAxis2.ticks(__axis_y2_ticks).outerTickSize(0).tickFormat(__axis_y2_format);
 
-            // Save original x domain for zoom update
+            // Save original x entity for zoom update
             orgXDomain = x.domain();
 
             // Set initialized scales to brush and zoom
@@ -1335,7 +1335,7 @@
             main.select(".y.axis").transition().duration(__axis_rotated ? 0 : duration).call(__axis_rotated ? xAxis : yAxis);
             main.select(".y2.axis").transition().call(yAxis2);
 
-            // Update sub domain
+            // Update sub entity
             subY.domain(y.domain());
             subY2.domain(y2.domain());
 

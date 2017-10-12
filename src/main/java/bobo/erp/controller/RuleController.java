@@ -1,9 +1,9 @@
 package bobo.erp.controller;
 
-import bobo.erp.domain.rule.*;
+import bobo.erp.entity.rule.*;
 import bobo.erp.repository.rule.RuleRepository;
-import bobo.erp.service.rule.AddRule;
-import bobo.erp.service.rule.UseRule;
+import bobo.erp.model.rule.AddRule;
+import bobo.erp.model.rule.UseRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +27,12 @@ public class RuleController {
 
     @Autowired
     private UseRule useRule;
+
+    @PostMapping(value = "cloneRule")
+    @ResponseBody
+    public Rule cloneRule(Rule rule){
+        return addRule.cloneRule(rule);
+    }
 
     @PostMapping(value = "addRuleFactory")
     @ResponseBody

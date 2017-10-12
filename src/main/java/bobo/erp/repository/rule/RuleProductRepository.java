@@ -1,6 +1,6 @@
 package bobo.erp.repository.rule;
 
-import bobo.erp.domain.rule.RuleProduct;
+import bobo.erp.entity.rule.RuleProduct;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

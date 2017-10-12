@@ -1,6 +1,6 @@
 package bobo.erp.repository.state;
 
-import bobo.erp.domain.state.DevState;
+import bobo.erp.entity.state.DevState;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
