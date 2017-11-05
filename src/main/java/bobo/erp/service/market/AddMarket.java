@@ -1,4 +1,4 @@
-package bobo.erp.model.market;
+package bobo.erp.service.market;
 
 import bobo.erp.entity.market.MarketBid;
 import bobo.erp.entity.market.MarketOrder;

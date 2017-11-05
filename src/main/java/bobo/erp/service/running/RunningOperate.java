@@ -1,4 +1,4 @@
-package bobo.erp.model.running;
+package bobo.erp.service.running;
 
 import bobo.erp.entity.rule.*;
 import bobo.erp.entity.state.FactoryState;
@@ -15,7 +15,7 @@ import bobo.erp.entity.state.marketing.OrderState;
 import bobo.erp.entity.state.stock.MaterialState;
 import bobo.erp.entity.state.stock.ProductState;
 import bobo.erp.entity.state.stock.PurchaseState;
-import bobo.erp.model.teach.SubBackUp;
+import bobo.erp.service.teach.SubBackUp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package bobo.erp.controller;
 
 import bobo.erp.entity.user.User;
-import bobo.erp.model.user.LoginCheckService;
+import bobo.erp.service.user.LoginCheckService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

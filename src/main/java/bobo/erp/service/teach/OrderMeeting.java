@@ -1,4 +1,4 @@
-package bobo.erp.model.teach;
+package bobo.erp.service.teach;
 
 import bobo.erp.entity.collator.AreaCollator;
 import bobo.erp.entity.collator.Collator;
@@ -12,8 +12,8 @@ import bobo.erp.entity.state.marketing.OrderState;
 import bobo.erp.entity.teach.SubUserInfo;
 import bobo.erp.entity.teach.TeachClassInfo;
 import bobo.erp.repository.market.MarketOrderRepository;
-import bobo.erp.model.running.GetTeachClassInfoService;
-import bobo.erp.model.running.GetTeachClassRuleService;
+import bobo.erp.service.running.GetTeachClassInfoService;
+import bobo.erp.service.running.GetTeachClassRuleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

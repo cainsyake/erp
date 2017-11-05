@@ -859,7 +859,7 @@ jQuery.ready.promise = function( obj ) {
 			// A fallback to window.onload, that will always work
 			window.addEventListener( "load", jQuery.ready, false );
 
-		// If IE event model is used
+		// If IE event service is used
 		} else {
 			// Ensure firing before onload, maybe late but safe also for iframes
 			document.attachEvent( "onreadystatechange", DOMContentLoaded );
@@ -6976,7 +6976,7 @@ function getWidthOrHeight( elem, name, extra ) {
 		val = parseFloat( val ) || 0;
 	}
 
-	// use the active box-sizing model to add/subtract irrelevant styles
+	// use the active box-sizing service to add/subtract irrelevant styles
 	return ( val +
 		augmentWidthOrHeight(
 			elem,

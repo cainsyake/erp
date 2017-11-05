@@ -1,4 +1,4 @@
-package bobo.erp.model.rule;
+package bobo.erp.service.rule;
 
 import bobo.erp.entity.rule.*;
 import bobo.erp.repository.rule.*;

@@ -1,4 +1,4 @@
-package bobo.erp.model.teach;
+package bobo.erp.service.teach;
 
 import bobo.erp.entity.market.MarketBid;
 import bobo.erp.entity.market.MarketOrder;

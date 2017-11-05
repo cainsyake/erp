@@ -1,4 +1,4 @@
-package bobo.erp.model.user;
+package bobo.erp.service.user;
 
 import bobo.erp.entity.user.User;
 import bobo.erp.repository.UserRepository;

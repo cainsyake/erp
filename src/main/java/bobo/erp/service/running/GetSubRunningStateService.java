@@ -1,4 +1,4 @@
-package bobo.erp.model.running;
+package bobo.erp.service.running;
 
 import bobo.erp.entity.state.RunningState;
 import bobo.erp.entity.teach.SubUserInfo;

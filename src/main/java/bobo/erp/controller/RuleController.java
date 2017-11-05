@@ -2,8 +2,8 @@ package bobo.erp.controller;
 
 import bobo.erp.entity.rule.*;
 import bobo.erp.repository.rule.RuleRepository;
-import bobo.erp.model.rule.AddRule;
-import bobo.erp.model.rule.UseRule;
+import bobo.erp.service.rule.AddRule;
+import bobo.erp.service.rule.UseRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

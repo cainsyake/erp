@@ -1,4 +1,4 @@
-package bobo.erp.model.teach;
+package bobo.erp.service.teach;
 
 import bobo.erp.entity.user.User;
 import bobo.erp.entity.collator.Collator;
@@ -23,7 +23,7 @@ import bobo.erp.repository.UserRepository;
 import bobo.erp.repository.rule.RuleRepository;
 import bobo.erp.repository.teach.SubUserInfoRepository;
 import bobo.erp.repository.teach.TeachClassInfoRepository;
-import bobo.erp.model.user.GetUserInfo;
+import bobo.erp.service.user.GetUserInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

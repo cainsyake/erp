@@ -2,8 +2,8 @@ package bobo.erp.controller;
 
 import bobo.erp.entity.user.User;
 import bobo.erp.repository.UserRepository;
-import bobo.erp.model.user.GetUserInfo;
-import bobo.erp.model.user.PlatformUserInit;
+import bobo.erp.service.user.GetUserInfo;
+import bobo.erp.service.user.PlatformUserInit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
