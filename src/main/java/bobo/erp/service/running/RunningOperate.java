@@ -232,6 +232,9 @@ public class RunningOperate {
 
                 //更新生产
                 if(lineState.getOwningState() > 0){
+                    if (lineState.getProduceState() == null){
+                        lineState.setProduceState(0);
+                    }
                     if(lineState.getProduceState() == 1){
                         Integer productType = lineState.getProductType();
                         Iterator<ProductState> productStateIterator = productStateList.iterator();
@@ -503,6 +506,9 @@ public class RunningOperate {
                 if (balance < 0){
                     runningState.getBaseState().setMsg("现金不足");
                 }else {
+                    if (line1InstalTime == 0){
+                        lineState.setProduceState(0);   //如果生产线安装周期为0 设置生产状态为空闲
+                    }
                     runningState.getFinanceState().setCashAmount(balance);
                     lineState.setValue(lineUnitInvest);
                     lineState.setOwningState( 1 - line1InstalTime);

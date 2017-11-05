@@ -883,6 +883,8 @@ function pageController(rule, runningState) {
                     txt10 += "<td>还需 " + (-lineState.produceState) + " 季转产完成</td>";
                 }else if(lineState.produceState == 0){
                     txt10 += "<td>空闲</td>";
+                }else if (lineState.produceState == null){
+                    txt10 += "<td>空闲</td>";
                 }else{
                     txt10 += "<td>还需 " + lineState.produceState + " 季生产完成</td>";
                 }
