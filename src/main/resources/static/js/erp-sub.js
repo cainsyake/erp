@@ -2504,7 +2504,8 @@ function readMarket(seriesId) {
 
         }
     });
-    var txt2 = "<table class='table table-striped table-hover table-bordered' id='editable-sample'>" +
+    var txt2 = "<h4 style='text-align: center'>竞 单</h4>" +
+        "<table class='table table-striped table-hover table-bordered' id='editable-sample'>" +
         "<thead>" +
         "<tr>" +
         "<th>竞单ID</th>" +
@@ -2537,7 +2538,93 @@ function readMarket(seriesId) {
         }
     });
 
-    document.getElementById("divReadMarket").innerHTML = txt1 + txt2 ;
+    $.ajax({
+        type: "POST",
+        url: "/getMarketSeries/" + seriesId,
+        cache: false,
+        async:false,
+        dataType: "json",
+        success: function (data) {
+            var marketData = data.marketData;
+            var timeQuantity = data.timeQuantity;
+            var areaQuantity = data.areaQuantity;
+            var productQuantity = data.productQuantity;
+            var txt3 = "<h4 style='text-align: center'>均 价</h4>" +
+                "<table class='table table-striped table-hover table-bordered'>" +
+                "<thead>" +
+                "<tr>" +
+                "<th style='text-align: center'>年份</th>" +
+                "<th style='text-align: center'>产品</th>";
+            for (var i = 0; i < areaQuantity; i++){
+                txt3 += "<th style='text-align: center'>区域" + (i+1) + "</th>"
+            }
+            txt3 += "</tr>" +
+                "</thead>" +
+                "<tbody>";
+            var txt4 = "<h4 style='text-align: center'>需 求 量</h4>" +
+                "<table class='table table-striped table-hover table-bordered'>" +
+                "<thead>" +
+                "<tr>" +
+                "<th style='text-align: center'>年份</th>" +
+                "<th style='text-align: center'>产品</th>";
+            for (var i = 0; i < areaQuantity; i++){
+                txt4 += "<th style='text-align: center'>区域" + (i+1) + "</th>"
+            }
+            txt4 += "</tr>" +
+                "</thead>" +
+                "<tbody>";
+            var txt5 = "<h4 style='text-align: center'>订 单 数</h4>" +
+                "<table class='table table-striped table-hover table-bordered'>" +
+                "<thead>" +
+                "<tr>" +
+                "<th style='text-align: center'>年份</th>" +
+                "<th style='text-align: center'>产品</th>";
+            for (var i = 0; i < areaQuantity; i++){
+                txt5 += "<th style='text-align: center'>区域" + (i+1) + "</th>"
+            }
+            txt5 += "</tr>" +
+                "</thead>" +
+                "<tbody>";
+
+
+            var timeDataList = marketData.timeDataList;
+            for (var i = 0; i < timeDataList.length; i++) {
+                var productDataList = timeDataList[i].productDataList;
+                for (var j = 0; j < productDataList.length; j++) {
+                    txt3 += "<tr>" +
+                        "<td style='text-align: center'>第" + timeDataList[i].type + "年</td>" +
+                        "<td style='text-align: center'>P" + productDataList[j].type + "</td>";    //这里暂时用Pn代替产品名
+                    var areaDataList = productDataList[j].areaDataList;
+                    for (var k = 0; k < areaDataList.length; k++){
+                        txt3 += "<td>" + areaDataList[k].averagePrice + "</td>";
+                    }
+                    txt3 += "</tr>";
+
+                    txt4 += "<tr>" +
+                        "<td style='text-align: center'>第" + timeDataList[i].type + "年</td>" +
+                        "<td style='text-align: center'>P" + productDataList[j].type + "</td>";    //这里暂时用Pn代替产品名
+                    var areaDataList = productDataList[j].areaDataList;
+                    for (var k = 0; k < areaDataList.length; k++){
+                        txt4 += "<td>" + areaDataList[k].requirement + "</td>";
+                    }
+                    txt4 += "</tr>";
+
+                    txt5 += "<tr>" +
+                        "<td style='text-align: center'>第" + timeDataList[i].type + "年</td>" +
+                        "<td style='text-align: center'>P" + productDataList[j].type + "</td>";    //这里暂时用Pn代替产品名
+                    var areaDataList = productDataList[j].areaDataList;
+                    for (var k = 0; k < areaDataList.length; k++){
+                        txt5 += "<td>" + areaDataList[k].orderQuantity + "</td>";
+                    }
+                    txt5 += "</tr>";
+                }
+            }
+            txt3 += "</tbody></table><br>";
+            txt4 += "</tbody></table><br>";
+            txt5 += "</tbody></table><br>";
+            document.getElementById("divReadMarket").innerHTML = txt3 + txt4 + txt5 + txt2;
+        }
+    });
     document.getElementById("ajaxDiv1").innerHTML = "正在查看市场（SeriesID：" + seriesId + "）详细订单";
     $("#btnReadMarket").click();
 }

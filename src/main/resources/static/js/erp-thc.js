@@ -492,10 +492,6 @@ function readMarket(seriesId) {
             var timeQuantity = data.timeQuantity;
             var areaQuantity = data.areaQuantity;
             var productQuantity = data.productQuantity;
-            console.log("输出marketSeries整体数据");
-            console.log(timeQuantity + "  " + areaQuantity + "  " + productQuantity);
-            console.log("输出市场预测数据：");
-            console.log(marketData);
             var txt3 = "<h4 style='text-align: center'>均 价</h4>" +
                 "<table class='table table-striped table-hover table-bordered'>" +
                 "<thead>" +
