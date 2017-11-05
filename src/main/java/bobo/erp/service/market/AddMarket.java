@@ -380,6 +380,9 @@ public class AddMarket {
             marketSeries.setMarketSeriesName(seriesName);
             marketSeries.setMarketSeriesAlterTime(date);
             marketSeries.setMarketSeriesUseCount(0);
+            marketSeries.setTimeQuantity(maxOrderTime);
+            marketSeries.setAreaQuantity(maxOrderArea);
+            marketSeries.setProductQuantity(maxOrderProduct);
             //保存MarketSeries并获取seriesId
             Integer seriesId =  marketSeriesRepository.save(marketSeries).getMarketSeriesId();
             for(MarketOrder marketOrder : marketOrderList){

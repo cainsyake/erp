@@ -3,6 +3,7 @@ package bobo.erp.entity.market;
 import bobo.erp.entity.market.data.MarketData;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Date;
 
 /**
@@ -21,6 +22,9 @@ public class MarketSeries {
     private Integer marketSeriesUseCount;   //市场系列调用次数
     private Date marketSeriesAlterTime;     //市场系列更改时间
     private String marketSeriesUploader;    //市场系列上传者
+    private Integer timeQuantity;   //年份数量
+    private Integer areaQuantity;   //区域数量
+    private Integer productQuantity;    //产品数量
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "market_data_id")
@@ -72,5 +76,29 @@ public class MarketSeries {
 
     public void setMarketData(MarketData marketData) {
         this.marketData = marketData;
+    }
+
+    public Integer getTimeQuantity() {
+        return timeQuantity;
+    }
+
+    public void setTimeQuantity(Integer timeQuantity) {
+        this.timeQuantity = timeQuantity;
+    }
+
+    public Integer getAreaQuantity() {
+        return areaQuantity;
+    }
+
+    public void setAreaQuantity(Integer areaQuantity) {
+        this.areaQuantity = areaQuantity;
+    }
+
+    public Integer getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(Integer productQuantity) {
+        this.productQuantity = productQuantity;
     }
 }
