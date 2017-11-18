@@ -35,6 +35,10 @@ public class TeachClassInfo {
     @JoinColumn(name = "collator_id")
     private Collator collator;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "teach_class_id")
+    private List<FileInfo> fileInfoList;
+
     public Integer getTeachClassId() {
         return teachClassId;
     }
@@ -121,5 +125,13 @@ public class TeachClassInfo {
 
     public void setBidMeetingState(Integer bidMeetingState) {
         this.bidMeetingState = bidMeetingState;
+    }
+
+    public List<FileInfo> getFileInfoList() {
+        return fileInfoList;
+    }
+
+    public void setFileInfoList(List<FileInfo> fileInfoList) {
+        this.fileInfoList = fileInfoList;
     }
 }

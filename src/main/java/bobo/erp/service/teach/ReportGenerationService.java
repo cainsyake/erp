@@ -4,6 +4,7 @@ import bobo.erp.entity.rule.Rule;
 import bobo.erp.entity.rule.RuleMarket;
 import bobo.erp.entity.rule.RuleProduct;
 import bobo.erp.entity.state.marketing.AdvertisingState;
+import bobo.erp.entity.teach.FileInfo;
 import bobo.erp.entity.teach.TeachClassInfo;
 import bobo.erp.service.running.GetTeachClassInfoService;
 import bobo.erp.service.running.GetTeachClassRuleService;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +38,7 @@ public class ReportGenerationService {
      * @param name 教学班账号
      * @return
      */
+    @Transactional
     public Integer AdReportGeneration(String name){
         TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(name);
         Integer time = teachClassInfo.getTime();
@@ -44,7 +47,13 @@ public class ReportGenerationService {
         RuleMarket ruleMarket = rule.getRuleMarket();
         List<String> productNameList = new ArrayList<String>();
         List<String> areaNameList = new ArrayList<String>();
-        String title = name + " 第 " + time + " 年 AD";
+        String title = "AD" + time + name;
+        String fileName = title + ".xlsx";
+        FileInfo fileInfo = new FileInfo();
+        fileInfo.setName(fileName);
+        fileInfo.setState(1);
+        fileInfo.setType("ad");
+        teachClassInfo.getFileInfoList().add(fileInfo);
 
         //获取产品名List
         if (ruleProduct.getProduct1Name() != ""){

@@ -5,17 +5,19 @@ import bobo.erp.entity.teach.TeachClassInfo;
 import bobo.erp.repository.teach.SubUserInfoRepository;
 import bobo.erp.repository.teach.TeachClassInfoRepository;
 import bobo.erp.service.running.GetTeachClassInfoService;
-import bobo.erp.service.teach.CheckThisYearOrder;
-import bobo.erp.service.teach.OrderMeeting;
-import bobo.erp.service.teach.ReportGenerationService;
-import bobo.erp.service.teach.TeachClassInit;
+import bobo.erp.service.teach.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -39,6 +41,9 @@ public class TeachController {
 
     @Autowired
     private ReportGenerationService reportGenerationService;
+
+    @Autowired
+    private FileDownloadService fileDownloadService;
 
     @Autowired
     private TeachClassInfoRepository teachClassInfoRepository;
@@ -145,4 +150,10 @@ public class TeachController {
     public Integer adReport(@PathVariable("name") String name){
         return reportGenerationService.AdReportGeneration(name);
     }
+
+    @RequestMapping(value = "/reportDownload/{type}/{id}", method = RequestMethod.GET)
+    public void reportDownload(HttpServletResponse res,@PathVariable("type") String type,@PathVariable("id") Integer id) {
+        fileDownloadService.reportDownload(res, type, id);
+    }
+
 }

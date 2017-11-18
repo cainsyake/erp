@@ -1057,7 +1057,28 @@ function btnController(obj) {
     document.getElementById("divTimeAxis").innerHTML = txt;
 }
 
-
+function updateReportDownload() {
+    var nowUserName = $("#nowUserName").val();
+    $.ajax({
+        type:"POST",
+        url:"/getFileInfo/" + nowUserName,
+        cache:false,
+        dataType:"json",
+        success:function (list) {
+            $.each(list,function(n, fileInfo){
+                if (fileInfo.type == 'ad' && fileInfo.state == 1){
+                    var url = 'reportDownload/' + fileInfo.type + '/' + fileInfo.id;
+                    var attr = "window.location.href = '" + url + "'";
+                    console.log(attr);
+                    $('#downloadAdReport').attr("onclick", attr);
+                }
+                /**
+                 * 在这些补充其他报表的下载URL生成
+                 */
+            });
+        }
+    });
+}
 
 function reportCalculation() {
 

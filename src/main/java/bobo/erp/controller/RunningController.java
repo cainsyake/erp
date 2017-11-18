@@ -6,6 +6,7 @@ import bobo.erp.entity.state.RunningState;
 import bobo.erp.entity.state.factory.LineState;
 import bobo.erp.entity.state.finance.DebtState;
 import bobo.erp.entity.state.marketing.AdvertisingState;
+import bobo.erp.entity.teach.FileInfo;
 import bobo.erp.entity.teach.SubUserInfo;
 import bobo.erp.entity.teach.TeachClassInfo;
 import bobo.erp.service.running.*;
@@ -248,6 +249,12 @@ public class RunningController {
     @ResponseBody
     public SubUserInfo getSubUserInfo(@PathVariable("nowUserName") String nowUserName){
         return getSubRunningStateService.getSubUserInfo(nowUserName);
+    }
+
+    @PostMapping(value = "getFileInfo/{nowUserName}")
+    @ResponseBody
+    public List<FileInfo> getFileInfo(@PathVariable("nowUserName") String nowUserName){
+        return getTeachClassInfoService.getTeachClassInfoByUsername(nowUserName).getFileInfoList();
     }
 
 }
