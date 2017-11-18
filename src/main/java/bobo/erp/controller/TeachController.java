@@ -7,6 +7,7 @@ import bobo.erp.repository.teach.TeachClassInfoRepository;
 import bobo.erp.service.running.GetTeachClassInfoService;
 import bobo.erp.service.teach.CheckThisYearOrder;
 import bobo.erp.service.teach.OrderMeeting;
+import bobo.erp.service.teach.ReportGenerationService;
 import bobo.erp.service.teach.TeachClassInit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,9 @@ public class TeachController {
 
     @Autowired
     private OrderMeeting orderMeeting;
+
+    @Autowired
+    private ReportGenerationService reportGenerationService;
 
     @Autowired
     private TeachClassInfoRepository teachClassInfoRepository;
@@ -134,5 +138,11 @@ public class TeachController {
                                       @PathVariable("product") Integer product,
                                       @PathVariable("id") Integer id){
         return orderMeeting.getOrder(nowUserName, area, product, id);
+    }
+
+    @PostMapping(value = "adReport/{name}")
+    @ResponseBody
+    public Integer adReport(@PathVariable("name") String name){
+        return reportGenerationService.AdReportGeneration(name);
     }
 }
