@@ -2,6 +2,7 @@ package bobo.erp.entity.rule;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by 59814 on 2017/7/20.
@@ -12,50 +13,50 @@ public class Rule {
     }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer ruleId;
+    private Integer id;
 
     private String ruleUploader;
     private Date ruleAlterTime;
     private Integer ruleUserCount;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rule_factory_id")
-    private RuleFactory ruleFactory;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "rule_id")
+    private List<RuleLine> ruleLineList;    //生产线规则
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rule_line_id")
-    private RuleLine ruleLine;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "rule_id")
+    private List<RuleFactory> ruleFactoryList;  //厂房规则
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rule_market_id")
-    private RuleMarket ruleMarket;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "rule_id")
+    private List<RuleMarket> ruleMarketList;    //区域规则
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rule_iso_id")
-    private RuleIso ruleIso;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "rule_id")
+    private List<RuleIso> ruleIsoList;      //资质规则
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rule_material_id")
-    private RuleMaterial ruleMaterial;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "rule_id")
+    private List<RuleMaterial> ruleMaterialList;    //原料规则
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rule_product_id")
-    private RuleProduct ruleProduct;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "rule_id")
+    private List<RuleProductBom> ruleProductBomList;    //产品结构规则
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "rule_product_mix_id")
-    private RuleProductMix ruleProductMix;
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "rule_id")
+    private List<RuleProduct> ruleProductList;    //产品规则
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "rule_param_id")
-    private RuleParam ruleParam;
+    private RuleParam ruleParam;    //详细参数
 
-    public Integer getRuleId() {
-        return ruleId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setRuleId(Integer ruleId) {
-        this.ruleId = ruleId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getRuleUploader() {
@@ -82,61 +83,60 @@ public class Rule {
         this.ruleUserCount = ruleUserCount;
     }
 
-
-    public RuleFactory getRuleFactory() {
-        return ruleFactory;
+    public List<RuleLine> getRuleLineList() {
+        return ruleLineList;
     }
 
-    public void setRuleFactory(RuleFactory ruleFactory) {
-        this.ruleFactory = ruleFactory;
+    public void setRuleLineList(List<RuleLine> ruleLineList) {
+        this.ruleLineList = ruleLineList;
     }
 
-    public RuleLine getRuleLine() {
-        return ruleLine;
+    public List<RuleFactory> getRuleFactoryList() {
+        return ruleFactoryList;
     }
 
-    public void setRuleLine(RuleLine ruleLine) {
-        this.ruleLine = ruleLine;
+    public void setRuleFactoryList(List<RuleFactory> ruleFactoryList) {
+        this.ruleFactoryList = ruleFactoryList;
     }
 
-    public RuleMarket getRuleMarket() {
-        return ruleMarket;
+    public List<RuleMarket> getRuleMarketList() {
+        return ruleMarketList;
     }
 
-    public void setRuleMarket(RuleMarket ruleMarket) {
-        this.ruleMarket = ruleMarket;
+    public void setRuleMarketList(List<RuleMarket> ruleMarketList) {
+        this.ruleMarketList = ruleMarketList;
     }
 
-    public RuleIso getRuleIso() {
-        return ruleIso;
+    public List<RuleIso> getRuleIsoList() {
+        return ruleIsoList;
     }
 
-    public void setRuleIso(RuleIso ruleIso) {
-        this.ruleIso = ruleIso;
+    public void setRuleIsoList(List<RuleIso> ruleIsoList) {
+        this.ruleIsoList = ruleIsoList;
     }
 
-    public RuleMaterial getRuleMaterial() {
-        return ruleMaterial;
+    public List<RuleMaterial> getRuleMaterialList() {
+        return ruleMaterialList;
     }
 
-    public void setRuleMaterial(RuleMaterial ruleMaterial) {
-        this.ruleMaterial = ruleMaterial;
+    public void setRuleMaterialList(List<RuleMaterial> ruleMaterialList) {
+        this.ruleMaterialList = ruleMaterialList;
     }
 
-    public RuleProduct getRuleProduct() {
-        return ruleProduct;
+    public List<RuleProductBom> getRuleProductBomList() {
+        return ruleProductBomList;
     }
 
-    public void setRuleProduct(RuleProduct ruleProduct) {
-        this.ruleProduct = ruleProduct;
+    public void setRuleProductBomList(List<RuleProductBom> ruleProductBomList) {
+        this.ruleProductBomList = ruleProductBomList;
     }
 
-    public RuleProductMix getRuleProductMix() {
-        return ruleProductMix;
+    public List<RuleProduct> getRuleProductList() {
+        return ruleProductList;
     }
 
-    public void setRuleProductMix(RuleProductMix ruleProductMix) {
-        this.ruleProductMix = ruleProductMix;
+    public void setRuleProductList(List<RuleProduct> ruleProductList) {
+        this.ruleProductList = ruleProductList;
     }
 
     public RuleParam getRuleParam() {
@@ -145,23 +145,5 @@ public class Rule {
 
     public void setRuleParam(RuleParam ruleParam) {
         this.ruleParam = ruleParam;
-    }
-
-    @Override
-    public String toString() {
-        return "Rule{" +
-                "ruleId=" + ruleId +
-                ", ruleUploader='" + ruleUploader + '\'' +
-                ", ruleAlterTime=" + ruleAlterTime +
-                ", ruleUserCount=" + ruleUserCount +
-                ", ruleFactory=" + ruleFactory +
-                ", ruleLine=" + ruleLine +
-                ", ruleMarket=" + ruleMarket +
-                ", ruleIso=" + ruleIso +
-                ", ruleMaterial=" + ruleMaterial +
-                ", ruleProduct=" + ruleProduct +
-                ", ruleProductMix=" + ruleProductMix +
-                ", ruleParam=" + ruleParam +
-                '}';
     }
 }
