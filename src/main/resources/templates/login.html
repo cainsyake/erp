@@ -19,24 +19,12 @@
 </head>
 <body>
 <script language="javascript">
-    function validate(f){
-//        if(!(/^\w{4,20}$/.test(f.username.value))){
-//            alert("请输入长度为4-20的用户名。") ;
-//            f.username.focus() ;
-//            return false ;
-//        }
-//        if(!(/^\w{6,20}$/.test(f.password.value))){
-//            alert("请输入长度为6-20的密码。") ;
-//            f.password.focus() ;
-//            return false ;
-//        }
-    }
 </script>
 <div class="container">
 
     <form class="form-signin" action="/usercheck" method="post">
         <div class="form-signin-heading text-center">
-            <h1 class="sign-title">MAET - ERP 1.4</h1>
+            <h1 class="sign-title">MAET - ERP 1.6</h1>
             <img src="images/logo.png" alt=""/>
         </div>
         <div class="login-wrap">
@@ -61,7 +49,6 @@
                 <input type="checkbox" value="remember-me" /> 记住我
                 <span class="pull-right">
                     <a data-toggle="modal" href="#myModal"> 对网站有任何意见?</a>
-                    <!--<a data-toggle="modal" href="#testModal"> Modal测试</a>-->
                 </span>
             </label>
 
@@ -74,11 +61,12 @@
 
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title">提 交 意 见</h4>
+                        <h4 class="modal-title" style="text-align: center">提 交 意 见</h4>
                     </div>
                     <div class="modal-body">
                         <p>输入你的邮箱</p>
-                        <input type="text" name="email" placeholder="尽情投诉吧，尽管没有什么用" autocomplete="off" class="form-control placeholder-no-fix" />
+                        <h3 style="text-align: center">请将您的意见发送至电邮：cainsyake@gmail.com</h3><br>
+                        <h3 style="text-align: center">Please send your comments to email: cainsyake@gmail.com</h3>
 
                     </div>
                     <div class="modal-footer">
@@ -89,36 +77,6 @@
                 </div>
             </div>
         </div>
-
-        <!--<div class="modal fade" id="testModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">-->
-            <!--<div class="modal-dialog" role="document">-->
-                <!--<div class="modal-content">-->
-                    <!--<div class="modal-header">-->
-                        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>-->
-                        <!--<h4 class="modal-title" id="exampleModalLabel">New login</h4>-->
-                    <!--</div>-->
-                    <!--<div class="modal-body">-->
-                        <!--<form action="users" fileName="f1" method="get">-->
-                            <!--<div class="form-group">-->
-                                <!--<label for="recipient-fileName" class="control-label">Recipient:</label>-->
-                                <!--<input type="text" class="form-control" id="recipient-fileName" />-->
-                            <!--</div>-->
-                            <!--<div class="form-group">-->
-                                <!--<label for="message-text" class="control-label">Message:</label>-->
-                                <!--<textarea class="form-control" id="message-text"></textarea>-->
-                            <!--</div>-->
-                        <!--</form>-->
-                    <!--</div>-->
-                    <!--<div class="modal-footer">-->
-                        <!--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
-                        <!--<button type="button" class="btn btn-primary" onclick="document.f1.submit()">Send message</button>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!-- modal -->
-
-
 
 </div>
 

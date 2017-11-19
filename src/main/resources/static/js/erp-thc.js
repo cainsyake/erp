@@ -1869,13 +1869,11 @@ function findSubUser() {
                 txt="<table class='table table-striped table-hover table-bordered' id='editable-sample'>" +
                     "<thead>" +
                     "<tr>" +
-                    "<th>用户ID</th>" +
-                    "<th>用户名</th>" +
-                    "<th>密码</th>" +
-                    "<th>用户等级</th>" +
-                    "<th>操作者</th>" +
-                    "<th>修改密码</th>" +
-                    "<th>删除用户</th>" +
+                    "<th style='text-align: center'>用户ID</th>" +
+                    "<th style='text-align: center'>用户名</th>" +
+                    "<th style='text-align: center'>密码</th>" +
+                    "<th style='text-align: center'>用户等级</th>" +
+                    "<th style='text-align: center'>操作者</th>" +
                     "<th style='display: none'>当前操作用户</th>" +
                     "</tr>" +
                     "</thead>" +
@@ -1883,13 +1881,11 @@ function findSubUser() {
                 for(var i=0; i<eval(json).length; i++ ){
                     if(json[i].userOperator == nowUserName){
                         txt = txt + "<tr>" +
-                            "<td>" + json[i].id + "</td>" +
-                            "<td>" + json[i].username + "</td>" +
-                            "<td>" + json[i].password + "</td>" +
-                            "<td>" + json[i].userLevel + "</td>" +
-                            "<td>" + json[i].userOperator + "</td>" +
-                            "<td><a class='edit' href='#modalChangePassword' data-toggle='modal'>修改密码</a></td>" +
-                            "<td><a onclick='deleteUser(" + json[i].id + ")'>删除用户</a></td>" +
+                            "<td style='text-align: center'>" + json[i].id + "</td>" +
+                            "<td style='text-align: center'>" + json[i].username + "</td>" +
+                            "<td style='text-align: center'>" + json[i].password + "</td>" +
+                            "<td style='text-align: center'>" + json[i].userLevel + "</td>" +
+                            "<td style='text-align: center'>" + json[i].userOperator + "</td>" +
                             "<td style='display: none'>当前操作用户</td>" +
                             "</tr>";
                     }

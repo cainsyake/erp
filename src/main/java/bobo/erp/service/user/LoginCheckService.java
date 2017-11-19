@@ -45,7 +45,7 @@ public class LoginCheckService {
                         return "platformManage";
                     case 2:
                         session.setAttribute("loginStatus", "2");
-                        return "teachManage";
+                        return "thcManage";
                     case 3:
                         session.setAttribute("loginStatus", "3");
                         return "subManage";
