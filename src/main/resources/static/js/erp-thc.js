@@ -16,6 +16,20 @@ function thcOnload() {
     });
 }
 
+function adReport() {
+    var nowUserName = $("#nowUserName").val();
+    $.ajax({
+        type:"POST",
+        url:"/adReport/" + nowUserName,
+        cache:false,
+        dataType:"json",
+        success:function (thc) {
+            var txt = getTime() + '已发放广告投放情况';
+            $('#ajaxDiv1').html(txt);
+        }
+    });
+}
+
 function cloneRule() {
     var nowUserName = $("#nowUserName").val();
     var host = "http://erp.cainsyake.com.cn";
