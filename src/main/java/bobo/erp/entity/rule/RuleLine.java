@@ -22,17 +22,17 @@ public class RuleLine {
 
     private Integer type; //类型ID
 
-    private String lineName;           //生产线名
-    private Integer lineUnitInvest;     //单位投资
-    private Integer lineInstallTime;   //安装时间
-    private Integer lineProduceTime;   //生产周期
-    private Integer lineChangeInvest;   //转产费用，每周期
-    private Integer lineChangeTime;    //转产周期
-    private Integer lineUpkeep;         //维护费
-    private Integer lineScrapValue;     //残值
-    private Integer lineDepreciation;   //单位周期折旧
-    private Integer lineDepreTime;     //折旧周期
-    private Integer lineScore;         //潜力分数
+    private String name;           //生产线名
+    private Integer unitInvest;     //单位投资
+    private Integer installTime;   //安装时间
+    private Integer produceTime;   //生产周期
+    private Integer changeInvest;   //转产费用，每周期
+    private Integer changeTime;    //转产周期
+    private Integer upkeep;         //维护费
+    private Integer scrapValue;     //残值
+    private Integer depreciation;   //单位周期折旧
+    private Integer depreTime;     //折旧周期
+    private Integer score;         //潜力分数
 
     public Integer getId() {
         return id;
@@ -60,91 +60,91 @@ public class RuleLine {
         this.type = type;
     }
 
-    public String getLineName() {
-        return lineName;
+    public String getName() {
+        return name;
     }
 
-    public void setLineName(String lineName) {
-        this.lineName = lineName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public Integer getLineUnitInvest() {
-        return lineUnitInvest;
+    public Integer getUnitInvest() {
+        return unitInvest;
     }
 
-    public void setLineUnitInvest(Integer lineUnitInvest) {
-        this.lineUnitInvest = lineUnitInvest;
+    public void setUnitInvest(Integer unitInvest) {
+        this.unitInvest = unitInvest;
     }
 
-    public Integer getLineInstallTime() {
-        return lineInstallTime;
+    public Integer getInstallTime() {
+        return installTime;
     }
 
-    public void setLineInstallTime(Integer lineInstallTime) {
-        this.lineInstallTime = lineInstallTime;
+    public void setInstallTime(Integer installTime) {
+        this.installTime = installTime;
     }
 
-    public Integer getLineProduceTime() {
-        return lineProduceTime;
+    public Integer getProduceTime() {
+        return produceTime;
     }
 
-    public void setLineProduceTime(Integer lineProduceTime) {
-        this.lineProduceTime = lineProduceTime;
+    public void setProduceTime(Integer produceTime) {
+        this.produceTime = produceTime;
     }
 
-    public Integer getLineChangeInvest() {
-        return lineChangeInvest;
+    public Integer getChangeInvest() {
+        return changeInvest;
     }
 
-    public void setLineChangeInvest(Integer lineChangeInvest) {
-        this.lineChangeInvest = lineChangeInvest;
+    public void setChangeInvest(Integer changeInvest) {
+        this.changeInvest = changeInvest;
     }
 
-    public Integer getLineChangeTime() {
-        return lineChangeTime;
+    public Integer getChangeTime() {
+        return changeTime;
     }
 
-    public void setLineChangeTime(Integer lineChangeTime) {
-        this.lineChangeTime = lineChangeTime;
+    public void setChangeTime(Integer changeTime) {
+        this.changeTime = changeTime;
     }
 
-    public Integer getLineUpkeep() {
-        return lineUpkeep;
+    public Integer getUpkeep() {
+        return upkeep;
     }
 
-    public void setLineUpkeep(Integer lineUpkeep) {
-        this.lineUpkeep = lineUpkeep;
+    public void setUpkeep(Integer upkeep) {
+        this.upkeep = upkeep;
     }
 
-    public Integer getLineScrapValue() {
-        return lineScrapValue;
+    public Integer getScrapValue() {
+        return scrapValue;
     }
 
-    public void setLineScrapValue(Integer lineScrapValue) {
-        this.lineScrapValue = lineScrapValue;
+    public void setScrapValue(Integer scrapValue) {
+        this.scrapValue = scrapValue;
     }
 
-    public Integer getLineDepreciation() {
-        return lineDepreciation;
+    public Integer getDepreciation() {
+        return depreciation;
     }
 
-    public void setLineDepreciation(Integer lineDepreciation) {
-        this.lineDepreciation = lineDepreciation;
+    public void setDepreciation(Integer depreciation) {
+        this.depreciation = depreciation;
     }
 
-    public Integer getLineDepreTime() {
-        return lineDepreTime;
+    public Integer getDepreTime() {
+        return depreTime;
     }
 
-    public void setLineDepreTime(Integer lineDepreTime) {
-        this.lineDepreTime = lineDepreTime;
+    public void setDepreTime(Integer depreTime) {
+        this.depreTime = depreTime;
     }
 
-    public Integer getLineScore() {
-        return lineScore;
+    public Integer getScore() {
+        return score;
     }
 
-    public void setLineScore(Integer lineScore) {
-        this.lineScore = lineScore;
+    public void setScore(Integer score) {
+        this.score = score;
     }
 }
