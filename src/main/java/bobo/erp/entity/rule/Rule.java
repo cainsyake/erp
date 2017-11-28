@@ -33,7 +33,7 @@ public class Rule {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "rule_id")
-    private List<RuleIso> ruleIsoList;      //资质规则
+    private List<RuleQualification> ruleQualificationList;      //资质规则
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "rule_id")
@@ -107,12 +107,12 @@ public class Rule {
         this.ruleAreaList = ruleAreaList;
     }
 
-    public List<RuleIso> getRuleIsoList() {
-        return ruleIsoList;
+    public List<RuleQualification> getRuleQualificationList() {
+        return ruleQualificationList;
     }
 
-    public void setRuleIsoList(List<RuleIso> ruleIsoList) {
-        this.ruleIsoList = ruleIsoList;
+    public void setRuleQualificationList(List<RuleQualification> ruleQualificationList) {
+        this.ruleQualificationList = ruleQualificationList;
     }
 
     public List<RuleMaterial> getRuleMaterialList() {
