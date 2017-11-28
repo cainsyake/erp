@@ -17,9 +17,10 @@ public class UniformResult {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private Integer state;  //状态码(通用：'00':成功 '01':失败) 其他状态码由调用方确定
+    private String  state;  //状态码(通用：'00':成功 '01':失败) 其他状态码由调用方确定
     private String msg;     //返回消息
-    private String target;  //调用方
+    private String target;  //处理方
+    private String user;    //请求者
 
     public Integer getId() {
         return id;
@@ -29,11 +30,11 @@ public class UniformResult {
         this.id = id;
     }
 
-    public Integer getState() {
+    public String getState() {
         return state;
     }
 
-    public void setState(Integer state) {
+    public void setState(String state) {
         this.state = state;
     }
 
@@ -51,5 +52,13 @@ public class UniformResult {
 
     public void setTarget(String target) {
         this.target = target;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 }
