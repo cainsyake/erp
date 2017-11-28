@@ -29,7 +29,7 @@ public class Rule {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "rule_id")
-    private List<RuleMarket> ruleMarketList;    //区域规则
+    private List<RuleArea> ruleAreaList;    //区域规则
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "rule_id")
@@ -99,12 +99,12 @@ public class Rule {
         this.ruleFactoryList = ruleFactoryList;
     }
 
-    public List<RuleMarket> getRuleMarketList() {
-        return ruleMarketList;
+    public List<RuleArea> getRuleAreaList() {
+        return ruleAreaList;
     }
 
-    public void setRuleMarketList(List<RuleMarket> ruleMarketList) {
-        this.ruleMarketList = ruleMarketList;
+    public void setRuleAreaList(List<RuleArea> ruleAreaList) {
+        this.ruleAreaList = ruleAreaList;
     }
 
     public List<RuleIso> getRuleIsoList() {
