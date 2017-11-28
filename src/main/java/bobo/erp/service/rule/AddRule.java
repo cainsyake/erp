@@ -1,5 +1,6 @@
 package bobo.erp.service.rule;
 
+import bobo.erp.entity.common.UniformResult;
 import bobo.erp.entity.rule.*;
 import bobo.erp.repository.rule.*;
 import org.slf4j.Logger;
@@ -8,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by 59814 on 2017/7/20.
@@ -36,20 +39,53 @@ public class AddRule {
     @Autowired
     private RuleProductRepository ruleProductRepository;
 
-    public RuleFactory addRuleFactory(RuleFactory ruleFactory){
-        return ruleFactoryRepository.save(ruleFactory);
+    @Transactional
+    public UniformResult addRuleParam(RuleParam ruleParam, String operator){
+        Rule rule = new Rule();
+        Date ruleAlterTime = new Date();
+        rule.setRuleAlterTime(ruleAlterTime);
+        rule.setRuleUploader(operator);
+        rule.setRuleUserCount(0);
+        rule.setRuleParam(ruleParam);
+        Rule saveResult = ruleRepository.save(rule);
+        Integer id = saveResult.getId();
+
+        UniformResult uniformResult = new UniformResult();
+        uniformResult.setState("00");
+        uniformResult.setMsg("初始化规则成功");
+        uniformResult.setUser(operator);
+        uniformResult.setTarget("AddRuleService");
+
+        return uniformResult;
     }
 
-    public RuleIso addRuleIso(RuleIso ruleIso){
-        return ruleIsoRepository.save(ruleIso);
+    @Transactional
+    public UniformResult addRuleFactory(RuleFactory[] ruleFactories, Integer id, String operator){
+        List<RuleFactory> ruleFactoryList = new ArrayList<RuleFactory>();
+        for(int i = 0; i < ruleFactories.length; i++){
+            ruleFactoryList.add(ruleFactories[i]);  //将数组重组为List
+        }
+
+        Rule rule = ruleRepository.findOne(id);
+        rule.setRuleFactoryList(ruleFactoryList);
+        UniformResult uniformResult = new UniformResult();
+        uniformResult.setState("00");
+        uniformResult.setMsg("添加厂房部分规则成功");
+        uniformResult.setUser(operator);
+        uniformResult.setTarget("AddRuleService");
+        return uniformResult;
+    }
+
+    public RuleQualification addRuleIso(RuleQualification ruleQualification){
+        return ruleIsoRepository.save(ruleQualification);
     }
 
     public RuleLine addRuleLine(RuleLine ruleLine){
         return ruleLineRepository.save(ruleLine);
     }
 
-    public RuleMarket addRuleMarket(RuleMarket ruleMarket){
-        return ruleMarketRepository.save(ruleMarket);
+    public RuleArea addRuleMarket(RuleArea ruleArea){
+        return ruleMarketRepository.save(ruleArea);
     }
 
     public RuleMaterial addRuleMaterial(RuleMaterial ruleMaterial){
@@ -57,33 +93,13 @@ public class AddRule {
         return ruleMaterialRepository.save(ruleMaterial);
     }
 
-    public RuleProductMix addRuleProductMix(RuleProductMix ruleProductMix){
-        return ruleProductMixRepository.save(ruleProductMix);
-    }
+
 
     public RuleProduct addRuleProduct(RuleProduct ruleProduct){
         return ruleProductRepository.save(ruleProduct);
     }
 
-    public Rule addRuleParam(RuleParam ruleParam, Rule rule, String operator){
-        ruleParamRepository.save(ruleParam);
-        Integer seriesId = ruleParam.getRuleParamId();  //获取系列Id
 
-        rule.setRuleFactory(ruleFactoryRepository.findOne(seriesId));
-        rule.setRuleIso(ruleIsoRepository.findOne(seriesId));
-        rule.setRuleLine(ruleLineRepository.findOne(seriesId));
-        rule.setRuleMarket(ruleMarketRepository.findOne(seriesId));
-        rule.setRuleMaterial(ruleMaterialRepository.findOne(seriesId));
-        rule.setRuleParam(ruleParamRepository.findOne(seriesId));
-        rule.setRuleProductMix(ruleProductMixRepository.findOne(seriesId));
-        rule.setRuleProduct(ruleProductRepository.findOne(seriesId));
-
-        Date ruleAlterTime = new Date();
-        rule.setRuleAlterTime(ruleAlterTime);
-        rule.setRuleUploader(operator);
-        rule.setRuleUserCount(0);
-        return ruleRepository.save(rule);
-    }
 
     @Transactional
     public Rule cloneRule(Rule ruleRemote){

@@ -1,5 +1,6 @@
 package bobo.erp.controller;
 
+import bobo.erp.entity.common.UniformResult;
 import bobo.erp.entity.rule.*;
 import bobo.erp.repository.rule.RuleRepository;
 import bobo.erp.service.rule.AddRule;
@@ -34,23 +35,28 @@ public class RuleController {
         return addRule.cloneRule(rule);
     }
 
-    @PostMapping(value = "addRuleFactory")
+    @PostMapping(value = "addRuleParam")
     @ResponseBody
-    public RuleFactory addRuleFactory(@Valid RuleFactory ruleFactory, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            return null;
-        }else{
-            return addRule.addRuleFactory(ruleFactory);
-        }
+    public UniformResult addRuleParam(@RequestParam(value = "ruleParam") RuleParam ruleParam,
+                                      @RequestParam(value = "nowUserName") String nowUserName){
+        return addRule.addRuleParam(ruleParam, nowUserName);
     }
 
-    @PostMapping(value = "addRuleIso")
+    @PostMapping(value = "addRuleFactory")
     @ResponseBody
-    public RuleIso addRuleIso(@Valid RuleIso ruleIso, BindingResult bindingResult){
+    public UniformResult addRuleFactory(@RequestParam(value = "ruleFactoryList") RuleFactory[] ruleFactories,
+                                        @RequestParam(value = "ruleId") Integer ruleId,
+                                        @RequestParam(value = "nowUserName") String nowUserName){
+        return addRule.addRuleFactory(ruleFactories, ruleId, nowUserName);
+    }
+
+    @PostMapping(value = "addRuleQualification")
+    @ResponseBody
+    public RuleQualification addRuleQualification(@Valid RuleQualification ruleQualification, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
             return null;
         }else{
-            return addRule.addRuleIso(ruleIso);
+            return addRule.addRuleIso(ruleQualification);
         }
     }
 
@@ -66,11 +72,11 @@ public class RuleController {
 
     @PostMapping(value = "addRuleMarket")
     @ResponseBody
-    public RuleMarket addRuleMarket(@Valid RuleMarket ruleMarket, BindingResult bindingResult){
+    public RuleArea addRuleMarket(@Valid RuleArea ruleArea, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return null;
         }else{
-            return addRule.addRuleMarket(ruleMarket);
+            return addRule.addRuleMarket(ruleArea);
         }
     }
 
@@ -85,13 +91,14 @@ public class RuleController {
     }
 
 
-    @PostMapping(value = "addRuleProductMix")
+    @PostMapping(value = "addRuleProductBom")
     @ResponseBody
-    public RuleProductMix addRuleProductMix(@Valid RuleProductMix ruleProductMix, BindingResult bindingResult){
+    public RuleProductBom addRuleProductBom(@Valid RuleProductBom ruleProductBom, BindingResult bindingResult){
         if (bindingResult.hasErrors()){
             return null;
         }else{
-            return addRule.addRuleProductMix(ruleProductMix);
+//            return addRule.addRuleProductMix(ruleProductMix);
+            return null;
         }
     }
 
@@ -105,16 +112,7 @@ public class RuleController {
         }
     }
 
-    @PostMapping(value = "addRuleParam")
-    @ResponseBody
-    public Rule addRuleParam(@Valid RuleParam ruleParam, @Valid Rule rule, BindingResult bindingResult, HttpSession session){
-        if (bindingResult.hasErrors()){
-            return null;
-        }else{
-            String nowUserName = (String) session.getAttribute("nowUserName");
-            return addRule.addRuleParam(ruleParam, rule, nowUserName);
-        }
-    }
+
 
     @GetMapping(value = "ruleFindAll")
     @ResponseBody
