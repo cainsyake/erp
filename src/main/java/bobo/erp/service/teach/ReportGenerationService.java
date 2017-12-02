@@ -1,7 +1,7 @@
 package bobo.erp.service.teach;
 
 import bobo.erp.entity.rule.Rule;
-import bobo.erp.entity.rule.RuleMarket;
+import bobo.erp.entity.rule.RuleArea;
 import bobo.erp.entity.rule.RuleProduct;
 import bobo.erp.entity.state.marketing.AdvertisingState;
 import bobo.erp.entity.teach.FileInfo;
@@ -44,7 +44,7 @@ public class ReportGenerationService {
         Integer time = teachClassInfo.getTime();
         Rule rule = getTeachClassRuleService.getTeachClassRule(name);
         RuleProduct ruleProduct = rule.getRuleProduct();
-        RuleMarket ruleMarket = rule.getRuleMarket();
+        RuleArea ruleArea = rule.getRuleMarket();
         List<String> productNameList = new ArrayList<String>();
         List<String> areaNameList = new ArrayList<String>();
         String title = "AD" + time + name;
@@ -72,20 +72,20 @@ public class ReportGenerationService {
             productNameList.add(ruleProduct.getProduct5Name());
         }
         //获取区域名List
-        if (ruleMarket.getMarket1Name() != ""){
-            areaNameList.add(ruleMarket.getMarket1Name());
+        if (ruleArea.getMarket1Name() != ""){
+            areaNameList.add(ruleArea.getMarket1Name());
         }
-        if (ruleMarket.getMarket2Name() != ""){
-            areaNameList.add(ruleMarket.getMarket2Name());
+        if (ruleArea.getMarket2Name() != ""){
+            areaNameList.add(ruleArea.getMarket2Name());
         }
-        if (ruleMarket.getMarket3Name() != ""){
-            areaNameList.add(ruleMarket.getMarket3Name());
+        if (ruleArea.getMarket3Name() != ""){
+            areaNameList.add(ruleArea.getMarket3Name());
         }
-        if (ruleMarket.getMarket4Name() != ""){
-            areaNameList.add(ruleMarket.getMarket4Name());
+        if (ruleArea.getMarket4Name() != ""){
+            areaNameList.add(ruleArea.getMarket4Name());
         }
-        if (ruleMarket.getMarket5Name() != ""){
-            areaNameList.add(ruleMarket.getMarket5Name());
+        if (ruleArea.getMarket5Name() != ""){
+            areaNameList.add(ruleArea.getMarket5Name());
         }
 
         //遍历子用户的广告

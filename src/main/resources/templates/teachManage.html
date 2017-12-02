@@ -11,10 +11,15 @@
   <title>教学班管理</title>
 
   <!--icheck-->
-  <link th:href="@{js/iCheck/skins/minimal/minimal.css}" rel="stylesheet"/>
-  <link th:href="@{js/iCheck/skins/square/square.css}" rel="stylesheet"/>
-  <link th:href="@{js/iCheck/skins/square/red.css}" rel="stylesheet"/>
-  <link th:href="@{js/iCheck/skins/square/blue.css}" rel="stylesheet"/>
+  <!--<link th:href="@{js/iCheck/skins/minimal/minimal.css}" rel="stylesheet"/>-->
+  <!--<link th:href="@{js/iCheck/skins/square/square.css}" rel="stylesheet"/>-->
+  <!--<link th:href="@{js/iCheck/skins/square/red.css}" rel="stylesheet"/>-->
+  <!--<link th:href="@{js/iCheck/skins/square/blue.css}" rel="stylesheet"/>-->
+    <link href="js/iCheck/skins/minimal/minimal.css" rel="stylesheet"/>
+    <link href="js/iCheck/skins/square/square.css" rel="stylesheet"/>
+    <link href="js/iCheck/skins/square/red.css" rel="stylesheet"/>
+    <link href="js/iCheck/skins/square/blue.css" rel="stylesheet"/>
+
 
   <!--data table-->
   <link rel="stylesheet" href="js/data-tables/DT_bootstrap.css" />
@@ -27,22 +32,22 @@
 
 
   <!--dashboard calendar-->
-  <link th:href="@{css/clndr.css}" rel="stylesheet"/>
+  <link href="css/clndr.css" rel="stylesheet"/>
 
   <!--Morris Chart CSS -->
-  <link rel="stylesheet" th:href="@{js/morris-chart/morris.css}"/>
+  <link rel="stylesheet" href="js/morris-chart/morris.css"/>
 
   <!--common-->
-  <link th:href="@{css/style.css}" rel="stylesheet"/>
-  <link th:href="@{css/style-responsive.css}" rel="stylesheet"/>
+  <link href="css/style.css" rel="stylesheet"/>
+  <link href="css/style-responsive.css" rel="stylesheet"/>
 
 
 
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
-  <script th:src="@{js/html5shiv.js}"></script>
-  <script th:src="@{js/respond.min.js}"></script>
+  <script src="js/html5shiv.js"></script>
+  <script src="js/respond.min.js"></script>
   <![endif]-->
 
     <script type="text/javascript">
@@ -126,6 +131,241 @@
                                 <div class="widget-content box-padding">
                                     <form id="stepy_form" class=" form-horizontal left-align form-well">
                                     <!--<div id="stepy_form" class=" form-horizontal left-align form-well">-->
+                                        <fieldset title="步骤 1">
+                                            <legend>添加规则参数</legend>
+                                            <div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">厂房数量</label>
+                                                    <div class="col-md-1 col-sm-1">
+                                                        <input class="form-control" name="paramPenatly" placeholder="" type="number" id=""/>
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                            </div>
+                                            <!--参数表-->
+                                            <div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">违约金</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramPenatly" placeholder="" type="number" id="paramPenatly"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">贷款额倍数</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramLoanRatio" placeholder="" type="number" id="paramLoanRatio"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">产品紧急出售折价率</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramProductSaleRatio" placeholder="" type="number" id="paramProductSaleRatio"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">原料紧急出售折价率</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramMaterailSaleRatio" placeholder="" type="number" id="paramMaterailSaleRatio"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">长贷利率</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramLongTermLoanRates" placeholder="" type="number" id="paramLongTermLoanRates"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">短贷利率</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramShortTermLoanRates" placeholder="" type="number" id="paramShortTermLoanRates"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">1、2期贴现利率</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramShortTermDiscountRates" placeholder="" type="number" id="paramShortTermDiscountRates"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">3、4期贴现利率</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramLongTermDiscountRates" placeholder="" type="number" id="paramLongTermDiscountRates"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">初始现金</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramInitialCash" placeholder="" type="number" id="paramInitialCash"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">管理费</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramManagementCost" placeholder="" type="number" id="paramManagementCost"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">信息费</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramInfomationCost" placeholder="" type="number" id="paramInfomationCost"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">所得税率</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramTaxRate" placeholder="" type="number" id="paramTaxRate"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">最大长贷年份</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramLongTermLoanTimeLimit" placeholder="" type="number" id="paramLongTermLoanTimeLimit"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">最小广告额</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramAdvertisingMinFee" placeholder="" type="number" id="paramAdvertisingMinFee"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">产品紧急采购溢价率</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramProductBuyRation" placeholder="" type="number" id="paramProductBuyRation"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">原料紧急采购溢价率</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramMaterailBuyRation" placeholder="" type="number" id="paramMaterailBuyRation"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">选单时间</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramSelectOrderTime" placeholder="" type="number" id="paramSelectOrderTime"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">首位选单补时</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramFirstSelectOrderTime" placeholder="" type="number" id="paramFirstSelectOrderTime"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">市场同开数量</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramMarketSametimeOpenNum" placeholder="" type="number" id="paramMarketSametimeOpenNum"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">竞单时间</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramBidTime" placeholder="" type="number" id="paramBidTime"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">竞单同竞数</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramBidSametimeNum" placeholder="" type="number" id="paramBidSametimeNum"/>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">最大厂房数量</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <input class="form-control" name="paramFactoryMaxNum" placeholder="" type="number" id="paramFactoryMaxNum"/>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">市场老大有无</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-6">
+                                                                <label class="radio">
+                                                                    <input type="radio" name="paramHaveMarketLeader" id="paramHaveMarketLeader0" value="0" checked="checked" />
+                                                                    无
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-6">
+                                                                <label class="radio">
+                                                                    <input type="radio" name="paramHaveMarketLeader" id="paramHaveMarketLeader1" value="1" />
+                                                                    有
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">贴现方式</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-6">
+                                                                <label class="radio">
+                                                                    <input type="radio" name="paramDiscountMode" id="paramDiscountMode0" value="0" checked="checked" />
+                                                                    独立贴现
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-6">
+                                                                <label class="radio">
+                                                                    <input type="radio" name="paramDiscountMode" id="paramDiscountMode1" value="1" />
+                                                                    联合贴现
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">允许用户还原本季</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-6">
+                                                                <label class="radio">
+                                                                    <input type="radio" name="paramAllowUserReturnSeason" id="paramAllowUserReturnSeason0" value="0" checked="checked" />
+                                                                    不允许
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-6">
+                                                                <label class="radio">
+                                                                    <input type="radio" name="paramAllowUserReturnSeason" id="paramAllowUserReturnSeason1" value="1" />
+                                                                    允许
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-md-3 col-sm-3 control-label">允许用户还原本年</label>
+                                                    <div class="col-md-5 col-sm-5">
+                                                        <div class="row">
+                                                            <div class="col-md-6 col-sm-6">
+                                                                <label class="radio">
+                                                                    <input type="radio" name="paramAllowUserReturnYear" id="paramAllowUserReturnYear0" value="0" checked="checked" />
+                                                                    不允许
+                                                                </label>
+                                                            </div>
+                                                            <div class="col-md-6 col-sm-6">
+                                                                <label class="radio">
+                                                                    <input type="radio" name="paramAllowUserReturnYear" id="paramAllowUserReturnYear1" value="1" />
+                                                                    允许
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <!--规则表主要信息由系统自动生成-->
+                                            <div class="form-group">
+                                                <div class="col-md-4 col-sm-4"></div>
+                                                <div class="col-md-4 col-sm-4">
+                                                    <div id="addRuleParamResult">
+                                                        <button type="button" class="btn btn-success btn-lg" onclick="addRuleStep(8)" > 上 传 规 则 </button>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 col-sm-4"></div>
+                                            </div>
+                                        </fieldset>
                                         <fieldset title="步骤 1">
                                             <legend>添加厂房规则</legend>
                                             <div class="form-group">
@@ -1563,232 +1803,7 @@
                                                 </div>
                                             </div>
                                         </fieldset>
-                                        <fieldset title="步骤 8">
-                                            <legend>添加运行参数</legend>
-                                            <!--参数表-->
-                                            <div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">违约金</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramPenatly" placeholder="" type="number" id="paramPenatly"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">贷款额倍数</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramLoanRatio" placeholder="" type="number" id="paramLoanRatio"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">产品紧急出售折价率</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramProductSaleRatio" placeholder="" type="number" id="paramProductSaleRatio"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">原料紧急出售折价率</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramMaterailSaleRatio" placeholder="" type="number" id="paramMaterailSaleRatio"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">长贷利率</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramLongTermLoanRates" placeholder="" type="number" id="paramLongTermLoanRates"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">短贷利率</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramShortTermLoanRates" placeholder="" type="number" id="paramShortTermLoanRates"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">1、2期贴现利率</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramShortTermDiscountRates" placeholder="" type="number" id="paramShortTermDiscountRates"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">3、4期贴现利率</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramLongTermDiscountRates" placeholder="" type="number" id="paramLongTermDiscountRates"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">初始现金</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramInitialCash" placeholder="" type="number" id="paramInitialCash"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">管理费</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramManagementCost" placeholder="" type="number" id="paramManagementCost"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">信息费</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramInfomationCost" placeholder="" type="number" id="paramInfomationCost"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">所得税率</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramTaxRate" placeholder="" type="number" id="paramTaxRate"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">最大长贷年份</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramLongTermLoanTimeLimit" placeholder="" type="number" id="paramLongTermLoanTimeLimit"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">最小广告额</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramAdvertisingMinFee" placeholder="" type="number" id="paramAdvertisingMinFee"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">产品紧急采购溢价率</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramProductBuyRation" placeholder="" type="number" id="paramProductBuyRation"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">原料紧急采购溢价率</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramMaterailBuyRation" placeholder="" type="number" id="paramMaterailBuyRation"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">选单时间</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramSelectOrderTime" placeholder="" type="number" id="paramSelectOrderTime"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">首位选单补时</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramFirstSelectOrderTime" placeholder="" type="number" id="paramFirstSelectOrderTime"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">市场同开数量</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramMarketSametimeOpenNum" placeholder="" type="number" id="paramMarketSametimeOpenNum"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">竞单时间</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramBidTime" placeholder="" type="number" id="paramBidTime"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">竞单同竞数</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramBidSametimeNum" placeholder="" type="number" id="paramBidSametimeNum"/>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">最大厂房数量</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <input class="form-control" name="paramFactoryMaxNum" placeholder="" type="number" id="paramFactoryMaxNum"/>
-                                                    </div>
-                                                </div>
 
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">市场老大有无</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <div class="row">
-                                                            <div class="col-md-6 col-sm-6">
-                                                                <label class="radio">
-                                                                    <input type="radio" name="paramHaveMarketLeader" id="paramHaveMarketLeader0" value="0" checked="checked" />
-                                                                    无
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-md-6 col-sm-6">
-                                                                <label class="radio">
-                                                                    <input type="radio" name="paramHaveMarketLeader" id="paramHaveMarketLeader1" value="1" />
-                                                                    有
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">贴现方式</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <div class="row">
-                                                            <div class="col-md-6 col-sm-6">
-                                                                <label class="radio">
-                                                                    <input type="radio" name="paramDiscountMode" id="paramDiscountMode0" value="0" checked="checked" />
-                                                                    独立贴现
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-md-6 col-sm-6">
-                                                                <label class="radio">
-                                                                    <input type="radio" name="paramDiscountMode" id="paramDiscountMode1" value="1" />
-                                                                    联合贴现
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">允许用户还原本季</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <div class="row">
-                                                            <div class="col-md-6 col-sm-6">
-                                                                <label class="radio">
-                                                                    <input type="radio" name="paramAllowUserReturnSeason" id="paramAllowUserReturnSeason0" value="0" checked="checked" />
-                                                                    不允许
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-md-6 col-sm-6">
-                                                                <label class="radio">
-                                                                    <input type="radio" name="paramAllowUserReturnSeason" id="paramAllowUserReturnSeason1" value="1" />
-                                                                    允许
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-md-3 col-sm-3 control-label">允许用户还原本年</label>
-                                                    <div class="col-md-5 col-sm-5">
-                                                        <div class="row">
-                                                            <div class="col-md-6 col-sm-6">
-                                                                <label class="radio">
-                                                                    <input type="radio" name="paramAllowUserReturnYear" id="paramAllowUserReturnYear0" value="0" checked="checked" />
-                                                                    不允许
-                                                                </label>
-                                                            </div>
-                                                            <div class="col-md-6 col-sm-6">
-                                                                <label class="radio">
-                                                                    <input type="radio" name="paramAllowUserReturnYear" id="paramAllowUserReturnYear1" value="1" />
-                                                                    允许
-                                                                </label>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <!--规则表主要信息由系统自动生成-->
-                                            <div class="form-group">
-                                                <div class="col-md-4 col-sm-4"></div>
-                                                <div class="col-md-4 col-sm-4">
-                                                    <div id="addRuleParamResult">
-                                                        <button type="button" class="btn btn-success btn-lg" onclick="addRuleStep(8)" > 上 传 规 则 </button>
-                                                    </div>
-                                                </div>
-                                                <div class="col-md-4 col-sm-4"></div>
-                                            </div>
-                                        </fieldset>
                                     </form>
                                     <!--</div>-->
                                 </div>

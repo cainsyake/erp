@@ -2367,21 +2367,21 @@
                     "</tr>" +
                     "</thead>" +
                     "<tbody>";
-                var ruleIso = json.ruleIso;
-                if(ruleIso.iso1Name != ""){
+                var ruleQualification = json.ruleQualification;
+                if(ruleQualification.iso1Name != ""){
                     txt5 += "<tr>" +
-                        "<td>" + ruleIso.iso1Name + "</td>" +
-                        "<td>" + ruleIso.iso1UnitInvest + "</td>" +
-                        "<td>" + ruleIso.iso1DevTime + "</td>" +
-                        "<td>" + ruleIso.iso1Score + "</td>" +
+                        "<td>" + ruleQualification.iso1Name + "</td>" +
+                        "<td>" + ruleQualification.iso1UnitInvest + "</td>" +
+                        "<td>" + ruleQualification.iso1DevTime + "</td>" +
+                        "<td>" + ruleQualification.iso1Score + "</td>" +
                         "</tr>"
                 }
-                if(ruleIso.iso2Name != ""){
+                if(ruleQualification.iso2Name != ""){
                     txt5 += "<tr>" +
-                        "<td>" + ruleIso.iso2Name + "</td>" +
-                        "<td>" + ruleIso.iso2UnitInvest + "</td>" +
-                        "<td>" + ruleIso.iso2DevTime + "</td>" +
-                        "<td>" + ruleIso.iso2Score + "</td>" +
+                        "<td>" + ruleQualification.iso2Name + "</td>" +
+                        "<td>" + ruleQualification.iso2UnitInvest + "</td>" +
+                        "<td>" + ruleQualification.iso2DevTime + "</td>" +
+                        "<td>" + ruleQualification.iso2Score + "</td>" +
                         "</tr>"
                 }
                 txt5 += "</tbody></table><br/>";
@@ -2396,45 +2396,45 @@
                     "</tr>" +
                     "</thead>" +
                     "<tbody>";
-                var ruleMarket = json.ruleMarket;
-                if(ruleMarket.market1Name != ""){
+                var ruleArea = json.ruleArea;
+                if(ruleArea.market1Name != ""){
                     txt6 += "<tr>" +
-                        "<td>" + ruleMarket.market1Name + "</td>" +
-                        "<td>" + ruleMarket.market1UnitInvest + "</td>" +
-                        "<td>" + ruleMarket.market1DevTime + "</td>" +
-                        "<td>" + ruleMarket.market1Score + "</td>" +
+                        "<td>" + ruleArea.market1Name + "</td>" +
+                        "<td>" + ruleArea.market1UnitInvest + "</td>" +
+                        "<td>" + ruleArea.market1DevTime + "</td>" +
+                        "<td>" + ruleArea.market1Score + "</td>" +
                         "</tr>"
                 }
-                if(ruleMarket.market2Name != ""){
+                if(ruleArea.market2Name != ""){
                     txt6 += "<tr>" +
-                        "<td>" + ruleMarket.market2Name + "</td>" +
-                        "<td>" + ruleMarket.market2UnitInvest + "</td>" +
-                        "<td>" + ruleMarket.market2DevTime + "</td>" +
-                        "<td>" + ruleMarket.market2Score + "</td>" +
+                        "<td>" + ruleArea.market2Name + "</td>" +
+                        "<td>" + ruleArea.market2UnitInvest + "</td>" +
+                        "<td>" + ruleArea.market2DevTime + "</td>" +
+                        "<td>" + ruleArea.market2Score + "</td>" +
                         "</tr>"
                 }
-                if(ruleMarket.market3Name != ""){
+                if(ruleArea.market3Name != ""){
                     txt6 += "<tr>" +
-                        "<td>" + ruleMarket.market3Name + "</td>" +
-                        "<td>" + ruleMarket.market3UnitInvest + "</td>" +
-                        "<td>" + ruleMarket.market3DevTime + "</td>" +
-                        "<td>" + ruleMarket.market3Score + "</td>" +
+                        "<td>" + ruleArea.market3Name + "</td>" +
+                        "<td>" + ruleArea.market3UnitInvest + "</td>" +
+                        "<td>" + ruleArea.market3DevTime + "</td>" +
+                        "<td>" + ruleArea.market3Score + "</td>" +
                         "</tr>"
                 }
-                if(ruleMarket.market4Name != ""){
+                if(ruleArea.market4Name != ""){
                     txt6 += "<tr>" +
-                        "<td>" + ruleMarket.market4Name + "</td>" +
-                        "<td>" + ruleMarket.market4UnitInvest + "</td>" +
-                        "<td>" + ruleMarket.market4DevTime + "</td>" +
-                        "<td>" + ruleMarket.market4Score + "</td>" +
+                        "<td>" + ruleArea.market4Name + "</td>" +
+                        "<td>" + ruleArea.market4UnitInvest + "</td>" +
+                        "<td>" + ruleArea.market4DevTime + "</td>" +
+                        "<td>" + ruleArea.market4Score + "</td>" +
                         "</tr>"
                 }
-                if(ruleMarket.market5Name != ""){
+                if(ruleArea.market5Name != ""){
                     txt6 += "<tr>" +
-                        "<td>" + ruleMarket.market5Name + "</td>" +
-                        "<td>" + ruleMarket.market5UnitInvest + "</td>" +
-                        "<td>" + ruleMarket.market5DevTime + "</td>" +
-                        "<td>" + ruleMarket.market5Score + "</td>" +
+                        "<td>" + ruleArea.market5Name + "</td>" +
+                        "<td>" + ruleArea.market5UnitInvest + "</td>" +
+                        "<td>" + ruleArea.market5DevTime + "</td>" +
+                        "<td>" + ruleArea.market5Score + "</td>" +
                         "</tr>"
                 }
                 txt6 += "</tbody></table><br/>";
@@ -2886,7 +2886,7 @@
                 });
                 break;
             case 2:
-                var ruleIso = {
+                var ruleQualification = {
                     iso1Name:$("#iso1Name").val(),
                     iso1UnitInvest:$("#iso1UnitInvest").val(),
                     iso1DevTime:$("#iso1DevTime").val(),
@@ -2899,7 +2899,7 @@
                 $.ajax({
                     url:'addRuleIso',
                     type:'POST',
-                    data:ruleIso,
+                    data:ruleQualification,
                     dataType:'json',
                     success:function (json) {
                         $("#ajaxDiv1").html(operatorTime + " : 上传成功 资质认证规则");
@@ -2983,7 +2983,7 @@
                 });
                 break;
             case 4:
-                var ruleMarket = {
+                var ruleArea = {
                     market1Name:$("#market1Name").val(),
                     market1UnitInvest:$("#market1UnitInvest").val(),
                     market1DevTime:$("#market1DevTime").val(),
@@ -3008,7 +3008,7 @@
                 $.ajax({
                     url:'addRuleMarket',
                     type:'POST',
-                    data:ruleMarket,
+                    data:ruleArea,
                     dataType:'json',
                     success:function (json) {
                         $("#ajaxDiv1").html(operatorTime + " : 上传成功 市场开发规则");

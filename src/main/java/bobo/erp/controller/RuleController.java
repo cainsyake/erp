@@ -29,12 +29,6 @@ public class RuleController {
     @Autowired
     private UseRule useRule;
 
-    @PostMapping(value = "cloneRule")
-    @ResponseBody
-    public Rule cloneRule(Rule rule){
-        return addRule.cloneRule(rule);
-    }
-
     @PostMapping(value = "addRuleParam")
     @ResponseBody
     public UniformResult addRuleParam(@RequestParam(value = "ruleParam") RuleParam ruleParam,
@@ -44,7 +38,7 @@ public class RuleController {
 
     @PostMapping(value = "addRuleFactory")
     @ResponseBody
-    public UniformResult addRuleFactory(@RequestParam(value = "ruleFactoryList") RuleFactory[] ruleFactories,
+    public UniformResult addRuleFactory(@RequestParam(value = "ruleFactoryArray") RuleFactory[] ruleFactories,
                                         @RequestParam(value = "ruleId") Integer ruleId,
                                         @RequestParam(value = "nowUserName") String nowUserName){
         return addRule.addRuleFactory(ruleFactories, ruleId, nowUserName);
@@ -52,67 +46,51 @@ public class RuleController {
 
     @PostMapping(value = "addRuleQualification")
     @ResponseBody
-    public RuleQualification addRuleQualification(@Valid RuleQualification ruleQualification, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            return null;
-        }else{
-            return addRule.addRuleIso(ruleQualification);
-        }
+    public UniformResult addRuleQualification(@RequestParam(value = "ruleQualificationArray") RuleQualification[] ruleQualifications,
+                                                  @RequestParam(value = "ruleId") Integer ruleId,
+                                                  @RequestParam(value = "nowUserName") String nowUserName){
+        return addRule.addRuleQualification(ruleQualifications, ruleId, nowUserName);
     }
 
     @PostMapping(value = "addRuleLine")
     @ResponseBody
-    public RuleLine addRuleLine(@Valid RuleLine ruleLine, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
-            return null;
-        }else{
-            return addRule.addRuleLine(ruleLine);
-        }
+    public UniformResult addRuleLine(@RequestParam(value = "ruleLineArray") RuleLine[] ruleLines,
+                                              @RequestParam(value = "ruleId") Integer ruleId,
+                                              @RequestParam(value = "nowUserName") String nowUserName){
+        return addRule.addRuleLine(ruleLines, ruleId, nowUserName);
     }
 
-    @PostMapping(value = "addRuleMarket")
+    @PostMapping(value = "addRuleArea")
     @ResponseBody
-    public RuleArea addRuleMarket(@Valid RuleArea ruleArea, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
-            return null;
-        }else{
-            return addRule.addRuleMarket(ruleArea);
-        }
+    public UniformResult addRuleArea(@RequestParam(value = "ruleAreaArray") RuleArea[] ruleAreas,
+                                     @RequestParam(value = "ruleId") Integer ruleId,
+                                     @RequestParam(value = "nowUserName") String nowUserName){
+        return addRule.addRuleArea(ruleAreas, ruleId, nowUserName);
     }
 
     @PostMapping(value = "addRuleMaterial")
     @ResponseBody
-    public RuleMaterial addRuleMaterial(@Valid RuleMaterial ruleMaterial, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
-            return null;
-        }else{
-            return addRule.addRuleMaterial(ruleMaterial);
-        }
-    }
-
-
-    @PostMapping(value = "addRuleProductBom")
-    @ResponseBody
-    public RuleProductBom addRuleProductBom(@Valid RuleProductBom ruleProductBom, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
-            return null;
-        }else{
-//            return addRule.addRuleProductMix(ruleProductMix);
-            return null;
-        }
+    public UniformResult addRuleMaterial(@RequestParam(value = "ruleMaterialArray") RuleMaterial[] ruleMaterials,
+                                     @RequestParam(value = "ruleId") Integer ruleId,
+                                     @RequestParam(value = "nowUserName") String nowUserName){
+        return addRule.addRuleMaterial(ruleMaterials, ruleId, nowUserName);
     }
 
     @PostMapping(value = "addRuleProduct")
     @ResponseBody
-    public RuleProduct addRuleProduct(@Valid RuleProduct ruleProduct, @Valid Rule rule, BindingResult bindingResult){
-        if (bindingResult.hasErrors()){
-            return null;
-        }else{
-            return addRule.addRuleProduct(ruleProduct);
-        }
+    public UniformResult addRuleProduct(@RequestParam(value = "ruleProductArray") RuleProduct[] ruleProducts,
+                                         @RequestParam(value = "ruleId") Integer ruleId,
+                                         @RequestParam(value = "nowUserName") String nowUserName){
+        return addRule.addRuleProduct(ruleProducts, ruleId, nowUserName);
     }
 
-
+    @PostMapping(value = "addRuleProductBom")
+    @ResponseBody
+    public UniformResult addRuleProductBom(@RequestParam(value = "ruleProductBomArray") RuleProductBom[] ruleProductBoms,
+                                        @RequestParam(value = "ruleId") Integer ruleId,
+                                        @RequestParam(value = "nowUserName") String nowUserName){
+        return addRule.addRuleProductBom(ruleProductBoms, ruleId, nowUserName);
+    }
 
     @GetMapping(value = "ruleFindAll")
     @ResponseBody
@@ -121,9 +99,6 @@ public class RuleController {
         System.out.println(list.get(0).getRuleAlterTime());
         return useRule.ruleFindAll();
     }
-
-    @Autowired
-    private RuleRepository ruleRepository;
 
     @GetMapping(value = "ruleFindById/{ruleId}")
     @ResponseBody

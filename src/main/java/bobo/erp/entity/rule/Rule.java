@@ -51,6 +51,14 @@ public class Rule {
     @JoinColumn(name = "rule_param_id")
     private RuleParam ruleParam;    //详细参数
 
+    private Integer lineQuantity;
+    private Integer factoryQuantity;
+    private Integer areaQuantity;
+    private Integer qualificationQuantity;
+    private Integer materialQuantity;
+    private Integer productQuantity;
+
+
     public Integer getId() {
         return id;
     }
@@ -145,5 +153,53 @@ public class Rule {
 
     public void setRuleParam(RuleParam ruleParam) {
         this.ruleParam = ruleParam;
+    }
+
+    public Integer getLineQuantity() {
+        return lineQuantity;
+    }
+
+    public void setLineQuantity(Integer lineQuantity) {
+        this.lineQuantity = lineQuantity;
+    }
+
+    public Integer getFactoryQuantity() {
+        return factoryQuantity;
+    }
+
+    public void setFactoryQuantity(Integer factoryQuantity) {
+        this.factoryQuantity = factoryQuantity;
+    }
+
+    public Integer getAreaQuantity() {
+        return areaQuantity;
+    }
+
+    public void setAreaQuantity(Integer areaQuantity) {
+        this.areaQuantity = areaQuantity;
+    }
+
+    public Integer getQualificationQuantity() {
+        return qualificationQuantity;
+    }
+
+    public void setQualificationQuantity(Integer qualificationQuantity) {
+        this.qualificationQuantity = qualificationQuantity;
+    }
+
+    public Integer getMaterialQuantity() {
+        return materialQuantity;
+    }
+
+    public void setMaterialQuantity(Integer materialQuantity) {
+        this.materialQuantity = materialQuantity;
+    }
+
+    public Integer getProductQuantity() {
+        return productQuantity;
+    }
+
+    public void setProductQuantity(Integer productQuantity) {
+        this.productQuantity = productQuantity;
     }
 }

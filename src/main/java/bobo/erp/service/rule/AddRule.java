@@ -35,7 +35,7 @@ public class AddRule {
     @Autowired
     private RuleParamRepository ruleParamRepository;
     @Autowired
-    private RuleProductMixRepository ruleProductMixRepository;
+    private RuleProductBomRepository ruleProductBomRepository;
     @Autowired
     private RuleProductRepository ruleProductRepository;
 
@@ -52,7 +52,7 @@ public class AddRule {
 
         UniformResult uniformResult = new UniformResult();
         uniformResult.setState("00");
-        uniformResult.setMsg("初始化规则成功");
+        uniformResult.setMsg(String.valueOf(id));
         uniformResult.setUser(operator);
         uniformResult.setTarget("AddRuleService");
 
@@ -65,7 +65,6 @@ public class AddRule {
         for(int i = 0; i < ruleFactories.length; i++){
             ruleFactoryList.add(ruleFactories[i]);  //将数组重组为List
         }
-
         Rule rule = ruleRepository.findOne(id);
         rule.setRuleFactoryList(ruleFactoryList);
         UniformResult uniformResult = new UniformResult();
@@ -76,39 +75,100 @@ public class AddRule {
         return uniformResult;
     }
 
-    public RuleQualification addRuleIso(RuleQualification ruleQualification){
-        return ruleIsoRepository.save(ruleQualification);
+    @Transactional
+    public UniformResult addRuleQualification(RuleQualification[] ruleQualifications, Integer id, String operator){
+        List<RuleQualification> ruleQualificationList = new ArrayList<RuleQualification>();
+        for(int i = 0; i < ruleQualifications.length; i++){
+            ruleQualificationList.add(ruleQualifications[i]);  //将数组重组为List
+        }
+        Rule rule = ruleRepository.findOne(id);
+        rule.setRuleQualificationList(ruleQualificationList);
+        UniformResult uniformResult = new UniformResult();
+        uniformResult.setState("00");
+        uniformResult.setMsg("添加资质部分规则成功");
+        uniformResult.setUser(operator);
+        uniformResult.setTarget("AddRuleService");
+        return uniformResult;
     }
-
-    public RuleLine addRuleLine(RuleLine ruleLine){
-        return ruleLineRepository.save(ruleLine);
-    }
-
-    public RuleArea addRuleMarket(RuleArea ruleArea){
-        return ruleMarketRepository.save(ruleArea);
-    }
-
-    public RuleMaterial addRuleMaterial(RuleMaterial ruleMaterial){
-        logger.info("接收测试-》原料1名：{}",ruleMaterial.getMaterial1Name());
-        return ruleMaterialRepository.save(ruleMaterial);
-    }
-
-
-
-    public RuleProduct addRuleProduct(RuleProduct ruleProduct){
-        return ruleProductRepository.save(ruleProduct);
-    }
-
-
 
     @Transactional
-    public Rule cloneRule(Rule ruleRemote){
-        logger.info("Clone Rule Test");
-        Date date = new Date();
-        ruleRemote.setRuleAlterTime(date);
-        ruleRemote.setRuleId(0);
-        ruleRepository.save(ruleRemote);
-        return ruleRemote;
+    public UniformResult addRuleLine(RuleLine[] ruleLines, Integer id, String operator){
+        List<RuleLine> ruleLineList = new ArrayList<RuleLine>();
+        for(int i = 0; i < ruleLines.length; i++){
+            ruleLineList.add(ruleLines[i]);  //将数组重组为List
+        }
+        Rule rule = ruleRepository.findOne(id);
+        rule.setRuleLineList(ruleLineList);
+        UniformResult uniformResult = new UniformResult();
+        uniformResult.setState("00");
+        uniformResult.setMsg("添加生产线部分规则成功");
+        uniformResult.setUser(operator);
+        uniformResult.setTarget("AddRuleService");
+        return uniformResult;
+    }
+
+    @Transactional
+    public UniformResult addRuleArea(RuleArea[] ruleAreas, Integer id, String operator){
+        List<RuleArea> ruleAreaList = new ArrayList<RuleArea>();
+        for(int i = 0; i < ruleAreas.length; i++){
+            ruleAreaList.add(ruleAreas[i]);  //将数组重组为List
+        }
+        Rule rule = ruleRepository.findOne(id);
+        rule.setRuleAreaList(ruleAreaList);
+        UniformResult uniformResult = new UniformResult();
+        uniformResult.setState("00");
+        uniformResult.setMsg("添加区域部分规则成功");
+        uniformResult.setUser(operator);
+        uniformResult.setTarget("AddRuleService");
+        return uniformResult;
+    }
+
+    @Transactional
+    public UniformResult addRuleMaterial(RuleMaterial[] ruleMaterials, Integer id, String operator){
+        List<RuleMaterial> ruleMaterialList = new ArrayList<RuleMaterial>();
+        for(int i = 0; i < ruleMaterials.length; i++){
+            ruleMaterialList.add(ruleMaterials[i]);  //将数组重组为List
+        }
+        Rule rule = ruleRepository.findOne(id);
+        rule.setRuleMaterialList(ruleMaterialList);
+        UniformResult uniformResult = new UniformResult();
+        uniformResult.setState("00");
+        uniformResult.setMsg("添加原料部分规则成功");
+        uniformResult.setUser(operator);
+        uniformResult.setTarget("AddRuleService");
+        return uniformResult;
+    }
+
+    @Transactional
+    public UniformResult addRuleProduct(RuleProduct[] ruleProducts, Integer id, String operator){
+        List<RuleProduct> ruleProductList = new ArrayList<RuleProduct>();
+        for(int i = 0; i < ruleProducts.length; i++){
+            ruleProductList.add(ruleProducts[i]);  //将数组重组为List
+        }
+        Rule rule = ruleRepository.findOne(id);
+        rule.setRuleProductList(ruleProductList);
+        UniformResult uniformResult = new UniformResult();
+        uniformResult.setState("00");
+        uniformResult.setMsg("添加产品部分规则成功");
+        uniformResult.setUser(operator);
+        uniformResult.setTarget("AddRuleService");
+        return uniformResult;
+    }
+
+    @Transactional
+    public UniformResult addRuleProductBom(RuleProductBom[] ruleProductBoms, Integer id, String operator){
+        List<RuleProductBom> ruleProductBomList = new ArrayList<RuleProductBom>();
+        for(int i = 0; i < ruleProductBoms.length; i++){
+            ruleProductBomList.add(ruleProductBoms[i]);  //将数组重组为List
+        }
+        Rule rule = ruleRepository.findOne(id);
+        rule.setRuleProductBomList(ruleProductBomList);
+        UniformResult uniformResult = new UniformResult();
+        uniformResult.setState("00");
+        uniformResult.setMsg("添加产品BOM部分规则成功");
+        uniformResult.setUser(operator);
+        uniformResult.setTarget("AddRuleService");
+        return uniformResult;
     }
 
 

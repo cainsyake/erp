@@ -19,22 +19,6 @@ public class UseRule {
 
     @Autowired
     private RuleRepository ruleRepository;
-    @Autowired
-    private RuleFactoryRepository ruleFactoryRepository;
-    @Autowired
-    private RuleIsoRepository ruleIsoRepository;
-    @Autowired
-    private RuleLineRepository ruleLineRepository;
-    @Autowired
-    private RuleMarketRepository ruleMarketRepository;
-    @Autowired
-    private RuleMaterialRepository ruleMaterialRepository;
-    @Autowired
-    private RuleParamRepository ruleParamRepository;
-    @Autowired
-    private RuleProductMixRepository ruleProductMixRepository;
-    @Autowired
-    private RuleProductRepository ruleProductRepository;
 
     public List<Rule> ruleFindAll(){
         logger.info("输出全部规则");
