@@ -40,13 +40,13 @@ public class AddRule {
     private RuleProductRepository ruleProductRepository;
 
     @Transactional
-    public UniformResult addRuleParam(RuleParam ruleParam, String operator){
-        Rule rule = new Rule();
+    public UniformResult addRuleParam(Rule rule, String operator){
+//        Rule rule = new Rule();
         Date ruleAlterTime = new Date();
         rule.setRuleAlterTime(ruleAlterTime);
         rule.setRuleUploader(operator);
         rule.setRuleUserCount(0);
-        rule.setRuleParam(ruleParam);
+//        rule.setRuleParam(ruleParam);
         Rule saveResult = ruleRepository.save(rule);
         Integer id = saveResult.getId();
 

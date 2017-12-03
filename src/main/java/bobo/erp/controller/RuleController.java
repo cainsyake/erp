@@ -29,11 +29,19 @@ public class RuleController {
     @Autowired
     private UseRule useRule;
 
-    @PostMapping(value = "addRuleParam")
+//    @PostMapping(value = "addRule")
+//    @ResponseBody
+//    public UniformResult addRule(@RequestParam(value = "rule1") Rule rule,
+//                                 @RequestParam(value = "username1") String nowUserName){
+//        return addRule.addRuleParam(rule, nowUserName);
+//    }
+
+    @PostMapping(value = "addRule/{username}")
     @ResponseBody
-    public UniformResult addRuleParam(@RequestParam(value = "ruleParam") RuleParam ruleParam,
-                                      @RequestParam(value = "nowUserName") String nowUserName){
-        return addRule.addRuleParam(ruleParam, nowUserName);
+    public UniformResult addRule(@PathVariable("username") String username, Rule rule){
+        System.out.println(username);
+        System.out.println(rule.getFactoryQuantity());
+        return addRule.addRuleParam(rule, username);
     }
 
     @PostMapping(value = "addRuleFactory")

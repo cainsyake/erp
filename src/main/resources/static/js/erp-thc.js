@@ -16,6 +16,72 @@ function thcOnload() {
     });
 }
 
+function initAddRule() {
+    var username = $("#nowUserName").val();
+    var ruleId = $("#ruleId").val();
+    if (ruleId == 0){
+        //新增规则
+        var rule = new Object();
+        rule.factoryQuantity = $("#factoryQuantity").val();
+        rule.lineQuantity = $("#lineQuantity").val();
+        rule.qualificationQuantity = $("#qualificationQuantity").val();
+        rule.areaQuantity = $("#areaQuantity").val();
+        rule.materialQuantity = $("#materialQuantity").val();
+        rule.productQuantity = $("#productQuantity").val();
+        // rule.ruleParam = {
+        //     paramPenatly:$("#paramPenatly").val(),
+        //     paramLoanRatio:$("#paramLoanRatio").val(),
+        //     paramProductSaleRatio:$("#paramProductSaleRatio").val(),
+        //     paramMaterailSaleRatio:$("#paramMaterailSaleRatio").val(),
+        //     paramLongTermLoanRates:$("#paramLongTermLoanRates").val(),
+        //     paramShortTermLoanRates:$("#paramShortTermLoanRates").val(),
+        //     paramShortTermDiscountRates:$("#paramShortTermDiscountRates").val(),
+        //     paramLongTermDiscountRates:$("#paramLongTermDiscountRates").val(),
+        //     paramInitialCash:$("#paramInitialCash").val(),
+        //     paramManagementCost:$("#paramManagementCost").val(),
+        //     paramInfomationCost:$("#paramInfomationCost").val(),
+        //     paramTaxRate:$("#paramTaxRate").val(),
+        //     paramLongTermLoanTimeLimit:$("#paramLongTermLoanTimeLimit").val(),
+        //     paramAdvertisingMinFee:$("#paramAdvertisingMinFee").val(),
+        //     paramProductBuyRation:$("#paramProductBuyRation").val(),
+        //     paramMaterailBuyRation:$("#paramMaterailBuyRation").val(),
+        //     paramSelectOrderTime:$("#paramSelectOrderTime").val(),
+        //     paramFirstSelectOrderTime:$("#paramFirstSelectOrderTime").val(),
+        //     paramMarketSametimeOpenNum:$("#paramMarketSametimeOpenNum").val(),
+        //     paramBidTime:$("#paramBidTime").val(),
+        //     paramBidSametimeNum:$("#paramBidSametimeNum").val(),
+        //     paramFactoryMaxNum:$("#paramFactoryMaxNum").val(),
+        //     paramHaveMarketLeader:$('input:radio[name="paramHaveMarketLeader"]:checked').val(),
+        //     paramDiscountMode:$('input:radio[name="paramDiscountMode"]:checked').val(),
+        //     paramAllowUserReturnSeason:$('input:radio[name="paramAllowUserReturnSeason"]:checked').val(),
+        //     paramAllowUserReturnYear:$('input:radio[name="paramAllowUserReturnYear"]:checked').val(),
+        // };
+        console.log(rule);
+        var ajaxData = {rule: rule, username: username};
+        console.log(ajaxData);
+        $.ajax({
+            url: '/addRule/' + username,
+            type: 'POST',
+            data: rule,
+            dataType:'json',
+            success:function (rs) {
+                console.log("AJAX SUCCESS");
+                console.log(rs);
+                // $("#ajaxDiv1").html(operatorTime + " : 上传成功 厂房规则");
+                // $("#addRuleFactoryResult").html("<h4 style='color: blue'>厂房规则上传成功,请继续下一步</h4>");
+            },
+            error:function (rs) {
+                // $("#ajaxDiv1").html(operatorTime + " : 上传失败 厂房规则");
+                console.log(rs);
+            }
+        });
+
+
+    }else{
+        //TODO 载入规则 修改
+    }
+}
+
 function adReport() {
     var nowUserName = $("#nowUserName").val();
     $.ajax({
