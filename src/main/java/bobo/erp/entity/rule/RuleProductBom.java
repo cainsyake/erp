@@ -19,12 +19,12 @@ public class RuleProductBom {
 
     private Integer type;   //产品类型
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "bom_id")
+    @CollectionTable(name="bom_material_list") //指定集合生成的表
+    @OrderColumn(name="bom_id") //指定排序列的名称
     private List<Integer> materialBomList;    //原料组成，List中依次放入原料1、原料2、...、原料n的消耗量
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "bom_id")
+    @CollectionTable(name="bom_product_list") //指定集合生成的表
+    @OrderColumn(name="bom_id") //指定排序列的名称
     private List<Integer> productBomList;    //半成品组成，，List中依次放入产品1、产品2、...、产品n的消耗量
 
     @ManyToOne
@@ -67,7 +67,7 @@ public class RuleProductBom {
         return rule;
     }
 
-    @JsonBackReference
+//    @JsonBackReference
     public void setRule(Rule rule) {
         this.rule = rule;
     }

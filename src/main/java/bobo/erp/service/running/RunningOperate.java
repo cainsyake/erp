@@ -1175,21 +1175,22 @@ public class RunningOperate {
                                     Integer produceTime = 0;
                                     Integer devState = 0;
                                     if (lineId.intValue() == tempid.intValue()){
-                                        if(lineState.getType() == 1){
-                                            produceTime = ruleLine.getLine1ProduceTime();
-                                        }
-                                        if(lineState.getType() == 2){
-                                            produceTime = ruleLine.getLine2ProduceTime();
-                                        }
-                                        if(lineState.getType() == 3){
-                                            produceTime = ruleLine.getLine3ProduceTime();
-                                        }
-                                        if(lineState.getType() == 4){
-                                            produceTime = ruleLine.getLine4ProduceTime();
-                                        }
-                                        if(lineState.getType() == 5){
-                                            produceTime = ruleLine.getLine5ProduceTime();
-                                        }
+                                        produceTime = ruleInfo.getLineInfo(lineState.getType(), username).getProduceTime();
+//                                        if(lineState.getType() == 1){
+//                                            produceTime = ruleLine.getLine1ProduceTime();
+//                                        }
+//                                        if(lineState.getType() == 2){
+//                                            produceTime = ruleLine.getLine2ProduceTime();
+//                                        }
+//                                        if(lineState.getType() == 3){
+//                                            produceTime = ruleLine.getLine3ProduceTime();
+//                                        }
+//                                        if(lineState.getType() == 4){
+//                                            produceTime = ruleLine.getLine4ProduceTime();
+//                                        }
+//                                        if(lineState.getType() == 5){
+//                                            produceTime = ruleLine.getLine5ProduceTime();
+//                                        }
                                         lineState.setProduceState(produceTime);
                                         iterator.remove();  //清除List中该线ID
                                         logger.info("用户：{} 执行开始生产,生产线ID：{}，产品：{}", username, lineId, lineState.getProductType());
@@ -1300,21 +1301,22 @@ public class RunningOperate {
                                         orderState.setExecution(1);
                                         orderState.setFinishTime(runningState.getBaseState().getTimeQuarter());
                                         Integer directCost = 0;
-                                        if(orderState.getTypeId() == 1){
-                                            directCost = orderState.getQuantity() * rule.getRuleProduct().getProduct1FinalCost();
-                                        }
-                                        if(orderState.getTypeId() == 2){
-                                            directCost = orderState.getQuantity() * rule.getRuleProduct().getProduct2FinalCost();
-                                        }
-                                        if(orderState.getTypeId() == 3){
-                                            directCost = orderState.getQuantity() * rule.getRuleProduct().getProduct3FinalCost();
-                                        }
-                                        if(orderState.getTypeId() == 4){
-                                            directCost = orderState.getQuantity() * rule.getRuleProduct().getProduct4FinalCost();
-                                        }
-                                        if(orderState.getTypeId() == 5){
-                                            directCost = orderState.getQuantity() * rule.getRuleProduct().getProduct5FinalCost();
-                                        }
+                                        directCost = orderState.getQuantity() * ruleInfo.getProductInfo(orderState.getTypeId(), username).getFinalCost();
+//                                        if(orderState.getTypeId() == 1){
+//                                            directCost = orderState.getQuantity() * rule.getRuleProduct().getProduct1FinalCost();
+//                                        }
+//                                        if(orderState.getTypeId() == 2){
+//                                            directCost = orderState.getQuantity() * rule.getRuleProduct().getProduct2FinalCost();
+//                                        }
+//                                        if(orderState.getTypeId() == 3){
+//                                            directCost = orderState.getQuantity() * rule.getRuleProduct().getProduct3FinalCost();
+//                                        }
+//                                        if(orderState.getTypeId() == 4){
+//                                            directCost = orderState.getQuantity() * rule.getRuleProduct().getProduct4FinalCost();
+//                                        }
+//                                        if(orderState.getTypeId() == 5){
+//                                            directCost = orderState.getQuantity() * rule.getRuleProduct().getProduct5FinalCost();
+//                                        }
                                         Integer grossProfit = orderState.getTotalPrice() - directCost;
                                         operateFinancialStatementService.write("salesIncome", operateFinancialStatementService.read("salesIncome", runningState) + orderState.getTotalPrice(), runningState);
                                         operateFinancialStatementService.write("directCost", operateFinancialStatementService.read("directCost", runningState) + directCost, runningState);
@@ -1337,7 +1339,7 @@ public class RunningOperate {
     public RunningState productDev(String username, String[] arrays){
         RunningState runningState = getSubRunningStateService.getSubRunningState(username);
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
-        RuleProduct ruleProduct = rule.getRuleProduct();
+//        RuleProduct ruleProduct = rule.getRuleProduct();
         Integer balance = runningState.getFinanceState().getCashAmount();
         Integer tempTotalAmount = 0;
         List<ProductDevState> productDevStateList = runningState.getDevState().getProductDevStateList();
@@ -1355,21 +1357,22 @@ public class RunningOperate {
                 ProductDevState productDevState = productDevStateIterator.next();
                 Integer tempType = productDevState.getType();
                 Integer devInvest = 0;
-                if(tempType == 1){
-                    devInvest = ruleProduct.getProduct1DevInvest();
-                }
-                if(tempType == 2){
-                    devInvest = ruleProduct.getProduct2DevInvest();
-                }
-                if(tempType == 3){
-                    devInvest = ruleProduct.getProduct3DevInvest();
-                }
-                if(tempType == 4){
-                    devInvest = ruleProduct.getProduct4DevInvest();
-                }
-                if(tempType == 5){
-                    devInvest = ruleProduct.getProduct5DevInvest();
-                }
+                devInvest = ruleInfo.getProductInfo(tempType, username).getDevInvest();
+//                if(tempType == 1){
+//                    devInvest = ruleProduct.getProduct1DevInvest();
+//                }
+//                if(tempType == 2){
+//                    devInvest = ruleProduct.getProduct2DevInvest();
+//                }
+//                if(tempType == 3){
+//                    devInvest = ruleProduct.getProduct3DevInvest();
+//                }
+//                if(tempType == 4){
+//                    devInvest = ruleProduct.getProduct4DevInvest();
+//                }
+//                if(tempType == 5){
+//                    devInvest = ruleProduct.getProduct5DevInvest();
+//                }
                 if (devType == tempType){
                     check = 1;
                     if(devInvest > balance){
@@ -1385,28 +1388,29 @@ public class RunningOperate {
             }
             if(check == 0){
                 //如果检查标记仍然是0，表示在现有DevList中还没有该类型的DevState
-                Integer devInvest = 0;
-                Integer devTime = 0;
-                if(devType == 1){
-                    devInvest = ruleProduct.getProduct1DevInvest();
-                    devTime = ruleProduct.getProduct1DevTime();
-                }
-                if(devType == 2){
-                    devInvest = ruleProduct.getProduct2DevInvest();
-                    devTime = ruleProduct.getProduct2DevTime();
-                }
-                if(devType == 3){
-                    devInvest = ruleProduct.getProduct3DevInvest();
-                    devTime = ruleProduct.getProduct3DevTime();
-                }
-                if(devType == 4){
-                    devInvest = ruleProduct.getProduct4DevInvest();
-                    devTime = ruleProduct.getProduct4DevTime();
-                }
-                if(devType == 5){
-                    devInvest = ruleProduct.getProduct5DevInvest();
-                    devTime = ruleProduct.getProduct5DevTime();
-                }
+                Integer devInvest = ruleInfo.getProductInfo(devType, username).getDevInvest();
+                Integer devTime = ruleInfo.getProductInfo(devType, username).getDevTime();
+
+//                if(devType == 1){
+//                    devInvest = ruleProduct.getProduct1DevInvest();
+//                    devTime = ruleProduct.getProduct1DevTime();
+//                }
+//                if(devType == 2){
+//                    devInvest = ruleProduct.getProduct2DevInvest();
+//                    devTime = ruleProduct.getProduct2DevTime();
+//                }
+//                if(devType == 3){
+//                    devInvest = ruleProduct.getProduct3DevInvest();
+//                    devTime = ruleProduct.getProduct3DevTime();
+//                }
+//                if(devType == 4){
+//                    devInvest = ruleProduct.getProduct4DevInvest();
+//                    devTime = ruleProduct.getProduct4DevTime();
+//                }
+//                if(devType == 5){
+//                    devInvest = ruleProduct.getProduct5DevInvest();
+//                    devTime = ruleProduct.getProduct5DevTime();
+//                }
                 if(devInvest > balance){
                     runningState.getBaseState().setMsg("现金不足");
                     return runningState;
@@ -1433,7 +1437,7 @@ public class RunningOperate {
     public RunningState saleFactory(String username, String[] arrays){
         RunningState runningState = getSubRunningStateService.getSubRunningState(username);
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
-        RuleFactory ruleFactory = rule.getRuleFactory();
+//        RuleFactory ruleFactory = rule.getRuleFactory();
         Integer balance = runningState.getFinanceState().getCashAmount();
         int arrayLength = arrays.length;
         List<Integer> list = new ArrayList<Integer>();
@@ -1450,28 +1454,28 @@ public class RunningOperate {
             while (iterator.hasNext()){
                 Integer tempId = iterator.next();
                 if (factoryState.getId() == tempId){
-                    Integer factorySalePrice = 0;
-                    Integer factoryRentPrice = 0;
-                    if (factoryState.getType() == 1){
-                        factoryRentPrice = ruleFactory.getFactory1RentPrice();
-                        factorySalePrice = ruleFactory.getFactory1SalePrice();
-                    }
-                    if (factoryState.getType() == 2){
-                        factoryRentPrice = ruleFactory.getFactory2RentPrice();
-                        factorySalePrice = ruleFactory.getFactory2SalePrice();
-                    }
-                    if (factoryState.getType() == 3){
-                        factoryRentPrice = ruleFactory.getFactory3RentPrice();
-                        factorySalePrice = ruleFactory.getFactory3SalePrice();
-                    }
-                    if (factoryState.getType() == 4){
-                        factoryRentPrice = ruleFactory.getFactory4RentPrice();
-                        factorySalePrice = ruleFactory.getFactory4SalePrice();
-                    }
-                    if (factoryState.getType() == 5){
-                        factoryRentPrice = ruleFactory.getFactory5RentPrice();
-                        factorySalePrice = ruleFactory.getFactory5SalePrice();
-                    }
+                    Integer factorySalePrice = ruleInfo.getFactoryInfo(factoryState.getType(), username).getSalePrice();
+                    Integer factoryRentPrice = ruleInfo.getFactoryInfo(factoryState.getType(), username).getRentPrice();
+//                    if (factoryState.getType() == 1){
+//                        factoryRentPrice = ruleFactory.getFactory1RentPrice();
+//                        factorySalePrice = ruleFactory.getFactory1SalePrice();
+//                    }
+//                    if (factoryState.getType() == 2){
+//                        factoryRentPrice = ruleFactory.getFactory2RentPrice();
+//                        factorySalePrice = ruleFactory.getFactory2SalePrice();
+//                    }
+//                    if (factoryState.getType() == 3){
+//                        factoryRentPrice = ruleFactory.getFactory3RentPrice();
+//                        factorySalePrice = ruleFactory.getFactory3SalePrice();
+//                    }
+//                    if (factoryState.getType() == 4){
+//                        factoryRentPrice = ruleFactory.getFactory4RentPrice();
+//                        factorySalePrice = ruleFactory.getFactory4SalePrice();
+//                    }
+//                    if (factoryState.getType() == 5){
+//                        factoryRentPrice = ruleFactory.getFactory5RentPrice();
+//                        factorySalePrice = ruleFactory.getFactory5SalePrice();
+//                    }
 
                     if(factoryState.getContent() == 0){
                         //厂房为空，直接出售
@@ -1545,7 +1549,7 @@ public class RunningOperate {
     public RunningState rentToBuy(String username, String[] arrays){
         RunningState runningState = getSubRunningStateService.getSubRunningState(username);
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
-        RuleFactory ruleFactory = rule.getRuleFactory();
+//        RuleFactory ruleFactory = rule.getRuleFactory();
         Integer balance = runningState.getFinanceState().getCashAmount();
         int arrayLength = arrays.length;
         List<Integer> list = new ArrayList<Integer>();
@@ -1562,22 +1566,23 @@ public class RunningOperate {
             while (iterator.hasNext()){
                 Integer tempId = iterator.next();
                 if (factoryState.getId() == tempId){
-                    Integer factoryBuyPrice = 0;
-                    if (factoryState.getType() == 1){
-                        factoryBuyPrice = ruleFactory.getFactory1BuyPrice();
-                    }
-                    if (factoryState.getType() == 2){
-                        factoryBuyPrice = ruleFactory.getFactory2BuyPrice();
-                    }
-                    if (factoryState.getType() == 3){
-                        factoryBuyPrice = ruleFactory.getFactory3BuyPrice();
-                    }
-                    if (factoryState.getType() == 4){
-                        factoryBuyPrice = ruleFactory.getFactory4BuyPrice();
-                    }
-                    if (factoryState.getType() == 5){
-                        factoryBuyPrice = ruleFactory.getFactory5BuyPrice();
-                    }
+                    Integer factoryBuyPrice = ruleInfo.getFactoryInfo(factoryState.getType(), username).getBuyPrice();
+
+//                    if (factoryState.getType() == 1){
+//                        factoryBuyPrice = ruleFactory.getFactory1BuyPrice();
+//                    }
+//                    if (factoryState.getType() == 2){
+//                        factoryBuyPrice = ruleFactory.getFactory2BuyPrice();
+//                    }
+//                    if (factoryState.getType() == 3){
+//                        factoryBuyPrice = ruleFactory.getFactory3BuyPrice();
+//                    }
+//                    if (factoryState.getType() == 4){
+//                        factoryBuyPrice = ruleFactory.getFactory4BuyPrice();
+//                    }
+//                    if (factoryState.getType() == 5){
+//                        factoryBuyPrice = ruleFactory.getFactory5BuyPrice();
+//                    }
                     if(factoryBuyPrice > balance){
                         runningState.getBaseState().setMsg("现金不足");
                         return runningState;
@@ -1599,7 +1604,7 @@ public class RunningOperate {
     public RunningState endQuarter(String username){
         RunningState runningState = getSubRunningStateService.getSubRunningState(username);
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
-        RuleFactory ruleFactory = rule.getRuleFactory();
+//        RuleFactory ruleFactory = rule.getRuleFactory();
         Integer balance = runningState.getFinanceState().getCashAmount();
 
 
@@ -1622,22 +1627,22 @@ public class RunningOperate {
         List<FactoryState> factoryStateList = runningState.getFactoryStateList();
         for (FactoryState factoryState : factoryStateList){
             if((factoryState.getFinalPaymentYear() != runningState.getBaseState().getTimeYear()) && (factoryState.getFinanPaymentQuarter() == runningState.getBaseState().getTimeQuarter())){
-                Integer rentPrice = 0;
-                if(factoryState.getType() == 1){
-                    rentPrice = ruleFactory.getFactory1RentPrice();
-                }
-                if(factoryState.getType() == 2){
-                    rentPrice = ruleFactory.getFactory2RentPrice();
-                }
-                if(factoryState.getType() == 3){
-                    rentPrice = ruleFactory.getFactory3RentPrice();
-                }
-                if(factoryState.getType() == 4){
-                    rentPrice = ruleFactory.getFactory4RentPrice();
-                }
-                if(factoryState.getType() == 5){
-                    rentPrice = ruleFactory.getFactory5RentPrice();
-                }
+                Integer rentPrice = ruleInfo.getFactoryInfo(factoryState.getType(), username).getRentPrice();
+//                if(factoryState.getType() == 1){
+//                    rentPrice = ruleFactory.getFactory1RentPrice();
+//                }
+//                if(factoryState.getType() == 2){
+//                    rentPrice = ruleFactory.getFactory2RentPrice();
+//                }
+//                if(factoryState.getType() == 3){
+//                    rentPrice = ruleFactory.getFactory3RentPrice();
+//                }
+//                if(factoryState.getType() == 4){
+//                    rentPrice = ruleFactory.getFactory4RentPrice();
+//                }
+//                if(factoryState.getType() == 5){
+//                    rentPrice = ruleFactory.getFactory5RentPrice();
+//                }
                 if(rentPrice > balance){
                     runningState.getBaseState().setMsg("现金不足 ");
                     return runningState;
@@ -1679,7 +1684,7 @@ public class RunningOperate {
     public RunningState marketDev(String username, String[] arrays){
         RunningState runningState = getSubRunningStateService.getSubRunningState(username);
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
-        RuleArea ruleArea = rule.getRuleMarket();
+//        RuleArea ruleArea = rule.getRuleMarket();
         Integer balance = runningState.getFinanceState().getCashAmount();
         Integer tempTotalAmount = 0;
         List<MarketDevState> marketDevStateList = runningState.getDevState().getMarketDevStateList();
@@ -1696,22 +1701,22 @@ public class RunningOperate {
             while (marketDevStateIterator.hasNext()){
                 MarketDevState marketDevState = marketDevStateIterator.next();
                 Integer tempType = marketDevState.getType();
-                Integer devInvest = 0;
-                if(tempType == 1){
-                    devInvest = ruleArea.getMarket1UnitInvest();
-                }
-                if(tempType == 2){
-                    devInvest = ruleArea.getMarket2UnitInvest();
-                }
-                if(tempType == 3){
-                    devInvest = ruleArea.getMarket3UnitInvest();
-                }
-                if(tempType == 4){
-                    devInvest = ruleArea.getMarket4UnitInvest();
-                }
-                if(tempType == 5){
-                    devInvest = ruleArea.getMarket5UnitInvest();
-                }
+                Integer devInvest = ruleInfo.getAreaInfo(tempType, username).getUnitInvest();
+//                if(tempType == 1){
+//                    devInvest = ruleArea.getMarket1UnitInvest();
+//                }
+//                if(tempType == 2){
+//                    devInvest = ruleArea.getMarket2UnitInvest();
+//                }
+//                if(tempType == 3){
+//                    devInvest = ruleArea.getMarket3UnitInvest();
+//                }
+//                if(tempType == 4){
+//                    devInvest = ruleArea.getMarket4UnitInvest();
+//                }
+//                if(tempType == 5){
+//                    devInvest = ruleArea.getMarket5UnitInvest();
+//                }
                 if (devType.intValue() == tempType.intValue()){
                     check = 1;
                     tempTotalAmount += devInvest;
@@ -1719,22 +1724,22 @@ public class RunningOperate {
             }
             if(check == 0){
                 //如果检查标记仍然是0，表示在现有DevList中还没有该类型的DevState
-                Integer devInvest = 0;
-                if(devType == 1){
-                    devInvest = ruleArea.getMarket1UnitInvest();
-                }
-                if(devType == 2){
-                    devInvest = ruleArea.getMarket2UnitInvest();
-                }
-                if(devType == 3){
-                    devInvest = ruleArea.getMarket2UnitInvest();
-                }
-                if(devType == 4){
-                    devInvest = ruleArea.getMarket4UnitInvest();
-                }
-                if(devType == 5){
-                    devInvest = ruleArea.getMarket5UnitInvest();
-                }
+                Integer devInvest = ruleInfo.getAreaInfo(devType, username).getUnitInvest();
+//                if(devType == 1){
+//                    devInvest = ruleArea.getMarket1UnitInvest();
+//                }
+//                if(devType == 2){
+//                    devInvest = ruleArea.getMarket2UnitInvest();
+//                }
+//                if(devType == 3){
+//                    devInvest = ruleArea.getMarket2UnitInvest();
+//                }
+//                if(devType == 4){
+//                    devInvest = ruleArea.getMarket4UnitInvest();
+//                }
+//                if(devType == 5){
+//                    devInvest = ruleArea.getMarket5UnitInvest();
+//                }
                 tempTotalAmount += devInvest;
             }
         }
@@ -1762,22 +1767,22 @@ public class RunningOperate {
             }
             if(check == 0){
                 //如果检查标记仍然是0，表示在现有DevList中还没有该类型的DevState
-                Integer devTime = 0;
-                if(devType == 1){
-                    devTime = ruleArea.getMarket1DevTime();
-                }
-                if(devType == 2){
-                    devTime = ruleArea.getMarket2DevTime();
-                }
-                if(devType == 3){
-                    devTime = ruleArea.getMarket3DevTime();
-                }
-                if(devType == 4){
-                    devTime = ruleArea.getMarket4DevTime();
-                }
-                if(devType == 5){
-                    devTime = ruleArea.getMarket5DevTime();
-                }
+                Integer devTime = ruleInfo.getAreaInfo(devType, username).getDevTime();
+//                if(devType == 1){
+//                    devTime = ruleArea.getMarket1DevTime();
+//                }
+//                if(devType == 2){
+//                    devTime = ruleArea.getMarket2DevTime();
+//                }
+//                if(devType == 3){
+//                    devTime = ruleArea.getMarket3DevTime();
+//                }
+//                if(devType == 4){
+//                    devTime = ruleArea.getMarket4DevTime();
+//                }
+//                if(devType == 5){
+//                    devTime = ruleArea.getMarket5DevTime();
+//                }
                 MarketDevState marketDevState = new MarketDevState();   //实例化该类型研发对象
                 marketDevState.setState(2 - devTime);
                 marketDevState.setType(devType);
@@ -1796,7 +1801,7 @@ public class RunningOperate {
     public RunningState qualificationDev(String username, String[] arrays){
         RunningState runningState = getSubRunningStateService.getSubRunningState(username);
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
-        RuleQualification ruleQualification = rule.getRuleIso();
+//        RuleQualification ruleQualification = rule.getRuleIso();
         Integer balance = runningState.getFinanceState().getCashAmount();
         Integer tempTotalAmount = 0;
         List<QualificationDevState> qualificationDevStateList = runningState.getDevState().getQualificationDevStateList();
@@ -1813,13 +1818,13 @@ public class RunningOperate {
             while (qualificationDevStateIterator.hasNext()){
                 QualificationDevState qualificationDevState = qualificationDevStateIterator.next();
                 Integer tempType = qualificationDevState.getType();
-                Integer devInvest = 0;
-                if(tempType == 1){
-                    devInvest = ruleQualification.getIso1UnitInvest();
-                }
-                if(tempType == 2){
-                    devInvest = ruleQualification.getIso2UnitInvest();
-                }
+                Integer devInvest = ruleInfo.getQualificationInfo(tempType, username).getUnitInvest();
+//                if(tempType == 1){
+//                    devInvest = ruleQualification.getIso1UnitInvest();
+//                }
+//                if(tempType == 2){
+//                    devInvest = ruleQualification.getIso2UnitInvest();
+//                }
                 if (devType.intValue() == tempType.intValue()){
                     check = 1;
                     tempTotalAmount += devInvest;
@@ -1827,13 +1832,13 @@ public class RunningOperate {
             }
             if(check == 0){
                 //如果检查标记仍然是0，表示在现有DevList中还没有该类型的DevState
-                Integer devInvest = 0;
-                if(devType == 1){
-                    devInvest = ruleQualification.getIso1UnitInvest();
-                }
-                if(devType == 2){
-                    devInvest = ruleQualification.getIso2UnitInvest();
-                }
+                Integer devInvest = ruleInfo.getQualificationInfo(devType, username).getUnitInvest();
+//                if(devType == 1){
+//                    devInvest = ruleQualification.getIso1UnitInvest();
+//                }
+//                if(devType == 2){
+//                    devInvest = ruleQualification.getIso2UnitInvest();
+//                }
                 tempTotalAmount += devInvest;
             }
         }
@@ -1863,13 +1868,13 @@ public class RunningOperate {
             }
             if(check == 0){
                 //如果检查标记仍然是0，表示在现有DevList中还没有该类型的DevState
-                Integer devTime = 0;
-                if(devType == 1){
-                    devTime = ruleQualification.getIso1DevTime();
-                }
-                if(devType == 2){
-                    devTime = ruleQualification.getIso2DevTime();
-                }
+                Integer devTime = ruleInfo.getQualificationInfo(devType, username).getDevTime();
+//                if(devType == 1){
+//                    devTime = ruleQualification.getIso1DevTime();
+//                }
+//                if(devType == 2){
+//                    devTime = ruleQualification.getIso2DevTime();
+//                }
                 QualificationDevState qualificationDevState = new QualificationDevState();  //实例化该类型资质认证对象
                 qualificationDevState.setState(2 - devTime);
                 qualificationDevState.setType(devType);
@@ -1888,7 +1893,7 @@ public class RunningOperate {
     public RunningState endYear(String username){
         RunningState runningState = getSubRunningStateService.getSubRunningState(username);
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
-        RuleFactory ruleFactory = rule.getRuleFactory();
+//        RuleFactory ruleFactory = rule.getRuleFactory();
         Integer balance = runningState.getFinanceState().getCashAmount();
 //        Integer tempTotalAmount = 0;
 
@@ -1921,22 +1926,22 @@ public class RunningOperate {
             if (factoryState.getOwningState() == 0){
                 //对租赁状态的厂房进行续租检查
                 if((factoryState.getFinalPaymentYear() != runningState.getBaseState().getTimeYear()) && (factoryState.getFinanPaymentQuarter() == runningState.getBaseState().getTimeQuarter())){
-                    Integer rentPrice = 0;
-                    if(factoryState.getType() == 1){
-                        rentPrice = ruleFactory.getFactory1RentPrice();
-                    }
-                    if(factoryState.getType() == 2){
-                        rentPrice = ruleFactory.getFactory2RentPrice();
-                    }
-                    if(factoryState.getType() == 3){
-                        rentPrice = ruleFactory.getFactory3RentPrice();
-                    }
-                    if(factoryState.getType() == 4){
-                        rentPrice = ruleFactory.getFactory4RentPrice();
-                    }
-                    if(factoryState.getType() == 5){
-                        rentPrice = ruleFactory.getFactory5RentPrice();
-                    }
+                    Integer rentPrice = ruleInfo.getFactoryInfo(factoryState.getType(), username).getRentPrice();
+//                    if(factoryState.getType() == 1){
+//                        rentPrice = ruleFactory.getFactory1RentPrice();
+//                    }
+//                    if(factoryState.getType() == 2){
+//                        rentPrice = ruleFactory.getFactory2RentPrice();
+//                    }
+//                    if(factoryState.getType() == 3){
+//                        rentPrice = ruleFactory.getFactory3RentPrice();
+//                    }
+//                    if(factoryState.getType() == 4){
+//                        rentPrice = ruleFactory.getFactory4RentPrice();
+//                    }
+//                    if(factoryState.getType() == 5){
+//                        rentPrice = ruleFactory.getFactory5RentPrice();
+//                    }
                     if(rentPrice > balance){
                         runningState.getBaseState().setMsg("现金不足");
                         return runningState;
@@ -1948,122 +1953,142 @@ public class RunningOperate {
                 }
             }else {
                 //对购买状态的厂房进行价值统计
-                if (factoryState.getType() == 1){
-                    factoryValue += ruleFactory.getFactory1BuyPrice();
-                }
-                if (factoryState.getType() == 2){
-                    factoryValue += ruleFactory.getFactory2BuyPrice();
-                }
-                if (factoryState.getType() == 3){
-                    factoryValue += ruleFactory.getFactory3BuyPrice();
-                }
-                if (factoryState.getType() == 4){
-                    factoryValue += ruleFactory.getFactory4BuyPrice();
-                }
-                if (factoryState.getType() == 5){
-                    factoryValue += ruleFactory.getFactory5BuyPrice();
-                }
+                factoryValue += ruleInfo.getFactoryInfo(factoryState.getType(), username).getBuyPrice();
+//                if (factoryState.getType() == 1){
+//                    factoryValue += ruleFactory.getFactory1BuyPrice();
+//                }
+//                if (factoryState.getType() == 2){
+//                    factoryValue += ruleFactory.getFactory2BuyPrice();
+//                }
+//                if (factoryState.getType() == 3){
+//                    factoryValue += ruleFactory.getFactory3BuyPrice();
+//                }
+//                if (factoryState.getType() == 4){
+//                    factoryValue += ruleFactory.getFactory4BuyPrice();
+//                }
+//                if (factoryState.getType() == 5){
+//                    factoryValue += ruleFactory.getFactory5BuyPrice();
+//                }
             }
 
 
 
             List<LineState> lineStateList = factoryState.getLineStateList();
             for(LineState lineState : lineStateList){
-                Integer depreciation = 0;
-                if(lineState.getType() == 1){
-                    if (lineState.getOwningState() > 0){
-                        upkeepCost += rule.getRuleLine().getLine1Upkeep();
-                    }
-                    if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine1DepreTime()))){
-                        depreciation = rule.getRuleLine().getLine1Depreciation();
-                        lineState.setValue(lineState.getValue() - depreciation);
-                        operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
-                    }
-                    if (lineState.getOwningState() > 0){
-                        equipmentValue += lineState.getValue();
-                    }else {
-                        constructionInProgressValue += lineState.getValue();
-                    }
-                }
-                if(lineState.getType() == 2){
-                    if (lineState.getOwningState() > 0){
-                        upkeepCost += rule.getRuleLine().getLine2Upkeep();
-                    }
-                    if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine2DepreTime()))){
-                        depreciation = rule.getRuleLine().getLine2Depreciation();
-                        lineState.setValue(lineState.getValue() - depreciation);
-                        operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
-                    }
-                    if (lineState.getOwningState() > 0){
-                        equipmentValue += lineState.getValue();
-                    }else {
-                        constructionInProgressValue += lineState.getValue();
+//                Integer depreciation = 0;
+                for (int i = 1; i <= rule.getLineQuantity(); i++){
+                    if (lineState.getType() == i){
+                        if (lineState.getOwningState() > 0){
+                            upkeepCost += ruleInfo.getLineInfo(i, username).getUpkeep();
+                        }
+                        if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= ruleInfo.getLineInfo(i, username).getDepreTime()))){
+                            Integer depreciation = ruleInfo.getLineInfo(i, username).getDepreciation();
+                            lineState.setValue(lineState.getValue() - depreciation);
+                            operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
+                        }
+                        if (lineState.getOwningState() > 0){
+                            equipmentValue += lineState.getValue();
+                        }else {
+                            constructionInProgressValue += lineState.getValue();
+                        }
                     }
                 }
-                if(lineState.getType() == 3){
-                    if (lineState.getOwningState() > 0){
-                        upkeepCost += rule.getRuleLine().getLine3Upkeep();
-                    }
-                    if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine3DepreTime()))){
-                        depreciation = rule.getRuleLine().getLine3Depreciation();
-                        lineState.setValue(lineState.getValue() - depreciation);
-                        operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
-                    }
-                    if (lineState.getOwningState() > 0){
-                        equipmentValue += lineState.getValue();
-                    }else {
-                        constructionInProgressValue += lineState.getValue();
-                    }
-                }
-                if(lineState.getType() == 4){
-                    if (lineState.getOwningState() > 0){
-                        upkeepCost += rule.getRuleLine().getLine4Upkeep();
-                    }
-                    if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine4DepreTime()))){
-                        depreciation = rule.getRuleLine().getLine4Depreciation();
-                        lineState.setValue(lineState.getValue() - depreciation);
-                        operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
-                    }
-                    if (lineState.getOwningState() > 0){
-                        equipmentValue += lineState.getValue();
-                    }else {
-                        constructionInProgressValue += lineState.getValue();
-                    }
-                }
-                if(lineState.getType() == 5){
-                    if (lineState.getOwningState() > 0){
-                        upkeepCost += rule.getRuleLine().getLine5Upkeep();
-                    }
-                    if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine5DepreTime()))){
-                        depreciation = rule.getRuleLine().getLine5Depreciation();
-                        lineState.setValue(lineState.getValue() - depreciation);
-                        operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
-                    }
-                    if (lineState.getOwningState() > 0){
-                        equipmentValue += lineState.getValue();
-                    }else {
-                        constructionInProgressValue += lineState.getValue();
-                    }
-                }
+
+//                if(lineState.getType() == 1){
+//                    if (lineState.getOwningState() > 0){
+//                        upkeepCost += rule.getRuleLine().getLine1Upkeep();
+//                    }
+//                    if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine1DepreTime()))){
+//                        depreciation = rule.getRuleLine().getLine1Depreciation();
+//                        lineState.setValue(lineState.getValue() - depreciation);
+//                        operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
+//                    }
+//                    if (lineState.getOwningState() > 0){
+//                        equipmentValue += lineState.getValue();
+//                    }else {
+//                        constructionInProgressValue += lineState.getValue();
+//                    }
+//                }
+//                if(lineState.getType() == 2){
+//                    if (lineState.getOwningState() > 0){
+//                        upkeepCost += rule.getRuleLine().getLine2Upkeep();
+//                    }
+//                    if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine2DepreTime()))){
+//                        depreciation = rule.getRuleLine().getLine2Depreciation();
+//                        lineState.setValue(lineState.getValue() - depreciation);
+//                        operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
+//                    }
+//                    if (lineState.getOwningState() > 0){
+//                        equipmentValue += lineState.getValue();
+//                    }else {
+//                        constructionInProgressValue += lineState.getValue();
+//                    }
+//                }
+//                if(lineState.getType() == 3){
+//                    if (lineState.getOwningState() > 0){
+//                        upkeepCost += rule.getRuleLine().getLine3Upkeep();
+//                    }
+//                    if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine3DepreTime()))){
+//                        depreciation = rule.getRuleLine().getLine3Depreciation();
+//                        lineState.setValue(lineState.getValue() - depreciation);
+//                        operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
+//                    }
+//                    if (lineState.getOwningState() > 0){
+//                        equipmentValue += lineState.getValue();
+//                    }else {
+//                        constructionInProgressValue += lineState.getValue();
+//                    }
+//                }
+//                if(lineState.getType() == 4){
+//                    if (lineState.getOwningState() > 0){
+//                        upkeepCost += rule.getRuleLine().getLine4Upkeep();
+//                    }
+//                    if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine4DepreTime()))){
+//                        depreciation = rule.getRuleLine().getLine4Depreciation();
+//                        lineState.setValue(lineState.getValue() - depreciation);
+//                        operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
+//                    }
+//                    if (lineState.getOwningState() > 0){
+//                        equipmentValue += lineState.getValue();
+//                    }else {
+//                        constructionInProgressValue += lineState.getValue();
+//                    }
+//                }
+//                if(lineState.getType() == 5){
+//                    if (lineState.getOwningState() > 0){
+//                        upkeepCost += rule.getRuleLine().getLine5Upkeep();
+//                    }
+//                    if(((lineState.getOwningState() > 1)) && ((lineState.getOwningState() <= rule.getRuleLine().getLine5DepreTime()))){
+//                        depreciation = rule.getRuleLine().getLine5Depreciation();
+//                        lineState.setValue(lineState.getValue() - depreciation);
+//                        operateFinancialStatementService.write("depreciation", operateFinancialStatementService.read("depreciation", runningState) + depreciation, runningState);
+//                    }
+//                    if (lineState.getOwningState() > 0){
+//                        equipmentValue += lineState.getValue();
+//                    }else {
+//                        constructionInProgressValue += lineState.getValue();
+//                    }
+//                }
                 if(lineState.getOwningState() > 0){
                     lineState.setOwningState(lineState.getOwningState() + 1);   //更新生产线owningState
                 }
                 if(lineState.getOwningState() > 0 && lineState.getProduceState() > 0){
-                    if (lineState.getProductType() == 1){
-                        wipValue += rule.getRuleProduct().getProduct1FinalCost();
-                    }
-                    if (lineState.getProductType() == 2){
-                        wipValue += rule.getRuleProduct().getProduct2FinalCost();
-                    }
-                    if (lineState.getProductType() == 3){
-                        wipValue += rule.getRuleProduct().getProduct3FinalCost();
-                    }
-                    if (lineState.getProductType() == 4){
-                        wipValue += rule.getRuleProduct().getProduct4FinalCost();
-                    }
-                    if (lineState.getProductType() == 5){
-                        wipValue += rule.getRuleProduct().getProduct5FinalCost();
-                    }
+                    wipValue += ruleInfo.getProductInfo(lineState.getProductType(), username).getFinalCost();
+//                    if (lineState.getProductType() == 1){
+//                        wipValue += rule.getRuleProduct().getProduct1FinalCost();
+//                    }
+//                    if (lineState.getProductType() == 2){
+//                        wipValue += rule.getRuleProduct().getProduct2FinalCost();
+//                    }
+//                    if (lineState.getProductType() == 3){
+//                        wipValue += rule.getRuleProduct().getProduct3FinalCost();
+//                    }
+//                    if (lineState.getProductType() == 4){
+//                        wipValue += rule.getRuleProduct().getProduct4FinalCost();
+//                    }
+//                    if (lineState.getProductType() == 5){
+//                        wipValue += rule.getRuleProduct().getProduct5FinalCost();
+//                    }
                 }
             }
         }
@@ -2176,21 +2201,22 @@ public class RunningOperate {
         List<ProductState> productStateList = runningState.getStockState().getProductStateList();
         for(ProductState productState : productStateList){
             if(productState.getQuantity() > 0){
-                if (productState.getType() == 1){
-                    finishedProductValue += productState.getQuantity() * rule.getRuleProduct().getProduct1FinalCost();
-                }
-                if (productState.getType() == 2){
-                    finishedProductValue += productState.getQuantity() * rule.getRuleProduct().getProduct2FinalCost();
-                }
-                if (productState.getType() == 3){
-                    finishedProductValue += productState.getQuantity() * rule.getRuleProduct().getProduct3FinalCost();
-                }
-                if (productState.getType() == 4){
-                    finishedProductValue += productState.getQuantity() * rule.getRuleProduct().getProduct4FinalCost();
-                }
-                if (productState.getType() == 5){
-                    finishedProductValue += productState.getQuantity() * rule.getRuleProduct().getProduct5FinalCost();
-                }
+                finishedProductValue += productState.getQuantity() * ruleInfo.getProductInfo(productState.getType(), username).getFinalCost();
+//                if (productState.getType() == 1){
+//                    finishedProductValue += productState.getQuantity() * rule.getRuleProduct().getProduct1FinalCost();
+//                }
+//                if (productState.getType() == 2){
+//                    finishedProductValue += productState.getQuantity() * rule.getRuleProduct().getProduct2FinalCost();
+//                }
+//                if (productState.getType() == 3){
+//                    finishedProductValue += productState.getQuantity() * rule.getRuleProduct().getProduct3FinalCost();
+//                }
+//                if (productState.getType() == 4){
+//                    finishedProductValue += productState.getQuantity() * rule.getRuleProduct().getProduct4FinalCost();
+//                }
+//                if (productState.getType() == 5){
+//                    finishedProductValue += productState.getQuantity() * rule.getRuleProduct().getProduct5FinalCost();
+//                }
             }
         }
         operateFinancialStatementService.write("finishedProductValue", finishedProductValue, runningState);     //流动资产 - 产成品
@@ -2199,21 +2225,22 @@ public class RunningOperate {
         List<MaterialState> materialStateList = runningState.getStockState().getMaterialStateList();
         for (MaterialState materialState : materialStateList){
             if(materialState.getQuantity() > 0){
-                if (materialState.getType() == 1){
-                    materialVaule += materialState.getQuantity() * rule.getRuleMaterial().getMaterial1Price();
-                }
-                if (materialState.getType() == 2){
-                    materialVaule += materialState.getQuantity() * rule.getRuleMaterial().getMaterial2Price();
-                }
-                if (materialState.getType() == 3){
-                    materialVaule += materialState.getQuantity() * rule.getRuleMaterial().getMaterial3Price();
-                }
-                if (materialState.getType() == 4){
-                    materialVaule += materialState.getQuantity() * rule.getRuleMaterial().getMaterial4Price();
-                }
-                if (materialState.getType() == 5){
-                    materialVaule += materialState.getQuantity() * rule.getRuleMaterial().getMaterial5Price();
-                }
+                materialVaule += materialState.getQuantity() * ruleInfo.getMaterialInfo(materialState.getType(), username).getPrice();
+//                if (materialState.getType() == 1){
+//                    materialVaule += materialState.getQuantity() * rule.getRuleMaterial().getMaterial1Price();
+//                }
+//                if (materialState.getType() == 2){
+//                    materialVaule += materialState.getQuantity() * rule.getRuleMaterial().getMaterial2Price();
+//                }
+//                if (materialState.getType() == 3){
+//                    materialVaule += materialState.getQuantity() * rule.getRuleMaterial().getMaterial3Price();
+//                }
+//                if (materialState.getType() == 4){
+//                    materialVaule += materialState.getQuantity() * rule.getRuleMaterial().getMaterial4Price();
+//                }
+//                if (materialState.getType() == 5){
+//                    materialVaule += materialState.getQuantity() * rule.getRuleMaterial().getMaterial5Price();
+//                }
             }
         }
         operateFinancialStatementService.write("materialVaule", materialVaule, runningState);       //流动资产 - 原材料
@@ -2455,49 +2482,55 @@ public class RunningOperate {
         List<ProductState> productStateList = runningState.getStockState().getProductStateList();
         for (MaterialState materialState : materialStateList){
             Integer type = materialState.getType();
-            if (type == 1){
-                tempTotalAmount += (int)(rule.getRuleMaterial().getMaterial1Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1));
-                lostCostTotal += (int)(rule.getRuleMaterial().getMaterial1Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1) - rule.getRuleMaterial().getMaterial1Price() * list1.get(type -1));
-            }
-            if (type == 2){
-                tempTotalAmount += (int)(rule.getRuleMaterial().getMaterial2Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1));
-                lostCostTotal += (int)(rule.getRuleMaterial().getMaterial2Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1) - rule.getRuleMaterial().getMaterial2Price() * list1.get(type -1));
-            }
-            if (type == 3){
-                tempTotalAmount += (int)(rule.getRuleMaterial().getMaterial3Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1));
-                lostCostTotal += (int)(rule.getRuleMaterial().getMaterial3Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1) - rule.getRuleMaterial().getMaterial3Price() * list1.get(type -1));
-            }
-            if (type == 4){
-                tempTotalAmount += (int)(rule.getRuleMaterial().getMaterial4Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1));
-                lostCostTotal += (int)(rule.getRuleMaterial().getMaterial4Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1) - rule.getRuleMaterial().getMaterial4Price() * list1.get(type -1));
-            }
-            if (type == 5){
-                tempTotalAmount += (int)(rule.getRuleMaterial().getMaterial5Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1));
-                lostCostTotal += (int)(rule.getRuleMaterial().getMaterial5Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1) - rule.getRuleMaterial().getMaterial5Price() * list1.get(type -1));
-            }
+            tempTotalAmount += (int)(ruleInfo.getMaterialInfo(type, username).getPrice() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1));
+            lostCostTotal += (int)(ruleInfo.getMaterialInfo(type, username).getPrice() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1) - ruleInfo.getMaterialInfo(type, username).getPrice() * list1.get(type -1));
+
+//            if (type == 1){
+//                tempTotalAmount += (int)(rule.getRuleMaterial().getMaterial1Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1));
+//                lostCostTotal += (int)(rule.getRuleMaterial().getMaterial1Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1) - rule.getRuleMaterial().getMaterial1Price() * list1.get(type -1));
+//            }
+//            if (type == 2){
+//                tempTotalAmount += (int)(rule.getRuleMaterial().getMaterial2Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1));
+//                lostCostTotal += (int)(rule.getRuleMaterial().getMaterial2Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1) - rule.getRuleMaterial().getMaterial2Price() * list1.get(type -1));
+//            }
+//            if (type == 3){
+//                tempTotalAmount += (int)(rule.getRuleMaterial().getMaterial3Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1));
+//                lostCostTotal += (int)(rule.getRuleMaterial().getMaterial3Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1) - rule.getRuleMaterial().getMaterial3Price() * list1.get(type -1));
+//            }
+//            if (type == 4){
+//                tempTotalAmount += (int)(rule.getRuleMaterial().getMaterial4Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1));
+//                lostCostTotal += (int)(rule.getRuleMaterial().getMaterial4Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1) - rule.getRuleMaterial().getMaterial4Price() * list1.get(type -1));
+//            }
+//            if (type == 5){
+//                tempTotalAmount += (int)(rule.getRuleMaterial().getMaterial5Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1));
+//                lostCostTotal += (int)(rule.getRuleMaterial().getMaterial5Price() * rule.getRuleParam().getParamMaterailBuyRation() * list1.get(type -1) - rule.getRuleMaterial().getMaterial5Price() * list1.get(type -1));
+//            }
         }
         for (ProductState productState : productStateList){
             Integer type = productState.getType();
-            if (type == 1){
-                tempTotalAmount += (int)(rule.getRuleProduct().getProduct1FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
-                lostCostTotal += (int)(rule.getRuleProduct().getProduct1FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1) - rule.getRuleProduct().getProduct1FinalCost() * list2.get(type -1));
-            }
-            if (type == 2){
-                tempTotalAmount += (int)(rule.getRuleProduct().getProduct2FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
-                lostCostTotal += (int)(rule.getRuleProduct().getProduct2FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1) - rule.getRuleProduct().getProduct2FinalCost() * list2.get(type -1));
-            }
-            if (type == 3){
-                tempTotalAmount += (int)(rule.getRuleProduct().getProduct3FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
-                lostCostTotal += (int)(rule.getRuleProduct().getProduct3FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1) - rule.getRuleProduct().getProduct3FinalCost() * list2.get(type -1));
-            }
-            if (type == 4){
-                tempTotalAmount += (int)(rule.getRuleProduct().getProduct4FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
-                lostCostTotal += (int)(rule.getRuleProduct().getProduct4FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1) - rule.getRuleProduct().getProduct4FinalCost() * list2.get(type -1));
-            }
-            if (type == 5){
-                tempTotalAmount += (int)(rule.getRuleProduct().getProduct5FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
-                lostCostTotal += (int)(rule.getRuleProduct().getProduct5FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1) - rule.getRuleProduct().getProduct5FinalCost() * list2.get(type -1));
-            }
+            tempTotalAmount += (int)(ruleInfo.getProductInfo(type,username).getFinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
+            lostCostTotal += (int)(ruleInfo.getProductInfo(type,username).getFinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1) - ruleInfo.getProductInfo(type,username).getFinalCost() * list2.get(type -1));
+
+//            if (type == 1){
+//                tempTotalAmount += (int)(rule.getRuleProduct().getProduct1FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
+//                lostCostTotal += (int)(rule.getRuleProduct().getProduct1FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1) - rule.getRuleProduct().getProduct1FinalCost() * list2.get(type -1));
+//            }
+//            if (type == 2){
+//                tempTotalAmount += (int)(rule.getRuleProduct().getProduct2FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
+//                lostCostTotal += (int)(rule.getRuleProduct().getProduct2FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1) - rule.getRuleProduct().getProduct2FinalCost() * list2.get(type -1));
+//            }
+//            if (type == 3){
+//                tempTotalAmount += (int)(rule.getRuleProduct().getProduct3FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
+//                lostCostTotal += (int)(rule.getRuleProduct().getProduct3FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1) - rule.getRuleProduct().getProduct3FinalCost() * list2.get(type -1));
+//            }
+//            if (type == 4){
+//                tempTotalAmount += (int)(rule.getRuleProduct().getProduct4FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
+//                lostCostTotal += (int)(rule.getRuleProduct().getProduct4FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1) - rule.getRuleProduct().getProduct4FinalCost() * list2.get(type -1));
+//            }
+//            if (type == 5){
+//                tempTotalAmount += (int)(rule.getRuleProduct().getProduct5FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1));
+//                lostCostTotal += (int)(rule.getRuleProduct().getProduct5FinalCost() * rule.getRuleParam().getParamProductBuyRation() * list2.get(type -1) - rule.getRuleProduct().getProduct5FinalCost() * list2.get(type -1));
+//            }
         }
 
         if (tempTotalAmount > balance){

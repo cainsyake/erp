@@ -106,22 +106,22 @@ public class TeachClassInit {
 
                 StockState stockState = new StockState();
                 List<MaterialState> materialStateList = new ArrayList<MaterialState>();
-                Integer materialNum = 0;    //原料数量
-                if(!(rule.getRuleMaterial().getMaterial1Name().isEmpty())){
-                    materialNum++;
-                }
-                if(!(rule.getRuleMaterial().getMaterial2Name().isEmpty())){
-                    materialNum++;
-                }
-                if(!(rule.getRuleMaterial().getMaterial3Name().isEmpty())){
-                    materialNum++;
-                }
-                if(!(rule.getRuleMaterial().getMaterial4Name().isEmpty())){
-                    materialNum++;
-                }
-                if(!(rule.getRuleMaterial().getMaterial5Name().isEmpty())){
-                    materialNum++;
-                }
+                Integer materialNum = rule.getMaterialQuantity();    //原料数量
+//                if(!(rule.getRuleMaterial().getMaterial1Name().isEmpty())){
+//                    materialNum++;
+//                }
+//                if(!(rule.getRuleMaterial().getMaterial2Name().isEmpty())){
+//                    materialNum++;
+//                }
+//                if(!(rule.getRuleMaterial().getMaterial3Name().isEmpty())){
+//                    materialNum++;
+//                }
+//                if(!(rule.getRuleMaterial().getMaterial4Name().isEmpty())){
+//                    materialNum++;
+//                }
+//                if(!(rule.getRuleMaterial().getMaterial5Name().isEmpty())){
+//                    materialNum++;
+//                }
                 for(int j = 1; j < materialNum+1; j++){
                     MaterialState materialState = new MaterialState();
                     materialState.setType(j);
@@ -129,22 +129,22 @@ public class TeachClassInit {
                     materialStateList.add(materialState);
                 }
                 List<ProductState> productStateList = new ArrayList<ProductState>();
-                Integer productNum = 0;    //原料数量
-                if(!(rule.getRuleProduct().getProduct1Name().isEmpty())){
-                    productNum++;
-                }
-                if(!(rule.getRuleProduct().getProduct2Name().isEmpty())){
-                    productNum++;
-                }
-                if(!(rule.getRuleProduct().getProduct3Name().isEmpty())){
-                    productNum++;
-                }
-                if(!(rule.getRuleProduct().getProduct4Name().isEmpty())){
-                    productNum++;
-                }
-                if(!(rule.getRuleProduct().getProduct5Name().isEmpty())){
-                    productNum++;
-                }
+                Integer productNum = rule.getProductQuantity();    //原料数量
+//                if(!(rule.getRuleProduct().getProduct1Name().isEmpty())){
+//                    productNum++;
+//                }
+//                if(!(rule.getRuleProduct().getProduct2Name().isEmpty())){
+//                    productNum++;
+//                }
+//                if(!(rule.getRuleProduct().getProduct3Name().isEmpty())){
+//                    productNum++;
+//                }
+//                if(!(rule.getRuleProduct().getProduct4Name().isEmpty())){
+//                    productNum++;
+//                }
+//                if(!(rule.getRuleProduct().getProduct5Name().isEmpty())){
+//                    productNum++;
+//                }
                 for(int j = 1; j < productNum+1; j++){
                     ProductState productState = new ProductState();
                     productState.setType(j);
@@ -186,24 +186,24 @@ public class TeachClassInit {
             teachClassInfo.setUserId(teacherId);    //绑定教学班的老师id
             teachClassInfo.setSubUserInfoList(subUserInfoList);
 
-            Integer marketNum = 0;
-            if(!(rule.getRuleMarket().getMarket1Name().isEmpty())){
-                marketNum++;
-            }
-            if(!(rule.getRuleMarket().getMarket2Name().isEmpty())){
-                marketNum++;
-            }
-            if(!(rule.getRuleMarket().getMarket3Name().isEmpty())){
-                marketNum++;
-            }
-            if(!(rule.getRuleMarket().getMarket4Name().isEmpty())){
-                marketNum++;
-            }
-            if(!(rule.getRuleMarket().getMarket5Name().isEmpty())){
-                marketNum++;
-            }
+            Integer areaNum = rule.getAreaQuantity();
+//            if(!(rule.getRuleMarket().getMarket1Name().isEmpty())){
+//                marketNum++;
+//            }
+//            if(!(rule.getRuleMarket().getMarket2Name().isEmpty())){
+//                marketNum++;
+//            }
+//            if(!(rule.getRuleMarket().getMarket3Name().isEmpty())){
+//                marketNum++;
+//            }
+//            if(!(rule.getRuleMarket().getMarket4Name().isEmpty())){
+//                marketNum++;
+//            }
+//            if(!(rule.getRuleMarket().getMarket5Name().isEmpty())){
+//                marketNum++;
+//            }
             Collator collator = new Collator();
-            collator.setAreaQuantity(marketNum);
+            collator.setAreaQuantity(areaNum);
             collator.setSameTimeOpenQuantity(rule.getRuleParam().getParamMarketSametimeOpenNum());
             teachClassInfo.setCollator(collator);
 

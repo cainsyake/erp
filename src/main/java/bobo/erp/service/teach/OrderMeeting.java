@@ -55,38 +55,38 @@ public class OrderMeeting {
         }
 
         Collator collator = new Collator();
-        Integer areaQuantity = 0;
-        Integer productNum = 0;
-        if(teachClassInfo.getTime() - rule.getRuleMarket().getMarket1DevTime() > 0){
-            areaQuantity++;
-        }
-        if(teachClassInfo.getTime() - rule.getRuleMarket().getMarket2DevTime() > 0){
-            areaQuantity++;
-        }
-        if(teachClassInfo.getTime() - rule.getRuleMarket().getMarket3DevTime() > 0){
-            areaQuantity++;
-        }
-        if(teachClassInfo.getTime() - rule.getRuleMarket().getMarket4DevTime() > 0){
-            areaQuantity++;
-        }
-        if(teachClassInfo.getTime() - rule.getRuleMarket().getMarket5DevTime() > 0){
-            areaQuantity++;
-        }
-        if (rule.getRuleProduct().getProduct1Name() != "" || rule.getRuleProduct().getProduct1Name() != null){
-            productNum++;
-        }
-        if (rule.getRuleProduct().getProduct1Name() != "" || rule.getRuleProduct().getProduct2Name() != null){
-            productNum++;
-        }
-        if (rule.getRuleProduct().getProduct1Name() != "" || rule.getRuleProduct().getProduct3Name() != null){
-            productNum++;
-        }
-        if (rule.getRuleProduct().getProduct1Name() != "" || rule.getRuleProduct().getProduct4Name() != null){
-            productNum++;
-        }
-        if (rule.getRuleProduct().getProduct1Name() != "" || rule.getRuleProduct().getProduct5Name() != null){
-            productNum++;
-        }
+        Integer areaQuantity = rule.getAreaQuantity();
+        Integer productNum = rule.getProductQuantity();
+//        if(teachClassInfo.getTime() - rule.getRuleMarket().getMarket1DevTime() > 0){
+//            areaQuantity++;
+//        }
+//        if(teachClassInfo.getTime() - rule.getRuleMarket().getMarket2DevTime() > 0){
+//            areaQuantity++;
+//        }
+//        if(teachClassInfo.getTime() - rule.getRuleMarket().getMarket3DevTime() > 0){
+//            areaQuantity++;
+//        }
+//        if(teachClassInfo.getTime() - rule.getRuleMarket().getMarket4DevTime() > 0){
+//            areaQuantity++;
+//        }
+//        if(teachClassInfo.getTime() - rule.getRuleMarket().getMarket5DevTime() > 0){
+//            areaQuantity++;
+//        }
+//        if (rule.getRuleProduct().getProduct1Name() != "" || rule.getRuleProduct().getProduct1Name() != null){
+//            productNum++;
+//        }
+//        if (rule.getRuleProduct().getProduct1Name() != "" || rule.getRuleProduct().getProduct2Name() != null){
+//            productNum++;
+//        }
+//        if (rule.getRuleProduct().getProduct1Name() != "" || rule.getRuleProduct().getProduct3Name() != null){
+//            productNum++;
+//        }
+//        if (rule.getRuleProduct().getProduct1Name() != "" || rule.getRuleProduct().getProduct4Name() != null){
+//            productNum++;
+//        }
+//        if (rule.getRuleProduct().getProduct1Name() != "" || rule.getRuleProduct().getProduct5Name() != null){
+//            productNum++;
+//        }
 
         collator.setProductNum(productNum);     //设置产品数量
         collator.setAreaQuantity(areaQuantity);     //设置区域数量

@@ -6,6 +6,7 @@ import bobo.erp.entity.rule.RuleProduct;
 import bobo.erp.entity.state.marketing.AdvertisingState;
 import bobo.erp.entity.teach.FileInfo;
 import bobo.erp.entity.teach.TeachClassInfo;
+import bobo.erp.service.rule.RuleInfo;
 import bobo.erp.service.running.GetTeachClassInfoService;
 import bobo.erp.service.running.GetTeachClassRuleService;
 import org.slf4j.Logger;
@@ -33,6 +34,9 @@ public class ReportGenerationService {
     @Autowired
     private ExcelExportService excelExportService;
 
+    @Autowired
+    private RuleInfo ruleInfo;
+
     /**
      *
      * @param name 教学班账号
@@ -43,8 +47,8 @@ public class ReportGenerationService {
         TeachClassInfo teachClassInfo = getTeachClassInfoService.getTeachClassInfoByUsername(name);
         Integer time = teachClassInfo.getTime();
         Rule rule = getTeachClassRuleService.getTeachClassRule(name);
-        RuleProduct ruleProduct = rule.getRuleProduct();
-        RuleArea ruleArea = rule.getRuleMarket();
+//        RuleProduct ruleProduct = rule.getRuleProduct();
+//        RuleArea ruleArea = rule.getRuleMarket();
         List<String> productNameList = new ArrayList<String>();
         List<String> areaNameList = new ArrayList<String>();
         String title = "AD" + time + name;
@@ -56,37 +60,45 @@ public class ReportGenerationService {
         teachClassInfo.getFileInfoList().add(fileInfo);
 
         //获取产品名List
-        if (ruleProduct.getProduct1Name() != ""){
-            productNameList.add(ruleProduct.getProduct1Name());
+        for (int i = 0; i < rule.getProductQuantity(); i++){
+            productNameList.add(ruleInfo.getProductInfo(i + 1, name).getName());
         }
-        if (ruleProduct.getProduct2Name() != ""){
-            productNameList.add(ruleProduct.getProduct2Name());
-        }
-        if (ruleProduct.getProduct3Name() != ""){
-            productNameList.add(ruleProduct.getProduct3Name());
-        }
-        if (ruleProduct.getProduct4Name() != ""){
-            productNameList.add(ruleProduct.getProduct4Name());
-        }
-        if (ruleProduct.getProduct5Name() != ""){
-            productNameList.add(ruleProduct.getProduct5Name());
-        }
+
+//        if (ruleProduct.getProduct1Name() != ""){
+//            productNameList.add(ruleProduct.getProduct1Name());
+//        }
+//        if (ruleProduct.getProduct2Name() != ""){
+//            productNameList.add(ruleProduct.getProduct2Name());
+//        }
+//        if (ruleProduct.getProduct3Name() != ""){
+//            productNameList.add(ruleProduct.getProduct3Name());
+//        }
+//        if (ruleProduct.getProduct4Name() != ""){
+//            productNameList.add(ruleProduct.getProduct4Name());
+//        }
+//        if (ruleProduct.getProduct5Name() != ""){
+//            productNameList.add(ruleProduct.getProduct5Name());
+//        }
         //获取区域名List
-        if (ruleArea.getMarket1Name() != ""){
-            areaNameList.add(ruleArea.getMarket1Name());
+        for (int i = 0; i < rule.getAreaQuantity(); i++){
+            areaNameList.add(ruleInfo.getAreaInfo(i + 1, name).getName());
         }
-        if (ruleArea.getMarket2Name() != ""){
-            areaNameList.add(ruleArea.getMarket2Name());
-        }
-        if (ruleArea.getMarket3Name() != ""){
-            areaNameList.add(ruleArea.getMarket3Name());
-        }
-        if (ruleArea.getMarket4Name() != ""){
-            areaNameList.add(ruleArea.getMarket4Name());
-        }
-        if (ruleArea.getMarket5Name() != ""){
-            areaNameList.add(ruleArea.getMarket5Name());
-        }
+
+//        if (ruleArea.getMarket1Name() != ""){
+//            areaNameList.add(ruleArea.getMarket1Name());
+//        }
+//        if (ruleArea.getMarket2Name() != ""){
+//            areaNameList.add(ruleArea.getMarket2Name());
+//        }
+//        if (ruleArea.getMarket3Name() != ""){
+//            areaNameList.add(ruleArea.getMarket3Name());
+//        }
+//        if (ruleArea.getMarket4Name() != ""){
+//            areaNameList.add(ruleArea.getMarket4Name());
+//        }
+//        if (ruleArea.getMarket5Name() != ""){
+//            areaNameList.add(ruleArea.getMarket5Name());
+//        }
 
         //遍历子用户的广告
         List<AdvertisingState> advertisingStateList = new ArrayList<AdvertisingState>();
