@@ -10,7 +10,7 @@ spring:
     password: 718293
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     show-sql: false
   thymeleaf:
     mode: LEGACYHTML5 #原为HTML5

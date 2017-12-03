@@ -8,7 +8,6 @@ import javax.persistence.*;
  * Created by 59814 on 2017/7/20.
  */
 @Entity
-//@Table(name = "rule_factory")
 public class RuleFactory {
     public RuleFactory() {
     }
@@ -27,7 +26,7 @@ public class RuleFactory {
     private Integer rentPrice;  //租赁费用
     private Integer salePrice;  //出售价格
     private Integer volume;     //生产线容量
-    private Integer limit;      //此类厂房购买数量限制
+    private Integer quaitityLimit;      //此类厂房购买数量限制
     private Integer score;      //潜力发展系数
 
     public Integer getId() {
@@ -96,12 +95,12 @@ public class RuleFactory {
         this.volume = volume;
     }
 
-    public Integer getLimit() {
-        return limit;
+    public Integer getQuaitityLimit() {
+        return quaitityLimit;
     }
 
-    public void setLimit(Integer limit) {
-        this.limit = limit;
+    public void setQuaitityLimit(Integer quaitityLimit) {
+        this.quaitityLimit = quaitityLimit;
     }
 
     public Integer getScore() {

@@ -973,10 +973,10 @@ public class RunningOperate {
                                 productCost += ruleInfo.getProductInfo(lineState.getProductType(), username).getProcCost(); //计算生产费用
                                 RuleProductBom ruleProductBom = ruleInfo.getProductBomInfo(lineState.getProductType(), username);   //获取BOM列表
                                 for (int i = 0; i < rule.getMaterialQuantity(); i++){
-                                    mixMaterialList.set(i, mixMaterialList.get(i) + ruleProductBom.getMaterialBomList().get(i));
+                                    mixMaterialList.set(i, mixMaterialList.get(i) + ruleProductBom.getMaterialBomList().get(i).getValue());
                                 }
                                 for (int j = 0; j < rule.getProductQuantity(); j++){
-                                    mixProductList.set(j, mixProductList.get(j) + ruleProductBom.getProductBomList().get(j));
+                                    mixProductList.set(j, mixProductList.get(j) + ruleProductBom.getProductBomList().get(j).getValue());
                                 }
 
 
