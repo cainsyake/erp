@@ -56,9 +56,7 @@ function initAddRule() {
             paramAllowUserReturnSeason:$('input:radio[name="paramAllowUserReturnSeason"]:checked').val(),
             paramAllowUserReturnYear:$('input:radio[name="paramAllowUserReturnYear"]:checked').val(),
         };
-        console.log(rule);
         var ajaxData = {rule: rule, username: username};
-        console.log(ajaxData);
         $.ajax({
             // url: '/addRule/' + username,
             url: '/addRule',
@@ -67,13 +65,17 @@ function initAddRule() {
             data: JSON.stringify(ajaxData),
             dataType:'json',
             success:function (rs) {
-                console.log("AJAX SUCCESS");
-                console.log(rs);
-                // $("#ajaxDiv1").html(operatorTime + " : 上传成功 厂房规则");
-                // $("#addRuleFactoryResult").html("<h4 style='color: blue'>厂房规则上传成功,请继续下一步</h4>");
+                $('#quantityData').attr("factory-quantity", rule.factoryQuantity);
+                $('#quantityData').attr("line-quantity", rule.lineQuantity);
+                $('#quantityData').attr("qualification-quantity", rule.qualificationQuantity);
+                $('#quantityData').attr("area-quantity", rule.areaQuantity);
+                $('#quantityData').attr("material-quantity", rule.materialQuantity);
+                $('#quantityData').attr("product-quantity", rule.productQuantity);
+                $("#ajaxDiv1").html("成功初始化规则,ID：" + rs.msg);
+                $("#initAddRuleResult").html("<h4 style='color: blue'>初始化规则,请继续下一步</h4>");
             },
             error:function (rs) {
-                // $("#ajaxDiv1").html(operatorTime + " : 上传失败 厂房规则");
+                $("#ajaxDiv1").html(operatorTime + " : 初始化规则失败");
                 console.log(rs);
             }
         });
@@ -83,6 +85,10 @@ function initAddRule() {
         //TODO 载入规则 修改
     }
 }
+
+$('#quantityData').attr('factory-quantity').change(function () {
+
+});
 
 function adReport() {
     var nowUserName = $("#nowUserName").val();
