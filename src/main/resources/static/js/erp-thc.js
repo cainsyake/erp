@@ -28,41 +28,43 @@ function initAddRule() {
         rule.areaQuantity = $("#areaQuantity").val();
         rule.materialQuantity = $("#materialQuantity").val();
         rule.productQuantity = $("#productQuantity").val();
-        // rule.ruleParam = {
-        //     paramPenatly:$("#paramPenatly").val(),
-        //     paramLoanRatio:$("#paramLoanRatio").val(),
-        //     paramProductSaleRatio:$("#paramProductSaleRatio").val(),
-        //     paramMaterailSaleRatio:$("#paramMaterailSaleRatio").val(),
-        //     paramLongTermLoanRates:$("#paramLongTermLoanRates").val(),
-        //     paramShortTermLoanRates:$("#paramShortTermLoanRates").val(),
-        //     paramShortTermDiscountRates:$("#paramShortTermDiscountRates").val(),
-        //     paramLongTermDiscountRates:$("#paramLongTermDiscountRates").val(),
-        //     paramInitialCash:$("#paramInitialCash").val(),
-        //     paramManagementCost:$("#paramManagementCost").val(),
-        //     paramInfomationCost:$("#paramInfomationCost").val(),
-        //     paramTaxRate:$("#paramTaxRate").val(),
-        //     paramLongTermLoanTimeLimit:$("#paramLongTermLoanTimeLimit").val(),
-        //     paramAdvertisingMinFee:$("#paramAdvertisingMinFee").val(),
-        //     paramProductBuyRation:$("#paramProductBuyRation").val(),
-        //     paramMaterailBuyRation:$("#paramMaterailBuyRation").val(),
-        //     paramSelectOrderTime:$("#paramSelectOrderTime").val(),
-        //     paramFirstSelectOrderTime:$("#paramFirstSelectOrderTime").val(),
-        //     paramMarketSametimeOpenNum:$("#paramMarketSametimeOpenNum").val(),
-        //     paramBidTime:$("#paramBidTime").val(),
-        //     paramBidSametimeNum:$("#paramBidSametimeNum").val(),
-        //     paramFactoryMaxNum:$("#paramFactoryMaxNum").val(),
-        //     paramHaveMarketLeader:$('input:radio[name="paramHaveMarketLeader"]:checked').val(),
-        //     paramDiscountMode:$('input:radio[name="paramDiscountMode"]:checked').val(),
-        //     paramAllowUserReturnSeason:$('input:radio[name="paramAllowUserReturnSeason"]:checked').val(),
-        //     paramAllowUserReturnYear:$('input:radio[name="paramAllowUserReturnYear"]:checked').val(),
-        // };
+        rule.ruleParam = {
+            paramPenatly:$("#paramPenatly").val(),
+            paramLoanRatio:$("#paramLoanRatio").val(),
+            paramProductSaleRatio:$("#paramProductSaleRatio").val(),
+            paramMaterailSaleRatio:$("#paramMaterailSaleRatio").val(),
+            paramLongTermLoanRates:$("#paramLongTermLoanRates").val(),
+            paramShortTermLoanRates:$("#paramShortTermLoanRates").val(),
+            paramShortTermDiscountRates:$("#paramShortTermDiscountRates").val(),
+            paramLongTermDiscountRates:$("#paramLongTermDiscountRates").val(),
+            paramInitialCash:$("#paramInitialCash").val(),
+            paramManagementCost:$("#paramManagementCost").val(),
+            paramInfomationCost:$("#paramInfomationCost").val(),
+            paramTaxRate:$("#paramTaxRate").val(),
+            paramLongTermLoanTimeLimit:$("#paramLongTermLoanTimeLimit").val(),
+            paramAdvertisingMinFee:$("#paramAdvertisingMinFee").val(),
+            paramProductBuyRation:$("#paramProductBuyRation").val(),
+            paramMaterailBuyRation:$("#paramMaterailBuyRation").val(),
+            paramSelectOrderTime:$("#paramSelectOrderTime").val(),
+            paramFirstSelectOrderTime:$("#paramFirstSelectOrderTime").val(),
+            paramMarketSametimeOpenNum:$("#paramMarketSametimeOpenNum").val(),
+            paramBidTime:$("#paramBidTime").val(),
+            paramBidSametimeNum:$("#paramBidSametimeNum").val(),
+            paramFactoryMaxNum:$("#paramFactoryMaxNum").val(),
+            paramHaveMarketLeader:$('input:radio[name="paramHaveMarketLeader"]:checked').val(),
+            paramDiscountMode:$('input:radio[name="paramDiscountMode"]:checked').val(),
+            paramAllowUserReturnSeason:$('input:radio[name="paramAllowUserReturnSeason"]:checked').val(),
+            paramAllowUserReturnYear:$('input:radio[name="paramAllowUserReturnYear"]:checked').val(),
+        };
         console.log(rule);
         var ajaxData = {rule: rule, username: username};
         console.log(ajaxData);
         $.ajax({
-            url: '/addRule/' + username,
+            // url: '/addRule/' + username,
+            url: '/addRule',
             type: 'POST',
-            data: rule,
+            contentType: "application/json",
+            data: JSON.stringify(ajaxData),
             dataType:'json',
             success:function (rs) {
                 console.log("AJAX SUCCESS");

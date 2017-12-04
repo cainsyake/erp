@@ -1,19 +1,17 @@
 package bobo.erp.controller;
 
 import bobo.erp.entity.common.UniformResult;
+import bobo.erp.entity.common.packing.RulePacking;
 import bobo.erp.entity.rule.*;
-import bobo.erp.repository.rule.RuleRepository;
 import bobo.erp.service.rule.AddRule;
 import bobo.erp.service.rule.UseRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -29,20 +27,29 @@ public class RuleController {
     @Autowired
     private UseRule useRule;
 
+    @PostMapping(value = "addRule")
+    @ResponseBody
+    public UniformResult addRule(@RequestBody RulePacking rulePacking){
+        System.out.print("成功接受请求");
+        Rule rule = rulePacking.getRule();
+        String nowUserName = rulePacking.getUsername();
+        return addRule.addRuleParam(rule, nowUserName);
+    }
+
 //    @PostMapping(value = "addRule")
 //    @ResponseBody
-//    public UniformResult addRule(@RequestParam(value = "rule1") Rule rule,
-//                                 @RequestParam(value = "username1") String nowUserName){
+//    public UniformResult addRule(@RequestBody Rule rule){
+//        String nowUserName = "admin";
 //        return addRule.addRuleParam(rule, nowUserName);
 //    }
 
-    @PostMapping(value = "addRule/{username}")
-    @ResponseBody
-    public UniformResult addRule(@PathVariable("username") String username, Rule rule){
-        System.out.println(username);
-        System.out.println(rule.getFactoryQuantity());
-        return addRule.addRuleParam(rule, username);
-    }
+//    @PostMapping(value = "addRule/{username}")
+//    @ResponseBody
+//    public UniformResult addRule(@PathVariable("username") String username, Rule rule){
+//        System.out.println(username);
+//        System.out.println(rule.getFactoryQuantity());
+//        return addRule.addRuleParam(rule, username);
+//    }
 
     @PostMapping(value = "addRuleFactory")
     @ResponseBody
