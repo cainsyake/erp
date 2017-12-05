@@ -99,6 +99,7 @@ function initAddRule() {
 function initAllAddRuleArea() {
     initAddFactoryArea();
     initAddLineArea();
+    initAddQualificationArea();
 }
 
 function initAddFactoryArea() {
@@ -257,6 +258,64 @@ function addRuleLine() {
     });
 }
 
+function initAddQualificationArea(){
+    for (var i = 1; i <= $('#quantityData').attr('qualification-quantity'); i++) {
+        var content = "<div class='form-group'>" +
+            "<table class='table table-striped table-hover table-bordered'>" +
+            "<thead>" +
+            "<tr>" +
+            "<th colspan='2' style='text-align: center'>第" + i + "组资质认证规则</th>" +
+            "<th style='text-align: center'>资质名称</th>" +
+            "<td><input class='form-control' type='text' id='qname" + i + "'/></td>" +
+            "</tr>" +
+            "</thead>" +
+            "<tbody>" +
+            "<tr>" +
+            "<th style='text-align: center'>单位研发投资</th>" +
+            "<td><input class='form-control' type='number' id='qunitInvest" + i + "'/></td>" +
+            "<th style='text-align: center'>研发周期</th>" +
+            "<td><input class='form-control' type='number' id='qdevTime" + i + "'/></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<th style='text-align: center'>潜力分数</th>" +
+            "<td><input class='form-control' type='number' id='qscore" + i + "'/></td>" +
+            "</tr>" +
+            "</tbody>" +
+            "</table>" +
+            "</div>";
+        $('#addQualificationArea').append(content);
+    }
+}
+
+function addRuleQualification() {
+    var username = $("#nowUserName").val();
+    var ruleId = $("#ruleId").val();
+    var qualifications = [];
+    for (var i = 1; i <= $('#quantityData').attr('qualification-quantity'); i++){
+        var qualification = new Object();
+        qualification.type = i;
+        qualification.name = $('#qname' + i).val();
+        qualification.unitInvest = $('#qunitInvest' + i).val();
+        qualification.devTime = $('#qdevTime' + i).val();
+        qualification.score = $('#qscore' + i).val();
+        qualifications.push(qualification);
+    }
+    var ajaxData = {qualifications: qualifications, username: username, ruleId: ruleId};
+    $.ajax({
+        url: '/addRuleQualification',
+        type: 'POST',
+        contentType: "application/json",
+        data: JSON.stringify(ajaxData),
+        dataType:'json',
+        success:function (rs) {
+            $("#addRuleQualificationResult").html("<h4 style='color: blue'>上传资质认证规则成功,请继续下一步</h4>");
+        },
+        error:function (rs) {
+            $("#ajaxDiv1").html("上传生产线规则失败");
+            console.log(rs);
+        }
+    });
+}
 
 function adReport() {
     var nowUserName = $("#nowUserName").val();

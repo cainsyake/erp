@@ -364,63 +364,16 @@
                   </fieldset>
                   <fieldset title="步骤 4">
                     <legend>添加资质认证规则</legend>
-                    <div class="form-group">
-                      <label class="col-md-3 col-sm-3 control-label">资质 1 名称</label>
-                      <div class="col-md-5 col-sm-5">
-                        <input class="form-control" name="iso1Name" placeholder="" type="text" id="iso1Name"/>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="col-md-3 col-sm-3 control-label">资质 1 每周期开发投资</label>
-                      <div class="col-md-5 col-sm-5">
-                        <input class="form-control" name="iso1UnitInvest" placeholder="" type="number" id="iso1UnitInvest"/>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="col-md-3 col-sm-3 control-label">资质 1 开发周期</label>
-                      <div class="col-md-5 col-sm-5">
-                        <input class="form-control" name="iso1DevTime" placeholder="" type="number" id="iso1DevTime"/>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="col-md-3 col-sm-3 control-label">资质 1 潜力分数</label>
-                      <div class="col-md-5 col-sm-5">
-                        <input class="form-control" name="iso1Score" placeholder="" type="number" id="iso1Score"/>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="col-md-3 col-sm-3 control-label">资质 2 名称</label>
-                      <div class="col-md-5 col-sm-5">
-                        <input class="form-control" name="iso2Name" placeholder="" type="text" id="iso2Name"/>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="col-md-3 col-sm-3 control-label">资质 2 每周期开发投资</label>
-                      <div class="col-md-5 col-sm-5">
-                        <input class="form-control" name="iso2UnitInvest" placeholder="" type="number" id="iso2UnitInvest"/>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="col-md-3 col-sm-3 control-label">资质 2 开发周期</label>
-                      <div class="col-md-5 col-sm-5">
-                        <input class="form-control" name="iso2DevTime" placeholder="" type="number" id="iso2DevTime"/>
-                      </div>
-                    </div>
-                    <div class="form-group">
-                      <label class="col-md-3 col-sm-3 control-label">资质 2 潜力分数</label>
-                      <div class="col-md-5 col-sm-5">
-                        <input class="form-control" name="iso2Score" placeholder="" type="number" id="iso2Score"/>
-                      </div>
-                    </div>
+                    <div id="addQualificationArea"></div>
                     <div class="form-group">
                       <div class="col-md-6 col-sm-6">
-                        <div id="addRuleIsoResult">
+                        <div id="addRuleQualificationResult">
                           <h4>填写完成后请点击右侧的 提交 按钮</h4>
                         </div>
                       </div>
                       <div class="col-md-2 col-sm-2">
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <button type="button" class="btn btn-success " onclick="addRuleStep(2)" > 提 交 &nbsp;-->></button>
+                        <button type="button" class="btn btn-success " onclick="addRuleQualification()" > 提 交 &nbsp;-->></button>
                       </div>
                     </div>
                   </fieldset>

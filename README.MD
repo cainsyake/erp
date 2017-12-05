@@ -8,7 +8,7 @@ MAET-ERP沙盘 基于B/S架构的ERP电子沙盘平台
 利用自由的规则，可以开展形式多样的ERP实训。<br>
 当前最新版本（V2.0）支持高度定制的规则，能充分满足企业模拟经营情况多变的实训需求。
 <br><br>
-技术栈：Springboot + Mysql + Hibernate + Bootstrap + Jquery
+技术栈：Springboot + Mysql + Hibernate + Bootstrap + jQuery
 <br>
 **平台主体架构**<br>
 平台管理 --> 教学班管理 --> 学生运营
