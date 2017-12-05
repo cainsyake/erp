@@ -1,6 +1,15 @@
 window.onload=subOnLoad;    //页面载入时执行此函数
+
+/**
+ * 全局变量 rule (因为rule几乎不会变动,为了节省请求资源,页面载入时请求一次即可)
+ */
+var rule = getRule($("#nowUserName").val());
+
+
 function subOnLoad() {
     var nowUserName = $("#nowUserName").val();  //从页面读取用户名
+    //TODO 可以改成只发一次请求，获取打包的runningState对象和meetingStateList对象
+
     $.ajax({
         type:"POST",
         url:"/getTeachClassRule/" + nowUserName,
@@ -21,6 +30,55 @@ function subOnLoad() {
                     console.log(json.responseText);
                 }
             });
+        },
+        error:function (json) {
+            console.log(json.responseText);
+        }
+    });
+}
+
+function getRule(username) {
+    $.ajax({
+        type:"POST",
+        url:"/getTeachClassRule/" + username,
+        cache:false,
+        async: false,   //同步Ajax请求
+        dataType:"json",
+        success:function (ruleReturn) {   //请求成功后服务器返回rule对象
+            return ruleReturn;
+        },
+        error:function (json) {
+            console.log(json.responseText);
+        }
+    });
+}
+
+function getRunningState(username) {
+    $.ajax({
+        type:"POST",
+        url:"/getSubRunningState/" + username,
+        cache:false,
+        async: false,
+        dataType:"json",
+        success:function (runningState) {   //请求成功后服务器返回runningState对象
+            return runningState;
+        },
+        error:function (json) {
+            console.log(json.responseText);
+        }
+    });
+}
+
+function getMeetingState(username) {
+    $.ajax({
+        type:"POST",
+        url:"/getMeetingState",
+        data: {username: username},
+        cache:false,
+        async: false,
+        dataType:"json",
+        success:function (stateList) {   //请求成功后服务器返回list
+            return stateList;   //list[0]为选单会状态,list[0]为竞单会状态
         },
         error:function (json) {
             console.log(json.responseText);

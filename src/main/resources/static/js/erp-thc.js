@@ -163,6 +163,8 @@ function addRuleFactory() {
 }
 
 
+
+
 function adReport() {
     var nowUserName = $("#nowUserName").val();
     $.ajax({
