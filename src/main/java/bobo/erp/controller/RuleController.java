@@ -1,9 +1,7 @@
 package bobo.erp.controller;
 
 import bobo.erp.entity.common.UniformResult;
-import bobo.erp.entity.common.packing.RuleFactoryPacking;
-import bobo.erp.entity.common.packing.RuleLinePacking;
-import bobo.erp.entity.common.packing.RulePacking;
+import bobo.erp.entity.common.packing.*;
 import bobo.erp.entity.rule.*;
 import bobo.erp.service.rule.AddRule;
 import bobo.erp.service.rule.UseRule;
@@ -74,49 +72,32 @@ public class RuleController {
 
     @PostMapping(value = "addRuleQualification")
     @ResponseBody
-    public UniformResult addRuleQualification(@RequestParam(value = "ruleQualificationArray") RuleQualification[] ruleQualifications,
-                                                  @RequestParam(value = "ruleId") Integer ruleId,
-                                                  @RequestParam(value = "nowUserName") String nowUserName){
-        return addRule.addRuleQualification(ruleQualifications, ruleId, nowUserName);
+    public UniformResult addRuleQualification(@RequestBody RuleQualificationPacking ruleQualificationPacking){
+        return addRule.addRuleQualification(ruleQualificationPacking.getQualifications(), Integer.valueOf(ruleQualificationPacking.getRuleId()), ruleQualificationPacking.getUsername());
     }
-
-//    @PostMapping(value = "addRuleLine")
-//    @ResponseBody
-//    public UniformResult addRuleLine(@RequestBody RuleLinePacking ruleLinePacking){
-//        System.out.println("成功接受请求：生产线规则");
-//        return addRule.addRuleLine(ruleLinePacking.getLines(), Integer.valueOf(ruleLinePacking.getRuleId()), ruleLinePacking.getUsername());
-//    }
 
     @PostMapping(value = "addRuleArea")
     @ResponseBody
-    public UniformResult addRuleArea(@RequestParam(value = "ruleAreaArray") RuleArea[] ruleAreas,
-                                     @RequestParam(value = "ruleId") Integer ruleId,
-                                     @RequestParam(value = "nowUserName") String nowUserName){
-        return addRule.addRuleArea(ruleAreas, ruleId, nowUserName);
+    public UniformResult addRuleArea(@RequestBody RuleAreaPacking ruleAreaPacking){
+        return addRule.addRuleArea(ruleAreaPacking.getAreas(), Integer.valueOf(ruleAreaPacking.getRuleId()), ruleAreaPacking.getUsername());
     }
 
     @PostMapping(value = "addRuleMaterial")
     @ResponseBody
-    public UniformResult addRuleMaterial(@RequestParam(value = "ruleMaterialArray") RuleMaterial[] ruleMaterials,
-                                     @RequestParam(value = "ruleId") Integer ruleId,
-                                     @RequestParam(value = "nowUserName") String nowUserName){
-        return addRule.addRuleMaterial(ruleMaterials, ruleId, nowUserName);
+    public UniformResult addRuleMaterial(@RequestBody RuleMaterialPacking ruleMaterialPacking){
+        return addRule.addRuleMaterial(ruleMaterialPacking.getMaterials(), Integer.valueOf(ruleMaterialPacking.getRuleId()), ruleMaterialPacking.getUsername());
     }
 
     @PostMapping(value = "addRuleProduct")
     @ResponseBody
-    public UniformResult addRuleProduct(@RequestParam(value = "ruleProductArray") RuleProduct[] ruleProducts,
-                                         @RequestParam(value = "ruleId") Integer ruleId,
-                                         @RequestParam(value = "nowUserName") String nowUserName){
-        return addRule.addRuleProduct(ruleProducts, ruleId, nowUserName);
+    public UniformResult addRuleProduct(@RequestBody RuleProductPacking ruleProductPacking){
+        return addRule.addRuleProduct(ruleProductPacking.getProducts(), Integer.valueOf(ruleProductPacking.getRuleId()), ruleProductPacking.getUsername());
     }
 
     @PostMapping(value = "addRuleProductBom")
     @ResponseBody
-    public UniformResult addRuleProductBom(@RequestParam(value = "ruleProductBomArray") RuleProductBom[] ruleProductBoms,
-                                        @RequestParam(value = "ruleId") Integer ruleId,
-                                        @RequestParam(value = "nowUserName") String nowUserName){
-        return addRule.addRuleProductBom(ruleProductBoms, ruleId, nowUserName);
+    public UniformResult addRuleProductBom(@RequestBody RuleProductBomPacking ruleProductBomPacking){
+        return addRule.addRuleProductBom(ruleProductBomPacking.getProductBoms(), Integer.valueOf(ruleProductBomPacking.getRuleId()), ruleProductBomPacking.getUsername());
     }
 
     @GetMapping(value = "ruleFindAll")
