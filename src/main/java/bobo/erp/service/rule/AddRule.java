@@ -2,6 +2,7 @@ package bobo.erp.service.rule;
 
 import bobo.erp.entity.common.UniformResult;
 import bobo.erp.entity.rule.*;
+import bobo.erp.repository.common.UniformResultJpa;
 import bobo.erp.repository.rule.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,21 +24,7 @@ public class AddRule {
     @Autowired
     private RuleRepository ruleRepository;
     @Autowired
-    private RuleFactoryRepository ruleFactoryRepository;
-    @Autowired
-    private RuleIsoRepository ruleIsoRepository;
-    @Autowired
-    private RuleLineRepository ruleLineRepository;
-    @Autowired
-    private RuleMarketRepository ruleMarketRepository;
-    @Autowired
-    private RuleMaterialRepository ruleMaterialRepository;
-    @Autowired
-    private RuleParamRepository ruleParamRepository;
-    @Autowired
-    private RuleProductBomRepository ruleProductBomRepository;
-    @Autowired
-    private RuleProductRepository ruleProductRepository;
+    private UniformResultJpa uniformResultJpa;
 
     @Transactional
     public UniformResult addRuleParam(Rule rule, String operator){
@@ -56,7 +43,7 @@ public class AddRule {
         uniformResult.setUser(operator);
         uniformResult.setTarget("AddRuleService");
 
-        return uniformResult;
+        return uniformResultJpa.save(uniformResult);
     }
 
     @Transactional
@@ -69,10 +56,10 @@ public class AddRule {
         rule.setRuleFactoryList(ruleFactoryList);
         UniformResult uniformResult = new UniformResult();
         uniformResult.setState("00");
-        uniformResult.setMsg("添加厂房部分规则成功");
+        uniformResult.setMsg("Add RuleFactory Success");
         uniformResult.setUser(operator);
-        uniformResult.setTarget("AddRuleService");
-        return uniformResult;
+        uniformResult.setTarget("AddRuleFactoryService");
+        return uniformResultJpa.save(uniformResult);
     }
 
     @Transactional
@@ -85,10 +72,10 @@ public class AddRule {
         rule.setRuleQualificationList(ruleQualificationList);
         UniformResult uniformResult = new UniformResult();
         uniformResult.setState("00");
-        uniformResult.setMsg("添加资质部分规则成功");
+        uniformResult.setMsg("Add RuleQualification Success");
         uniformResult.setUser(operator);
-        uniformResult.setTarget("AddRuleService");
-        return uniformResult;
+        uniformResult.setTarget("AddRuleQualificationService");
+        return uniformResultJpa.save(uniformResult);
     }
 
     @Transactional
@@ -101,10 +88,10 @@ public class AddRule {
         rule.setRuleLineList(ruleLineList);
         UniformResult uniformResult = new UniformResult();
         uniformResult.setState("00");
-        uniformResult.setMsg("添加生产线部分规则成功");
+        uniformResult.setMsg("Add RuleLine Success");
         uniformResult.setUser(operator);
-        uniformResult.setTarget("AddRuleService");
-        return uniformResult;
+        uniformResult.setTarget("AddRuleLineService");
+        return uniformResultJpa.save(uniformResult);
     }
 
     @Transactional
@@ -117,10 +104,10 @@ public class AddRule {
         rule.setRuleAreaList(ruleAreaList);
         UniformResult uniformResult = new UniformResult();
         uniformResult.setState("00");
-        uniformResult.setMsg("添加区域部分规则成功");
+        uniformResult.setMsg("Add RuleArea Success");
         uniformResult.setUser(operator);
-        uniformResult.setTarget("AddRuleService");
-        return uniformResult;
+        uniformResult.setTarget("AddRuleAreaService");
+        return uniformResultJpa.save(uniformResult);
     }
 
     @Transactional
@@ -133,10 +120,10 @@ public class AddRule {
         rule.setRuleMaterialList(ruleMaterialList);
         UniformResult uniformResult = new UniformResult();
         uniformResult.setState("00");
-        uniformResult.setMsg("添加原料部分规则成功");
+        uniformResult.setMsg("Add RuleMaterial Success");
         uniformResult.setUser(operator);
-        uniformResult.setTarget("AddRuleService");
-        return uniformResult;
+        uniformResult.setTarget("AddRuleMaterialService");
+        return uniformResultJpa.save(uniformResult);
     }
 
     @Transactional
@@ -149,10 +136,10 @@ public class AddRule {
         rule.setRuleProductList(ruleProductList);
         UniformResult uniformResult = new UniformResult();
         uniformResult.setState("00");
-        uniformResult.setMsg("添加产品部分规则成功");
+        uniformResult.setMsg("Add RuleProduct Success");
         uniformResult.setUser(operator);
-        uniformResult.setTarget("AddRuleService");
-        return uniformResult;
+        uniformResult.setTarget("AddRuleProductService");
+        return uniformResultJpa.save(uniformResult);
     }
 
     @Transactional
@@ -165,10 +152,10 @@ public class AddRule {
         rule.setRuleProductBomList(ruleProductBomList);
         UniformResult uniformResult = new UniformResult();
         uniformResult.setState("00");
-        uniformResult.setMsg("添加产品BOM部分规则成功");
+        uniformResult.setMsg("Add RuleProductBom Success");
         uniformResult.setUser(operator);
-        uniformResult.setTarget("AddRuleService");
-        return uniformResult;
+        uniformResult.setTarget("AddRuleProductBomService");
+        return uniformResultJpa.save(uniformResult);
     }
 
 
