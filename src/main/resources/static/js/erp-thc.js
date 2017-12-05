@@ -89,6 +89,7 @@ function initAddRule() {
 
 function initAllAddRuleArea() {
     initAddFactoryArea();
+    initAddLineArea();
 }
 
 function initAddFactoryArea() {
@@ -162,7 +163,52 @@ function addRuleFactory() {
     });
 }
 
-
+function initAddLineArea() {
+    for (var i = 1; i <= $('#quantityData').attr('line-quantity'); i++){
+        var content = "<div class='form-group'>" +
+            "<table class='table table-striped table-hover table-bordered'>" +
+            "<thead>" +
+            "<tr>" +
+            "<th colspan='2' style='text-align: center'>第" + i + "组生产线规则</th>" +
+            "<th style='text-align: center'>生产线名称</th>" +
+            "<td><input class='form-control' type='text' id='lname" + i + "'/></td>" +
+            "</tr>" +
+            "</thead>" +
+            "<tbody>" +
+            "<tr>" +
+            "<th style='text-align: center'>单位投资</th>" +
+            "<td><input class='form-control' type='number' id='lunitInvest" + i + "'/></td>" +
+            "<th style='text-align: center'>安装周期</th>" +
+            "<td><input class='form-control' type='number' id='linstallTime" + i + "'/></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<th style='text-align: center'>转产费用(每周期)</th>" +
+            "<td><input class='form-control' type='number' id='lchangeInvest" + i + "'/></td>" +
+            "<th style='text-align: center'>转产周期</th>" +
+            "<td><input class='form-control' type='number' id='lchangeTime" + i + "'/></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<th style='text-align: center'>生产周期</th>" +
+            "<td><input class='form-control' type='number' id='lproduceTime" + i + "'/></td>" +
+            "<th style='text-align: center'>维护费</th>" +
+            "<td><input class='form-control' type='number' id='lupkeep" + i + "'/></td>" +
+            "</tr>" +
+            "<th style='text-align: center'>残值</th>" +
+            "<td><input class='form-control' type='number' id='lscrapValue" + i + "'/></td>" +
+            "<th style='text-align: center'>单位周期折旧</th>" +
+            "<td><input class='form-control' type='number' id='ldepreciation" + i + "'/></td>" +
+            "</tr>" +
+            "<th style='text-align: center'>折旧周期</th>" +
+            "<td><input class='form-control' type='number' id='ldepreTime" + i + "'/></td>" +
+            "<th style='text-align: center'>潜力分数</th>" +
+            "<td><input class='form-control' type='number' id='lscore" + i + "'/></td>" +
+            "</tr>" +
+            "</tbody>" +
+            "</table>" +
+            "</div>";
+        $('#addLineArea').append(content);
+    }
+}
 
 
 function adReport() {
