@@ -1,6 +1,7 @@
 package bobo.erp.controller;
 
 import bobo.erp.entity.common.UniformResult;
+import bobo.erp.entity.common.packing.RuleFactoryPacking;
 import bobo.erp.entity.common.packing.RulePacking;
 import bobo.erp.entity.rule.*;
 import bobo.erp.service.rule.AddRule;
@@ -53,9 +54,11 @@ public class RuleController {
 
     @PostMapping(value = "addRuleFactory")
     @ResponseBody
-    public UniformResult addRuleFactory(@RequestParam(value = "ruleFactoryArray") RuleFactory[] ruleFactories,
-                                        @RequestParam(value = "ruleId") Integer ruleId,
-                                        @RequestParam(value = "nowUserName") String nowUserName){
+    public UniformResult addRuleFactory(@RequestBody RuleFactoryPacking ruleFactoryPacking){
+        RuleFactory[] ruleFactories = ruleFactoryPacking.getFactories();
+        Integer ruleId = 20;
+        String nowUserName = ruleFactoryPacking.getUsername();
+        System.out.print("处理完成FAC");
         return addRule.addRuleFactory(ruleFactories, ruleId, nowUserName);
     }
 

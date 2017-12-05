@@ -73,6 +73,7 @@ function initAddRule() {
                 $('#quantityData').attr("product-quantity", rule.productQuantity);
                 $("#ajaxDiv1").html("成功初始化规则,ID：" + rs.msg);
                 $("#initAddRuleResult").html("<h4 style='color: blue'>初始化规则,请继续下一步</h4>");
+                initAllAddRuleArea();
             },
             error:function (rs) {
                 $("#ajaxDiv1").html(operatorTime + " : 初始化规则失败");
@@ -86,9 +87,81 @@ function initAddRule() {
     }
 }
 
-$('#quantityData').attr('factory-quantity').change(function () {
+function initAllAddRuleArea() {
+    initAddFactoryArea();
+}
 
-});
+function initAddFactoryArea() {
+    for (var i = 1; i <= $('#quantityData').attr('factory-quantity'); i++){
+        var content = "<div class='form-group'>" +
+            "<table class='table table-striped table-hover table-bordered'>" +
+            "<thead>" +
+            "<tr>" +
+            "<th colspan='2' style='text-align: center'>第" + i + "组厂房规则</th>" +
+            "<th style='text-align: center'>厂房名称</th>" +
+            "<td><input class='form-control' type='text' id='fname" + i + "'/></td>" +
+            "</tr>" +
+            "</thead>" +
+            "<tbody>" +
+            "<tr>" +
+            "<th style='text-align: center'>潜力分数</th>" +
+            "<td><input class='form-control' type='number' id='fscore" + i + "'/></td>" +
+            "<th style='text-align: center'>厂房购买价</th>" +
+            "<td><input class='form-control' type='number' id='fbuyPrice" + i + "'/></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<th style='text-align: center'>厂房租赁价</th>" +
+            "<td><input class='form-control' type='number' id='frentPrice" + i + "'/></td>" +
+            "<th style='text-align: center'>厂房出售价</th>" +
+            "<td><input class='form-control' type='number' id='fsalePrice" + i + "'/></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<th style='text-align: center'>生产线容量</th>" +
+            "<td><input class='form-control' type='number' id='fvolume" + i + "'/></td>" +
+            "<th style='text-align: center'>购买上限</th>" +
+            "<td><input class='form-control' type='number' id='fquantityLimit" + i + "'/></td>" +
+            "</tr>" +
+            "</tbody>" +
+            "</table>" +
+            "</div>";
+        $('#addFactoryArea').append(content);
+    }
+}
+
+function addRuleFactory() {
+    var username = $("#nowUserName").val();
+    var factories = [];
+    for (var i = 1; i <= $('#quantityData').attr('factory-quantity'); i++){
+        var factory = new Object();
+        factory.name = $('#fname' + i).val();
+        factory.buyPrice = $('#fbuyPrice' + i).val();
+        factory.rentPrice = $('#frentPrice' + i).val();
+        factory.salePrice = $('#fsalePrice' + i).val();
+        factory.volume = $('#fvolume' + i).val();
+        factory.quantityLimit = $('#fquantityLimit' + i).val();
+        factory.score = $('#fscore' + i).val();
+        factory.type = i;
+        factories.push(factory);
+    }
+    // console.log(factorys);
+    var ajaxData = {factories: factories, username: username}
+    $.ajax({
+        url: '/addRuleFactory',
+        type: 'POST',
+        contentType: "application/json",
+        data: JSON.stringify(ajaxData),
+        dataType:'json',
+        success:function (rs) {
+            // $("#ajaxDiv1").html("成功初始化规则,ID：" + rs.msg);
+            $("#initAddRuleResult").html("<h4 style='color: blue'>上传厂房规则成功,请继续下一步</h4>");
+        },
+        error:function (rs) {
+            $("#ajaxDiv1").html(operatorTime + " : 上传厂房规则失败");
+            console.log(rs);
+        }
+    });
+}
+
 
 function adReport() {
     var nowUserName = $("#nowUserName").val();

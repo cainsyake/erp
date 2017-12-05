@@ -26,7 +26,7 @@ public class RuleFactory {
     private Integer rentPrice;  //租赁费用
     private Integer salePrice;  //出售价格
     private Integer volume;     //生产线容量
-    private Integer quaitityLimit;      //此类厂房购买数量限制
+    private Integer quantityLimit;      //此类厂房购买数量限制
     private Integer score;      //潜力发展系数
 
     public Integer getId() {
@@ -95,12 +95,12 @@ public class RuleFactory {
         this.volume = volume;
     }
 
-    public Integer getQuaitityLimit() {
-        return quaitityLimit;
+    public Integer getQuantityLimit() {
+        return quantityLimit;
     }
 
-    public void setQuaitityLimit(Integer quaitityLimit) {
-        this.quaitityLimit = quaitityLimit;
+    public void setQuantityLimit(Integer quantityLimit) {
+        this.quantityLimit = quantityLimit;
     }
 
     public Integer getScore() {

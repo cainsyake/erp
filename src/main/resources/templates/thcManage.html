@@ -333,38 +333,7 @@
                   </fieldset>
                   <fieldset title="步骤 2">
                     <legend>添加厂房规则</legend>
-                    <div class='form-group'>
-                      <table class='table table-striped table-hover table-bordered'>
-                        <thead>
-                          <tr>
-                            <th colspan='2' style='text-align: center'>第N组厂房规则</th>
-                            <th style='text-align: center'>厂房名称</th>
-                            <td><input class='form-control' type='number' id=''/></td>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <th style='text-align: center'>潜力分数</th>
-                            <td><input class='form-control' type='number' id=''/></td>
-                            <th style='text-align: center'>厂房购买价</th>
-                            <td><input class='form-control' type='number' id=''/></td>
-                          </tr>
-                          <tr>
-                            <th style='text-align: center'>厂房租赁价</th>
-                            <td><input class='form-control' type='number' id=''/></td>
-                            <th style='text-align: center'>厂房出售价</th>
-                            <td><input class='form-control' type='number' id=''/></td>
-                          </tr>
-                          <tr>
-                            <th style='text-align: center'>生产线容量</th>
-                            <td><input class='form-control' type='number' id=''/></td>
-                            <th style='text-align: center'>购买上限</th>
-                            <td><input class='form-control' type='number' id=''/></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <hr>
-                    </div>
+                    <div id="addFactoryArea"></div>
 
                     <div class="form-group">
                       <div class="col-md-6 col-sm-6">
@@ -374,7 +343,7 @@
                       </div>
                       <div class="col-md-2 col-sm-2">
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <button type="button" class="btn btn-success " onclick="addRuleStep(1)" > 提 交 &nbsp;-->></button>
+                        <button type="button" class="btn btn-success " onclick="addRuleFactory()" > 提 交 &nbsp;-->></button>
                       </div>
                     </div>
 
