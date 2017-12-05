@@ -8,13 +8,13 @@
     <meta fileName="author" content="ThemeBucket" />
     <link rel="shortcut icon" href="#" type="image/png" />
 
-    <link th:href="@{css/style.css}" rel="stylesheet" />
-    <link th:href="@{css/style-responsive.css}" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <link href="css/style-responsive.css" rel="stylesheet" />
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
-    <script th:src="@{js/html5shiv.js}"></script>
-    <script th:src="@{js/respond.min.}"></script>
+    <script src="js/html5shiv.js"></script>
+    <script src="js/respond.min."></script>
     <![endif]-->
 </head>
 <body>
@@ -24,8 +24,8 @@
 
     <form class="form-signin" action="/usercheck" method="post">
         <div class="form-signin-heading text-center">
-            <h1 class="sign-title">MAET - ERP 1.6</h1>
-            <img src="images/logo.png" alt=""/>
+            <h1 class="sign-title">MAET - ERP 2.0</h1>
+            <img src="images/logo.png" alt="MAET"/>
         </div>
         <div class="login-wrap">
             <input type="text" class="form-control" placeholder="请输入您的用户名" autofocus="autofocus" name="username"/>
@@ -48,7 +48,7 @@
             <label class="checkbox">
                 <input type="checkbox" value="remember-me" /> 记住我
                 <span class="pull-right">
-                    <a data-toggle="modal" href="#myModal"> 对网站有任何意见?</a>
+                    <a data-toggle="modal" href="#myModal"> 对网站有建议?</a>
                 </span>
             </label>
 
@@ -79,14 +79,8 @@
         </div>
 
 </div>
-
-
-
-<!-- Placed js at the end of the document so the pages load faster -->
-
-<!-- Placed js at the end of the document so the pages load faster -->
-<script th:src="@{js/jquery-1.10.2.min.js}"></script>
-<script th:src="@{js/bootstrap.min.js}"></script>
-<script th:src="@{js/modernizr.min.js}"></script>
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/modernizr.min.js"></script>
 </body>
 </html>

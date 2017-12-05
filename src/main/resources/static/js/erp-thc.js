@@ -72,6 +72,7 @@ function initAddRule() {
                 $('#quantityData').attr("material-quantity", rule.materialQuantity);
                 $('#quantityData').attr("product-quantity", rule.productQuantity);
                 $("#ajaxDiv1").html("成功初始化规则,ID：" + rs.msg);
+                $("#ruleId").val(rs.msg);   //设置规则ID至页面
                 $("#initAddRuleResult").html("<h4 style='color: blue'>初始化规则,请继续下一步</h4>");
                 initAllAddRuleArea();
             },
@@ -84,6 +85,14 @@ function initAddRule() {
 
     }else{
         //TODO 载入规则 修改
+        $('#quantityData').attr("factory-quantity", $("#factoryQuantity").val());
+        $('#quantityData').attr("line-quantity", $("#lineQuantity").val());
+        $('#quantityData').attr("qualification-quantity", $("#qualificationQuantity").val());
+        $('#quantityData').attr("area-quantity", $("#areaQuantity").val());
+        $('#quantityData').attr("material-quantity", $("#materialQuantity").val());
+        $('#quantityData').attr("product-quantity", $("#productQuantity").val());
+        initAllAddRuleArea();
+        $("#initAddRuleResult").html("<h4 style='color: blue'>已载入规则,请开始修改。</h4>");
     }
 }
 
@@ -132,6 +141,7 @@ function initAddFactoryArea() {
 function addRuleFactory() {
     var username = $("#nowUserName").val();
     var factories = [];
+    var ruleId = $("#ruleId").val();
     for (var i = 1; i <= $('#quantityData').attr('factory-quantity'); i++){
         var factory = new Object();
         factory.name = $('#fname' + i).val();
@@ -145,7 +155,7 @@ function addRuleFactory() {
         factories.push(factory);
     }
     // console.log(factorys);
-    var ajaxData = {factories: factories, username: username}
+    var ajaxData = {factories: factories, username: username, ruleId: ruleId};
     $.ajax({
         url: '/addRuleFactory',
         type: 'POST',
@@ -154,10 +164,10 @@ function addRuleFactory() {
         dataType:'json',
         success:function (rs) {
             // $("#ajaxDiv1").html("成功初始化规则,ID：" + rs.msg);
-            $("#initAddRuleResult").html("<h4 style='color: blue'>上传厂房规则成功,请继续下一步</h4>");
+            $("#addRuleFactoryResult").html("<h4 style='color: blue'>上传厂房规则成功,请继续下一步</h4>");
         },
         error:function (rs) {
-            $("#ajaxDiv1").html(operatorTime + " : 上传厂房规则失败");
+            $("#ajaxDiv1").html("上传厂房规则失败");
             console.log(rs);
         }
     });
@@ -208,6 +218,43 @@ function initAddLineArea() {
             "</div>";
         $('#addLineArea').append(content);
     }
+}
+
+function addRuleLine() {
+    var username = $("#nowUserName").val();
+    var ruleId = $("#ruleId").val();
+    var lines = [];
+    for (var i = 1; i <= $('#quantityData').attr('line-quantity'); i++){
+        var line = new Object();
+        line.type = i;
+        line.name = $('#lname' + i).val();
+        line.unitInvest = $('#lunitInvest' + i).val();
+        line.installTime = $('#linstallTime' + i).val();
+        line.changeInvest = $('#lchangeInvest' + i).val();
+        line.changeTime = $('#lchangeTime' + i).val();
+        line.produceTime = $('#lproduceTime' + i).val();
+        line.upkeep = $('#lupkeep' + i).val();
+        line.scrapValue = $('#lscrapValue' + i).val();
+        line.depreciation = $('#ldepreciation' + i).val();
+        line.depreTime = $('#ldepreTime' + i).val();
+        line.score = $('#lscore' + i).val();
+        lines.push(line);
+    }
+    var ajaxData = {lines: lines, username: username, ruleId: ruleId};
+    $.ajax({
+        url: '/addRuleLine',
+        type: 'POST',
+        contentType: "application/json",
+        data: JSON.stringify(ajaxData),
+        dataType:'json',
+        success:function (rs) {
+            $("#addRuleLineResult").html("<h4 style='color: blue'>上传生产线规则成功,请继续下一步</h4>");
+        },
+        error:function (rs) {
+            $("#ajaxDiv1").html("上传生产线规则失败");
+            console.log(rs);
+        }
+    });
 }
 
 

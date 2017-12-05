@@ -2,6 +2,7 @@ package bobo.erp.controller;
 
 import bobo.erp.entity.common.UniformResult;
 import bobo.erp.entity.common.packing.RuleFactoryPacking;
+import bobo.erp.entity.common.packing.RuleLinePacking;
 import bobo.erp.entity.common.packing.RulePacking;
 import bobo.erp.entity.rule.*;
 import bobo.erp.service.rule.AddRule;
@@ -31,7 +32,6 @@ public class RuleController {
     @PostMapping(value = "addRule")
     @ResponseBody
     public UniformResult addRule(@RequestBody RulePacking rulePacking){
-        System.out.print("成功接受请求");
         Rule rule = rulePacking.getRule();
         String nowUserName = rulePacking.getUsername();
         return addRule.addRuleParam(rule, nowUserName);
@@ -55,11 +55,21 @@ public class RuleController {
     @PostMapping(value = "addRuleFactory")
     @ResponseBody
     public UniformResult addRuleFactory(@RequestBody RuleFactoryPacking ruleFactoryPacking){
+        System.out.println("成功接受请求：厂房规则");
         RuleFactory[] ruleFactories = ruleFactoryPacking.getFactories();
-        Integer ruleId = 20;
+        String ruleId = ruleFactoryPacking.getRuleId();
         String nowUserName = ruleFactoryPacking.getUsername();
-        System.out.print("处理完成FAC");
-        return addRule.addRuleFactory(ruleFactories, ruleId, nowUserName);
+        return addRule.addRuleFactory(ruleFactories, Integer.valueOf(ruleId), nowUserName);
+    }
+
+    @PostMapping(value = "addRuleLine")
+    @ResponseBody
+    public UniformResult addRuleLine(@RequestBody RuleLinePacking ruleLinePacking){
+        System.out.println("成功接受请求：生产线规则");
+        RuleLine[] ruleLines = ruleLinePacking.getLines();
+        String ruleId = ruleLinePacking.getRuleId();
+        String nowUserName = ruleLinePacking.getUsername();
+        return addRule.addRuleLine(ruleLines, Integer.valueOf(ruleId), nowUserName);
     }
 
     @PostMapping(value = "addRuleQualification")
@@ -70,13 +80,12 @@ public class RuleController {
         return addRule.addRuleQualification(ruleQualifications, ruleId, nowUserName);
     }
 
-    @PostMapping(value = "addRuleLine")
-    @ResponseBody
-    public UniformResult addRuleLine(@RequestParam(value = "ruleLineArray") RuleLine[] ruleLines,
-                                              @RequestParam(value = "ruleId") Integer ruleId,
-                                              @RequestParam(value = "nowUserName") String nowUserName){
-        return addRule.addRuleLine(ruleLines, ruleId, nowUserName);
-    }
+//    @PostMapping(value = "addRuleLine")
+//    @ResponseBody
+//    public UniformResult addRuleLine(@RequestBody RuleLinePacking ruleLinePacking){
+//        System.out.println("成功接受请求：生产线规则");
+//        return addRule.addRuleLine(ruleLinePacking.getLines(), Integer.valueOf(ruleLinePacking.getRuleId()), ruleLinePacking.getUsername());
+//    }
 
     @PostMapping(value = "addRuleArea")
     @ResponseBody

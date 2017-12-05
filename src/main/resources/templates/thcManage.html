@@ -10,10 +10,10 @@
   <title>MAET ERP</title>
 
   <!--icheck-->
-  <link th:href="@{js/iCheck/skins/minimal/minimal.css}" rel="stylesheet"/>
-  <link th:href="@{js/iCheck/skins/square/square.css}" rel="stylesheet"/>
-  <link th:href="@{js/iCheck/skins/square/red.css}" rel="stylesheet"/>
-  <link th:href="@{js/iCheck/skins/square/blue.css}" rel="stylesheet"/>
+  <link href="js/iCheck/skins/minimal/minimal.css" rel="stylesheet"/>
+  <link href="js/iCheck/skins/square/square.css" rel="stylesheet"/>
+  <link href="js/iCheck/skins/square/red.css" rel="stylesheet"/>
+  <link href="js/iCheck/skins/square/blue.css" rel="stylesheet"/>
 
   <!--data table-->
   <link rel="stylesheet" href="js/data-tables/DT_bootstrap.css" />
@@ -26,19 +26,19 @@
 
 
   <!--dashboard calendar-->
-  <link th:href="@{css/clndr.css}" rel="stylesheet"/>
+  <!--<link th:href="@{css/clndr.css}" rel="stylesheet"/>-->
 
   <!--Morris Chart CSS -->
-  <link rel="stylesheet" th:href="@{js/morris-chart/morris.css}"/>
+  <link rel="stylesheet" href="js/morris-chart/morris.css"/>
 
   <!--common-->
-  <link th:href="@{css/style.css}" rel="stylesheet"/>
-  <link th:href="@{css/style-responsive.css}" rel="stylesheet"/>
+  <link href="css/style.css" rel="stylesheet"/>
+  <link href="css/style-responsive.css" rel="stylesheet"/>
 
   <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!--[if lt IE 9]>
-  <script th:src="@{js/html5shiv.js}"></script>
-  <script th:src="@{js/respond.min.js}"></script>
+  <script src="js/html5shiv.js"></script>
+  <script src="js/respond.min.js"></script>
   <![endif]-->
 </head>
 
@@ -170,7 +170,7 @@
                           <table class="table table-striped table-hover table-bordered">
                             <thead>
                               <tr>
-                                <th><button type="button" onclick="" class="btn btn-info">载入规则</button></th>
+                                <th><button type="button" onclick="initAddRule()" class="btn btn-info">载入规则</button></th>
                                 <td><input class="form-control" placeholder="请载入规则ID" type="number" id="ruleId" value="0"></td>
                                 <th style="text-align: center">新增规则不用点击"载入规则"</th>
                                 <th style="text-align: center">修改规则输入ID再点击"载入"</th>
@@ -346,13 +346,6 @@
                         <button type="button" class="btn btn-success " onclick="addRuleFactory()" > 提 交 &nbsp;-->></button>
                       </div>
                     </div>
-
-                    <!--<div class="form-group">-->
-                    <!--<label class="col-md-2 col-sm-2 control-label">Email Address</label>-->
-                    <!--<div class="col-md-6 col-sm-6">-->
-                    <!--<input class="form-control" name="email" type="email"/>-->
-                    <!--</div>-->
-                    <!--</div>-->
                   </fieldset>
                   <fieldset title="步骤 3">
                     <legend>添加资质认证规则</legend>
@@ -427,7 +420,7 @@
                       </div>
                       <div class="col-md-2 col-sm-2">
                         &nbsp;&nbsp;&nbsp;&nbsp;
-                        <button type="button" class="btn btn-success " onclick="addRuleStep(3)" > 提 交 &nbsp;-->></button>
+                        <button type="button" class="btn btn-success " onclick="addRuleLine()" > 提 交 &nbsp;-->></button>
                       </div>
                     </div>
                   </fieldset>
@@ -1422,8 +1415,8 @@
 <script src="js/jquery.stepy.js"></script>
 
 <!--data table-->
-<script type="text/javascript" src="js/data-tables/jquery.dataTables.js"></script>
-<script type="text/javascript" src="js/data-tables/DT_bootstrap.js"></script>
+<!--<script type="text/javascript" src="js/data-tables/jquery.dataTables.js"></script>-->
+<!--<script type="text/javascript" src="js/data-tables/DT_bootstrap.js"></script>-->
 
 <!--common scripts for all pages-->
 <script src="js/scripts.js"></script>
