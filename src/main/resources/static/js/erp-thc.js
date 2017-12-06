@@ -264,21 +264,21 @@ function initAddQualificationArea(){
             "<table class='table table-striped table-hover table-bordered'>" +
             "<thead>" +
             "<tr>" +
-            "<th colspan='2' style='text-align: center'>第" + i + "组资质认证规则</th>" +
-            "<th style='text-align: center'>资质名称</th>" +
-            "<td><input class='form-control' type='text' id='qname" + i + "'/></td>" +
+            "<th colspan='4' style='text-align: center'>第" + i + "组资质认证规则</th>" +
             "</tr>" +
             "</thead>" +
             "<tbody>" +
+            "<tr>" +
+            "<th style='text-align: center'>资质名称</th>" +
+            "<td><input class='form-control' type='text' id='qname" + i + "'/></td>" +
+            "<th style='text-align: center'>潜力分数</th>" +
+            "<td><input class='form-control' type='number' id='qscore" + i + "'/></td>" +
+            "</tr>" +
             "<tr>" +
             "<th style='text-align: center'>单位研发投资</th>" +
             "<td><input class='form-control' type='number' id='qunitInvest" + i + "'/></td>" +
             "<th style='text-align: center'>研发周期</th>" +
             "<td><input class='form-control' type='number' id='qdevTime" + i + "'/></td>" +
-            "</tr>" +
-            "<tr>" +
-            "<th style='text-align: center'>潜力分数</th>" +
-            "<td><input class='form-control' type='number' id='qscore" + i + "'/></td>" +
             "</tr>" +
             "</tbody>" +
             "</table>" +
