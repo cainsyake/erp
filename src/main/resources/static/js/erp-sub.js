@@ -86,6 +86,86 @@ function getMeetingState(username) {
     });
 }
 
+function getLineInfo(type) {
+    var lines = rule.getRuleLineList;
+    for (var i = 0; i < lines.length; i++){
+        if (lines[i].type == type){
+            return lines[i];
+        }
+    }
+    return null;    //异常情况
+}
+
+function getFactoryInfo(type) {
+    var factories = rule.getRuleFactoryList;
+    for (var i = 0; i < factories.length; i++){
+        if (factories[i].type == type){
+            return factories[i];
+        }
+    }
+    return null;    //异常情况
+}
+
+function getQualificationInfo(type) {
+    var qualifications = rule.getRuleQualificationList;
+    for (var i = 0; i < qualifications.length; i++){
+        if (qualifications[i].type == type){
+            return qualifications[i];
+        }
+    }
+    return null;    //异常情况
+}
+
+function getAreaInfo(type) {
+    var areas = rule.getRuleAreaList;
+    for (var i = 0; i < areas.length; i++){
+        if (areas[i].type == type){
+            return areas[i];
+        }
+    }
+    return null;    //异常情况
+}
+
+function getMaterialInfo(type) {
+    var materials = rule.getRuleMaterialList;
+    for (var i = 0; i < materials.length; i++){
+        if (materials[i].type == type){
+            return materials[i];
+        }
+    }
+    return null;    //异常情况
+}
+
+function getProductInfo(type) {
+    var products = rule.getRuleProductList;
+    for (var i = 0; i < products.length; i++){
+        if (products[i].type == type){
+            return products[i];
+        }
+    }
+    return null;    //异常情况
+}
+
+function getProductBomInfo(type) {
+    var productBoms = rule.getRuleProductBomList;
+    for (var i = 0; i < productBoms.length; i++){
+        if (productBoms[i].type == type){
+            return productBoms[i];
+        }
+    }
+    return null;    //异常情况
+}
+
+/**
+ * Calculate materi quantity in producing.
+ * 1, get all products produce quantity list(produceList).
+ * 2, generate two list(materialList and halfProductList).
+ * 3, foreach produceList, get product type and use getProductBom(type).
+ * 4, add the quantity from Bom to the two list.
+ * 5, make ajax request.
+ */
+
+
 function infoController(runningState, rule) {
     document.getElementById("valueCash").innerHTML = runningState.financeState.cashAmount;   //输出现金金额
     document.getElementById("valueRunningTime").innerHTML = "第 " + runningState.baseState.timeYear + " 年 第 " + runningState.baseState.timeQuarter + " 季";
