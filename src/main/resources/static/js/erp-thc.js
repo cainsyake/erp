@@ -7,6 +7,9 @@ function thcOnload() {
         cache:false,
         dataType:"json",
         success:function (thc) {
+            if (thc.orderMeetingState == null){
+                thc.orderMeetingState = 0;
+            }
             if(thc.orderMeetingState == 1){
                 window.setInterval(orderMeetingUpdate, 500);
             }
@@ -91,7 +94,7 @@ function initAddRule() {
         $('#quantityData').attr("area-quantity", $("#areaQuantity").val());
         $('#quantityData').attr("material-quantity", $("#materialQuantity").val());
         $('#quantityData').attr("product-quantity", $("#productQuantity").val());
-        initAllAddRuleArea();
+
         $("#initAddRuleResult").html("<h4 style='color: blue'>已载入规则,请开始修改。</h4>");
     }
 }
@@ -100,6 +103,10 @@ function initAllAddRuleArea() {
     initAddFactoryArea();
     initAddLineArea();
     initAddQualificationArea();
+    initAddAreaArea();
+    initAddMaterialArea();
+    initAddProductBomArea();
+    initAddProductArea();
 }
 
 function initAddFactoryArea() {
@@ -328,7 +335,7 @@ function initAddAreaArea() {
             "</thead>" +
             "<tbody>" +
             "<tr>" +
-            "<th style='text-align: center'>资质名称</th>" +
+            "<th style='text-align: center'>区域名称</th>" +
             "<td><input class='form-control' type='text' id='aname" + i + "'/></td>" +
             "<th style='text-align: center'>潜力分数</th>" +
             "<td><input class='form-control' type='number' id='ascore" + i + "'/></td>" +
@@ -344,6 +351,231 @@ function initAddAreaArea() {
             "</div>";
         $('#addAreaArea').append(content);
     }
+}
+
+function addRuleArea() {
+    var username = $("#nowUserName").val();
+    var ruleId = $("#ruleId").val();
+    var areas = [];
+    for (var i = 1; i <= $('#quantityData').attr('area-quantity'); i++){
+        var area = new Object();
+        area.type = i;
+        area.name = $('#aname' + i).val();
+        area.unitInvest = $('#aunitInvest' + i).val();
+        area.devTime = $('#adevTime' + i).val();
+        area.score = $('#ascore' + i).val();
+        areas.push(area);
+    }
+    var ajaxData = {areas: areas, username: username, ruleId: ruleId};
+    $.ajax({
+        url: '/addRuleArea',
+        type: 'POST',
+        contentType: "application/json",
+        data: JSON.stringify(ajaxData),
+        dataType:'json',
+        success:function (rs) {
+            $("#addRuleAreaResult").html("<h4 style='color: blue'>上传区域规则成功,请继续下一步</h4>");
+        },
+        error:function (rs) {
+            $("#ajaxDiv1").html("上传区域规则失败");
+            console.log(rs);
+        }
+    });
+}
+
+function initAddMaterialArea() {
+    for (var i = 1; i <= $('#quantityData').attr('material-quantity'); i++) {
+        var content = "<div class='form-group'>" +
+            "<table class='table table-striped table-hover table-bordered'>" +
+            "<thead>" +
+            "<tr>" +
+            "<th colspan='2' style='text-align: center'>第" + i + "组原料规则</th>" +
+            "<th style='text-align: center'>原料名称</th>" +
+            "<td><input class='form-control' type='text' id='mname" + i + "'/></td>" +
+            "</tr>" +
+            "</thead>" +
+            "<tbody>" +
+            "<tr>" +
+            "<th style='text-align: center'>原料价格</th>" +
+            "<td><input class='form-control' type='number' id='mprice" + i + "'/></td>" +
+            "<th style='text-align: center'>采购提前期</th>" +
+            "<td><input class='form-control' type='number' id='mtime" + i + "'/></td>" +
+            "</tr>" +
+            "</tbody>" +
+            "</table>" +
+            "</div>";
+        $('#addMaterialArea').append(content);
+    }
+}
+
+function addRuleMaterial() {
+    var username = $("#nowUserName").val();
+    var ruleId = $("#ruleId").val();
+    var materials = [];
+    for (var i = 1; i <= $('#quantityData').attr('material-quantity'); i++){
+        var material = new Object();
+        material.type = i;
+        material.name = $('#mname' + i).val();
+        material.price = $('#mprice' + i).val();
+        material.time = $('#mtime' + i).val();
+        materials.push(material);
+    }
+    var ajaxData = {materials: materials, username: username, ruleId: ruleId};
+    $.ajax({
+        url: '/addRuleMaterial',
+        type: 'POST',
+        contentType: "application/json",
+        data: JSON.stringify(ajaxData),
+        dataType:'json',
+        success:function (rs) {
+            $("#addRuleMaterialResult").html("<h4 style='color: blue'>上传原料规则成功,请继续下一步</h4>");
+        },
+        error:function (rs) {
+            $("#ajaxDiv1").html("上传原料规则失败");
+            console.log(rs);
+        }
+    });
+}
+
+function initAddProductBomArea() {
+    var materialQuantity = $('#quantityData').attr('material-quantity');
+    var productQuantity = $('#quantityData').attr('product-quantity');
+    for (var i = 1; i <= productQuantity; i++) {
+        var content = "<div class='form-group'>" +
+            "<table class='table table-striped table-hover table-bordered'>" +
+            "<thead>" +
+            "<tr>" +
+            "<th colspan='2' style='text-align: center'>第" + i + "组产品BOM规则</th>" +
+            "</tr>" +
+            "</thead>" +
+            "<tbody>";
+        for (var j = 1; j <= materialQuantity; j++){
+            content += "<tr>" +
+            "<th style='text-align: center'>原料" + j + "的数量</th>" +
+            "<td><input class='form-control' type='number' id='bom" + i + "material" + j + "'/></td>" +
+            "</tr>";
+        }
+        for (var j = 1; j <= productQuantity; j++){
+            content += "<tr>" +
+                "<th style='text-align: center'>半成品" + j + "的数量</th>" +
+                "<td><input class='form-control' type='number' id='bom" + i + "product" + j + "'/></td>" +
+                "</tr>";
+        }
+        content += "</tbody>" +
+            "</table>" +
+            "</div>";
+
+        $('#addProductBomArea').append(content);
+    }
+}
+
+function addRuleProductBom() {
+    var materialQuantity = $('#quantityData').attr('material-quantity');
+    var productQuantity = $('#quantityData').attr('product-quantity');
+    var username = $("#nowUserName").val();
+    var ruleId = $("#ruleId").val();
+    var productBoms = [];
+    for (var i = 1; i <= productQuantity; i++){
+        var productBom = new Object();
+        productBom.type = i;
+        productBom.materialBomList = [];
+        productBom.productBomList = [];
+        for (var j = 1; j <= materialQuantity; j++){
+            var ruleBomValue = new Object();
+            var valueId = '#bom' + i + 'material' + j;
+            ruleBomValue.value = $(valueId).val();
+            productBom.materialBomList.push(ruleBomValue);
+        }
+        for (var j = 1; j <= productQuantity; j++){
+            var ruleBomValue = new Object();
+            var valueId = '#bom' + i + 'product' + j;
+            ruleBomValue.value = $(valueId).val();
+            productBom.productBomList.push(ruleBomValue);
+        }
+        productBoms.push(productBom);
+    }
+    var ajaxData = {productBoms: productBoms, username: username, ruleId: ruleId};
+    $.ajax({
+        url: '/addRuleProductBom',
+        type: 'POST',
+        contentType: "application/json",
+        data: JSON.stringify(ajaxData),
+        dataType:'json',
+        success:function (rs) {
+            $("#addRuleProductBomResult").html("<h4 style='color: blue'>上传产品BOM规则成功,请继续下一步</h4>");
+        },
+        error:function (rs) {
+            $("#ajaxDiv1").html("上传产品BOM规则失败");
+            console.log(rs);
+        }
+    });
+}
+
+function initAddProductArea() {
+    for (var i = 1; i <= $('#quantityData').attr('product-quantity'); i++) {
+        var content = "<div class='form-group'>" +
+            "<table class='table table-striped table-hover table-bordered'>" +
+            "<thead>" +
+            "<tr>" +
+            "<th colspan='4' style='text-align: center'>第" + i + "组产品规则</th>" +
+            "</tr>" +
+            "</thead>" +
+            "<tbody>" +
+            "<tr>" +
+            "<th style='text-align: center'>产品名称</th>" +
+            "<td><input class='form-control' type='text' id='pname" + i + "'/></td>" +
+            "<th style='text-align: center'>加工费</th>" +
+            "<td><input class='form-control' type='number' id='pprocCost" + i + "'/></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<th style='text-align: center'>每周期研发费用</th>" +
+            "<td><input class='form-control' type='text' id='pdevInvest" + i + "'/></td>" +
+            "<th style='text-align: center'>研发周期</th>" +
+            "<td><input class='form-control' type='number' id='pdevTime" + i + "'/></td>" +
+            "</tr>" +
+            "<tr>" +
+            "<th style='text-align: center'>直接成本</th>" +
+            "<td><input class='form-control' type='text' id='pfinalCost" + i + "'/></td>" +
+            "<th style='text-align: center'>潜力分数</th>" +
+            "<td><input class='form-control' type='number' id='pscore" + i + "'/></td>" +
+            "</tr>" +
+            "</tbody>" +
+            "</table>" +
+            "</div>";
+        $('#addProductArea').append(content);
+    }
+}
+
+function addRuleProduct() {
+    var username = $("#nowUserName").val();
+    var ruleId = $("#ruleId").val();
+    var products = [];
+    for (var i = 1; i <= $('#quantityData').attr('material-quantity'); i++){
+        var product = new Object();
+        product.type = i;
+        product.name = $('#pname' + i).val();
+        product.procCost = $('#pprocCost' + i).val();
+        product.devInvest = $('#pdevInvest' + i).val();
+        product.devTime = $('#pdevTime' + i).val();
+        product.finalCost = $('#pfinalCost' + i).val();
+        product.score = $('#pscore' + i).val();
+        products.push(product);
+    }
+    var ajaxData = {products: products, username: username, ruleId: ruleId};
+    $.ajax({
+        url: '/addRuleProduct',
+        type: 'POST',
+        contentType: "application/json",
+        data: JSON.stringify(ajaxData),
+        dataType:'json',
+        success:function (rs) {
+            $("#addRuleProductResult").html("<h4 style='color: blue'>上传产品规则成功,请继续下一步</h4>");
+        },
+        error:function (rs) {
+            $("#ajaxDiv1").html("上传产品规则失败");
+            console.log(rs);
+        }
+    });
 }
 
 function adReport() {
