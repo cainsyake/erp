@@ -52,20 +52,28 @@ public class AddMarket {
     private String filepath;    //从配置文件中读取文件路径
 
     public String addMarket(String fileName, MultipartFile mfile, String uploader, String seriesName){
+//        File uploadDir = new  File(filepath);
+        String filepath = "report/marketin";
         File uploadDir = new  File(filepath);
+
+
         System.out.println("测试输出文件路径：" + filepath);
         //创建一个目录 （它的路径名由当前 File 对象指定，包括任一必须的父路径。）
         if (!uploadDir.exists()) uploadDir.mkdirs();
+        String tempname = filepath + "/" +  new Date().getTime() + ".xlsx";
         //新建一个文件
-        File tempFile = new File( filepath + "\\" + new Date().getTime() + ".xlsx");
+//        File tempFile = new File( filepath + "\\" + new Date().getTime() + ".xlsx");
+//        File tempFile = new File(tempname);
         //初始化输入流
         InputStream is = null;
         try{
             //将上传的文件写入新建的文件中
-            mfile.transferTo(tempFile);
+//            mfile.transferTo(tempFile);
+
 
             //根据新建的文件实例化输入流
-            is = new FileInputStream(tempFile);
+//            is = new FileInputStream(tempFile);
+            is = mfile.getInputStream();
 
             //根据版本选择创建Workbook的方式
             Workbook wb = null;
@@ -76,7 +84,7 @@ public class AddMarket {
                 wb = new HSSFWorkbook(is);  //返回xls版本
             }
             //根据excel里面的内容读取市场信息
-            return readExcelValue(wb,tempFile, uploader, seriesName);    //正常的执行到这里就返回
+            return readExcelValue(wb, uploader, seriesName);    //正常的执行到这里就返回
         }catch(Exception e){
             e.printStackTrace();
         } finally{
@@ -94,7 +102,7 @@ public class AddMarket {
     }
 
     @Transactional
-    private String readExcelValue(Workbook wb, File tempFile, String uploader, String seriesName) {
+    private String readExcelValue(Workbook wb, String uploader, String seriesName) {
         //错误信息接收器
         String errorMsg = "";
         //得到第一个shell
@@ -360,9 +368,9 @@ public class AddMarket {
         }
 
         //删除上传的临时文件
-        if(tempFile.exists()){
-            tempFile.delete();
-        }
+//        if(tempFile.exists()){
+//            tempFile.delete();
+//        }
         //全部验证通过才导入到数据库
         if(StringUtils.isEmpty(errorMsg)){
             //计算市场分析
