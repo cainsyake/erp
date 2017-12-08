@@ -550,7 +550,7 @@ function addRuleProduct() {
     var username = $("#nowUserName").val();
     var ruleId = $("#ruleId").val();
     var products = [];
-    for (var i = 1; i <= $('#quantityData').attr('material-quantity'); i++){
+    for (var i = 1; i <= $('#quantityData').attr('product-quantity'); i++){
         var product = new Object();
         product.type = i;
         product.name = $('#pname' + i).val();
