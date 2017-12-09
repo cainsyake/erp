@@ -3,7 +3,11 @@ window.onload=subOnLoad;    //页面载入时执行此函数
 /**
  * 全局变量 rule (因为rule几乎不会变动,为了节省请求资源,页面载入时请求一次即可)
  */
-var rule = getRule($("#nowUserName").val());
+var rule = new Object();
+initRule($("#nowUserName").val());  //获取rule
+var runningState = new Object();
+var orderMeetingState = 0;
+var bidMeetingState = 0;
 
 
 function subOnLoad() {
@@ -12,24 +16,22 @@ function subOnLoad() {
 
     $.ajax({
         type:"POST",
-        url:"/getTeachClassRule/" + nowUserName,
+        url:"/runningStatePacking",
         cache:false,
+        data: {username: nowUserName},
         dataType:"json",
-        success:function (rule) {   //请求成功后服务器返回rule对象
-            $.ajax({
-                type:"POST",
-                url:"/getSubRunningState/" + nowUserName,
-                cache:false,
-                dataType:"json",
-                success:function (runningState) {   //请求成功后服务器返回runningState对象
-                    btnController(runningState);    //页面按钮控制函数
-                    pageController(rule, runningState); //页面表格控制函数
-                    infoController(runningState, rule); //页面内容控制函数
-                },
-                error:function (json) {
-                    console.log(json.responseText);
-                }
-            });
+        success:function (data) {   //请求成功后服务器返回runningState Packing
+            runningState = data.runningState;
+            orderMeetingState = data.meetingStateList[0];
+            bidMeetingState = data.meetingStateList[1];
+
+            /**
+             * 调用页面初始化函数
+             * 将pageController与infoController合并
+             */
+            btnController(runningState);    //页面按钮控制函数
+            pageController(rule, runningState); //页面表格控制函数
+            infoController(runningState, rule); //页面内容控制函数
         },
         error:function (json) {
             console.log(json.responseText);
@@ -37,7 +39,7 @@ function subOnLoad() {
     });
 }
 
-function getRule(username) {
+function initRule(username) {
     $.ajax({
         type:"POST",
         url:"/getTeachClassRule/" + username,
@@ -45,7 +47,7 @@ function getRule(username) {
         async: false,   //同步Ajax请求
         dataType:"json",
         success:function (ruleReturn) {   //请求成功后服务器返回rule对象
-            return ruleReturn;
+           rule = ruleReturn;
         },
         error:function (json) {
             console.log(json.responseText);
@@ -668,7 +670,22 @@ function infoController(runningState, rule) {
 
 }
 
+/**
+ * 页面控制器
+ * @param rule
+ * @param runningState
+ * 1.   变量命名规则：(驼峰规则)
+ * 1.1  仅渲染表格(如input): frame[区块名] (如 广告投放表格为: frameAdvertising)
+ * 1.2  仅注入内容(如现金数额): dataContent[内容名] (如 现金数额: dataContenCash)
+ * 1.3  同时渲染表格和注入内容(如库存情况): block[区块名] (如 原料库存表: blockMaterialStock)
+ * 1.4  *建议固定id的DOM不要在JS中渲染
+ *
+ * 2.   每个渲染块前必须有注释说明该块用途(如 //渲染厂房设备信息)
+ * 3.   建议增加渲染异常检测
+ * 4.   我很后悔开始没用MVVM框架(如Vue.js)来写前端部分
+ */
 function pageController(rule, runningState) {
+
     var txt1 ="";
     txt1 += "<table class='table table-bordered'>" +
         "<thead>" +
