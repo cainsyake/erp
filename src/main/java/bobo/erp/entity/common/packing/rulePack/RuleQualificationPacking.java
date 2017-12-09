@@ -1,13 +1,13 @@
-package bobo.erp.entity.common.packing;
+package bobo.erp.entity.common.packing.rulePack;
 
-import bobo.erp.entity.rule.RuleLine;
+import bobo.erp.entity.rule.RuleQualification;
 
 /**
  * Created by bobo on 2017/12/5.
  */
-public class RuleLinePacking {
+public class RuleQualificationPacking {
     private String username;
-    private RuleLine[] lines;
+    private RuleQualification[] qualifications;
     private String ruleId;
 
     public String getUsername() {
@@ -18,12 +18,12 @@ public class RuleLinePacking {
         this.username = username;
     }
 
-    public RuleLine[] getLines() {
-        return lines;
+    public RuleQualification[] getQualifications() {
+        return qualifications;
     }
 
-    public void setLines(RuleLine[] lines) {
-        this.lines = lines;
+    public void setQualifications(RuleQualification[] qualifications) {
+        this.qualifications = qualifications;
     }
 
     public String getRuleId() {

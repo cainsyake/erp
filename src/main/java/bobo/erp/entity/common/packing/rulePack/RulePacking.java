@@ -1,4 +1,4 @@
-package bobo.erp.entity.common.packing;
+package bobo.erp.entity.common.packing.rulePack;
 
 import bobo.erp.entity.rule.Rule;
 

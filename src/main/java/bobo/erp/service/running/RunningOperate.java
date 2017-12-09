@@ -49,12 +49,13 @@ public class RunningOperate {
     public RunningState advertising(String username, AdvertisingState advertisingState){
         RunningState runningState = getSubRunningStateService.getSubRunningState(username);
         Rule rule = getTeachClassRuleService.getTeachClassRule(username);
-        advertisingState.setAd26(advertisingState.getAd1()+advertisingState.getAd6()+advertisingState.getAd11()+advertisingState.getAd16()+advertisingState.getAd21());
-        advertisingState.setAd27(advertisingState.getAd2()+advertisingState.getAd7()+advertisingState.getAd12()+advertisingState.getAd17()+advertisingState.getAd22());
-        advertisingState.setAd28(advertisingState.getAd3()+advertisingState.getAd8()+advertisingState.getAd13()+advertisingState.getAd18()+advertisingState.getAd23());
-        advertisingState.setAd29(advertisingState.getAd4()+advertisingState.getAd9()+advertisingState.getAd14()+advertisingState.getAd19()+advertisingState.getAd24());
-        advertisingState.setAd30(advertisingState.getAd5()+advertisingState.getAd10()+advertisingState.getAd15()+advertisingState.getAd20()+advertisingState.getAd25());
-        advertisingState.setAd0(advertisingState.getAd26()+advertisingState.getAd27()+advertisingState.getAd28()+advertisingState.getAd29()+advertisingState.getAd30());
+
+//        advertisingState.setAd26(advertisingState.getAd1()+advertisingState.getAd6()+advertisingState.getAd11()+advertisingState.getAd16()+advertisingState.getAd21());
+//        advertisingState.setAd27(advertisingState.getAd2()+advertisingState.getAd7()+advertisingState.getAd12()+advertisingState.getAd17()+advertisingState.getAd22());
+//        advertisingState.setAd28(advertisingState.getAd3()+advertisingState.getAd8()+advertisingState.getAd13()+advertisingState.getAd18()+advertisingState.getAd23());
+//        advertisingState.setAd29(advertisingState.getAd4()+advertisingState.getAd9()+advertisingState.getAd14()+advertisingState.getAd19()+advertisingState.getAd24());
+//        advertisingState.setAd30(advertisingState.getAd5()+advertisingState.getAd10()+advertisingState.getAd15()+advertisingState.getAd20()+advertisingState.getAd25());
+//        advertisingState.setAd0(advertisingState.getAd26()+advertisingState.getAd27()+advertisingState.getAd28()+advertisingState.getAd29()+advertisingState.getAd30());
 
         Integer balance = runningState.getFinanceState().getCashAmount();
         Integer tempTotalAmount = 0;
@@ -78,7 +79,7 @@ public class RunningOperate {
                 }
             }
         }
-        tempTotalAmount += advertisingState.getAd0();
+//        tempTotalAmount += advertisingState.getAd0();
 
         //业务处理部分
         if(tempTotalAmount > balance){
@@ -93,12 +94,12 @@ public class RunningOperate {
 
             if(timeYear > 1){
                 FinancialStatement financialStatement = new FinancialStatement();   //投广告时新建一个财务报表
-                financialStatement.setAdvertisingCost(advertisingState.getAd0());
+//                financialStatement.setAdvertisingCost(advertisingState.getAd0());
                 financialStatement.setYear(timeYear);
                 runningState.getFinanceState().getFinancialStatementList().add(financialStatement); //保存数据至财务报表
                 operateFinancialStatementService.write("equityCapital", operateFinancialStatementService.readWithTime(timeYear - 1, "equityCapital", runningState), runningState);     //权益 - 股东资本
             }else if(timeYear == 1){
-                operateFinancialStatementService.write("advertisingCost", advertisingState.getAd0(), runningState);
+//                operateFinancialStatementService.write("advertisingCost", advertisingState.getAd0(), runningState);
                 operateFinancialStatementService.write("equityCapital", rule.getRuleParam().getParamInitialCash(), runningState);     //权益 - 股东资本
             }
 

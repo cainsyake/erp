@@ -46,7 +46,7 @@ public class OrderMeeting {
                 List<AdvertisingState> advertisingStateList = subUserInfo.getRunningState().getMarketingState().getAdvertisingStateList();
                 for (AdvertisingState advertisingState : advertisingStateList){
                     if (advertisingState.getYear() == teachClassInfo.getTime()){
-                        if (advertisingState.getAd0() > 0){
+                        if (advertisingState.getTotalAd() > 0){
                             advertisingStateHashMap.put(subUserInfo.getSubUserName(), advertisingState);    //添加用户名和广告状态至Map中
                         }
                     }
@@ -182,81 +182,81 @@ public class OrderMeeting {
                 String username = (String)entry.getKey();
                 AdvertisingState advertisingState = (AdvertisingState)entry.getValue();
                 int adValue = 0;
-                if (area == 1 && product == 1){
-                    adValue = advertisingState.getAd1();
-                }
-                if (area == 1 && product == 2){
-                    adValue = advertisingState.getAd2();
-                }
-                if (area == 1 && product == 3){
-                    adValue = advertisingState.getAd3();
-                }
-                if (area == 1 && product == 4){
-                    adValue = advertisingState.getAd4();
-                }
-                if (area == 1 && product == 5){
-                    adValue = advertisingState.getAd5();
-                }
-                if (area == 2 && product == 1){
-                    adValue = advertisingState.getAd6();
-                }
-                if (area == 2 && product == 2){
-                    adValue = advertisingState.getAd7();
-                }
-                if (area == 2 && product == 3){
-                    adValue = advertisingState.getAd8();
-                }
-                if (area == 2 && product == 4){
-                    adValue = advertisingState.getAd9();
-                }
-                if (area == 2 && product == 5){
-                    adValue = advertisingState.getAd10();
-                }
-                if (area == 3 && product == 1){
-                    adValue = advertisingState.getAd11();
-                }
-                if (area == 3 && product == 2){
-                    adValue = advertisingState.getAd12();
-                }
-                if (area == 3 && product == 3){
-                    adValue = advertisingState.getAd13();
-                }
-                if (area == 3 && product == 4){
-                    adValue = advertisingState.getAd14();
-                }
-                if (area == 3 && product == 5){
-                    adValue = advertisingState.getAd15();
-                }
-                if (area == 4 && product == 1){
-                    adValue = advertisingState.getAd16();
-                }
-                if (area == 4 && product == 2){
-                    adValue = advertisingState.getAd17();
-                }
-                if (area == 4 && product == 3){
-                    adValue = advertisingState.getAd18();
-                }
-                if (area == 4 && product == 4){
-                    adValue = advertisingState.getAd19();
-                }
-                if (area == 4 && product == 5){
-                    adValue = advertisingState.getAd20();
-                }
-                if (area == 5 && product == 1){
-                    adValue = advertisingState.getAd21();
-                }
-                if (area == 5 && product == 2){
-                    adValue = advertisingState.getAd22();
-                }
-                if (area == 5 && product == 3){
-                    adValue = advertisingState.getAd23();
-                }
-                if (area == 5 && product == 4){
-                    adValue = advertisingState.getAd24();
-                }
-                if (area == 5 && product == 5){
-                    adValue = advertisingState.getAd25();
-                }
+//                if (area == 1 && product == 1){
+//                    adValue = advertisingState.getAd1();
+//                }
+//                if (area == 1 && product == 2){
+//                    adValue = advertisingState.getAd2();
+//                }
+//                if (area == 1 && product == 3){
+//                    adValue = advertisingState.getAd3();
+//                }
+//                if (area == 1 && product == 4){
+//                    adValue = advertisingState.getAd4();
+//                }
+//                if (area == 1 && product == 5){
+//                    adValue = advertisingState.getAd5();
+//                }
+//                if (area == 2 && product == 1){
+//                    adValue = advertisingState.getAd6();
+//                }
+//                if (area == 2 && product == 2){
+//                    adValue = advertisingState.getAd7();
+//                }
+//                if (area == 2 && product == 3){
+//                    adValue = advertisingState.getAd8();
+//                }
+//                if (area == 2 && product == 4){
+//                    adValue = advertisingState.getAd9();
+//                }
+//                if (area == 2 && product == 5){
+//                    adValue = advertisingState.getAd10();
+//                }
+//                if (area == 3 && product == 1){
+//                    adValue = advertisingState.getAd11();
+//                }
+//                if (area == 3 && product == 2){
+//                    adValue = advertisingState.getAd12();
+//                }
+//                if (area == 3 && product == 3){
+//                    adValue = advertisingState.getAd13();
+//                }
+//                if (area == 3 && product == 4){
+//                    adValue = advertisingState.getAd14();
+//                }
+//                if (area == 3 && product == 5){
+//                    adValue = advertisingState.getAd15();
+//                }
+//                if (area == 4 && product == 1){
+//                    adValue = advertisingState.getAd16();
+//                }
+//                if (area == 4 && product == 2){
+//                    adValue = advertisingState.getAd17();
+//                }
+//                if (area == 4 && product == 3){
+//                    adValue = advertisingState.getAd18();
+//                }
+//                if (area == 4 && product == 4){
+//                    adValue = advertisingState.getAd19();
+//                }
+//                if (area == 4 && product == 5){
+//                    adValue = advertisingState.getAd20();
+//                }
+//                if (area == 5 && product == 1){
+//                    adValue = advertisingState.getAd21();
+//                }
+//                if (area == 5 && product == 2){
+//                    adValue = advertisingState.getAd22();
+//                }
+//                if (area == 5 && product == 3){
+//                    adValue = advertisingState.getAd23();
+//                }
+//                if (area == 5 && product == 4){
+//                    adValue = advertisingState.getAd24();
+//                }
+//                if (area == 5 && product == 5){
+//                    adValue = advertisingState.getAd25();
+//                }
 
                 if (adValue >= minAd){
                     if (adValue >= tempMax){

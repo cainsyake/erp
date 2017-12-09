@@ -1,5 +1,6 @@
 package bobo.erp.controller;
 
+import bobo.erp.entity.common.packing.runPack.RunningStatePacking;
 import bobo.erp.entity.rule.Rule;
 import bobo.erp.entity.state.FactoryState;
 import bobo.erp.entity.state.RunningState;
@@ -255,6 +256,12 @@ public class RunningController {
     @ResponseBody
     public List<FileInfo> getFileInfo(@PathVariable("nowUserName") String nowUserName){
         return getTeachClassInfoService.getTeachClassInfoByUsername(nowUserName).getFileInfoList();
+    }
+
+    @PostMapping(value = "runningStatePacking")
+    @ResponseBody
+    public RunningStatePacking getRunningStatePacking(@RequestParam(value = "username") String username){
+        return getSubRunningStateService.getRunningStatePacking(username);
     }
 
 }

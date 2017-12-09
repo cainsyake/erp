@@ -1,7 +1,7 @@
 package bobo.erp.controller;
 
 import bobo.erp.entity.common.UniformResult;
-import bobo.erp.entity.common.packing.*;
+import bobo.erp.entity.common.packing.rulePack.*;
 import bobo.erp.entity.rule.*;
 import bobo.erp.service.rule.AddRule;
 import bobo.erp.service.rule.UseRule;

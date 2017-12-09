@@ -1,14 +1,14 @@
-package bobo.erp.entity.common.packing;
+package bobo.erp.entity.common.packing.rulePack;
 
-import bobo.erp.entity.rule.RuleMaterial;
+import bobo.erp.entity.rule.RuleProductBom;
 
 /**
  * Created by bobo on 2017/12/5.
  */
-public class RuleMaterialPacking {
+public class RuleProductBomPacking {
     private String username;
     private String ruleId;
-    private RuleMaterial[] materials;
+    private RuleProductBom[] productBoms;
 
     public String getUsername() {
         return username;
@@ -26,11 +26,11 @@ public class RuleMaterialPacking {
         this.ruleId = ruleId;
     }
 
-    public RuleMaterial[] getMaterials() {
-        return materials;
+    public RuleProductBom[] getProductBoms() {
+        return productBoms;
     }
 
-    public void setMaterials(RuleMaterial[] materials) {
-        this.materials = materials;
+    public void setProductBoms(RuleProductBom[] productBoms) {
+        this.productBoms = productBoms;
     }
 }

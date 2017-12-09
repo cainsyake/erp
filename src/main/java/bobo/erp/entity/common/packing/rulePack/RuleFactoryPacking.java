@@ -1,13 +1,13 @@
-package bobo.erp.entity.common.packing;
+package bobo.erp.entity.common.packing.rulePack;
 
-import bobo.erp.entity.rule.RuleQualification;
+import bobo.erp.entity.rule.RuleFactory;
 
 /**
  * Created by bobo on 2017/12/5.
  */
-public class RuleQualificationPacking {
+public class RuleFactoryPacking {
     private String username;
-    private RuleQualification[] qualifications;
+    private RuleFactory[] factories;
     private String ruleId;
 
     public String getUsername() {
@@ -18,12 +18,12 @@ public class RuleQualificationPacking {
         this.username = username;
     }
 
-    public RuleQualification[] getQualifications() {
-        return qualifications;
+    public RuleFactory[] getFactories() {
+        return factories;
     }
 
-    public void setQualifications(RuleQualification[] qualifications) {
-        this.qualifications = qualifications;
+    public void setFactories(RuleFactory[] factories) {
+        this.factories = factories;
     }
 
     public String getRuleId() {

@@ -1,5 +1,6 @@
 package bobo.erp.service.teach;
 
+import bobo.erp.entity.state.marketing.AdvertisingContent;
 import bobo.erp.entity.state.marketing.AdvertisingState;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
@@ -70,103 +71,109 @@ public class ExcelExportService {
                     XSSFCell adCell = adRow.createCell(3 + j);
                     //先根据i(产品标号) 计算出起始k 再根据j(区域标号)对k进行叠加运算
                     Integer adValue = 0;
-                    switch (i){
-                        case 0:
-                            switch (j){
-                                case 0:
-                                    adValue = advertisingState.getAd1();
-                                    break;
-                                case 1:
-                                    adValue = advertisingState.getAd2();
-                                    break;
-                                case 2:
-                                    adValue = advertisingState.getAd3();
-                                    break;
-                                case 3:
-                                    adValue = advertisingState.getAd4();
-                                    break;
-                                case 4:
-                                    adValue = advertisingState.getAd5();
-                                    break;
-                            }
-                            break;
-                        case 1:
-                            switch (j){
-                                case 0:
-                                    adValue = advertisingState.getAd6();
-                                    break;
-                                case 1:
-                                    adValue = advertisingState.getAd7();
-                                    break;
-                                case 2:
-                                    adValue = advertisingState.getAd8();
-                                    break;
-                                case 3:
-                                    adValue = advertisingState.getAd9();
-                                    break;
-                                case 4:
-                                    adValue = advertisingState.getAd10();
-                                    break;
-                            }
-                            break;
-                        case 2:
-                            switch (j){
-                                case 0:
-                                    adValue = advertisingState.getAd11();
-                                    break;
-                                case 1:
-                                    adValue = advertisingState.getAd12();
-                                    break;
-                                case 2:
-                                    adValue = advertisingState.getAd13();
-                                    break;
-                                case 3:
-                                    adValue = advertisingState.getAd14();
-                                    break;
-                                case 4:
-                                    adValue = advertisingState.getAd15();
-                                    break;
-                            }
-                            break;
-                        case 3:
-                            switch (j){
-                                case 0:
-                                    adValue = advertisingState.getAd16();
-                                    break;
-                                case 1:
-                                    adValue = advertisingState.getAd17();
-                                    break;
-                                case 2:
-                                    adValue = advertisingState.getAd18();
-                                    break;
-                                case 3:
-                                    adValue = advertisingState.getAd19();
-                                    break;
-                                case 4:
-                                    adValue = advertisingState.getAd20();
-                                    break;
-                            }
-                            break;
-                        case 4:
-                            switch (j){
-                                case 0:
-                                    adValue = advertisingState.getAd21();
-                                    break;
-                                case 1:
-                                    adValue = advertisingState.getAd22();
-                                    break;
-                                case 2:
-                                    adValue = advertisingState.getAd23();
-                                    break;
-                                case 3:
-                                    adValue = advertisingState.getAd24();
-                                    break;
-                                case 4:
-                                    adValue = advertisingState.getAd25();
-                                    break;
-                            }
-                            break;
+                    List<AdvertisingContent> advertisingContentList = advertisingState.getAdvertisingContentList();
+                    for (AdvertisingContent advertisingContent : advertisingContentList){
+                        if ((advertisingContent.getProductType() == (i + 1)) && (advertisingContent.getAreaType() == (j + 1))){
+                            adValue = advertisingContent.getAdValue();
+                        }
                     }
+//                    switch (i){
+//                        case 0:
+//                            switch (j){
+//                                case 0:
+//                                    adValue = advertisingState.getAd1();
+//                                    break;
+//                                case 1:
+//                                    adValue = advertisingState.getAd2();
+//                                    break;
+//                                case 2:
+//                                    adValue = advertisingState.getAd3();
+//                                    break;
+//                                case 3:
+//                                    adValue = advertisingState.getAd4();
+//                                    break;
+//                                case 4:
+//                                    adValue = advertisingState.getAd5();
+//                                    break;
+//                            }
+//                            break;
+//                        case 1:
+//                            switch (j){
+//                                case 0:
+//                                    adValue = advertisingState.getAd6();
+//                                    break;
+//                                case 1:
+//                                    adValue = advertisingState.getAd7();
+//                                    break;
+//                                case 2:
+//                                    adValue = advertisingState.getAd8();
+//                                    break;
+//                                case 3:
+//                                    adValue = advertisingState.getAd9();
+//                                    break;
+//                                case 4:
+//                                    adValue = advertisingState.getAd10();
+//                                    break;
+//                            }
+//                            break;
+//                        case 2:
+//                            switch (j){
+//                                case 0:
+//                                    adValue = advertisingState.getAd11();
+//                                    break;
+//                                case 1:
+//                                    adValue = advertisingState.getAd12();
+//                                    break;
+//                                case 2:
+//                                    adValue = advertisingState.getAd13();
+//                                    break;
+//                                case 3:
+//                                    adValue = advertisingState.getAd14();
+//                                    break;
+//                                case 4:
+//                                    adValue = advertisingState.getAd15();
+//                                    break;
+//                            }
+//                            break;
+//                        case 3:
+//                            switch (j){
+//                                case 0:
+//                                    adValue = advertisingState.getAd16();
+//                                    break;
+//                                case 1:
+//                                    adValue = advertisingState.getAd17();
+//                                    break;
+//                                case 2:
+//                                    adValue = advertisingState.getAd18();
+//                                    break;
+//                                case 3:
+//                                    adValue = advertisingState.getAd19();
+//                                    break;
+//                                case 4:
+//                                    adValue = advertisingState.getAd20();
+//                                    break;
+//                            }
+//                            break;
+//                        case 4:
+//                            switch (j){
+//                                case 0:
+//                                    adValue = advertisingState.getAd21();
+//                                    break;
+//                                case 1:
+//                                    adValue = advertisingState.getAd22();
+//                                    break;
+//                                case 2:
+//                                    adValue = advertisingState.getAd23();
+//                                    break;
+//                                case 3:
+//                                    adValue = advertisingState.getAd24();
+//                                    break;
+//                                case 4:
+//                                    adValue = advertisingState.getAd25();
+//                                    break;
+//                            }
+//                            break;
+//                    }
                     if (adValue == null){
                         adValue = 0;
                     }
