@@ -30,8 +30,8 @@ function subOnLoad() {
              * 将pageController与infoController合并
              */
             btnController(runningState);    //页面按钮控制函数
-            pageController(rule, runningState); //页面表格控制函数
-            infoController(runningState, rule); //页面内容控制函数
+            pageController(runningState); //页面表格控制函数
+            infoController(runningState); //页面内容控制函数
         },
         error:function (json) {
             console.log(json.responseText);
@@ -89,7 +89,7 @@ function getMeetingState(username) {
 }
 
 function getLineInfo(type) {
-    var lines = rule.getRuleLineList;
+    var lines = rule.ruleLineList;
     for (var i = 0; i < lines.length; i++){
         if (lines[i].type == type){
             return lines[i];
@@ -99,7 +99,7 @@ function getLineInfo(type) {
 }
 
 function getFactoryInfo(type) {
-    var factories = rule.getRuleFactoryList;
+    var factories = rule.ruleFactoryList;
     for (var i = 0; i < factories.length; i++){
         if (factories[i].type == type){
             return factories[i];
@@ -109,7 +109,7 @@ function getFactoryInfo(type) {
 }
 
 function getQualificationInfo(type) {
-    var qualifications = rule.getRuleQualificationList;
+    var qualifications = rule.ruleQualificationList;
     for (var i = 0; i < qualifications.length; i++){
         if (qualifications[i].type == type){
             return qualifications[i];
@@ -119,7 +119,7 @@ function getQualificationInfo(type) {
 }
 
 function getAreaInfo(type) {
-    var areas = rule.getRuleAreaList;
+    var areas = rule.ruleAreaList;
     for (var i = 0; i < areas.length; i++){
         if (areas[i].type == type){
             return areas[i];
@@ -129,7 +129,7 @@ function getAreaInfo(type) {
 }
 
 function getMaterialInfo(type) {
-    var materials = rule.getRuleMaterialList;
+    var materials = rule.ruleMaterialList;
     for (var i = 0; i < materials.length; i++){
         if (materials[i].type == type){
             return materials[i];
@@ -139,7 +139,7 @@ function getMaterialInfo(type) {
 }
 
 function getProductInfo(type) {
-    var products = rule.getRuleProductList;
+    var products = rule.ruleProductList;
     for (var i = 0; i < products.length; i++){
         if (products[i].type == type){
             return products[i];
@@ -149,7 +149,7 @@ function getProductInfo(type) {
 }
 
 function getProductBomInfo(type) {
-    var productBoms = rule.getRuleProductBomList;
+    var productBoms = rule.ruleProductBomList;
     for (var i = 0; i < productBoms.length; i++){
         if (productBoms[i].type == type){
             return productBoms[i];
@@ -168,7 +168,7 @@ function getProductBomInfo(type) {
  */
 
 
-function infoController(runningState, rule) {
+function infoController(runningState) {
     document.getElementById("valueCash").innerHTML = runningState.financeState.cashAmount;   //输出现金金额
     document.getElementById("valueRunningTime").innerHTML = "第 " + runningState.baseState.timeYear + " 年 第 " + runningState.baseState.timeQuarter + " 季";
 
@@ -683,88 +683,38 @@ function infoController(runningState, rule) {
  * 2.   每个渲染块前必须有注释说明该块用途(如 //渲染厂房设备信息)
  * 3.   建议增加渲染异常检测
  * 4.   我很后悔开始没用MVVM框架(如Vue.js)来写前端部分
+ * 5.   第一层循环用 i, 第二层用 j, 第三层用 k
  */
-function pageController(rule, runningState) {
+function pageController(runningState) {
 
-    var txt1 ="";
-    txt1 += "<table class='table table-bordered'>" +
+    //广告投放表格渲染
+    var frameAdvertising = '';
+    frameAdvertising += "<table class='table table-bordered'>" +
         "<thead>" +
         "<tr>" +
         "<th></th>";
-    var ruleMarket = rule.ruleMarket;
-    var marketNum = 0;
-    if(ruleMarket.market1Name != ""){
-        txt1 += "<th>" + ruleMarket.market1Name + "</th>";
-        marketNum++;
+    // var ruleMarket = rule.ruleMarket;
+    var areaQuantity = rule.areaQuantity;
+    for (var i = 0; i < areaQuantity; i++){
+        frameAdvertising += "<th style='text-align: center'>" + getAreaInfo(i + 1).name + "</th>";
     }
-    if(ruleMarket.market2Name != ""){
-        txt1 += "<th>" + ruleMarket.market2Name + "</th>";
-        marketNum++;
-    }
-    if(ruleMarket.market3Name != ""){
-        txt1 += "<th>" + ruleMarket.market3Name + "</th>";
-        marketNum++;
-    }
-    if(ruleMarket.market4Name != ""){
-        txt1 += "<th>" + ruleMarket.market4Name + "</th>";
-        marketNum++;
-    }
-    if(ruleMarket.market5Name != ""){
-        txt1 += "<th>" + ruleMarket.market5Name + "</th>";
-        marketNum++;
-    }
-    txt1 += "</tr>" +
+    frameAdvertising += "</tr>" +
         "</thead>" +
         "<tbody>";
-    var ruleProduct = rule.ruleProduct;
-    if(ruleProduct.product1Name != ""){
-        txt1 += "<tr>" +
-            "<th>" + ruleProduct.product1Name + "</th>";
-        for(var i =1; i < marketNum+1; i++){
-            var strName = "ad" + i;
-            txt1 += "<td><input type='number' min='0' style='width:80px' class='form-control' name='" + strName + "'/></td>";
+    var productQuantity = rule.productQuantity;
+    for (var i = 0; i < productQuantity; i++){
+        frameAdvertising += "<tr>" +
+            "<th style='text-align: center'>" + getProductInfo(i + 1).name + "</th>";
+        for(var j = 1; j < areaQuantity + 1; j++){
+            var strId = 'adValueProduct' + ( i + 1) + 'Area' + j;
+            frameAdvertising += "<td><input type='number' min='0' style='width:80px' class='form-control' id='" + strId + "'/></td>";
         }
-        txt1 += "</tr>";
+        frameAdvertising += "</tr>";
     }
-    if(ruleProduct.product2Name != ""){
-        txt1 += "<tr>" +
-            "<th>" + ruleProduct.product2Name + "</th>";
-        for(var i =6; i < marketNum+6; i++){
-            var strName = "ad" + i;
-            txt1 += "<td><input type='number' min='0' style='width:80px' class='form-control' name='" + strName + "'/></td>";
-        }
-        txt1 += "</tr>";
-    }
-    if(ruleProduct.product3Name != ""){
-        txt1 += "<tr>" +
-            "<th>" + ruleProduct.product3Name + "</th>";
-        for(var i =11; i < marketNum+11; i++){
-            var strName = "ad" + i;
-            txt1 += "<td><input type='number' min='0' style='width:80px' class='form-control' name='" + strName + "'/></td>";
-        }
-        txt1 += "</tr>";
-    }
-    if(ruleProduct.product4Name != ""){
-        txt1 += "<tr>" +
-            "<th>" + ruleProduct.product4Name + "</th>";
-        for(var i =16; i < marketNum+16; i++){
-            var strName = "ad" + i;
-            txt1 += "<td><input type='number' min='0' style='width:80px' class='form-control' name='" + strName + "'/></td>";
-        }
-        txt1 += "</tr>";
-    }
-    if(ruleProduct.product5Name != ""){
-        txt1 += "<tr>" +
-            "<th>" + ruleProduct.product5Name + "</th>";
-        for(var i =21; i < marketNum+21; i++){
-            var strName = "ad" + i;
-            txt1 += "<td><input type='number' min='0' style='width:80px' class='form-control' name='" + strName + "'/></td>";
-        }
-        txt1 += "</tr>";
-    }
-    txt1 += "</tbody>" +
+
+    frameAdvertising += "</tbody>" +
         "</table>";
-    document.getElementById("advertisingForm").innerHTML = txt1;
+    $('#advertisingForm').html(frameAdvertising);
 
     txt2 = "<table class='table table-bordered'>" +
         "<thead>" +
