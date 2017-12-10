@@ -25,6 +25,8 @@ function initAddRule() {
     if (ruleId == 0){
         //新增规则
         var rule = new Object();
+        rule.name = $("#ruleName").val();
+        rule.isDeleted = 0;
         rule.factoryQuantity = $("#factoryQuantity").val();
         rule.lineQuantity = $("#lineQuantity").val();
         rule.qualificationQuantity = $("#qualificationQuantity").val();
@@ -1527,30 +1529,32 @@ function findRuleAll() {
             txt="<table class='table table-striped table-hover table-bordered' id='editable-sample'>" +
                 "<thead>" +
                 "<tr>" +
-                "<th>规则ID</th>" +
-                "<th>上传者</th>" +
-                "<th>上传日期</th>" +
-                "<th>调用次数</th>" +
-                "<th>查看内容</th>" +
+                "<th style='text-align: center'>规则ID</th>" +
+                "<th style='text-align: center'>名称</th>" +
+                "<th style='text-align: center'>上传者</th>" +
+                "<th style='text-align: center'>上传日期</th>" +
+                "<th style='text-align: center'>调用次数</th>" +
+                "<th style='text-align: center'>查看内容</th>" +
+                "<th style='text-align: center'>删除规则</th>" +
                 "<th style='display: none'>当前操作用户</th>" +
                 "</tr>" +
                 "</thead>" +
                 "<tbody>";
             for(var i=0; i<eval(json).length; i++ ){
-//                    var time = json[i].ruleAlterTime;
-//                    alert(time.substring(10,0));
                 txt = txt + "<tr>" +
-                    "<td>" + json[i].id + "</td>" +
-                    "<td>" + json[i].ruleUploader + "</td>" +
-                    "<td>" + timeFormat(json[i].ruleAlterTime) + "</td>" +
-                    "<td>" + json[i].ruleUserCount + "</td>" +
-                    "<td><a class='edit' href='#modalReadRule' data-toggle='modal' onclick='readRule(" + json[i].id + ")'>查看内容</a></td>" +
+                    "<td style='text-align: center'>" + json[i].id + "</td>" +
+                    "<td style='text-align: center'>" + json[i].name + "</td>" +
+                    "<td style='text-align: center'>" + json[i].ruleUploader + "</td>" +
+                    "<td style='text-align: center'>" + timeFormat(json[i].ruleAlterTime) + "</td>" +
+                    "<td style='text-align: center'>" + json[i].ruleUserCount + "</td>" +
+                    "<td style='text-align: center'><a class='edit' href='#modalReadRule' data-toggle='modal' onclick='readRule(" + json[i].id + ")'>查看内容</a></td>" +
+                    "<td style='text-align: center'><button class='btn btn-warning' onclick='deleteRule(" + json[i].id + ")'>删除</button></td>" +
                     "<td style='display: none'>当前操作用户</td>" +
                     "</tr>";
             }
             txt = txt + "</tbody></table>";
-            document.getElementById("ajaxDiv2").innerHTML = txt;
-            document.getElementById("ajaxDiv1").innerHTML = "成功查询规则列表";
+            $('#ajaxDiv1').html("成功查询规则列表");
+            $('#ajaxDiv2').html(txt);
         }
     });
 }
@@ -1738,6 +1742,25 @@ function addRule() {
     var operatorTime = date.toLocaleDateString() +" " +  date.toLocaleTimeString();
     $("#divAddRule").show();
     document.getElementById("ajaxDiv1").innerHTML = operatorTime + " : 正在添加规则";
+}
+
+/**
+ * 安全的删除规则
+ * @param id
+ */
+function deleteRule(id) {
+    $.ajax({
+        type:"POST",
+        url:"/deleteRuleInSafety/" + id,
+        cache:false,
+        dataType:"json",
+        success:function (ur) {
+            if (ur.state == '00'){
+                alert('成功删除规则：' + id);
+                findRuleAll();
+            }
+        }
+    });
 }
 
 function thClassInit() {

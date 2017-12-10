@@ -63,6 +63,7 @@ public class TeachClassInit {
             logger.info("初始化教学班 :{}", nowUserName);
             List<SubUserInfo> subUserInfoList = new ArrayList<SubUserInfo>();
             Rule rule = ruleRepository.findOne(teachClassInfo.getRuleId());
+            rule.setRuleUserCount(rule.getRuleUserCount() + 1);
 
             for(int i =0 ; i < teachClassInfo.getTeachClassVolume(); i++ ){
                 User user = new User(); //循环设置子用户信息并存入数据库
@@ -107,21 +108,6 @@ public class TeachClassInit {
                 StockState stockState = new StockState();
                 List<MaterialState> materialStateList = new ArrayList<MaterialState>();
                 Integer materialNum = rule.getMaterialQuantity();    //原料数量
-//                if(!(rule.getRuleMaterial().getMaterial1Name().isEmpty())){
-//                    materialNum++;
-//                }
-//                if(!(rule.getRuleMaterial().getMaterial2Name().isEmpty())){
-//                    materialNum++;
-//                }
-//                if(!(rule.getRuleMaterial().getMaterial3Name().isEmpty())){
-//                    materialNum++;
-//                }
-//                if(!(rule.getRuleMaterial().getMaterial4Name().isEmpty())){
-//                    materialNum++;
-//                }
-//                if(!(rule.getRuleMaterial().getMaterial5Name().isEmpty())){
-//                    materialNum++;
-//                }
                 for(int j = 1; j < materialNum+1; j++){
                     MaterialState materialState = new MaterialState();
                     materialState.setType(j);
@@ -130,21 +116,6 @@ public class TeachClassInit {
                 }
                 List<ProductState> productStateList = new ArrayList<ProductState>();
                 Integer productNum = rule.getProductQuantity();    //原料数量
-//                if(!(rule.getRuleProduct().getProduct1Name().isEmpty())){
-//                    productNum++;
-//                }
-//                if(!(rule.getRuleProduct().getProduct2Name().isEmpty())){
-//                    productNum++;
-//                }
-//                if(!(rule.getRuleProduct().getProduct3Name().isEmpty())){
-//                    productNum++;
-//                }
-//                if(!(rule.getRuleProduct().getProduct4Name().isEmpty())){
-//                    productNum++;
-//                }
-//                if(!(rule.getRuleProduct().getProduct5Name().isEmpty())){
-//                    productNum++;
-//                }
                 for(int j = 1; j < productNum+1; j++){
                     ProductState productState = new ProductState();
                     productState.setType(j);
@@ -187,21 +158,6 @@ public class TeachClassInit {
             teachClassInfo.setSubUserInfoList(subUserInfoList);
 
             Integer areaNum = rule.getAreaQuantity();
-//            if(!(rule.getRuleMarket().getMarket1Name().isEmpty())){
-//                marketNum++;
-//            }
-//            if(!(rule.getRuleMarket().getMarket2Name().isEmpty())){
-//                marketNum++;
-//            }
-//            if(!(rule.getRuleMarket().getMarket3Name().isEmpty())){
-//                marketNum++;
-//            }
-//            if(!(rule.getRuleMarket().getMarket4Name().isEmpty())){
-//                marketNum++;
-//            }
-//            if(!(rule.getRuleMarket().getMarket5Name().isEmpty())){
-//                marketNum++;
-//            }
             Collator collator = new Collator();
             collator.setAreaQuantity(areaNum);
             collator.setSameTimeOpenQuantity(rule.getRuleParam().getParamMarketSametimeOpenNum());

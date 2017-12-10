@@ -103,9 +103,10 @@ public class RuleController {
     @GetMapping(value = "ruleFindAll")
     @ResponseBody
     public List<Rule> ruleFindAll(){
-        List<Rule> list = useRule.ruleFindAll();
-        System.out.println(list.get(0).getRuleAlterTime());
-        return useRule.ruleFindAll();
+        return useRule.findRuleNotDeleted();
+//        List<Rule> list = useRule.ruleFindAll();
+//        System.out.println(list.get(0).getRuleAlterTime());
+//        return useRule.ruleFindAll();
     }
 
     @GetMapping(value = "ruleFindById/{ruleId}")
@@ -119,6 +120,14 @@ public class RuleController {
     public String ruleDeleteById(@PathVariable("ruleId") Integer ruleId, HttpSession session){
         String operator = (String) session.getAttribute("nowUserName");
         return useRule.ruleDeleteById(ruleId, operator);
+    }
+
+    @PostMapping(value = "deleteRuleInSafety/{id}")
+    @ResponseBody
+    public UniformResult deleteRuleInSafety(@PathVariable("id") Integer id){
+        //此API接口仍在开发中
+        //TODO 增加操作者身份验证
+        return useRule.ruleDeleteInSafety(id);
     }
 
 }

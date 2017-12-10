@@ -15,9 +15,11 @@ public class Rule {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String ruleUploader;
-    private Date ruleAlterTime;
-    private Integer ruleUserCount;
+    private String name;            //规则名
+    private Integer isDeleted;      //是否被删除 0:可用 1:已删除
+    private String ruleUploader;    //上传者
+    private Date ruleAlterTime;     //更改时间(上传时间)
+    private Integer ruleUserCount;  //调用次数
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "rule_id")
@@ -51,12 +53,12 @@ public class Rule {
     @JoinColumn(name = "rule_param_id")
     private RuleParam ruleParam;    //详细参数
 
-    private Integer lineQuantity;
-    private Integer factoryQuantity;
-    private Integer areaQuantity;
-    private Integer qualificationQuantity;
-    private Integer materialQuantity;
-    private Integer productQuantity;
+    private Integer lineQuantity;           //生产线数量
+    private Integer factoryQuantity;        //厂房数量
+    private Integer areaQuantity;           //区域数量
+    private Integer qualificationQuantity;  //资质数量
+    private Integer materialQuantity;       //原料数量
+    private Integer productQuantity;        //产品数量
 
 
     public Integer getId() {
@@ -201,5 +203,21 @@ public class Rule {
 
     public void setProductQuantity(Integer productQuantity) {
         this.productQuantity = productQuantity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Integer getIsDeleted() {
+        return isDeleted;
+    }
+
+    public void setIsDeleted(Integer isDeleted) {
+        this.isDeleted = isDeleted;
     }
 }
