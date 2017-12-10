@@ -1171,11 +1171,17 @@ function updateReportDownload() {
         dataType:"json",
         success:function (list) {
             $.each(list,function(n, fileInfo){
-                if (fileInfo.type == 'ad' && fileInfo.state == 1){
-                    var url = 'reportDownload/' + fileInfo.type + '/' + fileInfo.id;
-                    var attr = "window.location.href = '" + url + "'";
-                    console.log(attr);
-                    $('#downloadAdReport').attr("onclick", attr);
+                if (fileInfo.type == 'ad'){
+                    if (fileInfo.state == 1){
+                        var url = 'reportDownload/' + fileInfo.type + '/' + fileInfo.id;
+                        var attr = "window.location.href = '" + url + "'";
+                        console.log(attr);
+                        $('#downloadAdReport').attr("onclick", attr);
+                    } else {
+                        console.log('当前广告报表不允许下载 (测试信息)');
+                    }
+                } else {
+                    console.log('当前暂未支持 ' + fileInfo.type + ' 类型报表下载 (测试信息)');
                 }
                 /**
                  * 在这些补充其他报表的下载URL生成
