@@ -1221,9 +1221,10 @@ function readRule(ruleId) {
         cache:false,
         dataType:"json",
         success:function (json) {
+            var rule = json;
             txt1 = "<div class='panel panel-warning'>" +
                 "<div class='panel-heading'>" +
-                "<h3 class='panel-title'>规则ID：" +  json.ruleId + " &nbsp;&nbsp;上传者：" + json.ruleUploader + "</h3>" +
+                "<h3 class='panel-title'>规则ID：" +  json.id + " &nbsp;&nbsp;上传者：" + json.ruleUploader + "</h3>" +
                 "<h3 class='panel-title'>上传时间：" + timeFormat(json.ruleAlterTime) + " &nbsp;&nbsp;&nbsp;&nbsp;调用次数：" + json.ruleUserCount + "</h3>" +
                 "</div>" +
                 "<div class='panel-body'>" +
@@ -1244,61 +1245,18 @@ function readRule(ruleId) {
                 "</thead>" +
                 "<tbody>";
             txt3 = "";
-            var ruleFactory = json.ruleFactory;
-            if(ruleFactory.factory1Name != ""){
+            var factoryQuantity = rule.factoryQuantity;
+            for (var i = 1; i <= factoryQuantity; i++){
+                var factory = getFactoryInfo(rule, i);
                 txt3 += "<tr>" +
-                    "<td>" + ruleFactory.factory1Name + "</td>" +
-                    "<td>" + ruleFactory.factory1BuyPrice + "</td>" +
-                    "<td>" + ruleFactory.factory1RentPrice + "</td>" +
-                    "<td>" + ruleFactory.factory1SalePrice + "</td>" +
-                    "<td>" + ruleFactory.factory1Volume + "</td>" +
-                    "<td>" + ruleFactory.factory1Limit + "</td>" +
-                    "<td>" + ruleFactory.factory1Score + "</td>" +
-                    "</tr>"
-            }
-            if(ruleFactory.factory2Name != ""){
-                txt3 += "<tr>" +
-                    "<td>" + ruleFactory.factory2Name + "</td>" +
-                    "<td>" + ruleFactory.factory2BuyPrice + "</td>" +
-                    "<td>" + ruleFactory.factory2RentPrice + "</td>" +
-                    "<td>" + ruleFactory.factory2SalePrice + "</td>" +
-                    "<td>" + ruleFactory.factory2Volume + "</td>" +
-                    "<td>" + ruleFactory.factory2Limit + "</td>" +
-                    "<td>" + ruleFactory.factory2Score + "</td>" +
-                    "</tr>"
-            }
-            if(ruleFactory.factory3Name != ""){
-                txt3 += "<tr>" +
-                    "<td>" + ruleFactory.factory3Name + "</td>" +
-                    "<td>" + ruleFactory.factory3BuyPrice + "</td>" +
-                    "<td>" + ruleFactory.factory3RentPrice + "</td>" +
-                    "<td>" + ruleFactory.factory3SalePrice + "</td>" +
-                    "<td>" + ruleFactory.factory3Volume + "</td>" +
-                    "<td>" + ruleFactory.factory3Limit + "</td>" +
-                    "<td>" + ruleFactory.factory3Score + "</td>" +
-                    "</tr>"
-            }
-            if(ruleFactory.factory4Name != ""){
-                txt3 += "<tr>" +
-                    "<td>" + ruleFactory.factory4Name + "</td>" +
-                    "<td>" + ruleFactory.factory4BuyPrice + "</td>" +
-                    "<td>" + ruleFactory.factory4RentPrice + "</td>" +
-                    "<td>" + ruleFactory.factory4SalePrice + "</td>" +
-                    "<td>" + ruleFactory.factory4Volume + "</td>" +
-                    "<td>" + ruleFactory.factory4Limit + "</td>" +
-                    "<td>" + ruleFactory.factory4Score + "</td>" +
-                    "</tr>"
-            }
-            if(ruleFactory.factory5Name != ""){
-                txt3 += "<tr>" +
-                    "<td>" + ruleFactory.factory5Name + "</td>" +
-                    "<td>" + ruleFactory.factory5BuyPrice + "</td>" +
-                    "<td>" + ruleFactory.factory5RentPrice + "</td>" +
-                    "<td>" + ruleFactory.factory5SalePrice + "</td>" +
-                    "<td>" + ruleFactory.factory5Volume + "</td>" +
-                    "<td>" + ruleFactory.factory5Limit + "</td>" +
-                    "<td>" + ruleFactory.factory5Score + "</td>" +
-                    "</tr>"
+                    "<td>" + factory.name + "</td>" +
+                    "<td>" + factory.buyPrice + "</td>" +
+                    "<td>" + factory.rentPrice + "</td>" +
+                    "<td>" + factory.salePrice + "</td>" +
+                    "<td>" + factory.volume + "</td>" +
+                    "<td>" + factory.quantityLimit + "</td>" +
+                    "<td>" + factory.score + "</td>" +
+                    "</tr>";
             }
             txt3 += "</tbody></table><br/>";
 
@@ -1319,81 +1277,23 @@ function readRule(ruleId) {
                 "</tr>" +
                 "</thead>" +
                 "<tbody>";
-            var ruleLine = json.ruleLine;
-            if(ruleLine.line1Name != ""){
+
+            var lineQuantity = rule.lineQuantity;
+            for (var i = 1; i <= lineQuantity; i++){
+                var line = getLineInfo(rule, i);
                 txt4 += "<tr>" +
-                    "<td>" + ruleLine.line1Name + "</td>" +
-                    "<td>" + ruleLine.line1UnitInvest + "</td>" +
-                    "<td>" + ruleLine.line1InstallTime + "</td>" +
-                    "<td>" + ruleLine.line1ProduceTime + "</td>" +
-                    "<td>" + ruleLine.line1ChangeInvest + "</td>" +
-                    "<td>" + ruleLine.line1ChangeTime + "</td>" +
-                    "<td>" + ruleLine.line1Upkeep + "</td>" +
-                    "<td>" + ruleLine.line1ScrapValue + "</td>" +
-                    "<td>" + ruleLine.line1Depreciation + "</td>" +
-                    "<td>" + ruleLine.line1DepreTime + "</td>" +
-                    "<td>" + ruleLine.line1Score + "</td>" +
-                    "</tr>"
-            }
-            if(ruleLine.line2Name != ""){
-                txt4 += "<tr>" +
-                    "<td>" + ruleLine.line2Name + "</td>" +
-                    "<td>" + ruleLine.line2UnitInvest + "</td>" +
-                    "<td>" + ruleLine.line2InstallTime + "</td>" +
-                    "<td>" + ruleLine.line2ProduceTime + "</td>" +
-                    "<td>" + ruleLine.line2ChangeInvest + "</td>" +
-                    "<td>" + ruleLine.line2ChangeTime + "</td>" +
-                    "<td>" + ruleLine.line2Upkeep + "</td>" +
-                    "<td>" + ruleLine.line2ScrapValue + "</td>" +
-                    "<td>" + ruleLine.line2Depreciation + "</td>" +
-                    "<td>" + ruleLine.line2DepreTime + "</td>" +
-                    "<td>" + ruleLine.line2Score + "</td>" +
-                    "</tr>"
-            }
-            if(ruleLine.line3Name != ""){
-                txt4 += "<tr>" +
-                    "<td>" + ruleLine.line3Name + "</td>" +
-                    "<td>" + ruleLine.line3UnitInvest + "</td>" +
-                    "<td>" + ruleLine.line3InstallTime + "</td>" +
-                    "<td>" + ruleLine.line3ProduceTime + "</td>" +
-                    "<td>" + ruleLine.line3ChangeInvest + "</td>" +
-                    "<td>" + ruleLine.line3ChangeTime + "</td>" +
-                    "<td>" + ruleLine.line3Upkeep + "</td>" +
-                    "<td>" + ruleLine.line3ScrapValue + "</td>" +
-                    "<td>" + ruleLine.line3Depreciation + "</td>" +
-                    "<td>" + ruleLine.line3DepreTime + "</td>" +
-                    "<td>" + ruleLine.line3Score + "</td>" +
-                    "</tr>"
-            }
-            if(ruleLine.line4Name != ""){
-                txt4 += "<tr>" +
-                    "<td>" + ruleLine.line4Name + "</td>" +
-                    "<td>" + ruleLine.line4UnitInvest + "</td>" +
-                    "<td>" + ruleLine.line4InstallTime + "</td>" +
-                    "<td>" + ruleLine.line4ProduceTime + "</td>" +
-                    "<td>" + ruleLine.line4ChangeInvest + "</td>" +
-                    "<td>" + ruleLine.line4ChangeTime + "</td>" +
-                    "<td>" + ruleLine.line4Upkeep + "</td>" +
-                    "<td>" + ruleLine.line4ScrapValue + "</td>" +
-                    "<td>" + ruleLine.line4Depreciation + "</td>" +
-                    "<td>" + ruleLine.line4DepreTime + "</td>" +
-                    "<td>" + ruleLine.line4Score + "</td>" +
-                    "</tr>"
-            }
-            if(ruleLine.line5Name != ""){
-                txt4 += "<tr>" +
-                    "<td>" + ruleLine.line5Name + "</td>" +
-                    "<td>" + ruleLine.line5UnitInvest + "</td>" +
-                    "<td>" + ruleLine.line5InstallTime + "</td>" +
-                    "<td>" + ruleLine.line5ProduceTime + "</td>" +
-                    "<td>" + ruleLine.line5ChangeInvest + "</td>" +
-                    "<td>" + ruleLine.line5ChangeTime + "</td>" +
-                    "<td>" + ruleLine.line5Upkeep + "</td>" +
-                    "<td>" + ruleLine.line5ScrapValue + "</td>" +
-                    "<td>" + ruleLine.line5Depreciation + "</td>" +
-                    "<td>" + ruleLine.line5DepreTime + "</td>" +
-                    "<td>" + ruleLine.line5Score + "</td>" +
-                    "</tr>"
+                    "<td>" + line.name + "</td>" +
+                    "<td>" + line.unitInvest + "</td>" +
+                    "<td>" + line.installTime + "</td>" +
+                    "<td>" + line.produceTime + "</td>" +
+                    "<td>" + line.changeInvest + "</td>" +
+                    "<td>" + line.changeTime + "</td>" +
+                    "<td>" + line.upkeep + "</td>" +
+                    "<td>" + line.scrapValue + "</td>" +
+                    "<td>" + line.depreciation + "</td>" +
+                    "<td>" + line.depreTime + "</td>" +
+                    "<td>" + line.score + "</td>" +
+                    "</tr>";
             }
             txt4 += "</tbody></table><br/>";
 
@@ -1407,22 +1307,15 @@ function readRule(ruleId) {
                 "</tr>" +
                 "</thead>" +
                 "<tbody>";
-            var ruleIso = json.ruleIso;
-            if(ruleIso.iso1Name != ""){
+            var qualificationQuantity = rule.qualificationQuantity;
+            for (var i = 1; i <= qualificationQuantity; i++){
+                var qualification = getQualificationInfo(rule, i);
                 txt5 += "<tr>" +
-                    "<td>" + ruleIso.iso1Name + "</td>" +
-                    "<td>" + ruleIso.iso1UnitInvest + "</td>" +
-                    "<td>" + ruleIso.iso1DevTime + "</td>" +
-                    "<td>" + ruleIso.iso1Score + "</td>" +
-                    "</tr>"
-            }
-            if(ruleIso.iso2Name != ""){
-                txt5 += "<tr>" +
-                    "<td>" + ruleIso.iso2Name + "</td>" +
-                    "<td>" + ruleIso.iso2UnitInvest + "</td>" +
-                    "<td>" + ruleIso.iso2DevTime + "</td>" +
-                    "<td>" + ruleIso.iso2Score + "</td>" +
-                    "</tr>"
+                    "<td>" + qualification.name + "</td>" +
+                    "<td>" + qualification.unitInvest + "</td>" +
+                    "<td>" + qualification.devTime + "</td>" +
+                    "<td>" + qualification.score + "</td>" +
+                    "</tr>";
             }
             txt5 += "</tbody></table><br/>";
 
@@ -1436,46 +1329,16 @@ function readRule(ruleId) {
                 "</tr>" +
                 "</thead>" +
                 "<tbody>";
-            var ruleMarket = json.ruleMarket;
-            if(ruleMarket.market1Name != ""){
+
+            var areaQuantity = rule.areaQuantity;
+            for (var i = 1; i <= areaQuantity; i++){
+                var area = getAreaInfo(rule, i);
                 txt6 += "<tr>" +
-                    "<td>" + ruleMarket.market1Name + "</td>" +
-                    "<td>" + ruleMarket.market1UnitInvest + "</td>" +
-                    "<td>" + ruleMarket.market1DevTime + "</td>" +
-                    "<td>" + ruleMarket.market1Score + "</td>" +
-                    "</tr>"
-            }
-            if(ruleMarket.market2Name != ""){
-                txt6 += "<tr>" +
-                    "<td>" + ruleMarket.market2Name + "</td>" +
-                    "<td>" + ruleMarket.market2UnitInvest + "</td>" +
-                    "<td>" + ruleMarket.market2DevTime + "</td>" +
-                    "<td>" + ruleMarket.market2Score + "</td>" +
-                    "</tr>"
-            }
-            if(ruleMarket.market3Name != ""){
-                txt6 += "<tr>" +
-                    "<td>" + ruleMarket.market3Name + "</td>" +
-                    "<td>" + ruleMarket.market3UnitInvest + "</td>" +
-                    "<td>" + ruleMarket.market3DevTime + "</td>" +
-                    "<td>" + ruleMarket.market3Score + "</td>" +
-                    "</tr>"
-            }
-            if(ruleMarket.market4Name != ""){
-                txt6 += "<tr>" +
-                    "<td>" + ruleMarket.market4Name + "</td>" +
-                    "<td>" + ruleMarket.market4UnitInvest + "</td>" +
-                    "<td>" + ruleMarket.market4DevTime + "</td>" +
-                    "<td>" + ruleMarket.market4Score + "</td>" +
-                    "</tr>"
-            }
-            if(ruleMarket.market5Name != ""){
-                txt6 += "<tr>" +
-                    "<td>" + ruleMarket.market5Name + "</td>" +
-                    "<td>" + ruleMarket.market5UnitInvest + "</td>" +
-                    "<td>" + ruleMarket.market5DevTime + "</td>" +
-                    "<td>" + ruleMarket.market5Score + "</td>" +
-                    "</tr>"
+                    "<td>" + area.name + "</td>" +
+                    "<td>" + area.unitInvest + "</td>" +
+                    "<td>" + area.devTime + "</td>" +
+                    "<td>" + area.score + "</td>" +
+                    "</tr>";
             }
             txt6 += "</tbody></table><br/>";
 
@@ -1488,41 +1351,14 @@ function readRule(ruleId) {
                 "</tr>" +
                 "</thead>" +
                 "<tbody>";
-            var ruleMaterial = json.ruleMaterial;
-            if(ruleMaterial.material1Name != ""){
+            var materialQuantity = rule.materialQuantity;
+            for (var i = 1; i <= materialQuantity; i++){
+                var material = getMaterialInfo(rule, i);
                 txt7 += "<tr>" +
-                    "<td>" + ruleMaterial.material1Name + "</td>" +
-                    "<td>" + ruleMaterial.material1Price + "</td>" +
-                    "<td>" + ruleMaterial.material1Time + "</td>" +
-                    "</tr>"
-            }
-            if(ruleMaterial.material2Name != ""){
-                txt7 += "<tr>" +
-                    "<td>" + ruleMaterial.material2Name + "</td>" +
-                    "<td>" + ruleMaterial.material2Price + "</td>" +
-                    "<td>" + ruleMaterial.material2Time + "</td>" +
-                    "</tr>"
-            }
-            if(ruleMaterial.material3Name != ""){
-                txt7 += "<tr>" +
-                    "<td>" + ruleMaterial.material3Name + "</td>" +
-                    "<td>" + ruleMaterial.material3Price + "</td>" +
-                    "<td>" + ruleMaterial.material3Time + "</td>" +
-                    "</tr>"
-            }
-            if(ruleMaterial.material4Name != ""){
-                txt7 += "<tr>" +
-                    "<td>" + ruleMaterial.material4Name + "</td>" +
-                    "<td>" + ruleMaterial.material4Price + "</td>" +
-                    "<td>" + ruleMaterial.material4Time + "</td>" +
-                    "</tr>"
-            }
-            if(ruleMaterial.material5Name != ""){
-                txt7 += "<tr>" +
-                    "<td>" + ruleMaterial.material5Name + "</td>" +
-                    "<td>" + ruleMaterial.material5Price + "</td>" +
-                    "<td>" + ruleMaterial.material5Time + "</td>" +
-                    "</tr>"
+                    "<td>" + material.name + "</td>" +
+                    "<td>" + material.price + "</td>" +
+                    "<td>" + material.time + "</td>" +
+                    "</tr>";
             }
             txt7 += "</tbody></table><br/>";
 
@@ -1539,217 +1375,38 @@ function readRule(ruleId) {
                 "</tr>" +
                 "</thead>" +
                 "<tbody>";
-            var ruleProduct = json.ruleProduct;
-            var ruleMaterial = json.ruleMaterial;
-            var ruleProductMix = json.ruleProductMix;
-            if(ruleProduct.product1Name != ""){
+            var productQuantity = rule.productQuantity;
+            var materialQuantity = rule.materialQuantity;
+            for (var i = 1; i <= productQuantity; i++){
+                var product = getProductInfo(rule, i);
+                var bom = getProductBomInfo(rule, i);
+                var materialBomList = bom.materialBomList;
+                var productBomList = bom.productBomList;
                 txt8 += "<tr>" +
-                    "<td>" + ruleProduct.product1Name + "</td>" +
-                    "<td>" + ruleProduct.product1ProcCost + "</td>" +
-                    "<td>" + ruleProduct.product1DevInvest + "</td>" +
-                    "<td>" + ruleProduct.product1DevTime + "</td>" +
-                    "<td>" + ruleProduct.product1FinalCost + "</td>" +
-                    "<td>" + ruleProduct.product1Score + "</td>" +
+                    "<td>" + product.name + "</td>" +
+                    "<td>" + product.procCost + "</td>" +
+                    "<td>" + product.devInvest + "</td>" +
+                    "<td>" + product.devTime + "</td>" +
+                    "<td>" + product.finalCost + "</td>" +
+                    "<td>" + product.score + "</td>" +
                     "<td>";
-                if((ruleProductMix.product1MixR1 != null) && (ruleProductMix.product1MixR1 != 0)){
-                    txt8 += ruleProductMix.product1MixR1 + "*" + ruleMaterial.material1Name + "&nbsp;&nbsp;";
+                for (var j = 0; j < materialQuantity; j++){ //原料组成
+                    var bomValue = materialBomList[j].value;
+                    if (bomValue > 0){
+                        txt8 += bomValue + "*" + getMaterialInfo(rule, j + 1).name + "&nbsp;&nbsp;";
+                    }
                 }
-                if((ruleProductMix.product1MixR2 != null) && (ruleProductMix.product1MixR2 != 0)){
-                    txt8 += ruleProductMix.product1MixR2 + "*" + ruleMaterial.material2Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product1MixR3 != null) && (ruleProductMix.product1MixR3 != 0)){
-                    txt8 += ruleProductMix.product1MixR3 + "*" + ruleMaterial.material3Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product1MixR4 != null) && (ruleProductMix.product1MixR4 != 0)){
-                    txt8 += ruleProductMix.product1MixR4 + "*" + ruleMaterial.material4Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product1MixR5 != null) && (ruleProductMix.product1MixR5 != 0)){
-                    txt8 += ruleProductMix.product1MixR5 + "*" + ruleMaterial.material5Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product1MixP1 != null) && (ruleProductMix.product1MixP1 != 0)){
-                    txt8 += ruleProductMix.product1MixP1 + "*" + ruleProduct.product1Name + "&nbsp;&nbsp;"; //此为MixP1*产品1的名称
-                }
-                if((ruleProductMix.product1MixP2 != null) && (ruleProductMix.product1MixP2 != 0)){
-                    txt8 += ruleProductMix.product1MixP2 + "*" + ruleProduct.product2Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product1MixP3 != null) && (ruleProductMix.product1MixP3 != 0)){
-                    txt8 += ruleProductMix.product1MixP3 + "*" + ruleProduct.product3Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product1MixP4 != null) && (ruleProductMix.product1MixP4 != 0)){
-                    txt8 += ruleProductMix.product1MixP4 + "*" + ruleProduct.product4Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product1MixP5 != null) && (ruleProductMix.product1MixP5 != 0)){
-                    txt8 += ruleProductMix.product1MixP5 + "*" + ruleProduct.product5Name + "&nbsp;&nbsp;";
-                }
-                txt8 += "</td></tr>";
-            }
-            if(ruleProduct.product2Name != ""){
-                txt8 += "<tr>" +
-                    "<td>" + ruleProduct.product2Name + "</td>" +
-                    "<td>" + ruleProduct.product2ProcCost + "</td>" +
-                    "<td>" + ruleProduct.product2DevInvest + "</td>" +
-                    "<td>" + ruleProduct.product2DevTime + "</td>" +
-                    "<td>" + ruleProduct.product2FinalCost + "</td>" +
-                    "<td>" + ruleProduct.product2Score + "</td>" +
-                    "<td>";
-                if((ruleProductMix.product2MixR1 != null) && (ruleProductMix.product2MixR1 != 0)){
-                    txt8 += ruleProductMix.product2MixR1 + "*" + ruleMaterial.material1Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product2MixR2 != null) && (ruleProductMix.product2MixR2 != 0)){
-                    txt8 += ruleProductMix.product2MixR2 + "*" + ruleMaterial.material2Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product2MixR3 != null) && (ruleProductMix.product2MixR3 != 0)){
-                    txt8 += ruleProductMix.product2MixR3 + "*" + ruleMaterial.material3Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product2MixR4 != null) && (ruleProductMix.product2MixR4 != 0)){
-                    txt8 += ruleProductMix.product2MixR4 + "*" + ruleMaterial.material4Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product2MixR5 != null) && (ruleProductMix.product2MixR5 != 0)){
-                    txt8 += ruleProductMix.product2MixR5 + "*" + ruleMaterial.material5Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product2MixP1 != null) && (ruleProductMix.product2MixP1 != 0)){
-                    txt8 += ruleProductMix.product2MixP1 + "*" + ruleProduct.product1Name + "&nbsp;&nbsp;"; //此为MixP1*产品1的名称
-                }
-                if((ruleProductMix.product2MixP2 != null) && (ruleProductMix.product2MixP2 != 0)){
-                    txt8 += ruleProductMix.product2MixP2 + "*" + ruleProduct.product2Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product2MixP3 != null) && (ruleProductMix.product2MixP3 != 0)){
-                    txt8 += ruleProductMix.product2MixP3 + "*" + ruleProduct.product3Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product2MixP4 != null) && (ruleProductMix.product2MixP4 != 0)){
-                    txt8 += ruleProductMix.product2MixP4 + "*" + ruleProduct.product4Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product2MixP5 != null) && (ruleProductMix.product2MixP5 != 0)){
-                    txt8 += ruleProductMix.product2MixP5 + "*" + ruleProduct.product5Name + "&nbsp;&nbsp;";
-                }
-                txt8 += "</td></tr>";
-            }
-            if(ruleProduct.product3Name != ""){
-                txt8 += "<tr>" +
-                    "<td>" + ruleProduct.product3Name + "</td>" +
-                    "<td>" + ruleProduct.product3ProcCost + "</td>" +
-                    "<td>" + ruleProduct.product3DevInvest + "</td>" +
-                    "<td>" + ruleProduct.product3DevTime + "</td>" +
-                    "<td>" + ruleProduct.product3FinalCost + "</td>" +
-                    "<td>" + ruleProduct.product3Score + "</td>" +
-                    "<td>";
-                if((ruleProductMix.product3MixR1 != null) && (ruleProductMix.product3MixR1 != 0)){
-                    txt8 += ruleProductMix.product3MixR1 + "*" + ruleMaterial.material1Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product3MixR2 != null) && (ruleProductMix.product3MixR2 != 0)){
-                    txt8 += ruleProductMix.product3MixR2 + "*" + ruleMaterial.material2Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product3MixR3 != null) && (ruleProductMix.product3MixR3 != 0)){
-                    txt8 += ruleProductMix.product3MixR3 + "*" + ruleMaterial.material3Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product3MixR4 != null) && (ruleProductMix.product3MixR4 != 0)){
-                    txt8 += ruleProductMix.product3MixR4 + "*" + ruleMaterial.material4Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product3MixR5 != null) && (ruleProductMix.product3MixR5 != 0)){
-                    txt8 += ruleProductMix.product3MixR5 + "*" + ruleMaterial.material5Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product3MixP1 != null) && (ruleProductMix.product3MixP1 != 0)){
-                    txt8 += ruleProductMix.product3MixP1 + "*" + ruleProduct.product1Name + "&nbsp;&nbsp;"; //此为MixP1*产品1的名称
-                }
-                if((ruleProductMix.product3MixP2 != null) && (ruleProductMix.product3MixP2 != 0)){
-                    txt8 += ruleProductMix.product3MixP2 + "*" + ruleProduct.product2Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product3MixP3 != null) && (ruleProductMix.product3MixP3 != 0)){
-                    txt8 += ruleProductMix.product3MixP3 + "*" + ruleProduct.product3Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product3MixP4 != null) && (ruleProductMix.product3MixP4 != 0)){
-                    txt8 += ruleProductMix.product3MixP4 + "*" + ruleProduct.product4Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product3MixP5 != null) && (ruleProductMix.product3MixP5 != 0)){
-                    txt8 += ruleProductMix.product3MixP5 + "*" + ruleProduct.product5Name + "&nbsp;&nbsp;";
-                }
-                txt8 += "</td></tr>";
-            }
-            if(ruleProduct.product4Name != ""){
-                txt8 += "<tr>" +
-                    "<td>" + ruleProduct.product4Name + "</td>" +
-                    "<td>" + ruleProduct.product4ProcCost + "</td>" +
-                    "<td>" + ruleProduct.product4DevInvest + "</td>" +
-                    "<td>" + ruleProduct.product4DevTime + "</td>" +
-                    "<td>" + ruleProduct.product4FinalCost + "</td>" +
-                    "<td>" + ruleProduct.product4Score + "</td>" +
-                    "<td>";
-                if((ruleProductMix.product4MixR1 != null) && (ruleProductMix.product4MixR1 != 0)){
-                    txt8 += ruleProductMix.product4MixR1 + "*" + ruleMaterial.material1Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product4MixR2 != null) && (ruleProductMix.product4MixR2 != 0)){
-                    txt8 += ruleProductMix.product4MixR2 + "*" + ruleMaterial.material2Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product4MixR3 != null) && (ruleProductMix.product4MixR3 != 0)){
-                    txt8 += ruleProductMix.product4MixR3 + "*" + ruleMaterial.material3Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product4MixR4 != null) && (ruleProductMix.product4MixR4 != 0)){
-                    txt8 += ruleProductMix.product4MixR4 + "*" + ruleMaterial.material4Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product4MixR5 != null) && (ruleProductMix.product4MixR5 != 0)){
-                    txt8 += ruleProductMix.product4MixR5 + "*" + ruleMaterial.material5Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product4MixP1 != null) && (ruleProductMix.product4MixP1 != 0)){
-                    txt8 += ruleProductMix.product4MixP1 + "*" + ruleProduct.product1Name + "&nbsp;&nbsp;"; //此为MixP1*产品1的名称
-                }
-                if((ruleProductMix.product4MixP2 != null) && (ruleProductMix.product4MixP2 != 0)){
-                    txt8 += ruleProductMix.product4MixP2 + "*" + ruleProduct.product2Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product4MixP3 != null) && (ruleProductMix.product4MixP3 != 0)){
-                    txt8 += ruleProductMix.product4MixP3 + "*" + ruleProduct.product3Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product4MixP4 != null) && (ruleProductMix.product4MixP4 != 0)){
-                    txt8 += ruleProductMix.product4MixP4 + "*" + ruleProduct.product4Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product4MixP5 != null) && (ruleProductMix.product4MixP5 != 0)){
-                    txt8 += ruleProductMix.product4MixP5 + "*" + ruleProduct.product5Name + "&nbsp;&nbsp;";
-                }
-                txt8 += "</td></tr>";
-            }
-            if(ruleProduct.product5Name != ""){
-                txt8 += "<tr>" +
-                    "<td>" + ruleProduct.product5Name + "</td>" +
-                    "<td>" + ruleProduct.product5ProcCost + "</td>" +
-                    "<td>" + ruleProduct.product5DevInvest + "</td>" +
-                    "<td>" + ruleProduct.product5DevTime + "</td>" +
-                    "<td>" + ruleProduct.product5FinalCost + "</td>" +
-                    "<td>" + ruleProduct.product5Score + "</td>" +
-                    "<td>";
-                if((ruleProductMix.product5MixR1 != null) && (ruleProductMix.product5MixR1 != 0)){
-                    txt8 += ruleProductMix.product5MixR1 + "*" + ruleMaterial.material1Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product5MixR2 != null) && (ruleProductMix.product5MixR2 != 0)){
-                    txt8 += ruleProductMix.product5MixR2 + "*" + ruleMaterial.material2Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product5MixR3 != null) && (ruleProductMix.product5MixR3 != 0)){
-                    txt8 += ruleProductMix.product5MixR3 + "*" + ruleMaterial.material3Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product5MixR4 != null) && (ruleProductMix.product5MixR4 != 0)){
-                    txt8 += ruleProductMix.product5MixR4 + "*" + ruleMaterial.material4Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product5MixR5 != null) && (ruleProductMix.product5MixR5 != 0)){
-                    txt8 += ruleProductMix.product5MixR5 + "*" + ruleMaterial.material5Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product5MixP1 != null) && (ruleProductMix.product5MixP1 != 0)){
-                    txt8 += ruleProductMix.product5MixP1 + "*" + ruleProduct.product1Name + "&nbsp;&nbsp;"; //此为MixP1*产品1的名称
-                }
-                if((ruleProductMix.product5MixP2 != null) && (ruleProductMix.product5MixP2 != 0)){
-                    txt8 += ruleProductMix.product5MixP2 + "*" + ruleProduct.product2Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product5MixP3 != null) && (ruleProductMix.product5MixP3 != 0)){
-                    txt8 += ruleProductMix.product5MixP3 + "*" + ruleProduct.product3Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product5MixP4 != null) && (ruleProductMix.product5MixP4 != 0)){
-                    txt8 += ruleProductMix.product5MixP4 + "*" + ruleProduct.product4Name + "&nbsp;&nbsp;";
-                }
-                if((ruleProductMix.product5MixP5 != null) && (ruleProductMix.product5MixP5 != 0)){
-                    txt8 += ruleProductMix.product5MixP5 + "*" + ruleProduct.product5Name + "&nbsp;&nbsp;";
+                for (var j = 0; j < productQuantity; j++){ //半成品组成
+                    var bomValue = productBomList[j].value;
+                    if (bomValue > 0){
+                        txt8 += bomValue + "*" + getProductInfo(rule, j + 1).name + "&nbsp;&nbsp;";
+                    }
                 }
                 txt8 += "</td></tr>";
             }
             txt8 += "</tbody></table><br/>";
 
-            var ruleParam = json.ruleParam;
+            var ruleParam = rule.ruleParam;
             txt9 = "<table class='table table-striped table-hover table-bordered' id=''>" +
                 "<thead>" +
                 "<tr>" +
@@ -1858,14 +1515,6 @@ function readRule(ruleId) {
 
 }
 
-function useRule(ruleId) {
-
-}
-
-function deleteRule(ruleId) {
-
-}
-
 function findRuleAll() {
     var txt="";
 
@@ -1883,8 +1532,6 @@ function findRuleAll() {
                 "<th>上传日期</th>" +
                 "<th>调用次数</th>" +
                 "<th>查看内容</th>" +
-                "<th>调用规则</th>" +
-                "<th>删除规则</th>" +
                 "<th style='display: none'>当前操作用户</th>" +
                 "</tr>" +
                 "</thead>" +
@@ -1897,9 +1544,7 @@ function findRuleAll() {
                     "<td>" + json[i].ruleUploader + "</td>" +
                     "<td>" + timeFormat(json[i].ruleAlterTime) + "</td>" +
                     "<td>" + json[i].ruleUserCount + "</td>" +
-                    "<td><a class='edit' href='#modalReadRule' data-toggle='modal' onclick='readRule(" + json[i].ruleId + ")'>查看内容</a></td>" +
-                    "<td><a onclick='useRule(" + json[i].ruleId + ")'>调用规则</a></td>" +
-                    "<td><a onclick='deleteRule(" + json[i].ruleId + ")'>删除规则</a></td>" +
+                    "<td><a class='edit' href='#modalReadRule' data-toggle='modal' onclick='readRule(" + json[i].id + ")'>查看内容</a></td>" +
                     "<td style='display: none'>当前操作用户</td>" +
                     "</tr>";
             }
@@ -2108,4 +1753,74 @@ function thClassInit() {
             $("#btnCloseModalThClassInit").click();
         }
     });
+}
+
+function getLineInfo(rule, type) {
+    var lines = rule.ruleLineList;
+    for (var i = 0; i < lines.length; i++){
+        if (lines[i].type == type){
+            return lines[i];
+        }
+    }
+    return null;    //异常情况
+}
+
+function getFactoryInfo(rule, type) {
+    var factories = rule.ruleFactoryList;
+    for (var i = 0; i < factories.length; i++){
+        if (factories[i].type == type){
+            return factories[i];
+        }
+    }
+    return null;    //异常情况
+}
+
+function getQualificationInfo(rule, type) {
+    var qualifications = rule.ruleQualificationList;
+    for (var i = 0; i < qualifications.length; i++){
+        if (qualifications[i].type == type){
+            return qualifications[i];
+        }
+    }
+    return null;    //异常情况
+}
+
+function getAreaInfo(rule, type) {
+    var areas = rule.ruleAreaList;
+    for (var i = 0; i < areas.length; i++){
+        if (areas[i].type == type){
+            return areas[i];
+        }
+    }
+    return null;    //异常情况
+}
+
+function getMaterialInfo(rule, type) {
+    var materials = rule.ruleMaterialList;
+    for (var i = 0; i < materials.length; i++){
+        if (materials[i].type == type){
+            return materials[i];
+        }
+    }
+    return null;    //异常情况
+}
+
+function getProductInfo(rule, type) {
+    var products = rule.ruleProductList;
+    for (var i = 0; i < products.length; i++){
+        if (products[i].type == type){
+            return products[i];
+        }
+    }
+    return null;    //异常情况
+}
+
+function getProductBomInfo(rule, type) {
+    var productBoms = rule.ruleProductBomList;
+    for (var i = 0; i < productBoms.length; i++){
+        if (productBoms[i].type == type){
+            return productBoms[i];
+        }
+    }
+    return null;    //异常情况
 }
