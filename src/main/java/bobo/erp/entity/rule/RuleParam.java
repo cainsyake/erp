@@ -14,7 +14,7 @@ public class RuleParam {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer ruleParamId;
+    private Integer id;
 
     @OneToOne(mappedBy = "ruleParam")
     private Rule rule;
@@ -46,12 +46,12 @@ public class RuleParam {
     private Integer paramAllowUserReturnSeason;  //允许用户还原本季
     private Integer paramAllowUserReturnYear;    //允许用户还原本年
 
-    public Integer getRuleParamId() {
-        return ruleParamId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setRuleParamId(Integer ruleParamId) {
-        this.ruleParamId = ruleParamId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @JsonBackReference
