@@ -29,9 +29,37 @@ function subOnLoad() {
              * 调用页面初始化函数
              * 将pageController与infoController合并
              */
-            btnController(runningState);    //页面按钮控制函数
-            pageController(runningState); //页面表格控制函数
-            infoController(runningState); //页面内容控制函数
+            // btnController(runningState);    //页面按钮控制函数
+            // pageController(runningState); //页面表格控制函数
+            // infoController(runningState); //页面内容控制函数
+
+            /**
+             * 测试对象树遍历及对象复制
+             */
+            // var testObj = deepCopy(rule);
+            // console.log('输出处理前对象');
+            // console.log(testObj);
+            // console.log('开始遍历对象');
+            // eachProps(testObj);
+            // console.log('结束遍历对象,输出处理后对象');
+            // console.log(testObj);
+            // console.log('检查rule对象');
+            // console.log(rule);
+            // var ajaxData = {rule: testObj, username: 'cloneTest'};
+            // $.ajax({
+            //     url: '/addRule',
+            //     type: 'POST',
+            //     contentType: "application/json",
+            //     data: JSON.stringify(ajaxData),
+            //     dataType:'json',
+            //     success:function (rs) {
+            //         console.log('Clone Success');
+            //     },
+            //     error:function (rs) {
+            //         console.log(rs);
+            //     }
+            // });
+            // console.log('ALL END');
         },
         error:function (json) {
             console.log(json.responseText);
@@ -53,6 +81,42 @@ function initRule(username) {
             console.log(json.responseText);
         }
     });
+}
+
+function deepCopy(obj) {
+    var str, newobj = obj.constructor === Array ? [] : {};
+    if(typeof obj !== 'object'){
+        return;
+    } else if(window.JSON){
+        str = JSON.stringify(obj), //系列化对象
+            newobj = JSON.parse(str); //还原
+    } else {
+        for(var i in obj){
+            newobj[i] = typeof obj[i] === 'object' ?
+                cloneObj(obj[i]) : obj[i];
+        }
+    }
+    return newobj;
+}
+
+function eachProps(obj) {
+
+    for (var prop in obj) {
+        if (typeof (obj[prop]) == 'object') {
+            eachProps(obj[prop]);
+        } else if (typeof (obj[prop]) == 'array') {
+            obj[prop].forEach(function (subObj, index, array) {
+                eachProps(subObj);
+            });
+        } else if (prop === 'id') {
+            // console.log('捕捉到id:' + obj[prop]);
+            delete obj[prop];
+            // console.log(obj);
+            // console.log('-----');
+
+        }
+    }
+
 }
 
 function getRunningState(username) {
